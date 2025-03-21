@@ -1,6 +1,8 @@
-import { useState } from "react";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
+  debugger;
+  console.log(BASE_URL);
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
