@@ -6,8 +6,8 @@ function App() {
       {/* Header */}
       <header className="bg-gray-800 text-white p-4 flex">
         <div className="flex justify-between items-center max-w-screen-xl mx-auto w-full">
-          <div className="text-lg font-bold">Logo</div>
-          <nav>
+          <div className="text-lg font-bold pl-6">Logo</div>
+          <nav className="pr-5">
             <ul className="flex space-x-4">
               <li><a href="#" className="hover:underline">Home</a></li>
               <li><a href="#" className="hover:underline">About</a></li>
@@ -26,6 +26,27 @@ function App() {
             <li><a href="#" className="block p-2 hover:bg-gray-200">Settings</a></li>
             <li><a href="#" className="block p-2 hover:bg-gray-200">Profile</a></li>
           </ul>
+
+          <div className="mt-4 justify-items-center">
+            {/* First Row */}
+            <div className="text-sm font-semibold mb-2">Select Shape</div>
+
+            {/* Second Row */}
+            <div className="flex space-x-2">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <button
+                  key={index}
+                  className="w-8 h-8 border rounded-full flex items-center justify-center hover:bg-gray-200"
+                >
+                  <img
+                    src={`https://via.placeholder.com/24?text=${index + 1}`}
+                    alt={`Icon ${index + 1}`}
+                    className="w-6 h-6"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
         </aside>
 
         {/* Main Content Area */}
