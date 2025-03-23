@@ -27,6 +27,7 @@ function App() {
             <li><a href="#" className="block p-2 hover:bg-gray-200">Profile</a></li>
           </ul>
 
+          {/* Shapes */}
           <div className="mt-4 justify-items-center">
             {/* First Row */}
             <div className="text-sm font-semibold mb-2">Select Shape</div>
@@ -45,6 +46,19 @@ function App() {
                   />
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Brand */}
+          <div className="mt-4 justify-items-center">
+            <div className="text-sm font-semibold mb-2">Brand</div>
+
+            <div className="flex space-x-2 w-full">
+                <select title="brands" className="border rounded p-2">
+                  <option value="fender">Fender</option>
+                  <option value="gibson">Gibson</option>
+                  <option value="ibanez">Ibanez</option>
+                </select>
             </div>
           </div>
         </aside>
