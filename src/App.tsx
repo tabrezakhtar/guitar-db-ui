@@ -6,7 +6,7 @@ function App() {
       {/* Header */}
       <header className="bg-gray-800 text-white p-4 flex">
         <div className="flex justify-between items-center max-w-screen-xl mx-auto w-full">
-          <div className="text-lg font-bold pl-6">Logo</div>
+          <div className="text-lg font-bold pl-6">Guitar Explorer🔥</div>
           <nav className="pr-5">
             <ul className="flex space-x-4">
               <li><a href="#" className="hover:underline">Home</a></li>
