@@ -20,7 +20,7 @@ function App() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col md:flex-row max-w-screen-xl mx-auto w-full">
         {/* Side Menu */}
-        <aside className="bg-gray-100 w-full md:w-1/4 lg:w-1/5 p-4">
+        <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4">
           {/* Shapes */}
           <div className="mt-4 justify-items-center">
             {/* First Row */}
@@ -28,18 +28,21 @@ function App() {
 
             {/* Second Row */}
             <div className="flex space-x-2">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <button
-                  key={index}
-                  className="w-8 h-8 border rounded-full flex items-center justify-center hover:bg-gray-200"
-                >
-                  <img
-                    src={`https://via.placeholder.com/24?text=${index + 1}`}
-                    alt={`Icon ${index + 1}`}
-                    className="w-6 h-6"
-                  />
-                </button>
-              ))}
+              <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
+                <span className="w-6 h-6">All</span>
+              </button>
+              <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
+                <img src="/shapes/singlecut_outline.png" alt="Icon" className="w-6 h-6" />
+              </button>
+              <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
+                <img src="/shapes/stype_outline.png" alt="Icon" className="w-6 h-6" />
+              </button>
+              <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
+                <img src="/shapes/ttype_outline.png" alt="Icon" className="w-6 h-6" />
+              </button>
+              <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
+                <img src="/shapes/v_outline.png" alt="Icon" className="w-6 h-6" />
+              </button>
             </div>
           </div>
 
@@ -64,7 +67,7 @@ function App() {
             {Array.from({ length: 16 }).map((_, index) => (
               <div
                 key={index}
-                className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow"
+                className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer"
               >
                 <img
                   src={"/guitar.jpg"}
