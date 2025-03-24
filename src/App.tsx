@@ -21,12 +21,6 @@ function App() {
       <div className="flex-1 flex flex-col md:flex-row max-w-screen-xl mx-auto w-full">
         {/* Side Menu */}
         <aside className="bg-gray-100 w-full md:w-1/4 lg:w-1/5 p-4">
-          <ul className="space-y-2">
-            <li><a href="#" className="block p-2 hover:bg-gray-200">Dashboard</a></li>
-            <li><a href="#" className="block p-2 hover:bg-gray-200">Settings</a></li>
-            <li><a href="#" className="block p-2 hover:bg-gray-200">Profile</a></li>
-          </ul>
-
           {/* Shapes */}
           <div className="mt-4 justify-items-center">
             {/* First Row */}
@@ -54,7 +48,7 @@ function App() {
             <div className="text-sm font-semibold mb-2">Brand</div>
 
             <div className="flex space-x-2 w-full">
-                <select title="brands" className="border rounded p-2">
+                <select title="brands" className="border rounded p-2 w-full">
                   <option value="fender">Fender</option>
                   <option value="gibson">Gibson</option>
                   <option value="ibanez">Ibanez</option>
@@ -73,11 +67,11 @@ function App() {
                 className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow"
               >
                 <img
-                  src={"https://picsum.photos/200"}
+                  src={"/guitar.jpg"}
                   alt={`Thumbnail ${index + 1}`}
                   className="w-full object-cover"
                 />
-                <div className="p-2">
+                <div className="p-3 bg-gray-200">
                   <h2 className="text-lg font-semibold">Thumbnail {index + 1}</h2>
                   <p className="text-sm text-gray-600">Description for thumbnail {index + 1}</p>
                 </div>
