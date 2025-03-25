@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 import Modal from "./Modal";
 import GuitarsGrid from "./GuitarsGrid";
 
@@ -18,13 +19,13 @@ function App() {
       <header className="bg-gray-800 text-white p-4 flex">
         <div className="flex justify-between items-center max-w-screen-xl mx-auto w-full">
           <div className="text-lg font-bold pl-6">Guitar Explorer🔥</div>
-          <nav className="pr-5">
-            <ul className="flex space-x-4">
-              <li><a href="#" className="hover:underline">Home</a></li>
-              <li><a href="#" className="hover:underline">About</a></li>
-              <li><a href="#" className="hover:underline">Contact</a></li>
-            </ul>
-          </nav>
+            <nav className="pr-5">
+              <ul className="flex space-x-4">
+                <li><Link to="/" className="hover:underline">Home</Link></li>
+                <li><Link to="/about" className="hover:underline">About</Link></li>
+                <li><Link to="/contact" className="hover:underline">Contact</Link></li>
+              </ul>
+            </nav>
         </div>
       </header>
 
