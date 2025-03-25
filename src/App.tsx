@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Modal from "./Modal";
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import GuitarsGrid from "./GuitarsGrid";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,26 +77,7 @@ function App() {
 
         {/* Main Content Area */}
         <main className="flex-1 bg-white p-4">
-          {/* <h1 className="text-2xl font-bold mb-4">Main Content</h1> */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 16 }).map((_, index) => (
-              <div
-                key={index}
-                className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setIsModalOpen(true)}
-              >
-                <img
-                  src={"/guitar.jpg"}
-                  alt={`Thumbnail ${index + 1}`}
-                  className="w-full object-cover"
-                />
-                <div className="p-3 bg-gray-200">
-                  <h2 className="text-lg font-semibold">Thumbnail {index + 1}</h2>
-                  <p className="text-sm text-gray-600">Description for thumbnail {index + 1}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <GuitarsGrid />
         </main>
       </div>
     </div>
