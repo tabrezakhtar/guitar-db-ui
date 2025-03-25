@@ -1,6 +1,18 @@
+import { useState } from "react";
+import Modal from "./Modal";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const someContent = (
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Modal Content</h1>  
+      <p>This is the content of the modal</p>
+    </div>
+  );
+
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
@@ -16,6 +28,10 @@ function App() {
           </nav>
         </div>
       </header>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        {someContent}
+      </Modal>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col md:flex-row max-w-screen-xl mx-auto w-full">
@@ -62,12 +78,13 @@ function App() {
 
         {/* Main Content Area */}
         <main className="flex-1 bg-white p-4">
-          <h1 className="text-2xl font-bold mb-4">Main Content</h1>
+          {/* <h1 className="text-2xl font-bold mb-4">Main Content</h1> */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {Array.from({ length: 16 }).map((_, index) => (
               <div
                 key={index}
                 className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => setIsModalOpen(true)}
               >
                 <img
                   src={"/guitar.jpg"}
