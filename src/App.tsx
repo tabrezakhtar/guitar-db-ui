@@ -4,6 +4,8 @@ import Modal from "./Modal";
 import About from "./About";
 import Contact from "./Contact";
 import ContentContainer from "./ContentContainer";
+import EditGuitar from "./EditGuitar";
+import ViewGuitar from "./ViewGuitar";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,9 +27,9 @@ function App() {
               <nav className="pr-5">
                 <ul className="flex space-x-4">
                   <li><Link to="/" className="hover:underline">Home</Link></li>
-                  <li><Link to="/about" className="hover:underline">About</Link></li>
-                  <li><Link to="/contact" className="hover:underline">Contact</Link></li>
                   <li><Link to="/login" className="hover:underline">Login</Link></li>
+                  <li><Link to="/contact" className="hover:underline">Contact</Link></li>
+                  <li><Link to="/about" className="hover:underline">About</Link></li>
                 </ul>
               </nav>
           </div>
@@ -38,9 +40,11 @@ function App() {
         </Modal>
 
         <Routes>
-          <Route path="/" element={<ContentContainer />}/>
+          <Route path="/" element={<ContentContainer />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/edit/:id" element={<EditGuitar />} />
+          <Route path="/view/:id" element={<ViewGuitar />} />
         </Routes>
       </BrowserRouter>
     </div>

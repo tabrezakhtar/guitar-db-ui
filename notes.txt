@@ -1,0 +1,42 @@
+//uploading to cloudinary directly
+import React, { useRef } from 'react';
+
+function UploadComponent() {
+  const fileInputRef = useRef(null);
+
+  const uploadFile = async () => {
+    const file = fileInputRef.current.files[0];
+    if (!file) {
+      alert('Please select a file!');
+      return;
+    }
+
+    const cloudName = 'your_cloud_name';
+    const uploadPreset = 'my_unsigned_preset';
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', uploadPreset);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      console.log('Upload successful:', data.secure_url);
+    } catch (error) {
+      console.error('Upload error:', error);
+    }
+  };
+
+  return (
+    <div>
+      <input type="file" ref={fileInputRef} accept="image/*" />
+      <button onClick={uploadFile}>Upload</button>
+    </div>
+  );
+}
+
+export default UploadComponent;

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function GuitarsGrid() {
+  const navigate = useNavigate();
   const [guitars, setGuitars] = useState([]);
 
   useEffect(() => {
@@ -25,6 +26,7 @@ function GuitarsGrid() {
         <div
           key={_id}
           className="border rounded-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-transform"
+          onClick={() => navigate('/view/' + _id)}
         >
           <img
             src={"/guitar.jpg"}
