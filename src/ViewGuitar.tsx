@@ -7,7 +7,7 @@ interface Guitar {
   brand: string;
   name: string;
   description: string;
-  imageUrl: string;
+  images: string[];
 }
 
 function ViewGuitar() {
@@ -34,11 +34,13 @@ function ViewGuitar() {
         <h1>View</h1>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
-            <img
-              src={"/guitar.jpg"}
-              alt={`Thumbnail: ${guitar.brand} ${guitar.name}`}
-              className="w-full object-cover"
-            />
+            {guitar.images ? (
+              <img
+                src={guitar.images[0]}
+                alt={`Thumbnail: ${guitar.brand} ${guitar.name}`}
+                className="w-full object-cover"
+              />
+            ): null}
           </div>
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">{guitar.description}</div>
         </div>

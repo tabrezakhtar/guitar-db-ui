@@ -22,14 +22,14 @@ function GuitarsGrid() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {guitars.map(({_id, brand, name, description}) => (
+      {guitars.map(({_id, brand, name, description, images}) => (
         <div
           key={_id}
           className="border rounded-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-transform"
           onClick={() => navigate('/view/' + _id)}
         >
           <img
-            src={"/guitar.jpg"}
+            src={images[0]}
             alt={`Thumbnail: ${brand} ${name}`}
             className="w-full object-cover"
           />
