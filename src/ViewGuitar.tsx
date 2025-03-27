@@ -1,14 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Guitar } from "./types/guitar";
 
-interface Guitar {
-  id: string;
-  brand: string;
-  name: string;
-  description: string;
-  images: string[];
-}
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function ViewGuitar() {
   const { id } = useParams();
@@ -32,6 +26,8 @@ function ViewGuitar() {
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
         <h1>View</h1>
+        <Link to={`/edit/${guitar._id}`} className="hover:underline">Edit</Link>
+        
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
             {guitar.images ? (

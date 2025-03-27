@@ -1,4 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Guitar } from "./types/guitar";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // import React, { useState } from "react";
 
@@ -21,6 +25,23 @@ import { useRef, useState, useEffect } from 'react';
 // export default App;
 
 function EditGuitar() {
+  const { id } = useParams();
+  const [guitar, setGuitar] = useState({} as Guitar);
+
+  useEffect(() => {
+    const fetchGuitars = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/guitar?id=${id}`);
+        const result: Guitar = await response.json();
+        setGuitar(result);
+      } catch (error) {
+        console.error("Error fetching guitar:", error);
+      }
+    };
+
+    fetchGuitars();
+  }, []);
+
   return (
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
