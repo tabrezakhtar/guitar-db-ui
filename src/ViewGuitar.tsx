@@ -12,8 +12,8 @@ function ViewGuitar() {
     const fetchGuitars = async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/guitar?id=${id}`);
-        const result: Guitar = await response.json();
-        setGuitar(result);
+        const { guitar } = await response.json();
+        setGuitar(guitar);
       } catch (error) {
         console.error("Error fetching guitar:", error);
       }

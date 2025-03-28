@@ -32,8 +32,8 @@ function EditGuitar() {
     const fetchGuitars = async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/guitar?id=${id}`);
-        const result: Guitar = await response.json();
-        setGuitar(result);
+        const { guitar } = await response.json();
+        setGuitar(guitar);
       } catch (error) {
         console.error("Error fetching guitar:", error);
       }
@@ -41,6 +41,18 @@ function EditGuitar() {
 
     fetchGuitars();
   }, []);
+
+  async function update(e){
+    e.preventDefault();
+    debugger;
+    const response = await fetch(`${BASE_URL}/api/guitars/update/${guitar._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(guitar)
+    });
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto w-full">
@@ -109,7 +121,7 @@ function EditGuitar() {
                   <label className="block">Thumbnail URL:</label>
                   <input type="text" value={guitar.thumbnail} className="border p-2 rounded w-full" />
                 </div>
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+                <button type="submit" onClick={update} className="bg-blue-500 text-white px-4 py-2 rounded">
                   Save Changes
                 </button>
               </form>
