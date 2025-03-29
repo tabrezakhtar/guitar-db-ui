@@ -44,7 +44,6 @@ function EditGuitar() {
 
   async function update(e){
     e.preventDefault();
-    debugger;
     const response = await fetch(`${BASE_URL}/api/guitars/update/${guitar._id}`, {
       method: 'PUT',
       headers: {
@@ -58,9 +57,8 @@ function EditGuitar() {
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
         <h1>Edit</h1>
-        <p>
+        <div>
           Edit guitar
-
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
             <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
               {guitar.images ? (
@@ -72,62 +70,62 @@ function EditGuitar() {
               ): null}
             </div>
             <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">
-              <form className="space-y-4">
+                <form className="space-y-4">
                 <div>
                   <label className="block">Brand:</label>
-                  <input type="text" value={guitar.brand} className="border p-2 rounded w-full" />
+                  <input type="text" name="brand" value={guitar.brand} onChange={e => setGuitar({...guitar, brand: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Shape:</label>
-                  <input type="text" value={guitar.shape} className="border p-2 rounded w-full" />
+                  <input type="text" name="shape" value={guitar.shape} onChange={e => setGuitar({...guitar, shape: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Name:</label>
-                  <input type="text" value={guitar.name} className="border p-2 rounded w-full" />
+                  <input type="text" name="name" value={guitar.name} onChange={e => setGuitar({...guitar, name: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Series:</label>
-                  <input type="text" value={guitar.series} className="border p-2 rounded w-full" />
+                  <input type="text" name="series" value={guitar.series} onChange={e => setGuitar({...guitar, series: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Pickups:</label>
-                  <input type="text" value={guitar.pickups} className="border p-2 rounded w-full" />
+                  <input type="text" name="pickups" value={guitar.pickups} onChange={e => setGuitar({...guitar, pickups: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Tremolo:</label>
-                  <input type="text" value={guitar.trem} className="border p-2 rounded w-full" />
+                  <input type="text" name="trem" value={guitar.trem} onChange={e => setGuitar({...guitar, trem: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Frets:</label>
-                  <input type="number" value={guitar.frets} className="border p-2 rounded w-full" />
+                  <input type="number" name="frets" value={guitar.frets} onChange={e => setGuitar({...guitar, frets: Number(e.target.value)})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Tuners:</label>
-                  <input type="text" value={guitar.tuners} className="border p-2 rounded w-full" />
+                  <input type="text" name="tuners" value={guitar.tuners} onChange={e => setGuitar({...guitar, tuners: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Colour:</label>
-                  <input type="text" value={guitar.colour} className="border p-2 rounded w-full" />
+                  <input type="text" name="colour" value={guitar.colour} onChange={e => setGuitar({...guitar, colour: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Fretboard:</label>
-                  <input type="text" value={guitar.fretboard} className="border p-2 rounded w-full" />
+                  <input type="text" name="fretboard" value={guitar.fretboard} onChange={e => setGuitar({...guitar, fretboard: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
                 <div>
                   <label className="block">Description:</label>
-                  <textarea value={guitar.description} className="border p-2 rounded w-full h-24"></textarea>
+                  <textarea name="description" value={guitar.description} onChange={e => setGuitar({...guitar, description: e.target.value})} className="border p-2 rounded w-full h-24"></textarea>
                 </div>
                 <div>
                   <label className="block">Thumbnail URL:</label>
-                  <input type="text" value={guitar.thumbnail} className="border p-2 rounded w-full" />
+                  <input type="text" name="thumbnail" value={guitar.thumbnail} onChange={e => setGuitar({...guitar, thumbnail: e.target.value})} className="border p-2 rounded w-full" />
                 </div>
-                <button type="submit" onClick={update} className="bg-blue-500 text-white px-4 py-2 rounded">
+                <button type="submit" onClick={update} className="bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer">
                   Save Changes
                 </button>
               </form>
             </div>
           </div>
-        </p>
+        </div>
       </div>
     </div>
   );
