@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Guitar } from "./types/guitar";
+import Thumbnail from "./Thumbnail";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -69,10 +70,9 @@ function EditGuitar() {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
             <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
               {guitar.images ? (
-                <img
-                  src={guitar.images[0]}
+                <Thumbnail
+                  url={guitar.images?.[0]}
                   alt={`Thumbnail: ${guitar.brand} ${guitar.name}`}
-                  className="w-full object-cover"
                 />
               ): null}
             </div>

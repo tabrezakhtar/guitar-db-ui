@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Thumbnail from "./Thumbnail"
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function GuitarsGrid() {
@@ -28,11 +29,7 @@ function GuitarsGrid() {
           className="border rounded-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-transform"
           onClick={() => navigate('/view/' + _id)}
         >
-          <img
-            src={images[0]}
-            alt={`Thumbnail: ${brand} ${name}`}
-            className="w-full object-cover"
-          />
+          <Thumbnail url={images[0]} alt={`Thumbnail: ${brand} ${name}`} />
           <div className="p-3 bg-gray-200 h-full">
             <h2 className="text-lg font-semibold">{brand} {name}</h2>
             <p className="text-sm text-gray-600">{description}</p>
