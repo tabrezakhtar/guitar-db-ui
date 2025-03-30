@@ -38,7 +38,7 @@ function ViewGuitar() {
               />
             ): null}
           </div>
-          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">{guitar.description}</div>
+          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">{guitar.detailedDescription}</div>
         </div>
       </div>
     </div>

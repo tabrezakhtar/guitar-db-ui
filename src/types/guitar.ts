@@ -11,6 +11,7 @@ interface Guitar {
   colour: string;
   fretboard: string;
   description: string;
+  detailedDescription: string;
   thumbnail: string;
   images: string[];
 }
