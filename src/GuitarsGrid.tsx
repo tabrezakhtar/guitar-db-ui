@@ -1,27 +1,54 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Thumbnail from "./Thumbnail"
+import InfiniteScroll from "react-infinite-scroll-component";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function GuitarsGrid() {
   const navigate = useNavigate();
   const [guitars, setGuitars] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalGuitars, setTotalGuitars] = useState(0);
+
+  const fetchGuitars = async (page: number) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/guitars?page=${page}&limit=20`);
+      const data = await response.json();
+      // @ts-ignore
+      setGuitars([...guitars, ...data.guitars]);
+      page === 1 && setTotalGuitars(() => data.total);
+    } catch (error) {
+      console.error("Error fetching guitars:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchGuitars = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/api/guitars`);
-        const data = await response.json();
-        setGuitars(data.guitars);
-      } catch (error) {
-        console.error("Error fetching guitars:", error);
+    let subscribed = true;
+    (async () => {
+      if (subscribed) {
+        await fetchGuitars(1);
       }
+    })();
+    return () => {
+      subscribed = false;
     };
-
-    fetchGuitars();
   }, []);
 
+  const handleLoadMoreData = () => {
+    setPage((prevPage) => {
+      const nextPage = prevPage + 1;
+      fetchGuitars(nextPage);
+      return nextPage;
+    });
+  };
+
   return (
+    <InfiniteScroll
+      dataLength={guitars.length}
+      next={handleLoadMoreData}
+      hasMore={totalGuitars > guitars.length}
+      loader={<p>Loading...</p>}
+    >
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {guitars.map(({_id, brand, name, description, images}) => (
         <div
@@ -35,8 +62,9 @@ function GuitarsGrid() {
             <p className="text-sm text-gray-600">{description}</p>
           </div>
         </div>
-      ))}
+        ))}
     </div>
+    </InfiniteScroll>
   );
 }
 

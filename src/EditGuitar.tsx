@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Guitar } from "./types/guitar";
 import Thumbnail from "./Thumbnail";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

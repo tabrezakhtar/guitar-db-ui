@@ -9,7 +9,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ url, alt }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div className="test relative w-full h-full content-center">
+    <div className="relative w-full content-center">
       {isLoading && (
         <div className="inset-0 flex items-center justify-center">
             <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
