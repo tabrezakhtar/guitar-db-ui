@@ -10,11 +10,10 @@ function GuitarsGrid() {
   const [page, setPage] = useState(1);
   const [totalGuitars, setTotalGuitars] = useState(0);
 
-  const fetchGuitars = async (page: number) => {
+  const fetchGuitars = async (page) => {
     try {
       const response = await fetch(`${BASE_URL}/api/guitars?page=${page}&limit=20`);
       const data = await response.json();
-      // @ts-ignore
       setGuitars([...guitars, ...data.guitars]);
       page === 1 && setTotalGuitars(() => data.total);
     } catch (error) {
@@ -49,11 +48,11 @@ function GuitarsGrid() {
       hasMore={totalGuitars > guitars.length}
       loader={<p>Loading...</p>}
     >
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-1">
       {guitars.map(({_id, brand, name, description, images}) => (
         <div
           key={_id}
-          className="border rounded-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-transform"
+          className="border rounded-lgx overflow-hidden cursor-pointer transform hover:scale-103 transition-transform"
           onClick={() => navigate('/view/' + _id)}
         >
           <Thumbnail url={images[0]} alt={`Thumbnail: ${brand} ${name}`} />

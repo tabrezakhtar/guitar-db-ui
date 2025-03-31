@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 
-interface ThumbnailProps {
-  url: string;
-  alt: string;
-}
-
-const Thumbnail: React.FC<ThumbnailProps> = ({ url, alt }) => {
+const Thumbnail = ({ url, alt }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (

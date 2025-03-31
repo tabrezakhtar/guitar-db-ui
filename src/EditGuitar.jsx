@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Guitar } from "./types/guitar";
 import Thumbnail from "./Thumbnail";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -28,7 +26,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function EditGuitar() {
   const { id } = useParams();
-  const [guitar, setGuitar] = useState({} as Guitar);
+  const [guitar, setGuitar] = useState({});
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {

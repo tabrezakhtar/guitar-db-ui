@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Guitar } from "./types/guitar";
 import Thumbnail from "./Thumbnail";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function ViewGuitar() {
   const { id } = useParams();
-  const [guitar, setGuitar] = useState({} as Guitar);
+  const [guitar, setGuitar] = useState({});
 
   useEffect(() => {
     const fetchGuitars = async () => {
