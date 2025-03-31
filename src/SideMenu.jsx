@@ -1,6 +1,6 @@
 function SideMenu() {
   return (
-    <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4">
+    <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4 bg-[url(/guitar-bg.svg)] bg-contain bg-top bg-no-repeat">
       <div className="mt-4 justify-items-center">
         <div className="text-sm font-semibold mb-2">Select Shape</div>
         <div className="flex space-x-2">
