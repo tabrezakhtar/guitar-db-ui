@@ -46,7 +46,11 @@ function GuitarsGrid() {
       dataLength={guitars.length}
       next={handleLoadMoreData}
       hasMore={totalGuitars > guitars.length}
-      loader={<p>Loading...</p>}
+      loader={
+        <div className="flex justify-center p-4">
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      }
     >
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {guitars.map(({_id, brand, name, description, images}) => (
