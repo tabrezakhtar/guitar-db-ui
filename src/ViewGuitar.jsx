@@ -25,8 +25,10 @@ function ViewGuitar() {
   return (
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
-        <h1>View</h1>
-        <Link to={`/edit/${guitar._id}`} className="hover:underline">Edit</Link>
+        <div className="mb-4">
+          <Link to="/" className="hover:underline mr-4">Back</Link>
+          <Link to={`/edit/${guitar._id}`} className="hover:underline">Edit</Link>
+        </div>
         
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
