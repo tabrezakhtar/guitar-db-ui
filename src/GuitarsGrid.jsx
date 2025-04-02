@@ -48,11 +48,11 @@ function GuitarsGrid() {
       hasMore={totalGuitars > guitars.length}
       loader={<p>Loading...</p>}
     >
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-1">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {guitars.map(({_id, brand, name, description, images}) => (
         <div
           key={_id}
-          className="border rounded-lgx overflow-hidden cursor-pointer transform hover:scale-103 transition-transform"
+          className="border rounded-lgx overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200"
           onClick={() => navigate('/view/' + _id)}
         >
           <Thumbnail url={images[0]} alt={`Thumbnail: ${brand} ${name}`} />
@@ -62,7 +62,7 @@ function GuitarsGrid() {
           </div>
         </div>
         ))}
-    </div>
+      </div>
     </InfiniteScroll>
   );
 }
