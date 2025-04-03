@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import Thumbnail from "./Thumbnail";
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
+import { getCloudinaryThumbnail } from "./utils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function ViewGuitar() {
   const { id } = useParams();
-  const [guitar, setGuitar] = useState({});
+  const [guitar, setGuitar] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchGuitars = async () => {
@@ -16,11 +19,21 @@ function ViewGuitar() {
         setGuitar(guitar);
       } catch (error) {
         console.error("Error fetching guitar:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchGuitars();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto w-full">
@@ -32,9 +45,17 @@ function ViewGuitar() {
         
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
-            <Thumbnail url={guitar.images?.[0]} alt={`${guitar.brand} ${guitar.name}`} />
+            {guitar?.images && guitar.images.length > 0 && (
+              <ImageGallery 
+                items={guitar.images.map(image => ({
+                  original: image,
+                  thumbnail: getCloudinaryThumbnail(image, 100)
+                }))}
+                showPlayButton={false}
+              />
+            )}
           </div>
-          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">{guitar.detailedDescription}</div>
+          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">{guitar?.detailedDescription}</div>
         </div>
       </div>
     </div>
