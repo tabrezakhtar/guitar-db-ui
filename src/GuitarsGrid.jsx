@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Thumbnail from "./Thumbnail"
 import InfiniteScroll from "react-infinite-scroll-component";
+import { getCloudinaryThumbnail } from "./utils";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function GuitarsGrid() {
@@ -59,7 +61,7 @@ function GuitarsGrid() {
           className="border rounded-lgx overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200"
           onClick={() => navigate('/view/' + _id)}
         >
-          <Thumbnail url={images[0]} alt={`Thumbnail: ${brand} ${name}`} />
+          <Thumbnail url={getCloudinaryThumbnail(images[0], 250)} alt={`Thumbnail: ${brand} ${name}`} />
           <div className="p-3 bg-gray-200 h-full">
             <h2 className="text-lg font-semibold">{brand} {name}</h2>
             <p className="text-sm text-gray-600">{description}</p>
