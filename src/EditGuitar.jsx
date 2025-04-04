@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
+import { useGuitar } from "./hooks/useGuitar";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -26,43 +26,11 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function EditGuitar() {
   const { id } = useParams();
-  const [guitar, setGuitar] = useState({});
-  const [settings, setSettings] = useState({});
-  const [saved, setSaved] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchGuitars = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/api/guitar?id=${id}`);
-        const { guitar, settings } = await response.json();
-        setGuitar(guitar);
-        setSettings(settings);
-      } catch (error) {
-        console.error("Error fetching guitar:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchGuitars();
-  }, []);
+  const { guitar, settings, loading, saved, updateGuitar, setGuitar } = useGuitar(id);
 
   async function update(e) {
     e.preventDefault();
-    setSaved(false);
-    try {
-      const response = await fetch(`${BASE_URL}/api/guitars/update/${guitar._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(guitar)
-      });
-      setSaved(true);
-    } catch(e) {
-      console.error("Error updating guitar:", e);
-    }
+    await updateGuitar(guitar);
   }
 
   if (loading) {

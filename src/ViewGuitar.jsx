@@ -1,31 +1,12 @@
-import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { getCloudinaryThumbnail } from "./utils";
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { useGuitar } from "./hooks/useGuitar";
 
 function ViewGuitar() {
   const { id } = useParams();
-  const [guitar, setGuitar] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchGuitars = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/api/guitar?id=${id}`);
-        const { guitar } = await response.json();
-        setGuitar(guitar);
-      } catch (error) {
-        console.error("Error fetching guitar:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchGuitars();
-  }, []);
+  const { guitar, loading } = useGuitar(id);
 
   if (loading) {
     return (
@@ -55,11 +36,13 @@ function ViewGuitar() {
               />
             )}
           </div>
-          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">{guitar?.detailedDescription}</div>
+          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">
+            {guitar?.detailedDescription}
+          </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default ViewGuitar;
