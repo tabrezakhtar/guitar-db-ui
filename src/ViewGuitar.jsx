@@ -2,11 +2,16 @@ import { useParams, Link } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { getCloudinaryThumbnail } from "./utils";
-import { useGuitar } from "./hooks/useGuitar";
+import { useGuitarStore } from "./store/useGuitarStore";
+import { useEffect } from "react";
 
 function ViewGuitar() {
   const { id } = useParams();
-  const { guitar, loading } = useGuitar(id);
+  const { currentGuitar: guitar, loading, fetchGuitar } = useGuitarStore();
+
+  useEffect(() => {
+    fetchGuitar(id);
+  }, [id, fetchGuitar]);
 
   if (loading) {
     return (
