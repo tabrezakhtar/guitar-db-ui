@@ -49,7 +49,7 @@ function ViewGuitar() {
               <ImageGallery 
                 items={guitar.images.map(image => ({
                   original: image,
-                  thumbnail: getCloudinaryThumbnail(image, 100)
+                  thumbnail: getCloudinaryThumbnail(image, 100),
                 }))}
                 showPlayButton={false}
               />

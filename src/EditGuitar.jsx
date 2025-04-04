@@ -27,14 +27,16 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function EditGuitar() {
   const { id } = useParams();
   const [guitar, setGuitar] = useState({});
+  const [settings, setSettings] = useState({});
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     const fetchGuitars = async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/guitar?id=${id}`);
-        const { guitar } = await response.json();
+        const { guitar, settings } = await response.json();
         setGuitar(guitar);
+        setSettings(settings);
       } catch (error) {
         console.error("Error fetching guitar:", error);
       }
@@ -79,7 +81,12 @@ function EditGuitar() {
                <form className="space-y-4">
                 <div>
                   <label className="block">Brand:</label>
-                  <input type="text" name="brand" value={guitar.brand} onChange={e => setGuitar({...guitar, brand: e.target.value})} className="border p-2 rounded w-full" />
+                  <select name="brand" value={guitar.brand} onChange={e => setGuitar({...guitar, brand: e.target.value})} className="border p-2 rounded w-full">
+                    <option value="">Select a brand</option>
+                    {settings.brand?.map(brand => (
+                      <option key={brand} value={brand}>{brand}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
@@ -99,12 +106,22 @@ function EditGuitar() {
 
                 <div>
                   <label className="block">Pickups:</label>
-                  <input type="text" name="pickups" value={guitar.pickups} onChange={e => setGuitar({...guitar, pickups: e.target.value})} className="border p-2 rounded w-full" />
+                  <select name="pickups" value={guitar.pickups} onChange={e => setGuitar({...guitar, pickups: e.target.value})} className="border p-2 rounded w-full">
+                    <option value="">Select pickups</option>
+                    {settings.pickups?.map(pickup => (
+                      <option key={pickup} value={pickup}>{pickup}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
                   <label className="block">Tremolo:</label>
-                  <input type="text" name="trem" value={guitar.trem} onChange={e => setGuitar({...guitar, trem: e.target.value})} className="border p-2 rounded w-full" />
+                  <select name="trem" value={guitar.trem} onChange={e => setGuitar({...guitar, trem: e.target.value})} className="border p-2 rounded w-full">
+                    <option value="">Select tremolo</option>
+                    {settings.tremolo?.map(trem => (
+                      <option key={trem} value={trem}>{trem}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
@@ -119,12 +136,22 @@ function EditGuitar() {
 
                 <div>
                   <label className="block">Colour:</label>
-                  <input type="text" name="colour" value={guitar.colour} onChange={e => setGuitar({...guitar, colour: e.target.value})} className="border p-2 rounded w-full" />
+                  <select name="colour" value={guitar.colour} onChange={e => setGuitar({...guitar, colour: e.target.value})} className="border p-2 rounded w-full">
+                    <option value="">Select a colour</option>
+                    {settings.colours?.map(colour => (
+                      <option key={colour} value={colour}>{colour}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
                   <label className="block">Fretboard:</label>
-                  <input type="text" name="fretboard" value={guitar.fretboard} onChange={e => setGuitar({...guitar, fretboard: e.target.value})} className="border p-2 rounded w-full" />
+                  <select name="fretboard" value={guitar.fretboard} onChange={e => setGuitar({...guitar, fretboard: e.target.value})} className="border p-2 rounded w-full">
+                    <option value="">Select fretboard material</option>
+                    {settings.fretboard?.map(material => (
+                      <option key={material} value={material}>{material}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
