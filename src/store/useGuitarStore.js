@@ -25,17 +25,17 @@ export const useGuitarStore = create((set, get) => ({
     try {
       const response = await fetch(`${BASE_URL}/api/guitar?id=${id}`);
       const { guitar, settings } = await response.json();
-      set({ currentGuitar: guitar, settings });
+      set({ currentGuitar: guitar, settings, loading: false });
     } catch (error) {
       console.error("Error fetching guitar:", error);
     } finally {
-      set({ loading: false });
+      set({ loading: false }); 
     }
   },
 
   // Update a guitar
   updateGuitar: async (updatedGuitar) => {
-    set({ saved: false });
+    set({ loading: true, saved: false });
     try {
       await fetch(`${BASE_URL}/api/guitars/update/${updatedGuitar._id}`, {
         method: 'PUT',
@@ -44,24 +44,31 @@ export const useGuitarStore = create((set, get) => ({
         },
         body: JSON.stringify(updatedGuitar)
       });
-      set({ currentGuitar: updatedGuitar, saved: true });
+      set({ currentGuitar: updatedGuitar, saved: true, loading: false });
     } catch(e) {
       console.error("Error updating guitar:", e);
+    } finally {
+      set({ loading: false });
     }
   },
 
   // Fetch guitars with pagination
   fetchGuitars: async (page) => {
+    set({ loading: true });
     try {
       const response = await fetch(`${BASE_URL}/api/guitars?page=${page}&limit=20`);
       const data = await response.json();
       set(state => ({
         guitars: page === 1 ? data.guitars : [...state.guitars, ...data.guitars],
         totalGuitars: page === 1 ? data.total : state.totalGuitars,
-        page
+        page,
+        settings: data.settings,
+        loading: false
       }));
     } catch (error) {
       console.error("Error fetching guitars:", error);
+    } finally {
+      set({ loading: false });
     }
   },
 

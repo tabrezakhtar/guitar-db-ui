@@ -26,7 +26,7 @@ function ViewGuitar() {
       <div className="p-6">
         <div className="mb-4">
           <Link to="/" className="hover:underline mr-4">Back</Link>
-          <Link to={`/edit/${guitar._id}`} className="hover:underline">Edit</Link>
+          <Link to={`/edit/${guitar?._id}`} className="hover:underline">Edit</Link>
         </div>
         
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
