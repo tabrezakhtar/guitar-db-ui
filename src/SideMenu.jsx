@@ -1,7 +1,15 @@
 import { useGuitarStore } from "./store/useGuitarStore";
+import Select from "react-select";
 
 function SideMenu() {
   const { settings, loading } = useGuitarStore();
+
+  const createOptions = (items) =>
+    items?.map((item) => ({ value: item, label: item })) || [];
+
+  const capitalize = (str) => {
+    return str.substring(0, 1).toUpperCase() + str.substring(1);
+  }
 
   return (
     <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4 bg-[url(/guitar-bg.svg)] bg-contain bg-top bg-no-repeat">
@@ -32,65 +40,22 @@ function SideMenu() {
         </div>
       ) : (
         <>
-          <div className="mt-4">
-            <div className="text-sm font-semibold mb-2">Brand</div>
-            <div className="flex space-x-2 w-full">
-              <select title="brands" className="border rounded p-2 w-full bg-white text-gray-800">
-                <option value="" className="text-gray-500">All Brands</option>
-                {settings.brand?.map(brand => (
-                  <option key={brand} value={brand} className="text-gray-800">{brand}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <div className="text-sm font-semibold mb-2">Colour</div>
-            <div className="flex space-x-2 w-full">
-              <select title="colours" className="border rounded p-2 w-full bg-white text-gray-800">
-                <option value="" className="text-gray-500">All Colours</option>
-                {settings.colours?.map(colour => (
-                  <option key={colour} value={colour} className="text-gray-800">{colour}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <div className="text-sm font-semibold mb-2">Pickups</div>
-            <div className="flex space-x-2 w-full">
-              <select title="pickups" className="border rounded p-2 w-full bg-white text-gray-800">
-                <option value="" className="text-gray-500">All Pickups</option>
-                {settings.pickups?.map(pickup => (
-                  <option key={pickup} value={pickup} className="text-gray-800">{pickup}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <div className="text-sm font-semibold mb-2">Tremolo</div>
-            <div className="flex space-x-2 w-full">
-              <select title="tremolo" className="border rounded p-2 w-full bg-white text-gray-800">
-                <option value="" className="text-gray-500">All Tremolos</option>
-                {settings.tremolo?.map(trem => (
-                  <option key={trem} value={trem} className="text-gray-800">{trem}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <div className="text-sm font-semibold mb-2">Fretboard</div>
-            <div className="flex space-x-2 w-full">
-              <select title="fretboard" className="border rounded p-2 w-full bg-white text-gray-800">
-                <option value="" className="text-gray-500">All Fretboards</option>
-                {settings.fretboard?.map(material => (
-                  <option key={material} value={material} className="text-gray-800">{material}</option>
-                ))}
-              </select>
-            </div>
-          </div>
+          {Object.keys(settings).map((key) => {
+            if (Array.isArray(settings[key])) {
+              return (
+                <div key={key} className="mt-4">
+                  <div className="text-sm font-semibold mb-2">{capitalize(key)}</div>
+                  <Select
+                    options={createOptions(settings[key])}
+                    placeholder={capitalize(key)}
+                    isClearable
+                    className="text-gray-800"
+                  />
+                </div>
+              );
+            }
+            return null;
+          })}
         </>
       )}
     </aside>
