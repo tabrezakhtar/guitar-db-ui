@@ -37,7 +37,7 @@ export const useGuitarStore = create((set, get) => ({
   updateGuitar: async (updatedGuitar) => {
     set({ saved: false });
     try {
-      const response = await fetch(`${BASE_URL}/api/guitars/update/${updatedGuitar._id}`, {
+      await fetch(`${BASE_URL}/api/guitars/update/${updatedGuitar._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

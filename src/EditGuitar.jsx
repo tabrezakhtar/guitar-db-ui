@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
 import { useGuitarStore } from "./store/useGuitarStore";
+import EditImages from "./EditImages";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // import React, { useState } from "react";
@@ -61,18 +62,7 @@ function EditGuitar() {
           Edit guitar
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
             <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
-              {guitar?.images ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {guitar.images.map((image, index) => (
-                    <div key={index} className="border rounded-lg p-2">
-                      <Thumbnail
-                        url={image}
-                        alt={`Thumbnail ${index + 1}: ${guitar.brand} ${guitar.name}`}
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : null}
+              <EditImages />
             </div>
             <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">
                <form className="space-y-4">

@@ -38,6 +38,7 @@ function ViewGuitar() {
                   thumbnail: getCloudinaryThumbnail(image, 100),
                 }))}
                 showPlayButton={false}
+                lazyLoad={true}
               />
             )}
           </div>
