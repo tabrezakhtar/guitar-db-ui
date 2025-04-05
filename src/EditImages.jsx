@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ReactSortable } from "react-sortablejs";
 import Thumbnail from "./Thumbnail";

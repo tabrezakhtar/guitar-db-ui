@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Thumbnail = ({ index, url, alt }) => {
   const [isLoading, setIsLoading] = useState(true);
