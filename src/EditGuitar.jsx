@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Select from "react-select";
-import Thumbnail from "./Thumbnail";
 import { useGuitarStore } from "./store/useGuitarStore";
 import EditImages from "./EditImages";
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function EditGuitar() {
   const { id } = useParams();

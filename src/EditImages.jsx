@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useCallback } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Thumbnail from "./Thumbnail";
 import { useGuitarStore } from "./store/useGuitarStore";
+import FileDropZone from "./FileDropZone";
 
 export default function EditImages() {
-  const { id } = useParams();
   const { currentGuitar, setCurrentGuitar } = useGuitarStore();
 
   const handleSort = (newList) => {
@@ -16,6 +16,7 @@ export default function EditImages() {
 
   return (
     <div>
+      <FileDropZone />
       <span className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 font-medium w-full">
         ℹ️ Drag the images to reorder
       </span>
