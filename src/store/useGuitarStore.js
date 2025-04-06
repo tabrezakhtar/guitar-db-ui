@@ -16,6 +16,7 @@ export const useGuitarStore = create((set, get) => ({
   setLoading: (loading) => set({ loading }),
   setSaved: (saved) => set({ saved }),
   setCurrentGuitar: (guitar) => set({ currentGuitar: guitar }),
+  clearCurrentGuitar: () => set({ currentGuitar: null }),
 
   // Fetch a single guitar
   fetchGuitar: async (id) => {
@@ -28,8 +29,6 @@ export const useGuitarStore = create((set, get) => ({
       set({ currentGuitar: guitar, settings, loading: false });
     } catch (error) {
       console.error("Error fetching guitar:", error);
-    } finally {
-      set({ loading: false }); 
     }
   },
 
@@ -47,8 +46,6 @@ export const useGuitarStore = create((set, get) => ({
       set({ currentGuitar: updatedGuitar, saved: true, loading: false });
     } catch(e) {
       console.error("Error updating guitar:", e);
-    } finally {
-      set({ loading: false });
     }
   },
 
@@ -67,8 +64,6 @@ export const useGuitarStore = create((set, get) => ({
       }));
     } catch (error) {
       console.error("Error fetching guitars:", error);
-    } finally {
-      set({ loading: false });
     }
   },
 
@@ -78,4 +73,4 @@ export const useGuitarStore = create((set, get) => ({
     const nextPage = page + 1;
     fetchGuitars(nextPage);
   }
-})); 
+}));

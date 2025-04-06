@@ -1,29 +1,10 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import Select from "react-select";
 import Thumbnail from "./Thumbnail";
 import { useGuitarStore } from "./store/useGuitarStore";
 import EditImages from "./EditImages";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-// import React, { useState } from "react";
-
-// function App() {
-//     const [file, setFile] = useState();
-//     function handleChange(e) {
-//         console.log(e.target.files);
-//         setFile(URL.createObjectURL(e.target.files[0]));
-//     }
-
-//     return (
-//         <div className="App">
-//             <h2>Add Image:</h2>
-//             <input type="file" onChange={handleChange} />
-//             <img src={file} />
-//         </div>
-//     );
-// }
-
-// export default App;
 
 function EditGuitar() {
   const { id } = useParams();
@@ -38,8 +19,13 @@ function EditGuitar() {
   } = useGuitarStore();
 
   useEffect(() => {
-    fetchGuitar(id);
-  }, [id, fetchGuitar]);
+    if (!guitar || guitar._id !== id) {
+      fetchGuitar(id);
+    }
+  }, [id, guitar]);
+
+  const createOptions = (items) =>
+    items?.map((item) => ({ value: item, label: item })) || [];
 
   async function update(e) {
     e.preventDefault();
@@ -68,12 +54,13 @@ function EditGuitar() {
                <form className="space-y-4">
                 <div>
                   <label className="block">Brand:</label>
-                  <select name="brand" value={guitar?.brand} onChange={e => setCurrentGuitar({...guitar, brand: e.target.value})} className="border p-2 rounded w-full">
-                    <option value="">Select a brand</option>
-                    {settings.brand?.map(brand => (
-                      <option key={brand} value={brand}>{brand}</option>
-                    ))}
-                  </select>
+                  <Select
+                    options={createOptions(settings.brand)}
+                    value={guitar?.brand ? { value: guitar.brand, label: guitar.brand } : null}
+                    onChange={(selected) => setCurrentGuitar({...guitar, brand: selected?.value || ""})}
+                    isClearable
+                    className="text-gray-800"
+                  />
                 </div>
 
                 <div>
@@ -93,22 +80,24 @@ function EditGuitar() {
 
                 <div>
                   <label className="block">Pickups:</label>
-                  <select name="pickups" value={guitar?.pickups} onChange={e => setCurrentGuitar({...guitar, pickups: e.target.value})} className="border p-2 rounded w-full">
-                    <option value="">Select pickups</option>
-                    {settings.pickups?.map(pickup => (
-                      <option key={pickup} value={pickup}>{pickup}</option>
-                    ))}
-                  </select>
+                  <Select
+                    options={createOptions(settings.pickups)}
+                    value={guitar?.pickups ? { value: guitar.pickups, label: guitar.pickups } : null}
+                    onChange={(selected) => setCurrentGuitar({...guitar, pickups: selected?.value || ""})}
+                    isClearable
+                    className="text-gray-800"
+                  />
                 </div>
 
                 <div>
                   <label className="block">Tremolo:</label>
-                  <select name="trem" value={guitar?.trem} onChange={e => setCurrentGuitar({...guitar, trem: e.target.value})} className="border p-2 rounded w-full">
-                    <option value="">Select tremolo</option>
-                    {settings.tremolo?.map(trem => (
-                      <option key={trem} value={trem}>{trem}</option>
-                    ))}
-                  </select>
+                  <Select
+                    options={createOptions(settings.tremolo)}
+                    value={guitar?.trem ? { value: guitar.trem, label: guitar.trem } : null}
+                    onChange={(selected) => setCurrentGuitar({...guitar, trem: selected?.value || ""})}
+                    isClearable
+                    className="text-gray-800"
+                  />
                 </div>
 
                 <div>
@@ -123,22 +112,24 @@ function EditGuitar() {
 
                 <div>
                   <label className="block">Colour:</label>
-                  <select name="colour" value={guitar?.colour} onChange={e => setCurrentGuitar({...guitar, colour: e.target.value})} className="border p-2 rounded w-full">
-                    <option value="">Select a colour</option>
-                    {settings.colours?.map(colour => (
-                      <option key={colour} value={colour}>{colour}</option>
-                    ))}
-                  </select>
+                  <Select
+                    options={createOptions(settings.colours)}
+                    value={guitar?.colour ? { value: guitar.colour, label: guitar.colour } : null}
+                    onChange={(selected) => setCurrentGuitar({...guitar, colour: selected?.value || ""})}
+                    isClearable
+                    className="text-gray-800"
+                  />
                 </div>
 
                 <div>
                   <label className="block">Fretboard:</label>
-                  <select name="fretboard" value={guitar?.fretboard} onChange={e => setCurrentGuitar({...guitar, fretboard: e.target.value})} className="border p-2 rounded w-full">
-                    <option value="">Select fretboard material</option>
-                    {settings.fretboard?.map(material => (
-                      <option key={material} value={material}>{material}</option>
-                    ))}
-                  </select>
+                  <Select
+                    options={createOptions(settings.fretboard)}
+                    value={guitar?.fretboard ? { value: guitar.fretboard, label: guitar.fretboard } : null}
+                    onChange={(selected) => setCurrentGuitar({...guitar, fretboard: selected?.value || ""})}
+                    isClearable
+                    className="text-gray-800"
+                  />
                 </div>
 
                 <div>

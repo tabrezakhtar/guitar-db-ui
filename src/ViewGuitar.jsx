@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { getCloudinaryThumbnail } from "./utils";
@@ -7,13 +7,14 @@ import { useEffect } from "react";
 
 function ViewGuitar() {
   const { id } = useParams();
-  const { currentGuitar: guitar, loading, fetchGuitar } = useGuitarStore();
+  const navigate = useNavigate();
+  const { currentGuitar: guitar, loading, fetchGuitar, clearCurrentGuitar } = useGuitarStore();
 
   useEffect(() => {
     fetchGuitar(id);
-  }, [id, fetchGuitar]);
+  }, [id]);
 
-  if (loading) {
+  if (loading || !guitar) {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -26,7 +27,15 @@ function ViewGuitar() {
       <div className="p-6">
         <div className="mb-4">
           <Link to="/" className="hover:underline mr-4">Back</Link>
-          <Link to={`/edit/${guitar?._id}`} className="hover:underline">Edit</Link>
+          <button
+            onClick={() => {
+              clearCurrentGuitar();
+              navigate(`/edit/${guitar._id}`);
+            }}
+            className="hover:underline text-blue-500"
+          >
+            Edit
+          </button>
         </div>
         
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">

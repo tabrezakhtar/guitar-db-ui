@@ -19,7 +19,7 @@ export default function EditImages() {
       <span className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 font-medium w-full">
         ℹ️ Drag the images to reorder
       </span>
-      {currentGuitar.images ? (
+      {currentGuitar?.images ? (
         <ReactSortable 
           list={currentGuitar.images} 
           setList={handleSort}
