@@ -20,7 +20,7 @@ export default function FileDropZone() {
       {...getRootProps()}
       className="flex flex-col items-center justify-center w-full h-32 p-4 mb-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 focus:outline-none"
     >
-      <input {...getInputProps()} />
+      <input {...getInputProps()} accept="image/*" />
       {
         isDragActive ? (
           <p className="text-blue-500">Drop the files here ...</p>
