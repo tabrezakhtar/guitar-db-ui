@@ -1,9 +1,16 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import { useGuitarStore } from "./store/useGuitarStore";
 
 export default function FileDropZone() {
+  const { currentGuitar, setCurrentGuitar } = useGuitarStore();
+
   const onDrop = useCallback(acceptedFiles => {
-    // Do something with the files
+    const newImages = acceptedFiles.map(file => URL.createObjectURL(file));
+    setCurrentGuitar({
+      ...currentGuitar,
+      images: [...(currentGuitar?.images || []), ...newImages]
+    });
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop});
