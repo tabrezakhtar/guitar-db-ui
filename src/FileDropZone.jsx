@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { useGuitarStore } from "./store/useGuitarStore";
 
 export default function FileDropZone() {
-  const { currentGuitar, setCurrentGuitar } = useGuitarStore();
+  const { currentGuitar, setCurrentGuitar, filesToUpload, setFilesToUpload } = useGuitarStore();
 
   const onDrop = useCallback(acceptedFiles => {
     const newImages = acceptedFiles.map(file => URL.createObjectURL(file));
@@ -11,7 +11,9 @@ export default function FileDropZone() {
       ...currentGuitar,
       images: [...(currentGuitar?.images || []), ...newImages]
     });
-  }, [])
+
+    setFilesToUpload([...(filesToUpload || []), ...acceptedFiles]);
+  }, [currentGuitar, filesToUpload]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop});
 

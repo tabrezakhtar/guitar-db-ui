@@ -5,6 +5,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const useGuitarStore = create((set, get) => ({
   // State
   guitars: [],
+  filesToUpload: [],
   currentGuitar: null,
   settings: {},
   loading: true,
@@ -17,6 +18,8 @@ export const useGuitarStore = create((set, get) => ({
   setSaved: (saved) => set({ saved }),
   setCurrentGuitar: (guitar) => set({ currentGuitar: guitar }),
   clearCurrentGuitar: () => set({ currentGuitar: null }),
+  setFilesToUpload: (files) => set({ filesToUpload: files }),
+  clearFilesToUpload: () => set({ filesToUpload: null }),
 
   // Fetch a single guitar
   fetchGuitar: async (id) => {
