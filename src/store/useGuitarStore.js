@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -40,9 +40,9 @@ export const useGuitarStore = create((set, get) => ({
     set({ saved: false });
     try {
       await fetch(`${BASE_URL}/api/guitars/update/${updatedGuitar._id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(updatedGuitar)
       });
@@ -71,16 +71,16 @@ export const useGuitarStore = create((set, get) => ({
   },
 
   cloudinaryUpload: async () => {
-    const cloudName = 'dx8d5hlk1';
+    const cloudName = "x8d5hlk1";
     const formData = new FormData();
     const { filesToUpload } = get();
-    formData.append('file', filesToUpload[0].file);
-    formData.append('folder', 'test'); 
-    formData.append('upload_preset', 'guitar-images');
+    formData.append("file", filesToUpload[0].file);
+    formData.append("folder", "test"); 
+    formData.append("upload_preset", "guitar-images");
 
     try {
       const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-        method: 'POST',
+        method: "POST",
         body: formData
       });
       const data = await response.json();
