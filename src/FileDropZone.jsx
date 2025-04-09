@@ -6,13 +6,17 @@ export default function FileDropZone() {
   const { currentGuitar, setCurrentGuitar, filesToUpload, setFilesToUpload } = useGuitarStore();
 
   const onDrop = useCallback(acceptedFiles => {
-    const newImages = acceptedFiles.map(file => URL.createObjectURL(file));
+    const newFiles = acceptedFiles.map(file => ({
+      file,
+      url: URL.createObjectURL(file)
+    }));
+
     setCurrentGuitar({
       ...currentGuitar,
-      images: [...(currentGuitar?.images || []), ...newImages]
+      images: [...(currentGuitar?.images || []), ...newFiles.map(f => f.url)]
     });
 
-    setFilesToUpload([...(filesToUpload || []), ...acceptedFiles]);
+    setFilesToUpload([...(filesToUpload || []), ...newFiles]);
   }, [currentGuitar, filesToUpload]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop});
@@ -22,7 +26,7 @@ export default function FileDropZone() {
       {...getRootProps()}
       className="flex flex-col items-center justify-center w-full h-32 p-4 mb-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 focus:outline-none"
     >
-      <input {...getInputProps()} accept="image/*" />
+      <input {...getInputProps()} accept=".png, .jpg, .jpeg, .tiff, .bmp, .webp" />
       {
         isDragActive ? (
           <p className="text-blue-500">Drop the files here ...</p>

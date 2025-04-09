@@ -37,7 +37,7 @@ export const useGuitarStore = create((set, get) => ({
 
   // Update a guitar
   updateGuitar: async (updatedGuitar) => {
-    set({ loading: true, saved: false });
+    set({ saved: false });
     try {
       await fetch(`${BASE_URL}/api/guitars/update/${updatedGuitar._id}`, {
         method: 'PUT',
@@ -46,7 +46,7 @@ export const useGuitarStore = create((set, get) => ({
         },
         body: JSON.stringify(updatedGuitar)
       });
-      set({ currentGuitar: updatedGuitar, saved: true, loading: false });
+      set({ currentGuitar: updatedGuitar, saved: true });
     } catch(e) {
       console.error("Error updating guitar:", e);
     }
@@ -67,6 +67,26 @@ export const useGuitarStore = create((set, get) => ({
       }));
     } catch (error) {
       console.error("Error fetching guitars:", error);
+    }
+  },
+
+  cloudinaryUpload: async () => {
+    const cloudName = 'dx8d5hlk1';
+    const formData = new FormData();
+    const { filesToUpload } = get();
+    formData.append('file', filesToUpload[0].file);
+    formData.append('folder', 'test'); 
+    formData.append('upload_preset', 'guitar-images');
+
+    try {
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      return data.secure_url;
+    } catch (error) {
+      console.error("Error uploading image:", error);
     }
   },
 

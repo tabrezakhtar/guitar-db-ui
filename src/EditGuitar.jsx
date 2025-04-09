@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Select from "react-select";
 import { useGuitarStore } from "./store/useGuitarStore";
@@ -13,8 +13,11 @@ function EditGuitar() {
     saved, 
     fetchGuitar, 
     updateGuitar,
-    setCurrentGuitar 
+    setCurrentGuitar,
+    cloudinaryUpload,
   } = useGuitarStore();
+
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (!guitar || guitar._id !== id) {
@@ -27,7 +30,13 @@ function EditGuitar() {
 
   async function update(e) {
     e.preventDefault();
-    await updateGuitar(guitar);
+    setIsUploading(true);
+    try {
+      const result = await cloudinaryUpload();
+      // await updateGuitar(guitar);
+    } finally {
+      setIsUploading(false);
+    }
   }
 
   if (loading) {
@@ -141,8 +150,20 @@ function EditGuitar() {
                 </div>
                 
                 <div>
-                  <button type="submit" onClick={update} className="bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer">
-                    Save Changes
+                  <button 
+                    type="submit" 
+                    onClick={update} 
+                    disabled={isUploading} 
+                    className={`bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer ${isUploading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
+                    {isUploading ? (
+                      <div className="flex items-center">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Saving...
+                      </div>
+                    ) : (
+                      "Save Changes"
+                    )}
                   </button>
                   {saved ? <span className="text-green-500 p-2">Saved✓</span> : null}
                 </div>
