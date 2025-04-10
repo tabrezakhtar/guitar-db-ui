@@ -18,3 +18,16 @@
 .image-gallery-icon .image-gallery-svg {
   width: 40px !important;
 }
+
+/* make all the images in the gallery the same size so they dont flip around when when navigation */
+/* gallery.css */
+.image-gallery-image {
+  width: 100%;
+  height: 450px;
+  object-fit:fill;
+}
+
+.image-gallery-slide {
+  width: 100%;
+  height: 450px;
+}
