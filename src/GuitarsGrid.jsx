@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getCloudinaryThumbnail } from "./utils";
+import { getCloudinaryThumbnail } from "./imageUtils";
 import { useGuitarStore } from "./store/useGuitarStore";
 import { useEffect } from "react";
 

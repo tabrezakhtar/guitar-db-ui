@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { resizeImage } from "../imageUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -72,11 +73,19 @@ export const useGuitarStore = create((set, get) => ({
 
   cloudinaryUpload: async () => {
     const cloudName = "x8d5hlk1";
+    const apiKey = "124113443758435";
     const formData = new FormData();
     const { filesToUpload } = get();
-    formData.append("file", filesToUpload[0].file);
+
+    const resizedFiles = await Promise.all(
+      filesToUpload.map(file => resizeImage(file.file))
+    );
+
+    formData.append("file", resizedFiles[0]);
     formData.append("folder", "test"); 
     formData.append("upload_preset", "guitar-images");
+    formData.append("api_key", apiKey);
+
 
     try {
       const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
@@ -84,6 +93,12 @@ export const useGuitarStore = create((set, get) => ({
         body: formData
       });
       const data = await response.json();
+
+      if (data.error) {
+        console.error("Error uploading image:", data.error);
+        return null;
+      }
+
       return data.secure_url;
     } catch (error) {
       console.error("Error uploading image:", error);
