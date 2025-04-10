@@ -29,4 +29,11 @@ function getCloudinaryThumbnail(url, width = 150) {
   return thumbnailUrl;
 }
 
-export { getCloudinaryThumbnail, resizeImage };
+function getCombinedUrl(file) {
+  return Object.keys(file)
+  .filter(key => key !== 'chosen')
+  .map(key => file[key])
+  .join('');
+}
+
+export { getCloudinaryThumbnail, resizeImage, getCombinedUrl };

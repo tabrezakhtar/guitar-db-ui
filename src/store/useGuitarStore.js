@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { resizeImage } from "../imageUtils";
+import { resizeImage, getCombinedUrl } from "../imageUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -37,18 +37,24 @@ export const useGuitarStore = create((set, get) => ({
   },
 
   // Update a guitar
-  updateGuitar: async (updatedGuitar) => {
+  updateGuitar: async () => {
+    const { currentGuitar } = get(); // Access the latest state directly
+    if (!currentGuitar || Object.keys(currentGuitar).length === 0) {
+      console.error("currentGuitar is empty or undefined");
+      return;
+    }
+
     set({ saved: false });
     try {
-      await fetch(`${BASE_URL}/api/guitars/update/${updatedGuitar._id}`, {
+      await fetch(`${BASE_URL}/api/guitars/update/${currentGuitar._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedGuitar)
+        body: JSON.stringify(currentGuitar),
       });
-      set({ currentGuitar: updatedGuitar, saved: true });
-    } catch(e) {
+      set({ saved: true });
+    } catch (e) {
       console.error("Error updating guitar:", e);
     }
   },
@@ -71,21 +77,21 @@ export const useGuitarStore = create((set, get) => ({
     }
   },
 
-  cloudinaryUpload: async () => {
+  cloudinaryUpload: async (file) => {
     const cloudName = "x8d5hlk1";
     const apiKey = "124113443758435";
     const formData = new FormData();
-    const { filesToUpload } = get();
+    // const { filesToUpload } = get();
 
-    const resizedFiles = await Promise.all(
-      filesToUpload.map(file => resizeImage(file.file))
-    );
+    // const resizedFiles = await Promise.all(
+    //   filesToUpload.map(file => resizeImage(file.file))
+    // );
+    const resizedFile = await resizeImage(file.file);
 
-    formData.append("file", resizedFiles[0]);
+    formData.append("file", resizedFile);
     formData.append("folder", "test"); 
     formData.append("upload_preset", "guitar-images");
     formData.append("api_key", apiKey);
-
 
     try {
       const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
@@ -98,6 +104,13 @@ export const useGuitarStore = create((set, get) => ({
         console.error("Error uploading image:", data.error);
         return null;
       }
+
+      //put the secure_url into the images
+      const { currentGuitar } = get();
+      const updatedImages = currentGuitar.images.map(image =>
+        getCombinedUrl(image) === file.url ? data.secure_url : image
+      );
+      set({ currentGuitar: { ...currentGuitar, images: updatedImages } });
 
       return data.secure_url;
     } catch (error) {

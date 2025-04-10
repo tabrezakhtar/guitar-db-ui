@@ -6,16 +6,17 @@ import EditImages from "./EditImages";
 
 function EditGuitar() {
   const { id } = useParams();
-  const { 
-    currentGuitar: guitar, 
-    settings, 
-    loading, 
-    saved, 
-    fetchGuitar, 
+  const {
+    currentGuitar: guitar = {}, // Provide a default empty object to avoid destructuring errors
+    settings,
+    loading,
+    saved,
+    fetchGuitar,
     updateGuitar,
     setCurrentGuitar,
     cloudinaryUpload,
-  } = useGuitarStore();
+    filesToUpload,
+  } = useGuitarStore() || {}; // Add fallback to ensure useGuitarStore() is not undefined
 
   const [isUploading, setIsUploading] = useState(false);
 
@@ -32,8 +33,12 @@ function EditGuitar() {
     e.preventDefault();
     setIsUploading(true);
     try {
-      const result = await cloudinaryUpload();
-      // await updateGuitar(guitar);
+      for (const file of filesToUpload) {
+        const result = await cloudinaryUpload(file);
+        console.log("uploaded", file.url);
+      }
+      
+      await updateGuitar();
     } finally {
       setIsUploading(false);
     }
@@ -62,7 +67,7 @@ function EditGuitar() {
                 <div>
                   <label className="block">Brand:</label>
                   <Select
-                    options={createOptions(settings.brand)}
+                    options={createOptions(settings?.brand)}
                     value={guitar?.brand ? { value: guitar.brand, label: guitar.brand } : null}
                     onChange={(selected) => setCurrentGuitar({...guitar, brand: selected?.value || ""})}
                     isClearable
