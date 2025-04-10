@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { useGuitarStore } from "./store/useGuitarStore";
 import EditImages from "./EditImages";
 
 function EditGuitar() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const {
     currentGuitar: guitar = {}, // Provide a default empty object to avoid destructuring errors
     settings,
@@ -16,6 +17,7 @@ function EditGuitar() {
     setCurrentGuitar,
     cloudinaryUpload,
     filesToUpload,
+    clearCurrentGuitar,
   } = useGuitarStore() || {}; // Add fallback to ensure useGuitarStore() is not undefined
 
   const [isUploading, setIsUploading] = useState(false);
@@ -58,9 +60,17 @@ function EditGuitar() {
   return (
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
-        <h1>Edit</h1>
+           <button
+            onClick={() => {
+              clearCurrentGuitar();
+              navigate(`/view/${guitar._id}`);
+            }}
+            className="hover:underline text-blue-500"
+          >
+            View
+          </button>
+        
         <div>
-          Edit guitar
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
             <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
               <EditImages />
