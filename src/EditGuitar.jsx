@@ -19,6 +19,7 @@ function EditGuitar() {
   } = useGuitarStore() || {}; // Add fallback to ensure useGuitarStore() is not undefined
 
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(null); // Track upload progress
 
   useEffect(() => {
     if (!guitar || guitar._id !== id) {
@@ -32,12 +33,14 @@ function EditGuitar() {
   async function update(e) {
     e.preventDefault();
     setIsUploading(true);
+    setUploadProgress(null);
     try {
-      for (const file of filesToUpload) {
-        const result = await cloudinaryUpload(file);
-        console.log("uploaded", file.url);
+      for (let i = 0; i < filesToUpload.length; i++) {
+        setUploadProgress(`Saving Image (${i + 1} of ${filesToUpload.length})`);
+        const result = await cloudinaryUpload(filesToUpload[i]);
+        console.log("uploaded", result);
       }
-      
+      setUploadProgress(null);
       await updateGuitar();
     } finally {
       setIsUploading(false);
@@ -164,7 +167,7 @@ function EditGuitar() {
                     {isUploading ? (
                       <div className="flex items-center">
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                        Saving...
+                        {uploadProgress || "Saving..."}
                       </div>
                     ) : (
                       "Save Changes"
