@@ -23,7 +23,8 @@ function getCloudinaryThumbnail(url, width = 150) {
   if (parts.length !== 2 || !url.includes("cloudinary.com")) {
       return "Invalid Cloudinary URL";
   }
-  const transformation = `w_${width},c_thumb`;
+
+  const transformation = `w_${width},h_${width},c_fill,g_center,c_thumb`;
   const thumbnailUrl = `${parts[0]}/upload/${transformation}/${parts[1]}`;
   
   return thumbnailUrl;
