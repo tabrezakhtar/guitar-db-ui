@@ -31,7 +31,7 @@ export const useGuitarStore = create((set, get) => ({
   },
 
   updateGuitar: async () => {
-    const { currentGuitar } = await get();
+    const { currentGuitar } = get();
     try {
       await fetch(`${BASE_URL}/api/guitars/update/${currentGuitar._id}`, {
         method: "PUT",
@@ -42,6 +42,24 @@ export const useGuitarStore = create((set, get) => ({
       });
     } catch (e) {
       console.error("Error updating guitar:", e);
+    }
+  },
+
+  deleteGuitar: async () => {
+    const { currentGuitar } = get();
+    if (!currentGuitar || !currentGuitar._id) {
+      console.error("No guitar selected for deletion");
+      return;
+    }
+
+    try {
+      await fetch(`${BASE_URL}/api/guitars/remove/${currentGuitar._id}`, {
+        method: "DELETE",
+      });
+      console.log("Guitar deleted successfully");
+      clearCurrentGuitar();
+    } catch (e) {
+      console.error("Error deleting guitar:", e);
     }
   },
 

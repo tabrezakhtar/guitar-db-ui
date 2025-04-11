@@ -13,6 +13,7 @@ function EditGuitar() {
     loading,
     fetchGuitar,
     updateGuitar,
+    deleteGuitar,
     setCurrentGuitar,
     cloudinaryUpload,
     filesToUpload,
@@ -48,6 +49,11 @@ function EditGuitar() {
     } finally {
       setIsUploading(false);
     }
+  }
+
+  async function removeGuitar(e) {
+    await deleteGuitar();
+    navigate("/");
   }
 
   if (loading) {
@@ -185,6 +191,18 @@ function EditGuitar() {
                     )}
                   </button>
                   {saved ? <span className="text-green-500 p-2">Saved✓</span> : null}
+
+                    <button
+                    type="button"
+                    onClick={() => {
+                      if (window.confirm("Are you sure you want to delete this guitar?")) {
+                        removeGuitar();
+                      }
+                    }}
+                    className="bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded cursor-pointer float-right"
+                    >
+                    Delete
+                    </button>
                 </div>
               </form>
             </div>
