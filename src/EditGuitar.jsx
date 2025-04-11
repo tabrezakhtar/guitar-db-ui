@@ -11,7 +11,6 @@ function EditGuitar() {
     currentGuitar: guitar = {}, // Provide a default empty object to avoid destructuring errors
     settings,
     loading,
-    saved,
     fetchGuitar,
     updateGuitar,
     setCurrentGuitar,
@@ -22,6 +21,7 @@ function EditGuitar() {
 
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(null); // Track upload progress
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     if (!guitar || guitar._id !== id) {
@@ -44,6 +44,7 @@ function EditGuitar() {
       }
       setUploadProgress(null);
       await updateGuitar();
+      setSaved(true);
     } finally {
       setIsUploading(false);
     }

@@ -4,28 +4,22 @@ import { resizeImage, getCombinedUrl } from "../imageUtils";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const useGuitarStore = create((set, get) => ({
-  // State
   guitars: [],
   filesToUpload: [],
   currentGuitar: null,
   settings: {},
   loading: true,
-  saved: false,
   page: 1,
   totalGuitars: 0,
 
-  // Actions
   setLoading: (loading) => set({ loading }),
-  setSaved: (saved) => set({ saved }),
   setCurrentGuitar: (guitar) => set({ currentGuitar: guitar }),
   clearCurrentGuitar: () => set({ currentGuitar: null }),
   setFilesToUpload: (files) => set({ filesToUpload: files }),
   clearFilesToUpload: () => set({ filesToUpload: null }),
 
-  // Fetch a single guitar
   fetchGuitar: async (id) => {
     if (!id) return;
-    
     set({ loading: true });
     try {
       const response = await fetch(`${BASE_URL}/api/guitar?id=${id}`);
@@ -36,15 +30,8 @@ export const useGuitarStore = create((set, get) => ({
     }
   },
 
-  // Update a guitar
   updateGuitar: async () => {
-    const { currentGuitar } = get(); // Access the latest state directly
-    if (!currentGuitar || Object.keys(currentGuitar).length === 0) {
-      console.error("currentGuitar is empty or undefined");
-      return;
-    }
-
-    set({ saved: false });
+    const { currentGuitar } = await get();
     try {
       await fetch(`${BASE_URL}/api/guitars/update/${currentGuitar._id}`, {
         method: "PUT",
@@ -53,13 +40,11 @@ export const useGuitarStore = create((set, get) => ({
         },
         body: JSON.stringify(currentGuitar),
       });
-      set({ saved: true });
     } catch (e) {
       console.error("Error updating guitar:", e);
     }
   },
 
-  // Fetch guitars with pagination
   fetchGuitars: async (page) => {
     set({ loading: true });
     try {
@@ -81,11 +66,7 @@ export const useGuitarStore = create((set, get) => ({
     const cloudName = "x8d5hlk1";
     const apiKey = "124113443758435";
     const formData = new FormData();
-    // const { filesToUpload } = get();
 
-    // const resizedFiles = await Promise.all(
-    //   filesToUpload.map(file => resizeImage(file.file))
-    // );
     const resizedFile = await resizeImage(file.file);
 
     formData.append("file", resizedFile);
@@ -105,7 +86,6 @@ export const useGuitarStore = create((set, get) => ({
         return null;
       }
 
-      //put the secure_url into the images
       const { currentGuitar } = get();
       const updatedImages = currentGuitar.images.map(image =>
         getCombinedUrl(image) === file.url ? data.secure_url : image
@@ -118,7 +98,6 @@ export const useGuitarStore = create((set, get) => ({
     }
   },
 
-  // Load more guitars
   loadMore: () => {
     const { page, fetchGuitars } = get();
     const nextPage = page + 1;
