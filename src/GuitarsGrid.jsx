@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { getCloudinaryThumbnail } from "./imageUtils";
 import { useGuitarStore } from "./store/useGuitarStore";
 import { useEffect } from "react";
+import SkeletonImage from "./SkeletonImage";
 
 function GuitarsGrid() {
   const navigate = useNavigate();
@@ -39,8 +40,10 @@ function GuitarsGrid() {
             className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200"
             onClick={() => navigate('/view/' + _id)}
           >
-            {images && images.length > 0 && (
+            {images && images.length > 0 ? (
               <Thumbnail url={getCloudinaryThumbnail(images[0], 250)} alt={`Thumbnail: ${brand} ${name}`} />
+            ) : (
+              <SkeletonImage />
             )}
             <div className="p-3 bg-gray-200 h-full">
               <h2 className="text-lg font-semibold">{brand} {name}</h2>

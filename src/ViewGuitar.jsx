@@ -4,6 +4,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import { getCloudinaryThumbnail } from "./imageUtils";
 import { useGuitarStore } from "./store/useGuitarStore";
 import { useEffect } from "react";
+import SkeletonImage from "./SkeletonImage";
 
 function ViewGuitar() {
   const { id } = useParams();
@@ -40,7 +41,7 @@ function ViewGuitar() {
         
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
-            {guitar?.images && guitar.images.length > 0 && (
+            {guitar?.images && guitar.images.length > 0 ? (
               <ImageGallery 
                 items={guitar.images.map(image => ({
                   original: image,
@@ -49,6 +50,8 @@ function ViewGuitar() {
                 showPlayButton={false}
                 lazyLoad={true}
               />
+            ) : (
+              <SkeletonImage />
             )}
           </div>
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">

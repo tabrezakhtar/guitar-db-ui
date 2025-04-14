@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { useGuitarStore } from "./store/useGuitarStore";
 import EditImages from "./EditImages";
+import Alert from "./Alert";
 
 function EditGuitar() {
   const { id } = useParams();
@@ -23,6 +24,7 @@ function EditGuitar() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(null); // Track upload progress
   const [saved, setSaved] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (!guitar || guitar._id !== id) {
@@ -51,7 +53,7 @@ function EditGuitar() {
     }
   }
 
-  async function removeGuitar(e) {
+  async function removeGuitar() {
     setIsUploading(true);
     try {
       await deleteGuitar();
@@ -60,6 +62,11 @@ function EditGuitar() {
       setIsUploading(false);
     }
   }
+
+  const handleDelete = () => {
+    setShowAlert(false);
+    removeGuitar();
+  };
 
   if (loading) {
     return (
@@ -309,15 +316,7 @@ function EditGuitar() {
 
                   <button
                     type="button"
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          "Are you sure you want to delete this guitar?"
-                        )
-                      ) {
-                        removeGuitar();
-                      }
-                    }}
+                    onClick={() => setShowAlert(true)}
                     disabled={isUploading}
                     className={`bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded cursor-pointer float-right ${
                       isUploading ? "opacity-50 cursor-not-allowed" : ""
@@ -338,6 +337,13 @@ function EditGuitar() {
           </div>
         </div>
       </div>
+      {showAlert && (
+        <Alert
+          message="Are you sure you want to delete this guitar?"
+          onConfirm={handleDelete}
+          onCancel={() => setShowAlert(false)}
+        />
+      )}
     </div>
   );
 }

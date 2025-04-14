@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { useGuitarStore } from "./store/useGuitarStore";
 import { getCombinedUrl } from "./imageUtils";
+import Alert from "./Alert";
 
 const Thumbnail = ({ index, url, alt, showDelete }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const { deleteImage } = useGuitarStore();
 
   const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this image?")) {
-      setIsDeleting(true);
-      try {
-        await deleteImage(getCombinedUrl(url));
-      } finally {
-        setIsDeleting(false);
-      }
+    setShowAlert(false);
+    setIsDeleting(true);
+    try {
+      await deleteImage(getCombinedUrl(url));
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -32,7 +33,7 @@ const Thumbnail = ({ index, url, alt, showDelete }) => {
       )}
       {showDelete && !isDeleting && (
         <span
-          onClick={handleDelete}
+          onClick={() => setShowAlert(true)}
           className="absolute bottom-0 right-0 bg-red-500 text-white hover:bg-red-800 font-bold text-sm cursor-pointer flex items-center justify-center w-5 h-5 rounded-md"
         >
           ✕
@@ -44,6 +45,13 @@ const Thumbnail = ({ index, url, alt, showDelete }) => {
         className={`w-full h-full object-cover ${isLoading ? "opacity-0" : "opacity-100"}`}
         onLoad={() => setIsLoading(false)}
       />
+      {showAlert && (
+        <Alert
+          message="Are you sure you want to delete this image?"
+          onConfirm={handleDelete}
+          onCancel={() => setShowAlert(false)}
+        />
+      )}
     </div>
   );
 };
