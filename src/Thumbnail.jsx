@@ -4,11 +4,17 @@ import { getCombinedUrl } from "./imageUtils";
 
 const Thumbnail = ({ index, url, alt, showDelete }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { deleteImage } = useGuitarStore();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this image?")) {
-      deleteImage(getCombinedUrl(url));
+      setIsDeleting(true);
+      try {
+        await deleteImage(getCombinedUrl(url));
+      } finally {
+        setIsDeleting(false);
+      }
     }
   };
 
@@ -19,12 +25,12 @@ const Thumbnail = ({ index, url, alt, showDelete }) => {
           {index + 1}
         </span>
       }
-      {isLoading && (
+      {(isLoading || isDeleting) && (
         <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
-      {showDelete && (
+      {showDelete && !isDeleting && (
         <span
           onClick={handleDelete}
           className="absolute bottom-0 right-0 bg-red-500 text-white hover:bg-red-800 font-bold text-sm cursor-pointer flex items-center justify-center w-5 h-5 rounded-md"

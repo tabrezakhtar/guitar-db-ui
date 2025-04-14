@@ -138,7 +138,7 @@ export const useGuitarStore = create((set, get) => ({
       });
       console.log("Image deleted successfully");
 
-      const updatedImages = currentGuitar.images.filter((image) => image !== imageUrl);
+      const updatedImages = currentGuitar.images.filter((image) => getCombinedUrl(image) !== imageUrl);
       set({ currentGuitar: { ...currentGuitar, images: updatedImages } });
     } catch (e) {
       console.error("Error deleting image:", e);
