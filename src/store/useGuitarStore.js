@@ -116,6 +116,35 @@ export const useGuitarStore = create((set, get) => ({
     }
   },
 
+  deleteImage: async (imageUrl) => {
+    const currentGuitar = get().currentGuitar; // Correctly access currentGuitar from the store
+    if (!currentGuitar || !currentGuitar._id) {
+      console.error("No guitar selected for deletion");
+      return;
+    }
+
+    if (!imageUrl) {
+      console.error("No image URL provided for deletion");
+      return;
+    }
+
+    try {
+      await fetch(`${BASE_URL}/api/guitars/deleteImage/${currentGuitar._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageUrl: imageUrl }), // Ensure body is properly stringified
+      });
+      console.log("Image deleted successfully");
+
+      const updatedImages = currentGuitar.images.filter((image) => image !== imageUrl);
+      set({ currentGuitar: { ...currentGuitar, images: updatedImages } });
+    } catch (e) {
+      console.error("Error deleting image:", e);
+    }
+  },
+
   loadMore: () => {
     const { page, fetchGuitars } = get();
     const nextPage = page + 1;

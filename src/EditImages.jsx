@@ -34,6 +34,7 @@ export default function EditImages() {
                 index={index}
                 url={image}
                 alt={`Thumbnail ${index + 1}: ${currentGuitar.brand} ${currentGuitar.name}`}
+                showDelete={true}
               />
             </div>
           ))}
