@@ -14,6 +14,7 @@ function EditGuitar({ mode = "edit" }) {
     loading,
     fetchGuitar,
     updateGuitar,
+    addGuitar,
     deleteGuitar,
     setCurrentGuitar,
     cloudinaryUpload,
@@ -76,12 +77,16 @@ function EditGuitar({ mode = "edit" }) {
         }
       }
       setUploadProgress(null);
-      
-      const result = await updateGuitar();
-      setSaved(true);
-      if (mode === "add") {
+
+      if (!currentGuitar._id) {
+        const result = await addGuitar();
+        setSaved(true);
         navigate(`/edit/${result._id}`);
+      } else {
+        await updateGuitar();
       }
+
+      setSaved(true);
     } finally {
       setIsUploading(false);
     }
