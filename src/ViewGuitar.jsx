@@ -1,15 +1,15 @@
+import { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { getCloudinaryThumbnail } from "./imageUtils";
-import { useGuitarStore } from "./store/useGuitarStore";
-import { useEffect } from "react";
+import { useGuitarContext } from "./context/GuitarContext";
 import SkeletonImage from "./SkeletonImage";
 
-function ViewGuitar() {
+const ViewGuitar = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { currentGuitar: guitar, loading, fetchGuitar, clearCurrentGuitar } = useGuitarStore();
+  const { currentGuitar: guitar, loading, fetchGuitar, clearCurrentGuitar } = useGuitarContext();
 
   useEffect(() => {
     fetchGuitar(id);

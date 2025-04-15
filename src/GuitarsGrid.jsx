@@ -2,17 +2,17 @@ import { useNavigate } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getCloudinaryThumbnail } from "./imageUtils";
-import { useGuitarStore } from "./store/useGuitarStore";
-import { useEffect } from "react";
+import { useGuitarContext } from "./context/GuitarContext";
+import { useEffect, useCallback } from "react";
 import SkeletonImage from "./SkeletonImage";
 
 function GuitarsGrid() {
   const navigate = useNavigate();
-  const { guitars, totalGuitars, loading, loadMore, fetchGuitars } = useGuitarStore();
+  const { guitars, totalGuitars, loading, loadMore, fetchGuitars } = useGuitarContext();
 
   useEffect(() => {
     fetchGuitars(1);
-  }, [fetchGuitars]);
+  }, []);
 
   if (loading && guitars.length === 0) {
     return (

@@ -1,50 +1,67 @@
-import { create } from "zustand";
+import { createContext, useContext, useState } from "react";
+import PropTypes from "prop-types";
 import { resizeImage, getCombinedUrl } from "../imageUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const useGuitarStore = create((set, get) => ({
+export const initialState = {
   guitars: [],
   filesToUpload: [],
   currentGuitar: null,
   settings: {},
   loading: true,
   page: 1,
-  totalGuitars: 0,
+  totalGuitars: 0
+};
 
-  setLoading: (loading) => set({ loading }),
-  setCurrentGuitar: (guitar) => set({ currentGuitar: guitar }),
-  clearCurrentGuitar: () => set({ currentGuitar: null }),
-  setFilesToUpload: (files) => set({ filesToUpload: files }),
-  clearFilesToUpload: () => set({ filesToUpload: null }),
+const GuitarContext = createContext(null);
 
-  fetchSettings: async () => {
+const GuitarProvider = ({ children }) => {
+  console.log("GuitarProvider called");
+  const [state, setState] = useState(initialState);
+
+  const setLoading = (loading) => setState(prev => ({ ...prev, loading }));
+  
+  const setCurrentGuitar = (guitar) => setState(prev => ({ ...prev, currentGuitar: guitar }));
+  
+  const clearCurrentGuitar = () => setState(prev => ({ ...prev, currentGuitar: null }));
+  
+  const setFilesToUpload = (files) => setState(prev => ({ ...prev, filesToUpload: files }));
+  
+  const clearFilesToUpload = () => setState(prev => ({ ...prev, filesToUpload: null }));
+
+  const fetchSettings = async () => {
     try {
       const response = await fetch(`${BASE_URL}/api/guitar/settings`);
       const data = await response.json();
-      set({ settings: data.settings || {} });
+      setState(prev => ({ ...prev, settings: data.settings || {} }));
       return data.settings;
     } catch (error) {
       console.error("Error fetching settings:", error);
       return {};
     }
-  },
+  };
 
-  fetchGuitar: async (id) => {
+  const fetchGuitar = async (id) => {
     if (!id) return;
-    set({ loading: true });
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/api/guitar?id=${id}`);
       const { guitar, settings } = await response.json();
-      set({ currentGuitar: guitar, settings, loading: false });
+      setState(prev => ({ 
+        ...prev, 
+        currentGuitar: guitar, 
+        settings, 
+        loading: false 
+      }));
     } catch (error) {
       console.error("Error fetching guitar:", error);
-      set({ loading: false });
+      setLoading(false);
     }
-  },
+  };
 
-  updateGuitar: async () => {
-    const { currentGuitar } = get();
+  const updateGuitar = async () => {
+    const currentGuitar = state.currentGuitar;
     
     try {
       // If the guitar has no _id, it's a new guitar (add mode)
@@ -62,8 +79,8 @@ export const useGuitarStore = create((set, get) => ({
         }
         
         const result = await response.json();
-        set({ currentGuitar: result });
-        return result.guitar;
+        setState(prev => ({ ...prev, currentGuitar: result }));
+        return result;
       } else {
         // Update existing guitar
         const response = await fetch(`${BASE_URL}/api/guitars/update/${currentGuitar._id}`, {
@@ -84,10 +101,10 @@ export const useGuitarStore = create((set, get) => ({
       console.error("Error updating/adding guitar:", e);
       throw e;
     }
-  },
+  };
 
-  deleteGuitar: async () => {
-    const { currentGuitar } = get();
+  const deleteGuitar = async () => {
+    const currentGuitar = state.currentGuitar;
     if (!currentGuitar || !currentGuitar._id) {
       console.error("No guitar selected for deletion");
       return;
@@ -102,16 +119,17 @@ export const useGuitarStore = create((set, get) => ({
     } catch (e) {
       console.error("Error deleting guitar:", e);
     }
-  },
+  };
 
-  fetchGuitars: async (page) => {
-    set({ loading: true });
+  const fetchGuitars = async (page) => {
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/api/guitars?page=${page}&limit=20`);
       const data = await response.json();
-      set(state => ({
-        guitars: page === 1 ? data.guitars : [...state.guitars, ...data.guitars],
-        totalGuitars: page === 1 ? data.total : state.totalGuitars,
+      setState(prev => ({
+        ...prev,
+        guitars: page === 1 ? data.guitars : [...prev.guitars, ...data.guitars],
+        totalGuitars: page === 1 ? data.total : prev.totalGuitars,
         page,
         settings: data.settings,
         loading: false
@@ -119,9 +137,9 @@ export const useGuitarStore = create((set, get) => ({
     } catch (error) {
       console.error("Error fetching guitars:", error);
     }
-  },
+  };
 
-  cloudinaryUpload: async (file) => {
+  const cloudinaryUpload = async (file) => {
     const cloudName = "x8d5hlk1";
     const apiKey = "124113443758435";
     const formData = new FormData();
@@ -145,20 +163,24 @@ export const useGuitarStore = create((set, get) => ({
         return null;
       }
 
-      const { currentGuitar } = get();
+      const currentGuitar = state.currentGuitar;
       const updatedImages = currentGuitar.images.map(image =>
         getCombinedUrl(image) === file.url ? data.secure_url : image
       );
-      set({ currentGuitar: { ...currentGuitar, images: updatedImages } });
+      
+      setState(prev => ({ 
+        ...prev, 
+        currentGuitar: { ...prev.currentGuitar, images: updatedImages } 
+      }));
 
       return data.secure_url;
     } catch (error) {
       console.error("Error uploading image:", error);
     }
-  },
+  };
 
-  deleteImage: async (imageUrl) => {
-    const currentGuitar = get().currentGuitar; // Correctly access currentGuitar from the store
+  const deleteImage = async (imageUrl) => {
+    const currentGuitar = state.currentGuitar;
     if (!currentGuitar || !currentGuitar._id) {
       console.error("No guitar selected for deletion");
       return;
@@ -175,20 +197,58 @@ export const useGuitarStore = create((set, get) => ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ imageUrl: imageUrl }), // Ensure body is properly stringified
+        body: JSON.stringify({ imageUrl: imageUrl }),
       });
       console.log("Image deleted successfully");
 
       const updatedImages = currentGuitar.images.filter((image) => getCombinedUrl(image) !== imageUrl);
-      set({ currentGuitar: { ...currentGuitar, images: updatedImages } });
+      setState(prev => ({ 
+        ...prev, 
+        currentGuitar: { ...prev.currentGuitar, images: updatedImages } 
+      }));
     } catch (e) {
       console.error("Error deleting image:", e);
     }
-  },
+  };
 
-  loadMore: () => {
-    const { page, fetchGuitars } = get();
-    const nextPage = page + 1;
+  const loadMore = () => {
+    const nextPage = state.page + 1;
     fetchGuitars(nextPage);
+  };
+
+  const value = {
+    ...state,
+    setLoading,
+    setCurrentGuitar,
+    clearCurrentGuitar,
+    setFilesToUpload,
+    clearFilesToUpload,
+    fetchSettings,
+    fetchGuitar,
+    updateGuitar,
+    deleteGuitar,
+    fetchGuitars,
+    cloudinaryUpload,
+    deleteImage,
+    loadMore
+  };
+
+  return <GuitarContext.Provider value={value}>{children}</GuitarContext.Provider>;
+};
+
+GuitarProvider.propTypes = {
+  children: PropTypes.node.isRequired
+};
+
+const useGuitarContext = () => {
+  console.log("useGuitarContext called");
+  const value = useContext(GuitarContext);
+
+  if (!value) {
+    throw new Error("🗣️ useGuitarContext hook used without GuitarContext");
   }
-}));
+
+  return value;
+};
+
+export { GuitarProvider, GuitarContext, useGuitarContext };

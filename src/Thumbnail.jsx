@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGuitarStore } from "./store/useGuitarStore";
+import { useGuitarContext } from "./context/GuitarContext";
 import { getCombinedUrl } from "./imageUtils";
 import Alert from "./Alert";
 
@@ -7,7 +7,7 @@ const Thumbnail = ({ index, url, alt, showDelete }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const { deleteImage } = useGuitarStore();
+  const { deleteImage } = useGuitarContext();
 
   const handleDelete = async () => {
     setShowAlert(false);

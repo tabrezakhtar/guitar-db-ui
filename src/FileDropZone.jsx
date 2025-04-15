@@ -1,9 +1,10 @@
-import { useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { useGuitarStore } from "./store/useGuitarStore";
+import { useGuitarContext } from "./context/GuitarContext";
 
 export default function FileDropZone() {
-  const { currentGuitar, setCurrentGuitar, filesToUpload, setFilesToUpload } = useGuitarStore();
+  const fileInputRef = useRef(null);
+  const { currentGuitar, setCurrentGuitar, setFilesToUpload } = useGuitarContext();
 
   const onDrop = useCallback(acceptedFiles => {
     const newFiles = acceptedFiles.map(file => ({
@@ -16,8 +17,8 @@ export default function FileDropZone() {
       images: [...(currentGuitar?.images || []), ...newFiles.map(f => f.url)]
     });
 
-    setFilesToUpload([...(filesToUpload || []), ...newFiles]);
-  }, [currentGuitar, filesToUpload]);
+    setFilesToUpload(prevFiles => [...(prevFiles || []), ...newFiles]);
+  }, [currentGuitar]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop});
 
@@ -26,7 +27,7 @@ export default function FileDropZone() {
       {...getRootProps()}
       className="flex flex-col items-center justify-center w-full h-32 p-4 mb-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 focus:outline-none"
     >
-      <input {...getInputProps()} accept=".png, .jpg, .jpeg, .tiff, .bmp, .webp" />
+      <input {...getInputProps()} accept=".png, .jpg, .jpeg, .tiff, .bmp, .webp" ref={fileInputRef} />
       {
         isDragActive ? (
           <p className="text-blue-500">Drop the files here ...</p>

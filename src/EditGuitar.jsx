@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { useGuitarStore } from "./store/useGuitarStore";
+import { useGuitarContext } from "./context/GuitarContext";
 import EditImages from "./EditImages";
 import Alert from "./Alert";
 
@@ -9,7 +9,7 @@ function EditGuitar({ mode = "edit" }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const {
-    currentGuitar: guitar = {}, // Provide a default empty object to avoid destructuring errors
+    currentGuitar,
     settings,
     loading,
     fetchGuitar,
@@ -20,15 +20,14 @@ function EditGuitar({ mode = "edit" }) {
     filesToUpload,
     clearCurrentGuitar,
     fetchSettings,
-  } = useGuitarStore() || {}; // Add fallback to ensure useGuitarStore() is not undefined
+  } = useGuitarContext();
 
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(null); // Track upload progress
+  const [uploadProgress, setUploadProgress] = useState(null);
   const [saved, setSaved] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [initialized, setInitialized] = useState(false); // Add initialization flag to prevent infinite loop
+  const [initialized, setInitialized] = useState(false);
 
-  // Fetch settings if not available (especially for add mode)
   useEffect(() => {
     if (!settings || Object.keys(settings).length === 0) {
       fetchSettings();
@@ -37,11 +36,10 @@ function EditGuitar({ mode = "edit" }) {
 
   useEffect(() => {
     if (mode === "edit") {
-      if (!guitar || guitar._id !== id) {
+      if (!currentGuitar || currentGuitar._id !== id) {
         fetchGuitar(id);
       }
     } else if (mode === "add" && !initialized) {
-      // Only initialize with empty guitar if not already initialized
       setCurrentGuitar({
         brand: "",
         shape: "",
@@ -60,7 +58,7 @@ function EditGuitar({ mode = "edit" }) {
       });
       setInitialized(true);
     }
-  }, [id, mode, initialized, fetchGuitar, setCurrentGuitar]); // Remove guitar._id from dependencies
+  }, [id, mode, initialized, fetchGuitar, setCurrentGuitar]);
 
   const createOptions = (items) =>
     items?.map((item) => ({ value: item, label: item })) || [];
@@ -79,10 +77,10 @@ function EditGuitar({ mode = "edit" }) {
       }
       setUploadProgress(null);
       
-      await updateGuitar();
+      const result = await updateGuitar();
       setSaved(true);
       if (mode === "add") {
-        navigate(`/edit/${guitar._id}`);
+        navigate(`/edit/${result._id}`);
       }
     } finally {
       setIsUploading(false);
@@ -104,11 +102,6 @@ function EditGuitar({ mode = "edit" }) {
     removeGuitar();
   };
 
-  const handleCancel = () => {
-    clearCurrentGuitar();
-    navigate("/");
-  };
-
   if (loading && mode === "edit") {
     return (
       <div className="flex justify-center items-center h-full">
@@ -124,7 +117,7 @@ function EditGuitar({ mode = "edit" }) {
           <button
             onClick={() => {
               clearCurrentGuitar();
-              navigate(`/view/${guitar._id}`);
+              navigate(`/view/${currentGuitar._id}`);
             }}
             className="hover:underline text-blue-500"
           >
@@ -144,13 +137,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings?.brand)}
                     value={
-                      guitar?.brand
-                        ? { value: guitar.brand, label: guitar.brand }
+                      currentGuitar?.brand
+                        ? { value: currentGuitar.brand, label: currentGuitar.brand }
                         : null
                     }
                     onChange={(selected) =>
                       setCurrentGuitar({
-                        ...guitar,
+                        ...currentGuitar,
                         brand: selected?.value || "",
                       })
                     }
@@ -164,9 +157,9 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="shape"
-                    value={guitar?.shape || ""}
+                    value={currentGuitar?.shape || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({ ...guitar, shape: e.target.value })
+                      setCurrentGuitar({ ...currentGuitar, shape: e.target.value })
                     }
                     className="border p-2 rounded w-full"
                   />
@@ -177,9 +170,9 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="name"
-                    value={guitar?.name || ""}
+                    value={currentGuitar?.name || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({ ...guitar, name: e.target.value })
+                      setCurrentGuitar({ ...currentGuitar, name: e.target.value })
                     }
                     className="border p-2 rounded w-full"
                   />
@@ -190,9 +183,9 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="series"
-                    value={guitar?.series || ""}
+                    value={currentGuitar?.series || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({ ...guitar, series: e.target.value })
+                      setCurrentGuitar({ ...currentGuitar, series: e.target.value })
                     }
                     className="border p-2 rounded w-full"
                   />
@@ -203,13 +196,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings.pickups)}
                     value={
-                      guitar?.pickups
-                        ? { value: guitar.pickups, label: guitar.pickups }
+                      currentGuitar?.pickups
+                        ? { value: currentGuitar.pickups, label: currentGuitar.pickups }
                         : null
                     }
                     onChange={(selected) =>
                       setCurrentGuitar({
-                        ...guitar,
+                        ...currentGuitar,
                         pickups: selected?.value || "",
                       })
                     }
@@ -223,13 +216,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings.tremolo)}
                     value={
-                      guitar?.trem
-                        ? { value: guitar.trem, label: guitar.trem }
+                      currentGuitar?.trem
+                        ? { value: currentGuitar.trem, label: currentGuitar.trem }
                         : null
                     }
                     onChange={(selected) =>
                       setCurrentGuitar({
-                        ...guitar,
+                        ...currentGuitar,
                         trem: selected?.value || "",
                       })
                     }
@@ -243,10 +236,10 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="number"
                     name="frets"
-                    value={guitar?.frets || 22}
+                    value={currentGuitar?.frets || 22}
                     onChange={(e) =>
                       setCurrentGuitar({
-                        ...guitar,
+                        ...currentGuitar,
                         frets: Number(e.target.value),
                       })
                     }
@@ -259,9 +252,9 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="tuners"
-                    value={guitar?.tuners || ""}
+                    value={currentGuitar?.tuners || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({ ...guitar, tuners: e.target.value })
+                      setCurrentGuitar({ ...currentGuitar, tuners: e.target.value })
                     }
                     className="border p-2 rounded w-full"
                   />
@@ -272,13 +265,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings.colours)}
                     value={
-                      guitar?.colour
-                        ? { value: guitar.colour, label: guitar.colour }
+                      currentGuitar?.colour
+                        ? { value: currentGuitar.colour, label: currentGuitar.colour }
                         : null
                     }
                     onChange={(selected) =>
                       setCurrentGuitar({
-                        ...guitar,
+                        ...currentGuitar,
                         colour: selected?.value || "",
                       })
                     }
@@ -292,13 +285,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings.fretboard)}
                     value={
-                      guitar?.fretboard
-                        ? { value: guitar.fretboard, label: guitar.fretboard }
+                      currentGuitar?.fretboard
+                        ? { value: currentGuitar.fretboard, label: currentGuitar.fretboard }
                         : null
                     }
                     onChange={(selected) =>
                       setCurrentGuitar({
-                        ...guitar,
+                        ...currentGuitar,
                         fretboard: selected?.value || "",
                       })
                     }
@@ -312,10 +305,10 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="description"
-                    value={guitar?.description || ""}
+                    value={currentGuitar?.description || ""}
                     onChange={(e) =>
                       setCurrentGuitar({
-                        ...guitar,
+                        ...currentGuitar,
                         description: e.target.value,
                       })
                     }
@@ -328,10 +321,10 @@ function EditGuitar({ mode = "edit" }) {
                   <textarea
                     type="text"
                     name="detailedDescription"
-                    value={guitar?.detailedDescription || ""}
+                    value={currentGuitar?.detailedDescription || ""}
                     onChange={(e) =>
                       setCurrentGuitar({
-                        ...guitar,
+                        ...currentGuitar,
                         detailedDescription: e.target.value,
                       })
                     }
@@ -344,9 +337,9 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="thumbnail"
-                    value={guitar?.thumbnail || ""}
+                    value={currentGuitar?.thumbnail || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({ ...guitar, thumbnail: e.target.value })
+                      setCurrentGuitar({ ...currentGuitar, thumbnail: e.target.value })
                     }
                     className="border p-2 rounded w-full"
                   />
@@ -354,14 +347,6 @@ function EditGuitar({ mode = "edit" }) {
 
                 <div className="flex justify-between">
                   <div>
-                    <button
-                      type="button"
-                      onClick={handleCancel}
-                      className="bg-gray-500 hover:bg-gray-400 text-white px-4 py-2 rounded cursor-pointer mr-2"
-                    >
-                      Cancel
-                    </button>
-                    
                     {mode === "edit" && (
                       <button
                         type="button"

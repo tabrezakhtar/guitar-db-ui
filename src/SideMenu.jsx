@@ -1,9 +1,9 @@
-import { useGuitarStore } from "./store/useGuitarStore";
+import { useGuitarContext } from "./context/GuitarContext";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
 function SideMenu() {
-  const { settings, loading } = useGuitarStore();
+  const { settings, loading } = useGuitarContext();
 
   const createOptions = (items) =>
     items?.map((item) => ({ value: item, label: item })) || [];
