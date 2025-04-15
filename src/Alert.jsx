@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const Alert = ({ message, onConfirm, onCancel }) => {
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {

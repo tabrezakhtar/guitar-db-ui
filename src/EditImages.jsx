@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Thumbnail from "./Thumbnail";
 import { useGuitarStore } from "./store/useGuitarStore";

@@ -18,6 +18,18 @@ export const useGuitarStore = create((set, get) => ({
   setFilesToUpload: (files) => set({ filesToUpload: files }),
   clearFilesToUpload: () => set({ filesToUpload: null }),
 
+  fetchSettings: async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/guitar/settings`);
+      const data = await response.json();
+      set({ settings: data.settings || {} });
+      return data.settings;
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+      return {};
+    }
+  },
+
   fetchGuitar: async (id) => {
     if (!id) return;
     set({ loading: true });
@@ -27,21 +39,50 @@ export const useGuitarStore = create((set, get) => ({
       set({ currentGuitar: guitar, settings, loading: false });
     } catch (error) {
       console.error("Error fetching guitar:", error);
+      set({ loading: false });
     }
   },
 
   updateGuitar: async () => {
     const { currentGuitar } = get();
+    
     try {
-      await fetch(`${BASE_URL}/api/guitars/update/${currentGuitar._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(currentGuitar),
-      });
+      // If the guitar has no _id, it's a new guitar (add mode)
+      if (!currentGuitar._id) {
+        const response = await fetch(`${BASE_URL}/api/guitars/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(currentGuitar),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to add new guitar');
+        }
+        
+        const result = await response.json();
+        set({ currentGuitar: result });
+        return result.guitar;
+      } else {
+        // Update existing guitar
+        const response = await fetch(`${BASE_URL}/api/guitars/update/${currentGuitar._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(currentGuitar),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to update guitar');
+        }
+        
+        return currentGuitar;
+      }
     } catch (e) {
-      console.error("Error updating guitar:", e);
+      console.error("Error updating/adding guitar:", e);
+      throw e;
     }
   },
 

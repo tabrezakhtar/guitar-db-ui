@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
+import { Link, BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./About";
 import Contact from "./Contact";
 import ContentContainer from "./ContentContainer";
 import EditGuitar from "./EditGuitar";
 import ViewGuitar from "./ViewGuitar";
+import AddGuitar from "./AddGuitar";
 
 function App() {
   return (
     <div className="flex flex-col h-screen">
-      <BrowserRouter>
+      <Router>
         <header className="bg-gray-800 text-white p-4 flex">
           <div className="flex justify-between items-center max-w-screen-xl mx-auto w-full">
             <div className="flex items-center pl-6">
@@ -34,8 +34,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/edit/:id" element={<EditGuitar />} />
           <Route path="/view/:id" element={<ViewGuitar />} />
+          <Route path="/add" element={<AddGuitar />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

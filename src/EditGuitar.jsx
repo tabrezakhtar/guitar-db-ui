@@ -5,7 +5,7 @@ import { useGuitarStore } from "./store/useGuitarStore";
 import EditImages from "./EditImages";
 import Alert from "./Alert";
 
-function EditGuitar() {
+function EditGuitar({ mode = "edit" }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const {
@@ -19,35 +19,71 @@ function EditGuitar() {
     cloudinaryUpload,
     filesToUpload,
     clearCurrentGuitar,
+    fetchSettings,
   } = useGuitarStore() || {}; // Add fallback to ensure useGuitarStore() is not undefined
 
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(null); // Track upload progress
   const [saved, setSaved] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [initialized, setInitialized] = useState(false); // Add initialization flag to prevent infinite loop
+
+  // Fetch settings if not available (especially for add mode)
+  useEffect(() => {
+    if (!settings || Object.keys(settings).length === 0) {
+      fetchSettings();
+    }
+  }, [settings, fetchSettings]);
 
   useEffect(() => {
-    if (!guitar || guitar._id !== id) {
-      fetchGuitar(id);
+    if (mode === "edit") {
+      if (!guitar || guitar._id !== id) {
+        fetchGuitar(id);
+      }
+    } else if (mode === "add" && !initialized) {
+      // Only initialize with empty guitar if not already initialized
+      setCurrentGuitar({
+        brand: "",
+        shape: "",
+        name: "",
+        series: "",
+        pickups: "",
+        trem: "",
+        frets: 22,
+        tuners: "",
+        colour: "",
+        fretboard: "",
+        description: "",
+        detailedDescription: "",
+        thumbnail: "",
+        images: []
+      });
+      setInitialized(true);
     }
-  }, [id, guitar]);
+  }, [id, mode, initialized, fetchGuitar, setCurrentGuitar]); // Remove guitar._id from dependencies
 
   const createOptions = (items) =>
     items?.map((item) => ({ value: item, label: item })) || [];
 
-  async function update(e) {
+  async function saveGuitar(e) {
     e.preventDefault();
     setIsUploading(true);
     setUploadProgress(null);
     try {
-      for (let i = 0; i < filesToUpload.length; i++) {
-        setUploadProgress(`Saving Image (${i + 1} of ${filesToUpload.length})`);
-        const result = await cloudinaryUpload(filesToUpload[i]);
-        console.log("uploaded", result);
+      if (filesToUpload && filesToUpload.length > 0) {
+        for (let i = 0; i < filesToUpload.length; i++) {
+          setUploadProgress(`Saving Image (${i + 1} of ${filesToUpload.length})`);
+          const result = await cloudinaryUpload(filesToUpload[i]);
+          console.log("uploaded", result);
+        }
       }
       setUploadProgress(null);
+      
       await updateGuitar();
       setSaved(true);
+      if (mode === "add") {
+        navigate(`/edit/${guitar._id}`);
+      }
     } finally {
       setIsUploading(false);
     }
@@ -68,7 +104,12 @@ function EditGuitar() {
     removeGuitar();
   };
 
-  if (loading) {
+  const handleCancel = () => {
+    clearCurrentGuitar();
+    navigate("/");
+  };
+
+  if (loading && mode === "edit") {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -79,15 +120,17 @@ function EditGuitar() {
   return (
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
-        <button
-          onClick={() => {
-            clearCurrentGuitar();
-            navigate(`/view/${guitar._id}`);
-          }}
-          className="hover:underline text-blue-500"
-        >
-          View
-        </button>
+        {mode === "edit" && (
+          <button
+            onClick={() => {
+              clearCurrentGuitar();
+              navigate(`/view/${guitar._id}`);
+            }}
+            className="hover:underline text-blue-500"
+          >
+            View
+          </button>
+        )}
 
         <div>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
@@ -121,7 +164,7 @@ function EditGuitar() {
                   <input
                     type="text"
                     name="shape"
-                    value={guitar?.shape}
+                    value={guitar?.shape || ""}
                     onChange={(e) =>
                       setCurrentGuitar({ ...guitar, shape: e.target.value })
                     }
@@ -134,7 +177,7 @@ function EditGuitar() {
                   <input
                     type="text"
                     name="name"
-                    value={guitar?.name}
+                    value={guitar?.name || ""}
                     onChange={(e) =>
                       setCurrentGuitar({ ...guitar, name: e.target.value })
                     }
@@ -147,7 +190,7 @@ function EditGuitar() {
                   <input
                     type="text"
                     name="series"
-                    value={guitar?.series}
+                    value={guitar?.series || ""}
                     onChange={(e) =>
                       setCurrentGuitar({ ...guitar, series: e.target.value })
                     }
@@ -200,7 +243,7 @@ function EditGuitar() {
                   <input
                     type="number"
                     name="frets"
-                    value={guitar?.frets}
+                    value={guitar?.frets || 22}
                     onChange={(e) =>
                       setCurrentGuitar({
                         ...guitar,
@@ -216,7 +259,7 @@ function EditGuitar() {
                   <input
                     type="text"
                     name="tuners"
-                    value={guitar?.tuners}
+                    value={guitar?.tuners || ""}
                     onChange={(e) =>
                       setCurrentGuitar({ ...guitar, tuners: e.target.value })
                     }
@@ -266,13 +309,30 @@ function EditGuitar() {
 
                 <div>
                   <label className="block">Description:</label>
-                  <textarea
+                  <input
+                    type="text"
                     name="description"
-                    value={guitar?.description}
+                    value={guitar?.description || ""}
                     onChange={(e) =>
                       setCurrentGuitar({
                         ...guitar,
                         description: e.target.value,
+                      })
+                    }
+                    className="border p-2 rounded w-full"
+                  ></input>
+                </div>
+
+                <div>
+                  <label className="block">Detailed Description:</label>
+                  <textarea
+                    type="text"
+                    name="detailedDescription"
+                    value={guitar?.detailedDescription || ""}
+                    onChange={(e) =>
+                      setCurrentGuitar({
+                        ...guitar,
+                        detailedDescription: e.target.value,
                       })
                     }
                     className="border p-2 rounded w-full h-24"
@@ -284,7 +344,7 @@ function EditGuitar() {
                   <input
                     type="text"
                     name="thumbnail"
-                    value={guitar?.thumbnail}
+                    value={guitar?.thumbnail || ""}
                     onChange={(e) =>
                       setCurrentGuitar({ ...guitar, thumbnail: e.target.value })
                     }
@@ -292,45 +352,58 @@ function EditGuitar() {
                   />
                 </div>
 
-                <div>
-                  <button
-                    type="submit"
-                    onClick={update}
-                    disabled={isUploading}
-                    className={`bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer ${
-                      isUploading ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    {isUploading ? (
-                      <div className="flex items-center">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                        {uploadProgress || "Saving..."}
-                      </div>
-                    ) : (
-                      "Save Changes"
+                <div className="flex justify-between">
+                  <div>
+                    <button
+                      type="button"
+                      onClick={handleCancel}
+                      className="bg-gray-500 hover:bg-gray-400 text-white px-4 py-2 rounded cursor-pointer mr-2"
+                    >
+                      Cancel
+                    </button>
+                    
+                    {mode === "edit" && (
+                      <button
+                        type="button"
+                        onClick={() => setShowAlert(true)}
+                        disabled={isUploading}
+                        className={`bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded cursor-pointer ${
+                          isUploading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                      >
+                        {isUploading ? (
+                          <div className="flex items-center">
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                            Deleting...
+                          </div>
+                        ) : (
+                          "Delete"
+                        )}
+                      </button>
                     )}
-                  </button>
-                  {saved ? (
-                    <span className="text-green-500 p-2">Saved✓</span>
-                  ) : null}
-
-                  <button
-                    type="button"
-                    onClick={() => setShowAlert(true)}
-                    disabled={isUploading}
-                    className={`bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded cursor-pointer float-right ${
-                      isUploading ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    {isUploading ? (
-                      <div className="flex items-center">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                        Deleting...
-                      </div>
-                    ) : (
-                      "Delete"
-                    )}
-                  </button>
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      onClick={saveGuitar}
+                      disabled={isUploading}
+                      className={`bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer ${
+                        isUploading ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                    >
+                      {isUploading ? (
+                        <div className="flex items-center">
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                          {uploadProgress || "Saving..."}
+                        </div>
+                      ) : (
+                        mode === "edit" ? "Save Changes" : "Add Guitar"
+                      )}
+                    </button>
+                    {saved ? (
+                      <span className="text-green-500 p-2">Saved✓</span>
+                    ) : null}
+                  </div>
                 </div>
               </form>
             </div>
