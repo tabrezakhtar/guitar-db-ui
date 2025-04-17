@@ -337,19 +337,6 @@ function EditGuitar({ mode = "edit" }) {
                   ></textarea>
                 </div>
 
-                <div>
-                  <label className="block">Thumbnail URL:</label>
-                  <input
-                    type="text"
-                    name="thumbnail"
-                    value={currentGuitar?.thumbnail || ""}
-                    onChange={(e) =>
-                      setCurrentGuitar({ ...currentGuitar, thumbnail: e.target.value })
-                    }
-                    className="border p-2 rounded w-full"
-                  />
-                </div>
-
                 <div className="flex justify-between">
                   <div>
                     {mode === "edit" && (
