@@ -99,7 +99,7 @@ const GuitarProvider = ({ children }) => {
         throw new Error('Failed to update guitar');
       }
 
-      setLoading(true);
+      setLoading(false);
       return currentGuitar;
     } catch (e) {
       console.error("Error updating guitar:", e);

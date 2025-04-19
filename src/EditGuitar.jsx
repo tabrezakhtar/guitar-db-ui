@@ -87,6 +87,7 @@ function EditGuitar({ mode = "edit" }) {
       }
 
       setSaved(true);
+      setTimeout(() => setSaved(false), 10000);
     } finally {
       setIsUploading(false);
     }
@@ -118,6 +119,13 @@ function EditGuitar({ mode = "edit" }) {
   return (
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
+        {saved && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong className="font-bold">Success!</strong>
+            <span className="block sm:inline"> Your changes have been saved.</span>
+          </div>
+        )}
+
         {mode === "edit" && (
           <button
             onClick={() => {
@@ -377,9 +385,6 @@ function EditGuitar({ mode = "edit" }) {
                         mode === "edit" ? "Save Changes" : "Add Guitar"
                       )}
                     </button>
-                    {saved ? (
-                      <span className="text-green-500 p-2">Saved✓</span>
-                    ) : null}
                   </div>
                 </div>
               </form>
