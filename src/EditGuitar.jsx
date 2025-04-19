@@ -59,7 +59,7 @@ function EditGuitar({ mode = "edit" }) {
       });
       setInitialized(true);
     }
-  }, [id, mode, initialized, fetchGuitar, setCurrentGuitar]);
+  }, []);
 
   const createOptions = (items) =>
     items?.map((item) => ({ value: item, label: item })) || [];
