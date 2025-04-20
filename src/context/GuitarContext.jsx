@@ -6,13 +6,13 @@ import { apiRequest } from "../apiUtils";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const initialState = {
-  guitars: [],
+  equipment: [],
   filesToUpload: [],
-  currentGuitar: null,
+  currentEquipment: null,
   settings: {},
   loading: true,
   page: 1,
-  totalGuitars: 0,
+  totalEquipment: 0,
 };
 
 const GuitarContext = createContext(null);
@@ -22,9 +22,9 @@ const GuitarProvider = ({ children }) => {
 
   const setLoading = (loading) => setState((prev) => ({ ...prev, loading }));
 
-  const setCurrentGuitar = (guitar) => setState((prev) => ({ ...prev, currentGuitar: guitar }));
+  const setCurrentEquipment = (equipment) => setState((prev) => ({ ...prev, currentEquipment: equipment }));
 
-  const clearCurrentGuitar = () => setState((prev) => ({ ...prev, currentGuitar: null }));
+  const clearCurrentEquipment = () => setState((prev) => ({ ...prev, currentEquipment: null }));
 
   const setFilesToUpload = (files) => setState((prev) => ({ ...prev, filesToUpload: files }));
 
@@ -32,22 +32,22 @@ const GuitarProvider = ({ children }) => {
 
   const fetchSettings = async () => {
     return apiRequest(
-      `${BASE_URL}/api/guitar/settings`,
+      `${BASE_URL}/api/equipment/settings`,
       {},
       (data) => setState((prev) => ({ ...prev, settings: data.settings || {} }))
     );
   };
 
-  const fetchGuitar = async (id) => {
-    if (!id) return;
+  const fetchEquipment = async (id, type) => {
+    if (!id || !type) return;
     setLoading(true);
     return apiRequest(
-      `${BASE_URL}/api/guitar?id=${id}`,
+      `${BASE_URL}/api/equipment?id=${id}&type=${type}`,
       {},
-      ({ guitar, settings }) =>
+      ({ item, settings }) =>
         setState((prev) => ({
           ...prev,
-          currentGuitar: guitar,
+          currentEquipment: item,
           settings,
           loading: false,
         })),
@@ -55,60 +55,63 @@ const GuitarProvider = ({ children }) => {
     );
   };
 
-  const addGuitar = async () => {
-    const currentGuitar = state.currentGuitar;
+  const addEquipment = async (type) => {
+    const currentEquipment = state.currentEquipment;
+    if (!type) return;
     return apiRequest(
-      `${BASE_URL}/api/guitars/add`,
+      `${BASE_URL}/api/equipment/add?type=${type}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentGuitar),
+        body: JSON.stringify(currentEquipment),
       },
       (result) =>
         setState((prev) => ({
           ...prev,
-          currentGuitar: result,
+          currentEquipment: result,
           loading: false,
         }))
     );
   };
 
-  const updateGuitar = async () => {
-    const currentGuitar = state.currentGuitar;
+  const updateEquipment = async (type) => {
+    const currentEquipment = state.currentEquipment;
+    if (!type || !currentEquipment?._id) return;
     return apiRequest(
-      `${BASE_URL}/api/guitars/update/${currentGuitar._id}`,
+      `${BASE_URL}/api/equipment/update/${currentEquipment._id}?type=${type}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentGuitar),
+        body: JSON.stringify(currentEquipment),
       },
       () => setLoading(false)
     );
   };
 
-  const deleteGuitar = async () => {
-    const currentGuitar = state.currentGuitar;
-    if (!currentGuitar || !currentGuitar._id) {
-      console.error("No guitar selected for deletion");
+  const deleteEquipment = async (type) => {
+    const currentEquipment = state.currentEquipment;
+    if (!type || !currentEquipment?._id) {
+      console.error("No equipment selected for deletion");
       return;
     }
     return apiRequest(
-      `${BASE_URL}/api/guitars/remove/${currentGuitar._id}`,
+      `${BASE_URL}/api/equipment/remove/${currentEquipment._id}?type=${type}`,
       { method: "DELETE" },
-      () => clearCurrentGuitar()
+      () => clearCurrentEquipment()
     );
   };
 
-  const fetchGuitars = async (page) => {
+  const fetchEquipmentList = async (page, type) => {
+    if (!type) return;
     setLoading(true);
     return apiRequest(
-      `${BASE_URL}/api/guitars?page=${page}&limit=20`,
+      `${BASE_URL}/api/equipment?page=${page}&limit=20&type=${type}`,
       {},
       (data) =>
         setState((prev) => ({
           ...prev,
-          guitars: page === 1 ? data.guitars : [...prev.guitars, ...data.guitars],
-          totalGuitars: page === 1 ? data.total : prev.totalGuitars,
+          equipment: page === 1 ? data.items : [...prev.equipment, ...data.items],
+          totalEquipment: page === 1 ? data.total : prev.totalEquipment,
           page,
           settings: data.settings,
           loading: false,
@@ -125,7 +128,7 @@ const GuitarProvider = ({ children }) => {
     const resizedFile = await resizeImage(file.file);
     formData.append("file", resizedFile);
     formData.append("folder", "test");
-    formData.append("upload_preset", "guitar-images");
+    formData.append("upload_preset", "equipment-images");
     formData.append("api_key", apiKey);
 
     return apiRequest(
@@ -136,13 +139,13 @@ const GuitarProvider = ({ children }) => {
           console.error("Error uploading image:", data.error);
           return null;
         }
-        const currentGuitar = state.currentGuitar;
-        const updatedImages = currentGuitar.images.map((image) =>
+        const currentEquipment = state.currentEquipment;
+        const updatedImages = currentEquipment.images.map((image) =>
           getCombinedUrl(image) === file.url ? data.secure_url : image
         );
         setState((prev) => ({
           ...prev,
-          currentGuitar: { ...prev.currentGuitar, images: updatedImages },
+          currentEquipment: { ...prev.currentEquipment, images: updatedImages },
         }));
         return data.secure_url;
       }
@@ -150,9 +153,9 @@ const GuitarProvider = ({ children }) => {
   };
 
   const deleteImage = async (imageUrl) => {
-    const currentGuitar = state.currentGuitar;
-    if (!currentGuitar || !currentGuitar._id) {
-      console.error("No guitar selected for deletion");
+    const currentEquipment = state.currentEquipment;
+    if (!currentEquipment || !currentEquipment._id) {
+      console.error("No equipment selected for deletion");
       return;
     }
     if (!imageUrl) {
@@ -160,42 +163,42 @@ const GuitarProvider = ({ children }) => {
       return;
     }
     return apiRequest(
-      `${BASE_URL}/api/guitars/deleteImage/${currentGuitar._id}`,
+      `${BASE_URL}/api/equipment/deleteImage/${currentEquipment._id}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ imageUrl }),
       },
       () => {
-        const updatedImages = currentGuitar.images.filter(
+        const updatedImages = currentEquipment.images.filter(
           (image) => getCombinedUrl(image) !== imageUrl
         );
         setState((prev) => ({
           ...prev,
-          currentGuitar: { ...prev.currentGuitar, images: updatedImages },
+          currentEquipment: { ...prev.currentEquipment, images: updatedImages },
         }));
       }
     );
   };
 
-  const loadMore = () => {
+  const loadMore = (type) => {
     const nextPage = state.page + 1;
-    fetchGuitars(nextPage);
+    fetchEquipmentList(nextPage, type);
   };
 
   const value = {
     ...state,
     setLoading,
-    setCurrentGuitar,
-    clearCurrentGuitar,
+    setCurrentEquipment,
+    clearCurrentEquipment,
     setFilesToUpload,
     clearFilesToUpload,
     fetchSettings,
-    fetchGuitar,
-    addGuitar,
-    updateGuitar,
-    deleteGuitar,
-    fetchGuitars,
+    fetchEquipment,
+    addEquipment,
+    updateEquipment,
+    deleteEquipment,
+    fetchEquipmentList,
     cloudinaryUpload,
     deleteImage,
     loadMore,

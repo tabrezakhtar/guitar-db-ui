@@ -8,13 +8,13 @@ import SkeletonImage from "./SkeletonImage";
 
 function GuitarsGrid() {
   const navigate = useNavigate();
-  const { guitars, totalGuitars, loading, loadMore, fetchGuitars } = useGuitarContext();
+  const { equipment, totalEquipment, loading, loadMore, fetchEquipmentList } = useGuitarContext();
 
   useEffect(() => {
-    fetchGuitars(1);
+    fetchEquipmentList(1, "guitar");
   }, []);
 
-  if (loading && guitars.length === 0) {
+  if (loading && equipment.length === 0) {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -24,9 +24,9 @@ function GuitarsGrid() {
 
   return (
     <InfiniteScroll
-      dataLength={guitars.length}
-      next={loadMore}
-      hasMore={totalGuitars > guitars.length}
+      dataLength={equipment.length}
+      next={() => loadMore("guitar")}
+      hasMore={totalEquipment > equipment.length}
       loader={
         <div className="flex justify-center p-4">
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -34,11 +34,11 @@ function GuitarsGrid() {
       }
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {guitars.map(({_id, brand, name, description, images}) => (
+        {equipment.map(({ _id, brand, name, description, images }) => (
           <div
             key={_id}
             className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200"
-            onClick={() => navigate('/view/' + _id)}
+            onClick={() => navigate("/view/" + _id)}
           >
             {images && images.length > 0 ? (
               <Thumbnail url={getCloudinaryThumbnail(images[0], 250)} alt={`Thumbnail: ${brand} ${name}`} />

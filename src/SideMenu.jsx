@@ -10,7 +10,7 @@ function SideMenu() {
 
   const capitalize = (str) => {
     return str.substring(0, 1).toUpperCase() + str.substring(1);
-  }
+  };
 
   return (
     <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4 bg-[url(/guitar-bg.svg)] bg-contain bg-top bg-no-repeat">

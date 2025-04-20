@@ -4,11 +4,11 @@ import { useGuitarContext } from "./context/GuitarContext";
 import { getCombinedUrl } from "./imageUtils";
 
 function Guitars() {
-  const { guitars, loading, fetchGuitars, loadMore, page, totalGuitars } = useGuitarContext();
+  const { equipment, loading, fetchEquipment, loadMore, page, totalEquipment } = useGuitarContext();
 
   useEffect(() => {
-    fetchGuitars();
-  }, [fetchGuitars]);
+    fetchEquipment("guitar");
+  }, [fetchEquipment]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -18,16 +18,16 @@ function Guitars() {
     <div>
       <h1>Guitars</h1>
       <div className="guitar-list">
-        {guitars.map((guitar) => (
-          <div key={guitar.id} className="guitar-item">
-            <Link to={`/guitars/${guitar.id}`}>
-              <img src={getCombinedUrl(guitar.image)} alt={guitar.name} />
-              <h2>{guitar.name}</h2>
+        {equipment.map((item) => (
+          <div key={item.id} className="guitar-item">
+            <Link to={`/guitars/${item.id}`}>
+              <img src={getCombinedUrl(item.image)} alt={item.name} />
+              <h2>{item.name}</h2>
             </Link>
           </div>
         ))}
       </div>
-      {page * 10 < totalGuitars && (
+      {page * 10 < totalEquipment && (
         <button onClick={loadMore}>Load More</button>
       )}
     </div>

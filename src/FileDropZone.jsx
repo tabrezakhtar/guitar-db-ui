@@ -4,7 +4,7 @@ import { useGuitarContext } from "./context/GuitarContext";
 
 export default function FileDropZone() {
   const fileInputRef = useRef(null);
-  const { currentGuitar, setCurrentGuitar, setFilesToUpload } = useGuitarContext();
+  const { currentEquipment, setCurrentEquipment, setFilesToUpload } = useGuitarContext();
 
   const onDrop = useCallback(acceptedFiles => {
     const newFiles = acceptedFiles.map(file => ({
@@ -12,15 +12,15 @@ export default function FileDropZone() {
       url: URL.createObjectURL(file)
     }));
 
-    setCurrentGuitar({
-      ...currentGuitar,
-      images: [...(currentGuitar?.images || []), ...newFiles.map(f => f.url)]
+    setCurrentEquipment({
+      ...currentEquipment,
+      images: [...(currentEquipment?.images || []), ...newFiles.map(f => f.url)]
     });
 
     setFilesToUpload(prevFiles => [...(prevFiles || []), ...newFiles]);
-  }, [currentGuitar]);
+  }, [currentEquipment, setCurrentEquipment, setFilesToUpload]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop});
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
     <div
@@ -36,5 +36,5 @@ export default function FileDropZone() {
         )
       }
     </div>
-  )
+  );
 }

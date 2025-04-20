@@ -5,21 +5,21 @@ import { useGuitarContext } from "./context/GuitarContext";
 import EditImages from "./EditImages";
 import Alert from "./Alert";
 
-function EditGuitar({ mode = "edit" }) {
+function EditGuitar({ mode = "edit", type = "guitar" }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const {
-    currentGuitar,
+    currentEquipment,
     settings,
     loading,
-    fetchGuitar,
-    updateGuitar,
-    addGuitar,
-    deleteGuitar,
-    setCurrentGuitar,
+    fetchEquipment,
+    updateEquipment,
+    addEquipment,
+    deleteEquipment,
+    setCurrentEquipment,
     cloudinaryUpload,
     filesToUpload,
-    clearCurrentGuitar,
+    clearCurrentEquipment,
     fetchSettings,
   } = useGuitarContext();
 
@@ -37,11 +37,11 @@ function EditGuitar({ mode = "edit" }) {
 
   useEffect(() => {
     if (mode === "edit") {
-      if (!currentGuitar || currentGuitar._id !== id) {
-        fetchGuitar(id);
+      if (!currentEquipment || currentEquipment._id !== id) {
+        fetchEquipment(id, type);
       }
     } else if (mode === "add" && !initialized) {
-      setCurrentGuitar({
+      setCurrentEquipment({
         brand: "",
         shape: "",
         name: "",
@@ -59,12 +59,12 @@ function EditGuitar({ mode = "edit" }) {
       });
       setInitialized(true);
     }
-  }, []);
+  }, [id, mode, type, currentEquipment, initialized, fetchEquipment, setCurrentEquipment]);
 
   const createOptions = (items) =>
     items?.map((item) => ({ value: item, label: item })) || [];
 
-  async function saveGuitar(e) {
+  async function saveEquipment(e) {
     e.preventDefault();
     setIsUploading(true);
     setUploadProgress(null);
@@ -78,12 +78,12 @@ function EditGuitar({ mode = "edit" }) {
       }
       setUploadProgress(null);
 
-      if (!currentGuitar._id) {
-        const result = await addGuitar();
+      if (!currentEquipment._id) {
+        const result = await addEquipment(type);
         setSaved(true);
         navigate(`/edit/${result._id}`);
       } else {
-        await updateGuitar();
+        await updateEquipment(type);
       }
 
       setSaved(true);
@@ -93,10 +93,10 @@ function EditGuitar({ mode = "edit" }) {
     }
   }
 
-  async function removeGuitar() {
+  async function removeEquipment() {
     setIsUploading(true);
     try {
-      await deleteGuitar();
+      await deleteEquipment(type);
       navigate("/");
     } finally {
       setIsUploading(false);
@@ -105,7 +105,7 @@ function EditGuitar({ mode = "edit" }) {
 
   const handleDelete = () => {
     setShowAlert(false);
-    removeGuitar();
+    removeEquipment();
   };
 
   if (loading && mode === "edit") {
@@ -129,8 +129,8 @@ function EditGuitar({ mode = "edit" }) {
         {mode === "edit" && (
           <button
             onClick={() => {
-              clearCurrentGuitar();
-              navigate(`/view/${currentGuitar._id}`);
+              clearCurrentEquipment();
+              navigate(`/view/${currentEquipment._id}`);
             }}
             className="hover:underline text-blue-500"
           >
@@ -150,13 +150,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings?.brand)}
                     value={
-                      currentGuitar?.brand
-                        ? { value: currentGuitar.brand, label: currentGuitar.brand }
+                      currentEquipment?.brand
+                        ? { value: currentEquipment.brand, label: currentEquipment.brand }
                         : null
                     }
                     onChange={(selected) =>
-                      setCurrentGuitar({
-                        ...currentGuitar,
+                      setCurrentEquipment({
+                        ...currentEquipment,
                         brand: selected?.value || "",
                       })
                     }
@@ -170,9 +170,9 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="shape"
-                    value={currentGuitar?.shape || ""}
+                    value={currentEquipment?.shape || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({ ...currentGuitar, shape: e.target.value })
+                      setCurrentEquipment({ ...currentEquipment, shape: e.target.value })
                     }
                     className="border p-2 rounded w-full"
                   />
@@ -183,9 +183,9 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="name"
-                    value={currentGuitar?.name || ""}
+                    value={currentEquipment?.name || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({ ...currentGuitar, name: e.target.value })
+                      setCurrentEquipment({ ...currentEquipment, name: e.target.value })
                     }
                     className="border p-2 rounded w-full"
                   />
@@ -196,9 +196,9 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="series"
-                    value={currentGuitar?.series || ""}
+                    value={currentEquipment?.series || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({ ...currentGuitar, series: e.target.value })
+                      setCurrentEquipment({ ...currentEquipment, series: e.target.value })
                     }
                     className="border p-2 rounded w-full"
                   />
@@ -209,13 +209,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings.pickups)}
                     value={
-                      currentGuitar?.pickups
-                        ? { value: currentGuitar.pickups, label: currentGuitar.pickups }
+                      currentEquipment?.pickups
+                        ? { value: currentEquipment.pickups, label: currentEquipment.pickups }
                         : null
                     }
                     onChange={(selected) =>
-                      setCurrentGuitar({
-                        ...currentGuitar,
+                      setCurrentEquipment({
+                        ...currentEquipment,
                         pickups: selected?.value || "",
                       })
                     }
@@ -229,13 +229,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings.tremolo)}
                     value={
-                      currentGuitar?.trem
-                        ? { value: currentGuitar.trem, label: currentGuitar.trem }
+                      currentEquipment?.trem
+                        ? { value: currentEquipment.trem, label: currentEquipment.trem }
                         : null
                     }
                     onChange={(selected) =>
-                      setCurrentGuitar({
-                        ...currentGuitar,
+                      setCurrentEquipment({
+                        ...currentEquipment,
                         trem: selected?.value || "",
                       })
                     }
@@ -249,10 +249,10 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="number"
                     name="frets"
-                    value={currentGuitar?.frets || 22}
+                    value={currentEquipment?.frets || 22}
                     onChange={(e) =>
-                      setCurrentGuitar({
-                        ...currentGuitar,
+                      setCurrentEquipment({
+                        ...currentEquipment,
                         frets: Number(e.target.value),
                       })
                     }
@@ -265,9 +265,9 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="tuners"
-                    value={currentGuitar?.tuners || ""}
+                    value={currentEquipment?.tuners || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({ ...currentGuitar, tuners: e.target.value })
+                      setCurrentEquipment({ ...currentEquipment, tuners: e.target.value })
                     }
                     className="border p-2 rounded w-full"
                   />
@@ -278,13 +278,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings.colours)}
                     value={
-                      currentGuitar?.colour
-                        ? { value: currentGuitar.colour, label: currentGuitar.colour }
+                      currentEquipment?.colour
+                        ? { value: currentEquipment.colour, label: currentEquipment.colour }
                         : null
                     }
                     onChange={(selected) =>
-                      setCurrentGuitar({
-                        ...currentGuitar,
+                      setCurrentEquipment({
+                        ...currentEquipment,
                         colour: selected?.value || "",
                       })
                     }
@@ -298,13 +298,13 @@ function EditGuitar({ mode = "edit" }) {
                   <Select
                     options={createOptions(settings.fretboard)}
                     value={
-                      currentGuitar?.fretboard
-                        ? { value: currentGuitar.fretboard, label: currentGuitar.fretboard }
+                      currentEquipment?.fretboard
+                        ? { value: currentEquipment.fretboard, label: currentEquipment.fretboard }
                         : null
                     }
                     onChange={(selected) =>
-                      setCurrentGuitar({
-                        ...currentGuitar,
+                      setCurrentEquipment({
+                        ...currentEquipment,
                         fretboard: selected?.value || "",
                       })
                     }
@@ -318,10 +318,10 @@ function EditGuitar({ mode = "edit" }) {
                   <input
                     type="text"
                     name="description"
-                    value={currentGuitar?.description || ""}
+                    value={currentEquipment?.description || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({
-                        ...currentGuitar,
+                      setCurrentEquipment({
+                        ...currentEquipment,
                         description: e.target.value,
                       })
                     }
@@ -334,10 +334,10 @@ function EditGuitar({ mode = "edit" }) {
                   <textarea
                     type="text"
                     name="detailedDescription"
-                    value={currentGuitar?.detailedDescription || ""}
+                    value={currentEquipment?.detailedDescription || ""}
                     onChange={(e) =>
-                      setCurrentGuitar({
-                        ...currentGuitar,
+                      setCurrentEquipment({
+                        ...currentEquipment,
                         detailedDescription: e.target.value,
                       })
                     }
@@ -370,7 +370,7 @@ function EditGuitar({ mode = "edit" }) {
                   <div>
                     <button
                       type="submit"
-                      onClick={saveGuitar}
+                      onClick={saveEquipment}
                       disabled={isUploading}
                       className={`bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer ${
                         isUploading ? "opacity-50 cursor-not-allowed" : ""
@@ -382,7 +382,7 @@ function EditGuitar({ mode = "edit" }) {
                           {uploadProgress || "Saving..."}
                         </div>
                       ) : (
-                        mode === "edit" ? "Save Changes" : "Add Guitar"
+                        mode === "edit" ? "Save Changes" : `Add ${type.charAt(0).toUpperCase() + type.slice(1)}`
                       )}
                     </button>
                   </div>
@@ -394,7 +394,7 @@ function EditGuitar({ mode = "edit" }) {
       </div>
       {showAlert && (
         <Alert
-          message="Are you sure you want to delete this guitar?"
+          message={`Are you sure you want to delete this ${type}?`}
           onConfirm={handleDelete}
           onCancel={() => setShowAlert(false)}
         />

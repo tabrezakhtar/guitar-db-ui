@@ -9,13 +9,13 @@ import SkeletonImage from "./SkeletonImage";
 const ViewGuitar = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { currentGuitar: guitar, loading, fetchGuitar, clearCurrentGuitar } = useGuitarContext();
+  const { currentEquipment: equipment, loading, fetchEquipment, clearCurrentEquipment } = useGuitarContext();
 
   useEffect(() => {
-    fetchGuitar(id);
-  }, [id]);
+    fetchEquipment(id, "guitar");
+  }, [id, fetchEquipment]);
 
-  if (loading || !guitar) {
+  if (loading || !equipment) {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -30,8 +30,8 @@ const ViewGuitar = () => {
           <Link to="/" className="hover:underline mr-4">Back</Link>
           <button
             onClick={() => {
-              clearCurrentGuitar();
-              navigate(`/edit/${guitar._id}`);
+              clearCurrentEquipment();
+              navigate(`/edit/${equipment._id}`);
             }}
             className="hover:underline text-blue-500"
           >
@@ -41,9 +41,9 @@ const ViewGuitar = () => {
         
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
-            {guitar?.images && guitar.images.length > 0 ? (
+            {equipment?.images && equipment.images.length > 0 ? (
               <ImageGallery 
-                items={guitar.images.map(image => ({
+                items={equipment.images.map(image => ({
                   original: image,
                   thumbnail: getCloudinaryThumbnail(image, 50),
                 }))}
@@ -55,7 +55,7 @@ const ViewGuitar = () => {
             )}
           </div>
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">
-            {guitar?.detailedDescription}
+            {equipment?.detailedDescription}
           </div>
         </div>
       </div>
