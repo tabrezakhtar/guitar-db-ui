@@ -42,7 +42,7 @@ const GuitarProvider = ({ children }) => {
     if (!id || !type) return;
     setLoading(true);
     return apiRequest(
-      `${BASE_URL}/api/equipment?id=${id}&type=${type}`,
+      `${BASE_URL}/api/equipmentById?id=${id}&type=${type}`,
       {},
       ({ item, settings }) =>
         setState((prev) => ({
@@ -105,7 +105,7 @@ const GuitarProvider = ({ children }) => {
     if (!type) return;
     setLoading(true);
     return apiRequest(
-      `${BASE_URL}/api/equipment?page=${page}&limit=20&type=${type}`,
+      `${BASE_URL}/api/equipmentList?page=${page}&limit=20&type=${type}`,
       {},
       (data) =>
         setState((prev) => ({

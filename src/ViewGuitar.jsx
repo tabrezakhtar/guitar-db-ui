@@ -13,7 +13,7 @@ const ViewGuitar = () => {
 
   useEffect(() => {
     fetchEquipment(id, "guitar");
-  }, [id, fetchEquipment]);
+  }, []);
 
   if (loading || !equipment) {
     return (

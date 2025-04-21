@@ -8,7 +8,7 @@ function Guitars() {
 
   useEffect(() => {
     fetchEquipment("guitar");
-  }, [fetchEquipment]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;

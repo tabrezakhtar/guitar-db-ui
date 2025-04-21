@@ -33,7 +33,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
     if (!settings || Object.keys(settings).length === 0) {
       fetchSettings();
     }
-  }, [settings, fetchSettings]);
+  }, []);
 
   useEffect(() => {
     if (mode === "edit") {
