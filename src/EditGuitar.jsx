@@ -143,6 +143,18 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
           </div>
         )}
 
+        {mode === "edit" && (
+          <button
+            onClick={() => {
+              clearCurrentEquipment();
+              navigate(`/view/${currentEquipment._id}`);
+            }}
+            className="hover:underline text-blue-500"
+          >
+            View
+          </button>
+        )}
+
         {showAlert && (
           <Alert
             title="Delete Confirmation"
