@@ -152,14 +152,14 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
           />
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-1 md:grid-cols-5 gap-4">
           {/* Left Column: EditImages */}
-          <div>
+          <div className="md:col-span-2">
             <EditImages />
           </div>
 
           {/* Right Column: Form Fields */}
-          <div>
+          <div className="md:col-span-3">
             <form className="space-y-4" onSubmit={saveEquipment}>
               <div>
                 <label className="block">Name:</label>
