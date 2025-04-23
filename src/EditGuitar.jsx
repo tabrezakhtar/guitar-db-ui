@@ -253,7 +253,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
                     isUploading ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
-                  {isUploading ? "Saving..." : mode === "edit" ? "Save Changes" : `Add ${type}`}
+                  {isUploading ? (uploadProgress || "Saving...") : mode === "edit" ? "Save Changes" : `Add ${type}`}
                 </button>
               </div>
             </form>

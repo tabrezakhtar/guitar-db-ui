@@ -2,11 +2,10 @@ import { useState, useRef } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Thumbnail from "./Thumbnail";
 import { useGuitarContext } from "./context/GuitarContext";
-import { getCombinedUrl } from "./imageUtils";
 import FileDropZone from "./FileDropZone";
 
 export default function EditImages() {
-  const { currentEquipment, setFilesToUpload, setCurrentEquipment, deleteImage } = useGuitarContext();
+  const { currentEquipment, setCurrentEquipment } = useGuitarContext();
 
   const handleSort = (newList) => {
     setCurrentEquipment({
