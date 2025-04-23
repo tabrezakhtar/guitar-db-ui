@@ -168,16 +168,20 @@ const GuitarProvider = ({ children }) => {
   };
 
   const cloudinaryUpload = async (file) => {
+    if (!file.url.startsWith("blob:http")) {
+      return file.url;
+    }
+  
     const cloudName = "x8d5hlk1";
     const apiKey = "124113443758435";
     const formData = new FormData();
-
+  
     const resizedFile = await resizeImage(file.file);
     formData.append("file", resizedFile);
     formData.append("folder", "test");
     formData.append("upload_preset", "guitar-images");
     formData.append("api_key", apiKey);
-
+  
     return apiRequest(
       `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
       { method: "POST", body: formData },
@@ -186,18 +190,23 @@ const GuitarProvider = ({ children }) => {
           console.error("Error uploading image:", data.error);
           return null;
         }
-        
+  
         setState((prev) => {
           const updatedImages = prev.currentEquipment.images.map((image) =>
             getCombinedUrl(image) === file.url ? data.secure_url : image
           );
-          
+  
+          const updatedFilesToUpload = prev.filesToUpload.map((fileObj) =>
+            fileObj.url === file.url ? { ...fileObj, url: data.secure_url } : fileObj
+          );
+  
           return {
             ...prev,
             currentEquipment: { ...prev.currentEquipment, images: updatedImages },
+            filesToUpload: updatedFilesToUpload,
           };
         });
-
+  
         return data.secure_url;
       }
     );
