@@ -27,7 +27,7 @@ function AddGuitar() {
       </div>
 
       <h1 className="text-2xl font-bold mb-4">Add New {toSentenceCase(equipType)}</h1>
-      <EditGuitar mode="add" />
+      <EditGuitar mode="add" type={equipType} />
     </div>
   );
 }
