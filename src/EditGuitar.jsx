@@ -150,6 +150,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
               navigate(`/view/${currentEquipment._id}`);
             }}
             className="hover:underline text-blue-500"
+            disabled={isUploading}
           >
             View
           </button>
@@ -165,97 +166,95 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
         )}
 
         <div className="grid sm:grid-cols-1 md:grid-cols-5 gap-4">
-          {/* Left Column: EditImages */}
           <div className="md:col-span-2">
-            <EditImages />
+            <EditImages disabled={isUploading} />
           </div>
 
-          {/* Right Column: Form Fields */}
           <div className="md:col-span-3">
-            <form className="space-y-4" onSubmit={saveEquipment}>
-              <div>
-                <label className="block">Name:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={currentEquipment?.name || ""}
-                  onChange={(e) =>
-                    setCurrentEquipment({ ...currentEquipment, name: e.target.value })
-                  }
-                  className="border p-2 rounded w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block">Price:</label>
-                <input
-                  type="text"
-                  name="price"
-                  value={currentEquipment?.price || ""}
-                  onChange={(e) =>
-                    setCurrentEquipment({ ...currentEquipment, price: e.target.value })
-                  }
-                  className="border p-2 rounded w-full"
-                />
-              </div>
-
-              {fieldMapping[type]?.map((field) => (
-                <div key={field.key}>
-                  <label className="block">{field.label}:</label>
-                  {field.type === "text" || field.type === "number" ? (
-                    <input
-                      type={field.type}
-                      name={field.key}
-                      value={currentEquipment?.[field.key] || ""}
-                      onChange={(e) =>
-                        setCurrentEquipment({
-                          ...currentEquipment,
-                          [field.key]: field.type === "number" ? Number(e.target.value) : e.target.value,
-                        })
-                      }
-                      className="border p-2 rounded w-full"
-                    />
-                  ) : field.type === "select" ? (
-                    <Select
-                      options={createOptions(field.options)}
-                      value={
-                        currentEquipment?.[field.key]
-                          ? { value: currentEquipment[field.key], label: currentEquipment[field.key] }
-                          : null
-                      }
-                      onChange={(selected) =>
-                        setCurrentEquipment({
-                          ...currentEquipment,
-                          [field.key]: selected?.value || "",
-                        })
-                      }
-                      isClearable
-                      className="text-gray-800"
-                    />
-                  ) : null}
+            <form className={`space-y-4 ${isUploading ? "opacity-50" : ""}`} onSubmit={saveEquipment}>
+              <fieldset disabled={isUploading}>
+                <div>
+                  <label className="block">Name:</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={currentEquipment?.name || ""}
+                    onChange={(e) =>
+                      setCurrentEquipment({ ...currentEquipment, name: e.target.value })
+                    }
+                    className="border p-2 rounded w-full"
+                  />
                 </div>
-              ))}
 
-              <div className="flex justify-between mt-4">
-                {mode === "edit" && (
+                <div>
+                  <label className="block">Price:</label>
+                  <input
+                    type="text"
+                    name="price"
+                    value={currentEquipment?.price || ""}
+                    onChange={(e) =>
+                      setCurrentEquipment({ ...currentEquipment, price: e.target.value })
+                    }
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+
+                {fieldMapping[type]?.map((field) => (
+                  <div key={field.key}>
+                    <label className="block">{field.label}:</label>
+                    {field.type === "text" || field.type === "number" ? (
+                      <input
+                        type={field.type}
+                        name={field.key}
+                        value={currentEquipment?.[field.key] || ""}
+                        onChange={(e) =>
+                          setCurrentEquipment({
+                            ...currentEquipment,
+                            [field.key]: field.type === "number" ? Number(e.target.value) : e.target.value,
+                          })
+                        }
+                        className="border p-2 rounded w-full"
+                      />
+                    ) : field.type === "select" ? (
+                      <Select
+                        options={createOptions(field.options)}
+                        value={
+                          currentEquipment?.[field.key]
+                            ? { value: currentEquipment[field.key], label: currentEquipment[field.key] }
+                            : null
+                        }
+                        onChange={(selected) =>
+                          setCurrentEquipment({
+                            ...currentEquipment,
+                            [field.key]: selected?.value || "",
+                          })
+                        }
+                        isClearable
+                        className="text-gray-800"
+                        isDisabled={isUploading}
+                      />
+                    ) : null}
+                  </div>
+                ))}
+
+                <div className="flex justify-between mt-4">
+                  {mode === "edit" && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAlert(true)}
+                      className="bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded"
+                    >
+                      Delete
+                    </button>
+                  )}
                   <button
-                    type="button"
-                    onClick={() => setShowAlert(true)}
-                    className="bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded"
+                    type="submit"
+                    className="bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer"
                   >
-                    Delete
+                    {isUploading ? (uploadProgress || "Saving...") : mode === "edit" ? "Save Changes" : `Add ${type}`}
                   </button>
-                )}
-                <button
-                  type="submit"
-                  disabled={isUploading}
-                  className={`bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer ${
-                    isUploading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  {isUploading ? (uploadProgress || "Saving...") : mode === "edit" ? "Save Changes" : `Add ${type}`}
-                </button>
-              </div>
+                </div>
+              </fieldset>
             </form>
           </div>
         </div>
