@@ -237,15 +237,6 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
               ))}
 
               <div className="flex justify-between mt-4">
-                <button
-                  type="submit"
-                  disabled={isUploading}
-                  className={`bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer ${
-                    isUploading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  {isUploading ? "Saving..." : mode === "edit" ? "Save Changes" : `Add ${type}`}
-                </button>
                 {mode === "edit" && (
                   <button
                     type="button"
@@ -255,6 +246,15 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
                     Delete
                   </button>
                 )}
+                <button
+                  type="submit"
+                  disabled={isUploading}
+                  className={`bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer ${
+                    isUploading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {isUploading ? "Saving..." : mode === "edit" ? "Save Changes" : `Add ${type}`}
+                </button>
               </div>
             </form>
           </div>

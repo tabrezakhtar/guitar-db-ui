@@ -26,7 +26,12 @@ const GuitarProvider = ({ children }) => {
 
   const clearCurrentEquipment = () => setState((prev) => ({ ...prev, currentEquipment: null }));
 
-  const setFilesToUpload = (files) => setState((prev) => ({ ...prev, filesToUpload: files }));
+  const setFilesToUpload = (files) => {
+    setState((prev) => ({
+      ...prev,
+      filesToUpload: typeof files === "function" ? files(prev.filesToUpload) : files
+    }));
+  };
 
   const clearFilesToUpload = () => setState((prev) => ({ ...prev, filesToUpload: null }));
 
@@ -56,36 +61,67 @@ const GuitarProvider = ({ children }) => {
   };
 
   const addEquipment = async (type) => {
-    const currentEquipment = state.currentEquipment;
-    if (!type) return;
-    return apiRequest(
-      `${BASE_URL}/api/equipment/add?type=${type}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentEquipment),
-      },
-      (result) =>
-        setState((prev) => ({
-          ...prev,
-          currentEquipment: result,
-          loading: false,
-        }))
-    );
+    // This ensures we get the most up-to-date state at the moment the function executes
+    return new Promise((resolve) => {
+      setState(prev => {
+        const currentEquipment = prev.currentEquipment;
+        
+        console.log("addEquipment()", currentEquipment);
+        if (!type || !currentEquipment) {
+          resolve(null);
+          return prev;
+        }
+        
+        apiRequest(
+          `${BASE_URL}/api/equipment/add?type=${type}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(currentEquipment),
+          },
+          (result) => {
+            setState(innerPrev => ({
+              ...innerPrev,
+              currentEquipment: result,
+              loading: false,
+            }));
+            resolve(result);
+          }
+        );
+        
+        return prev;
+      });
+    });
   };
 
   const updateEquipment = async (type) => {
-    const currentEquipment = state.currentEquipment;
-    if (!type || !currentEquipment?._id) return;
-    return apiRequest(
-      `${BASE_URL}/api/equipment/update/${currentEquipment._id}?type=${type}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentEquipment),
-      },
-      () => setLoading(false)
-    );
+    // This ensures we get the most up-to-date state at the moment the function executes
+    return new Promise((resolve) => {
+      setState(prev => {
+        const currentEquipment = prev.currentEquipment;
+        
+        console.log("updateEquipment()", currentEquipment);
+        if (!type || !currentEquipment?._id) {
+          resolve(null);
+          return prev;
+        }
+        
+        apiRequest(
+          `${BASE_URL}/api/equipment/update/${currentEquipment._id}?type=${type}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(currentEquipment),
+          },
+          (result) => {
+            setLoading(false);
+            resolve(result);
+          }
+        );
+        
+        return prev;
+      });
+    });
   };
 
   const deleteEquipment = async (type) => {
@@ -128,7 +164,7 @@ const GuitarProvider = ({ children }) => {
     const resizedFile = await resizeImage(file.file);
     formData.append("file", resizedFile);
     formData.append("folder", "test");
-    formData.append("upload_preset", "equipment-images");
+    formData.append("upload_preset", "guitar-images");
     formData.append("api_key", apiKey);
 
     return apiRequest(
@@ -139,14 +175,20 @@ const GuitarProvider = ({ children }) => {
           console.error("Error uploading image:", data.error);
           return null;
         }
-        const currentEquipment = state.currentEquipment;
-        const updatedImages = currentEquipment.images.map((image) =>
-          getCombinedUrl(image) === file.url ? data.secure_url : image
-        );
-        setState((prev) => ({
-          ...prev,
-          currentEquipment: { ...prev.currentEquipment, images: updatedImages },
-        }));
+        
+        // Use the latest state via the state updater function
+        setState((prev) => {
+          const updatedImages = prev.currentEquipment.images.map((image) =>
+            getCombinedUrl(image) === file.url ? data.secure_url : image
+          );
+          
+          return {
+            ...prev,
+            currentEquipment: { ...prev.currentEquipment, images: updatedImages },
+          };
+        });
+
+        // Return the secure URL for any subsequent operations
         return data.secure_url;
       }
     );
