@@ -61,7 +61,6 @@ const GuitarProvider = ({ children }) => {
   };
 
   const addEquipment = async (type) => {
-    // This ensures we get the most up-to-date state at the moment the function executes
     return new Promise((resolve) => {
       setState(prev => {
         const currentEquipment = prev.currentEquipment;
@@ -95,7 +94,6 @@ const GuitarProvider = ({ children }) => {
   };
 
   const updateEquipment = async (type) => {
-    // This ensures we get the most up-to-date state at the moment the function executes
     return new Promise((resolve) => {
       setState(prev => {
         const currentEquipment = prev.currentEquipment;
@@ -176,7 +174,6 @@ const GuitarProvider = ({ children }) => {
           return null;
         }
         
-        // Use the latest state via the state updater function
         setState((prev) => {
           const updatedImages = prev.currentEquipment.images.map((image) =>
             getCombinedUrl(image) === file.url ? data.secure_url : image
@@ -188,7 +185,6 @@ const GuitarProvider = ({ children }) => {
           };
         });
 
-        // Return the secure URL for any subsequent operations
         return data.secure_url;
       }
     );
