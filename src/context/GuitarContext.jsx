@@ -95,15 +95,14 @@ const GuitarProvider = ({ children }) => {
 
   const updateEquipment = async (type) => {
     return new Promise((resolve) => {
-      setState(prev => {
+      setState((prev) => {
         const currentEquipment = prev.currentEquipment;
-        
-        console.log("updateEquipment()", currentEquipment);
+  
         if (!type || !currentEquipment?._id) {
           resolve(null);
           return prev;
         }
-        
+  
         apiRequest(
           `${BASE_URL}/api/equipment/update/${currentEquipment._id}?type=${type}`,
           {
@@ -112,11 +111,25 @@ const GuitarProvider = ({ children }) => {
             body: JSON.stringify(currentEquipment),
           },
           (result) => {
-            setLoading(false);
+            setState((innerPrev) => {
+              const updatedFilesToUpload = innerPrev.filesToUpload.map((fileObj, index) => {
+                if (result.images[index]) {
+                  return { ...fileObj, url: result.images[index] };
+                }
+                return fileObj;
+              });
+  
+              return {
+                ...innerPrev,
+                currentEquipment: result,
+                filesToUpload: updatedFilesToUpload,
+                loading: false,
+              };
+            });
             resolve(result);
           }
         );
-        
+  
         return prev;
       });
     });
@@ -200,6 +213,22 @@ const GuitarProvider = ({ children }) => {
       console.error("No image URL provided for deletion");
       return;
     }
+  
+    if (imageUrl.startsWith("blob:http")) {
+      const updatedImages = currentEquipment.images.filter(
+        (image) => getCombinedUrl(image) !== imageUrl
+      );
+      const updatedFilesToUpload = state.filesToUpload.filter(
+        (fileObj) => fileObj.url !== imageUrl
+      );
+      setState((prev) => ({
+        ...prev,
+        currentEquipment: { ...prev.currentEquipment, images: updatedImages },
+        filesToUpload: updatedFilesToUpload,
+      }));
+      return;
+    }
+  
     return apiRequest(
       `${BASE_URL}/api/equipment/deleteImage/${currentEquipment._id}`,
       {
@@ -211,9 +240,13 @@ const GuitarProvider = ({ children }) => {
         const updatedImages = currentEquipment.images.filter(
           (image) => getCombinedUrl(image) !== imageUrl
         );
+        const updatedFilesToUpload = state.filesToUpload.filter(
+          (fileObj) => fileObj.url !== imageUrl
+        );
         setState((prev) => ({
           ...prev,
           currentEquipment: { ...prev.currentEquipment, images: updatedImages },
+          filesToUpload: updatedFilesToUpload,
         }));
       }
     );
