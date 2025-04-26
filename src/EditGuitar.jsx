@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { useGuitarContext } from "./context/GuitarContext";
 import EditImages from "./EditImages";
-import Alert from "./Alert";
+import Modal from "./Modal";
 
 function EditGuitar({ mode = "edit", type = "guitar" }) {
   const { id } = useParams();
@@ -26,7 +26,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(null);
   const [saved, setSaved] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
   const fieldMapping = {
@@ -120,7 +120,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
   }
 
   const handleDelete = () => {
-    setShowAlert(false);
+    setShowModal(false);
     deleteEquipment(id, type);
     navigate("/");
   };
@@ -156,12 +156,12 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
           </button>
         )}
 
-        {showAlert && (
-          <Alert
+        {showModal && (
+          <Modal
             title="Delete Confirmation"
             message="Are you sure you want to delete this equipment?"
             onConfirm={handleDelete}
-            onCancel={() => setShowAlert(false)}
+            onCancel={() => setShowModal(false)}
           />
         )}
 
@@ -241,7 +241,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
                   {mode === "edit" && (
                     <button
                       type="button"
-                      onClick={() => setShowAlert(true)}
+                      onClick={() => setShowModal(true)}
                       className="bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded"
                     >
                       Delete

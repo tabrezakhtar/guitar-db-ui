@@ -1,4 +1,4 @@
-const Alert = ({ message, onConfirm, onCancel }) => {
+const Modal = ({ message, onConfirm, onCancel }) => {
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
       onCancel();
@@ -31,4 +31,4 @@ const Alert = ({ message, onConfirm, onCancel }) => {
   );
 };
 
-export default Alert;
+export default Modal;

@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useGuitarContext } from "./context/GuitarContext";
 import { getCombinedUrl } from "./imageUtils";
-import Alert from "./Alert";
+import Modal from "./Modal";
 
 const Thumbnail = ({ index, url, alt, showDelete }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { deleteImage } = useGuitarContext();
 
   const handleDelete = async () => {
-    setShowAlert(false);
+    setShowMOdal(false);
     setIsDeleting(true);
     try {
       await deleteImage(getCombinedUrl(url));
@@ -33,7 +33,7 @@ const Thumbnail = ({ index, url, alt, showDelete }) => {
       )}
       {showDelete && !isDeleting && (
         <span
-          onClick={() => setShowAlert(true)}
+          onClick={() => setShowModal(true)}
           className="absolute bottom-0 right-0 bg-red-500 text-white hover:bg-red-800 font-bold text-sm cursor-pointer flex items-center justify-center w-5 h-5 rounded-md"
         >
           ✕
@@ -46,10 +46,10 @@ const Thumbnail = ({ index, url, alt, showDelete }) => {
         onLoad={() => setIsLoading(false)}
       />
       {showAlert && (
-        <Alert
+        <Modal
           message="Are you sure you want to delete this image?"
           onConfirm={handleDelete}
-          onCancel={() => setShowAlert(false)}
+          onCancel={() => setShowModal(false)}
         />
       )}
     </div>
