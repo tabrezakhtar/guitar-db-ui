@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
-import { getCloudinaryThumbnail } from "./imageUtils";
 import { useGuitarContext } from "./context/GuitarContext";
 import SkeletonImage from "./SkeletonImage";
 

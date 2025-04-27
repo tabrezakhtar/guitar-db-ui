@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getCloudinaryThumbnail } from "./imageUtils";
 import { useGuitarContext } from "./context/GuitarContext";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import SkeletonImage from "./SkeletonImage";
 
 function GuitarsGrid() {

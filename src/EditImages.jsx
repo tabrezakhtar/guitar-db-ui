@@ -1,4 +1,3 @@
-import { useState, useRef } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Thumbnail from "./Thumbnail";
 import { useGuitarContext } from "./context/GuitarContext";
