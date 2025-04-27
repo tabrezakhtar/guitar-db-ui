@@ -10,7 +10,6 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
   const navigate = useNavigate();
   const {
     currentEquipment,
-    settings,
     loading,
     fetchEquipment,
     updateEquipment,
@@ -48,12 +47,6 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
       { label: "Effect Type", key: "effectType", type: "text", placeholder: "Enter the effect type of the pedal" },
     ],
   };
-
-  useEffect(() => {
-    if (!settings || Object.keys(settings).length === 0) {
-      fetchSettings();
-    }
-  }, []);
 
   useEffect(() => {
     if (mode === "edit") {
@@ -109,7 +102,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
       }
 
       setSaved(true);
-      setTimeout(() => setSaved(false), 10000);
+      // setTimeout(() => setSaved(false), 10000);
     } finally {
       setIsUploading(false);
     }
