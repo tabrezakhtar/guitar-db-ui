@@ -135,14 +135,14 @@ const GuitarProvider = ({ children }) => {
     });
   };
 
-  const deleteEquipment = async (type) => {
+  const deleteEquipment = async () => {
     const currentEquipment = state.currentEquipment;
-    if (!type || !currentEquipment?._id) {
+    if (!currentEquipment?._id) {
       console.error("No equipment selected for deletion");
       return;
     }
     return apiRequest(
-      `${BASE_URL}/api/equipment/remove/${currentEquipment._id}?type=${type}`,
+      `${BASE_URL}/api/equipment/remove/${currentEquipment._id}`,
       { method: "DELETE" },
       () => clearCurrentEquipment()
     );
