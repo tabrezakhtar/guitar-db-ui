@@ -19,7 +19,6 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
     cloudinaryUpload,
     filesToUpload,
     clearCurrentEquipment,
-    fetchSettings,
   } = useGuitarContext();
 
   const [isUploading, setIsUploading] = useState(false);
@@ -90,11 +89,12 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
     }
   }, []);
 
-  const createOptions = (items) =>
-    items?.map((item) => ({ value: item, label: item })) || [];
-
   async function saveEquipment(e) {
     e.preventDefault();
+    if (isUploading) {
+      return;
+    }
+
     setIsUploading(true);
     setUploadProgress(null);
     try {
@@ -111,12 +111,13 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
         const result = await addEquipment(type);
         setSaved(true);
         navigate(`/edit/${result._id}`);
+        return;
       } else {
         await updateEquipment(type);
       }
 
       setSaved(true);
-      // setTimeout(() => setSaved(false), 10000);
+      setTimeout(() => setSaved(false), 10000);
     } finally {
       setIsUploading(false);
     }
