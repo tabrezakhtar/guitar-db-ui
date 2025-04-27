@@ -30,7 +30,21 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
 
   const fieldMapping = {
     guitar: [
-      { label: "Shape", key: "shape", type: "text", placeholder: "Enter the shape of the guitar" },
+      {
+        label: "Shape",
+        key: "shape",
+        type: "select",
+        options: [
+          { value: "S Style", label: "S Style" },
+          { value: "Double Cut", label: "Double Cut" },
+          { value: "Single Cut", label: "Single Cut" },
+          { value: "T Style", label: "T Style" },
+          { value: "Semi-Acoustic", label: "Semi-Acoustic" },
+          { value: "Modern", label: "Modern" },
+          { value: "Headless", label: "Headless" },
+          { value: "V Style", label: "V Style" },
+        ],
+      },
     ],
     amp: [
       {
@@ -203,10 +217,10 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
                       </div>
                     ) : field.type === "select" ? (
                       <Select
-                        options={createOptions(field.options)}
+                        options={field.options}
                         value={
                           currentEquipment?.[field.key]
-                            ? { value: currentEquipment[field.key], label: currentEquipment[field.key] }
+                            ? field.options.find((option) => option.value === currentEquipment[field.key])
                             : null
                         }
                         onChange={(selected) =>
