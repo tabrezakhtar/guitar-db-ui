@@ -10,7 +10,7 @@ const Thumbnail = ({ index, url, alt, showDelete }) => {
   const { deleteImage } = useGuitarContext();
 
   const handleDelete = async () => {
-    setShowMOdal(false);
+    setShowModal(false);
     setIsDeleting(true);
     try {
       await deleteImage(getCombinedUrl(url));

@@ -31,16 +31,21 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
 
   const fieldMapping = {
     guitar: [
-      { label: "Shape", key: "shape", type: "text" },
-      { label: "Pickups", key: "pickups", type: "select", options: settings?.pickups },
-      { label: "Strings", key: "strings", type: "number" },
+      { label: "Shape", key: "shape", type: "text", placeholder: "Enter the shape of the guitar" },
     ],
     amp: [
-      { label: "Power", key: "power", type: "number" },
-      { label: "Tube Type", key: "tubeType", type: "text" },
+      {
+        label: "Amp Type",
+        key: "ampType",
+        type: "radio",
+        options: [
+          { value: "Digital", label: "Digital" },
+          { value: "Tube", label: "Tube" },
+        ],
+      },
     ],
     pedal: [
-      { label: "Effect Type", key: "effectType", type: "text" },
+      { label: "Effect Type", key: "effectType", type: "text", placeholder: "Enter the effect type of the pedal" },
     ],
   };
 
@@ -57,27 +62,18 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
       }
     } else if (mode === "add" && !initialized) {
       const defaultEquipment = {
-        userId: "",
-        name: "",
-        price: "",
-        type: type.charAt(0).toUpperCase() + type.slice(1),
-        description: "",
-        why: "",
-        recommendation: "",
         brand: "",
-        likes: "",
-        comments: [],
-        images: [],
-        year: null,
-        date: null,
-        colour: "",
-        rating: null,
+        description: "",
+        name: "",
+        recommendation: "",
+        type: type.charAt(0).toUpperCase() + type.slice(1),
+        why: "",
       };
 
       if (type === "guitar") {
-        Object.assign(defaultEquipment, { shape: "", pickups: "", strings: null });
+        Object.assign(defaultEquipment, { shape: "" });
       } else if (type === "amp") {
-        Object.assign(defaultEquipment, { power: null, tubeType: "" });
+        Object.assign(defaultEquipment, { ampType: "" });
       } else if (type === "pedal") {
         Object.assign(defaultEquipment, { effectType: "" });
       }
@@ -134,7 +130,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full">
+    <div className="max-w-screen-xl</form> mx-auto w-full">
       <div className="p-6">
         {saved && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -173,32 +169,8 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
           <div className="md:col-span-3">
             <form className={`space-y-4 ${isUploading ? "opacity-50" : ""}`} onSubmit={saveEquipment}>
               <fieldset disabled={isUploading}>
-                <div>
-                  <label className="block">Name:</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={currentEquipment?.name || ""}
-                    onChange={(e) =>
-                      setCurrentEquipment({ ...currentEquipment, name: e.target.value })
-                    }
-                    className="border p-2 rounded w-full"
-                  />
-                </div>
 
-                <div>
-                  <label className="block">Price:</label>
-                  <input
-                    type="text"
-                    name="price"
-                    value={currentEquipment?.price || ""}
-                    onChange={(e) =>
-                      setCurrentEquipment({ ...currentEquipment, price: e.target.value })
-                    }
-                    className="border p-2 rounded w-full"
-                  />
-                </div>
-
+                {/* dynamic fields */}
                 {fieldMapping[type]?.map((field) => (
                   <div key={field.key}>
                     <label className="block">{field.label}:</label>
@@ -206,6 +178,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
                       <input
                         type={field.type}
                         name={field.key}
+                        placeholder={field.placeholder}
                         value={currentEquipment?.[field.key] || ""}
                         onChange={(e) =>
                           setCurrentEquipment({
@@ -215,6 +188,26 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
                         }
                         className="border p-2 rounded w-full"
                       />
+                    ) : field.type === "radio" ? (
+                      <div className="flex gap-4">
+                        {field.options.map((option) => (
+                          <label key={option.value} className="flex items-center gap-2">
+                            <input
+                              type="radio"
+                              name={field.key}
+                              value={option.value}
+                              checked={currentEquipment?.[field.key] === option.value}
+                              onChange={(e) =>
+                                setCurrentEquipment({
+                                  ...currentEquipment,
+                                  [field.key]: e.target.value,
+                                })
+                              }
+                            />
+                            {option.label}
+                          </label>
+                        ))}
+                      </div>
                     ) : field.type === "select" ? (
                       <Select
                         options={createOptions(field.options)}
@@ -236,6 +229,82 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
                     ) : null}
                   </div>
                 ))}
+                <div>
+                  <label className="block">Name:</label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter the name of the equipment"
+                    value={currentEquipment?.name || ""}
+                    onChange={(e) =>
+                      setCurrentEquipment({ ...currentEquipment, name: e.target.value })
+                    }
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="block">Description:</label>
+                  <input
+                    type="text"
+                    name="description"
+                    placeholder="Enter a brief description of the equipment"
+                    value={currentEquipment?.description || ""}
+                    onChange={(e) =>
+                      setCurrentEquipment({ ...currentEquipment, description: e.target.value })
+                    }
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="block">Why:</label>
+                  <textarea
+                    name="why"
+                    placeholder="Explain why this equipment is important"
+                    value={currentEquipment?.why || ""}
+                    rows="4"
+                    onChange={(e) =>
+                      setCurrentEquipment({ ...currentEquipment, why: e.target.value })
+                    }
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="block">Year:</label>
+                  <input
+                    type="number"
+                    name="year"
+                    placeholder="Enter the year of manufacture"
+                    value={currentEquipment?.year || ""}
+                    onChange={(e) =>
+                      setCurrentEquipment({
+                        ...currentEquipment,
+                        year: Number(e.target.value),
+                      })
+                    }
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+                <div>
+                  <label className="block">Rating:</label>
+                  <input
+                    type="number"
+                    name="rating"
+                    placeholder="Enter a rating from 0 to 5"
+                    value={currentEquipment?.rating || ""}
+                    onChange={(e) =>
+                      setCurrentEquipment({
+                        ...currentEquipment,
+                        rating: Math.min(5, Math.max(0, Number(e.target.value))),
+                      })
+                    }
+                    className="border p-2 rounded w-full"
+                    min="0"
+                    max="5"
+                  />
+                </div>
 
                 <div className="flex justify-between mt-4">
                   {mode === "edit" && (

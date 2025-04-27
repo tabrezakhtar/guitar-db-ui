@@ -214,7 +214,7 @@ const GuitarProvider = ({ children }) => {
 
   const deleteImage = async (imageUrl) => {
     const currentEquipment = state.currentEquipment;
-    if (!currentEquipment || !currentEquipment._id) {
+    if (!currentEquipment) {
       console.error("No equipment selected for deletion");
       return;
     }
