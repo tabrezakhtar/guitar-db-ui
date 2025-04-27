@@ -41,7 +41,7 @@ function GuitarsGrid() {
             onClick={() => navigate("/view/" + _id)}
           >
             {images && images.length > 0 ? (
-              <Thumbnail url={getCloudinaryThumbnail(images[0], 250)} alt={`Thumbnail: ${brand} ${name}`} />
+              <Thumbnail url={images[0]} alt={`Thumbnail: ${brand} ${name}`} />
             ) : (
               <SkeletonImage />
             )}

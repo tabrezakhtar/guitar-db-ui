@@ -38,14 +38,14 @@ const ViewGuitar = () => {
             Edit
           </button>
         </div>
-        
+        <h1 className="text-3xl font-bold mb-6">My Stuff!</h1>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
             {equipment?.images && equipment.images.length > 0 ? (
               <ImageGallery 
                 items={equipment.images.map(image => ({
                   original: image,
-                  thumbnail: getCloudinaryThumbnail(image, 50),
+                  thumbnail: image,
                 }))}
                 showPlayButton={false}
                 lazyLoad={true}

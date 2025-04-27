@@ -45,7 +45,7 @@ const Thumbnail = ({ index, url, alt, showDelete }) => {
         className={`w-full h-full object-cover ${isLoading ? "opacity-0" : "opacity-100"}`}
         onLoad={() => setIsLoading(false)}
       />
-      {showAlert && (
+      {showModal && (
         <Modal
           message="Are you sure you want to delete this image?"
           onConfirm={handleDelete}
