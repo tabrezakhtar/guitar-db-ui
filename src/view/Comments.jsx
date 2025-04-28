@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { formatDate, getTimeFromNow } from "../dateUtils";
 
 const Comments = ({ comments }) => {
   const [expandedComments, setExpandedComments] = useState(false);
@@ -6,15 +7,6 @@ const Comments = ({ comments }) => {
   if (!comments || comments.length === 0) {
     return null;
   }
-  
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric"
-    });
-  };
 
   const displayedComments = expandedComments ? comments : comments.slice(0, 5);
   
@@ -28,7 +20,7 @@ const Comments = ({ comments }) => {
             <p className="text-gray-800">{comment.text}</p>
             <div className="flex justify-between mt-2 text-sm text-gray-500">
               <span>User {comment.userId.substr(-4)}</span>
-              <span>{formatDate(comment.date)}</span>
+              <span title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
             </div>
           </div>
         ))}
