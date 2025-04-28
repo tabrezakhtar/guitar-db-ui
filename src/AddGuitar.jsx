@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EditGuitar from "./EditGuitar";
+import EditGuitar from "./edit/EditGuitar";
 
 function AddGuitar() {
   const [equipType, setEquipType] = useState("guitar");

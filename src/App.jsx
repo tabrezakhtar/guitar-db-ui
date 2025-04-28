@@ -2,7 +2,7 @@ import { Link, BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./About";
 import Contact from "./Contact";
 import ContentContainer from "./ContentContainer";
-import EditGuitar from "./EditGuitar";
+import EditGuitar from "./edit/EditGuitar";
 import ViewGuitar from "./ViewGuitar";
 import AddGuitar from "./AddGuitar";
 

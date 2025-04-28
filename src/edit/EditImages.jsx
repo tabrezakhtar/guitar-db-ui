@@ -1,7 +1,7 @@
 import { ReactSortable } from "react-sortablejs";
-import Thumbnail from "./Thumbnail";
-import { useGuitarContext } from "./context/GuitarContext";
-import FileDropZone from "./FileDropZone";
+import Thumbnail from "../Thumbnail";
+import { useGuitarContext } from "../context/GuitarContext";
+import FileDropZone from "../FileDropZone";
 
 export default function EditImages({ disabled }) {
   const { currentEquipment, setCurrentEquipment } = useGuitarContext();
