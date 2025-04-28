@@ -33,7 +33,7 @@ function GuitarsGrid() {
       }
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {equipment.map(({ _id, brand, name, description, images }) => (
+        {equipment.map(({ _id, brand, name, description, images, likes }) => (
           <div
             key={_id}
             className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200"
@@ -44,9 +44,17 @@ function GuitarsGrid() {
             ) : (
               <SkeletonImage />
             )}
-            <div className="p-3 bg-gray-200 h-full">
+            <div className="p-3 bg-gray-200 h-full relative">
               <h2 className="text-lg font-semibold">{brand} {name}</h2>
               <p className="text-sm text-gray-600">{description}</p>
+              {likes && likes.length > 0 && (
+                <div className="right-2 flex items-center">
+                  <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded inline-flex items-center">
+                    <span className="mr-1">👍</span>
+                    {likes.length}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         ))}
