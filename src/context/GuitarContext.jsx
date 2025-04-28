@@ -97,12 +97,12 @@ const GuitarProvider = ({ children }) => {
     return new Promise((resolve) => {
       setState((prev) => {
         const currentEquipment = prev.currentEquipment;
-  
+
         if (!type || !currentEquipment?._id) {
           resolve(null);
           return prev;
         }
-  
+
         apiRequest(
           `${BASE_URL}/api/equipment/update/${currentEquipment._id}?type=${type}`,
           {
@@ -118,10 +118,15 @@ const GuitarProvider = ({ children }) => {
                 }
                 return fileObj;
               });
-  
+
+              const updatedEquipment = innerPrev.equipment.map(item => 
+                item._id === result._id ? result : item
+              );
+
               return {
                 ...innerPrev,
                 currentEquipment: result,
+                equipment: updatedEquipment,
                 filesToUpload: updatedFilesToUpload,
                 loading: false,
               };
@@ -129,7 +134,7 @@ const GuitarProvider = ({ children }) => {
             resolve(result);
           }
         );
-  
+
         return prev;
       });
     });
