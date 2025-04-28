@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
-import { useGuitarContext } from "./context/GuitarContext";
-import SkeletonImage from "./SkeletonImage";
+import { useGuitarContext } from "../context/GuitarContext";
+import SkeletonImage from "../SkeletonImage";
+import Comments from "./Comments";
 
 const ViewGuitar = () => {
   const { id } = useParams();
@@ -56,7 +57,7 @@ const ViewGuitar = () => {
             )}
             {likesCount > 0 && (
               <div className="absolute top-4 right-4">
-                <span className="inline-flex items-center bg-blue-600 text-white px-2 py-1 rounded">
+                <span className="inline-flex items-center bg-purple-400 text-purple-900 px-2 py-1 rounded">
                   <span className="mr-1 text-lg">👍</span>
                   {likesCount} {likesCount === 1 ? "Like" : "Likes"}
                 </span>
@@ -66,6 +67,10 @@ const ViewGuitar = () => {
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">
             {equipment?.description}
           </div>
+        </div>
+        
+        <div className="mt-6">
+          <Comments comments={equipment.comments} />
         </div>
       </div>
     </div>

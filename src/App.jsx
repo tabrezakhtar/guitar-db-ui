@@ -3,7 +3,7 @@ import About from "./About";
 import Contact from "./Contact";
 import ContentContainer from "./ContentContainer";
 import EditGuitar from "./edit/EditGuitar";
-import ViewGuitar from "./ViewGuitar";
+import ViewGuitar from "./view/ViewGuitar";
 import AddGuitar from "./AddGuitar";
 
 function App() {

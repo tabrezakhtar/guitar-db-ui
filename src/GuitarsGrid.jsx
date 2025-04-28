@@ -77,7 +77,7 @@ function GuitarsGrid() {
             <div className="p-3 bg-gray-200">
               <h2 className="text-lg font-semibold">{item.brand} {item.name}</h2>
               <p className="text-sm text-gray-600">{item.description}</p>
-              <div className="right-2 flex items-center">
+              <div className="flex items-center justify-end gap-2 mt-2">
                 <button
                   className="bg-purple-400 text-purple-900 text-xs px-2 py-1 rounded inline-flex items-center"
                   onClick={(e) => handleLikeClick(e, item)}
@@ -85,6 +85,12 @@ function GuitarsGrid() {
                   <span className="mr-1">👍</span>
                   {item.likes ? item.likes.length : 0}
                 </button>
+                {item.commentCount > 0 && (
+                  <span className="bg-teal-400 text-teal-900 text-xs px-2 py-1 rounded inline-flex items-center">
+                    <span className="mr-1">💬</span>
+                    {item.commentCount}
+                  </span>
+                )}
               </div>
             </div>
           </div>
