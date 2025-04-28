@@ -22,6 +22,8 @@ const ViewGuitar = () => {
     );
   }
 
+  const likesCount = equipment.likes ? (Array.isArray(equipment.likes) ? equipment.likes.length : 0) : 0;
+
   return (
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
@@ -39,7 +41,7 @@ const ViewGuitar = () => {
         </div>
         <h1 className="text-3xl font-bold mb-6">My Stuff!</h1>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4">
+          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4 relative">
             {equipment?.images && equipment.images.length > 0 ? (
               <ImageGallery 
                 items={equipment.images.map(image => ({
@@ -51,6 +53,14 @@ const ViewGuitar = () => {
               />
             ) : (
               <SkeletonImage />
+            )}
+            {likesCount > 0 && (
+              <div className="absolute top-4 right-4">
+                <span className="inline-flex items-center bg-blue-600 text-white px-2 py-1 rounded">
+                  <span className="mr-1 text-lg">👍</span>
+                  {likesCount} {likesCount === 1 ? "Like" : "Likes"}
+                </span>
+              </div>
             )}
           </div>
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">
