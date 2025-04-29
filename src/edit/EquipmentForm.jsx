@@ -1,5 +1,6 @@
 import { useGuitarContext } from "../context/GuitarContext";
 import FormFields from "./FormFields";
+import StarRating from "../StarRating";
 
 function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal }) {
   const { currentEquipment, setCurrentEquipment } = useGuitarContext();
@@ -69,20 +70,15 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         </div>
         <div>
           <label className="block">Rating:</label>
-          <input
-            type="number"
-            name="rating"
-            placeholder="Enter a rating from 0 to 5"
-            value={currentEquipment?.rating || ""}
-            onChange={(e) =>
+          <StarRating 
+            rating={currentEquipment?.rating || 0} 
+            onChange={(newRating) => 
               setCurrentEquipment({
                 ...currentEquipment,
-                rating: Math.min(5, Math.max(0, Number(e.target.value))),
+                rating: newRating
               })
             }
-            className="border p-2 rounded w-full"
-            min="0"
-            max="5"
+            disabled={isUploading}
           />
         </div>
 
