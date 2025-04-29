@@ -60,6 +60,54 @@ const GuitarProvider = ({ children }) => {
     );
   };
 
+  const addComment = async (equipmentId, text) => {
+    if (!equipmentId || !text) {
+      console.error("Missing equipmentId or text for comment");
+      return null;
+    }
+    
+    // const userId = localStorage.getItem("userId") || `user_${Math.random().toString(36).substring(2, 9)}`;
+    const userId = "6810096ab128580c0051a9a2";
+    
+    if (!localStorage.getItem("userId")) {
+      localStorage.setItem("userId", userId);
+    }
+    
+    const payload = {
+      equipmentId,
+      userId,
+      text: text.trim()
+    };
+    
+    return apiRequest(
+      `${BASE_URL}/api/equipment/addComment`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      },
+      (result) => {
+        setState((prev) => {
+          if (prev.currentEquipment && prev.currentEquipment._id === equipmentId) {
+            const updatedComments = prev.currentEquipment.comments 
+              ? [result, ...prev.currentEquipment.comments]
+              : [result];
+              
+            return {
+              ...prev,
+              currentEquipment: {
+                ...prev.currentEquipment,
+                comments: updatedComments
+              }
+            };
+          }
+          return prev;
+        });
+        return result;
+      }
+    );
+  };
+
   const addEquipment = async (type) => {
     return new Promise((resolve) => {
       setState(prev => {
@@ -287,6 +335,7 @@ const GuitarProvider = ({ children }) => {
     cloudinaryUpload,
     deleteImage,
     loadMore,
+    addComment,
   };
 
   return <GuitarContext.Provider value={value}>{children}</GuitarContext.Provider>;

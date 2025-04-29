@@ -70,7 +70,7 @@ const ViewGuitar = () => {
         </div>
         
         <div className="mt-6">
-          <Comments comments={equipment.comments} />
+          <Comments comments={equipment.comments} equipmentId={equipment._id} />
         </div>
       </div>
     </div>
