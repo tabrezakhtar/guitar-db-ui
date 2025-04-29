@@ -32,9 +32,9 @@ function getCloudinaryThumbnail(url, width = 150) {
 
 function getCombinedUrl(file) {
   return Object.keys(file)
-  .filter(key => key !== 'chosen')
-  .map(key => file[key])
-  .join('');
+    .filter(key => key !== "chosen" && key !== "selected")
+    .map(key => file[key])
+    .join("");
 }
 
 export { getCloudinaryThumbnail, resizeImage, getCombinedUrl };
