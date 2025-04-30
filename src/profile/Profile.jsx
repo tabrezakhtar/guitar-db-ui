@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { formatDate } from "../dateUtils";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { userId } = useParams();
   const [ profileUser, setProfileUser ] = useState(null);
   const { user, loading, error, fetchUserProfile, logout } = useUserContext();
+  const navigate = useNavigate();
   
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +38,7 @@ const Profile = () => {
     );
   }
   
-  if (!user) {
+  if (!profileUser) {
     return (
       <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
         <p>User profile not found.</p>
@@ -44,7 +46,7 @@ const Profile = () => {
     );
   }
   
-  const { username, bio, location, website, createdAt } = user;
+  const { username, bio, location, website, createdAt } = profileUser;
   
   return (
     <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
@@ -52,7 +54,10 @@ const Profile = () => {
         <h1 className="text-2xl font-bold">User Profile</h1>
         {!userId && (
           <button 
-            onClick={logout} 
+            onClick={() => {
+              logout();
+              navigate("/");
+            }} 
             className="text-blue-500 hover:text-blue-600 bg-transparent border-none cursor-pointer p-0 flex items-center"
           >
             Logout
