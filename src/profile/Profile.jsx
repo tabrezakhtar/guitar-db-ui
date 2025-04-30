@@ -48,21 +48,33 @@ const Profile = () => {
   
   const { username, bio, location, website, createdAt } = profileUser;
   
+  const isOwnProfile = !userId || (user && profileUser && user.id === profileUser.id);
+  
   return (
     <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">User Profile</h1>
-        {!userId && (
-          <button 
-            onClick={() => {
-              logout();
-              navigate("/");
-            }} 
-            className="text-blue-500 hover:text-blue-600 bg-transparent border-none cursor-pointer p-0 flex items-center"
-          >
-            Logout
-          </button>
-        )}
+        <div className="flex gap-4">
+          {isOwnProfile && (
+            <button
+              onClick={() => navigate("/edit-profile")}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center"
+            >
+              ✏️ Edit Profile
+            </button>
+          )}
+          {isOwnProfile && (
+            <button 
+              onClick={() => {
+                logout();
+                navigate("/");
+              }} 
+              className="text-blue-500 hover:text-blue-600 bg-transparent border-none cursor-pointer p-0 flex items-center"
+            >
+              Logout
+            </button>
+          )}
+        </div>
       </div>
       
       <div className="bg-white rounded-lg shadow-lg p-6">
@@ -73,19 +85,19 @@ const Profile = () => {
           <div className="ml-6">
             <h2 className="text-2xl font-bold">{username}</h2>
             <p className="text-gray-600 flex items-center">
-              📍 {location}
+              📍 {location || "No location set"}
             </p>
           </div>
         </div>
         
         <div className="mb-6 bg-gray-100 p-4 rounded-md">
           <h3 className="text-lg font-semibold mb-2">About</h3>
-          <p className="text-gray-700">{bio}</p>
+          <p className="text-gray-700">{bio || "No bio available"}</p>
         </div>
         
-        {website && (
-          <div className="mb-6 bg-gray-100 p-4 rounded-md">
-            <h3 className="text-lg font-semibold mb-2">Website</h3>
+        <div className="mb-6 bg-gray-100 p-4 rounded-md">
+          <h3 className="text-lg font-semibold mb-2">Website</h3>
+          {website ? (
             <a 
               href={website.startsWith("http") ? website : `https://${website}`} 
               target="_blank" 
@@ -94,8 +106,10 @@ const Profile = () => {
             >
               🌐 {website}
             </a>
-          </div>
-        )}
+          ) : (
+            <p className="text-gray-500">No website added</p>
+          )}
+        </div>
         
         <div className="bg-gray-100 p-4 rounded-md text-gray-600 text-sm">
           <p>🗓️ Member since {formatDate(createdAt)}</p>

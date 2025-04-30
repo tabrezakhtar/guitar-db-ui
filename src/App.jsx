@@ -7,6 +7,7 @@ import ViewGuitar from "./view/ViewGuitar";
 import AddGuitar from "./AddGuitar";
 import Profile from "./profile/Profile";
 import CreateProfile from "./profile/CreateProfile";
+import EditProfile from "./profile/EditProfile";
 import { UserProvider } from "./context/UserContext";
 import { GuitarProvider } from "./context/GuitarContext";
 import Header from "./Header";
@@ -30,6 +31,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/:userId" element={<Profile />} />
               <Route path="/create-profile" element={<CreateProfile />} />
+              <Route path="/edit-profile" element={<EditProfile />} />
               <Route path="/login/magic" element={<MagicLogin />} />
             </Routes>
           </UserProvider>

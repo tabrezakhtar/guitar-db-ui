@@ -126,6 +126,71 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const updateUserProfile = async (userData) => {
+    setState(prev => ({ ...prev, loading: true, error: null }));
+    
+    try {
+      const token = localStorage.getItem("token");
+      const headers = { 
+        "Content-Type": "application/json"
+      };
+      
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      } else {
+        setState(prev => ({ 
+          ...prev, 
+          error: "Authorization required", 
+          loading: false 
+        }));
+        return null;
+      }
+      
+      const response = await fetch(`${BASE_URL}/api/users/updateProfile`, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify(userData),
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.errors, 
+          loading: false 
+        }));
+        return null;
+      }
+      
+      if (!response.ok) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.message || "Failed to update user profile", 
+          loading: false 
+        }));
+        return null;
+      }
+      
+      // Update local storage with updated user data
+      localStorage.setItem("user", JSON.stringify(data));
+      
+      setState(prev => ({ 
+        ...prev, 
+        user: data, 
+        loading: false 
+      }));
+      return data;
+    } catch (error) {
+      setState(prev => ({ 
+        ...prev, 
+        error: error.message || "Failed to update user profile", 
+        loading: false 
+      }));
+      return null;
+    }
+  };
+
   const verifyMagicToken = async (token) => {
     setState(prev => ({ ...prev, loading: true, error: null }));
     
@@ -211,6 +276,7 @@ export const UserProvider = ({ children }) => {
     ...state,
     fetchUserProfile,
     createUserProfile,
+    updateUserProfile,
     verifyMagicToken,
     logout,
     clearError,
