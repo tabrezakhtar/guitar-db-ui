@@ -14,6 +14,7 @@ const CreateProfile = () => {
   const [success, setSuccess] = useState(false);
   const [magicLink, setMagicLink] = useState("");
   const [copied, setCopied] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
   
   useEffect(() => {
     clearError();
@@ -25,10 +26,32 @@ const CreateProfile = () => {
       ...prev,
       [name]: value
     }));
+    
+    if (name === "username" && value.trim()) {
+      setValidationErrors(prev => ({
+        ...prev,
+        username: null
+      }));
+    }
+  };
+  
+  const validateForm = () => {
+    const errors = {};
+    
+    if (!formData.username.trim()) {
+      errors.username = "Username is required";
+    }
+    
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
     
     const result = await createUserProfile(formData);
     
@@ -107,24 +130,24 @@ const CreateProfile = () => {
     );
   }
 
-  const renderErrorMessage = () => {
-    if (!error) return null;
+  const renderErrorMessage = (errorMsg) => {
+    if (!errorMsg) return null;
     
-    if (typeof error === "string") {
+    if (typeof errorMsg === "string") {
       return (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
           <p className="font-bold">Error</p>
-          <p>{error}</p>
+          <p>{errorMsg}</p>
         </div>
       );
     }
     
-    if (Array.isArray(error)) {
+    if (Array.isArray(errorMsg)) {
       return (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
           <p className="font-bold">Errors</p>
           <ul className="list-disc pl-5">
-            {error.map((err, index) => (
+            {errorMsg.map((err, index) => (
               <li key={index}>{err.msg || err.message || JSON.stringify(err)}</li>
             ))}
           </ul>
@@ -132,11 +155,11 @@ const CreateProfile = () => {
       );
     }
     
-    if (typeof error === "object") {
+    if (typeof errorMsg === "object") {
       return (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
           <p className="font-bold">Error</p>
-          <p>{error.message || JSON.stringify(error)}</p>
+          <p>{errorMsg.message || JSON.stringify(errorMsg)}</p>
         </div>
       );
     }
@@ -153,7 +176,7 @@ const CreateProfile = () => {
     <div className="max-w-screen-md mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Create Your Profile</h1>
       
-      {renderErrorMessage()}
+      {renderErrorMessage(error)}
       
       <div className="bg-white rounded-lg shadow-lg p-6">
         <form onSubmit={handleSubmit}>
@@ -169,9 +192,12 @@ const CreateProfile = () => {
                 value={formData.username}
                 onChange={handleChange}
                 required
-                className="border p-2 rounded w-full"
+                className={`border p-2 rounded w-full ${validationErrors.username ? "border-red-500" : ""}`}
                 placeholder="Enter your username"
               />
+              {validationErrors.username && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors.username}</p>
+              )}
             </div>
           </div>
           
