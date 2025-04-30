@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const initialState = {
   user: null,
-  loading: true,
+  loading: false,
   error: null,
 };
 
@@ -15,11 +15,46 @@ const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
 
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        setState(prev => ({ ...prev, user: parsedUser }));
+      } catch (error) {
+        console.error("Failed to parse user from localStorage:", error);
+        localStorage.removeItem("user");
+      }
+    }
+  }, []);
+
   const fetchUserProfile = async (userId) => {
     setState(prev => ({ ...prev, loading: true, error: null }));
     
     try {
       const data = await apiRequest(`${BASE_URL}/api/users/profile?userId=${userId}`, {});
+      return data;
+    } catch (error) {
+      setState(prev => ({ 
+        ...prev, 
+        error: "Failed to load user profile", 
+        loading: false 
+      }));
+      return null;
+    } finally {
+      setState(prev => ({ ...prev, loading: false }));
+    }
+  };
+
+  const createUserProfile = async (userData) => {
+    setState(prev => ({ ...prev, loading: true, error: null }));
+    
+    try {
+      const data = await apiRequest(`${BASE_URL}/api/users/createProfile`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
       setState(prev => ({ 
         ...prev, 
         user: data, 
@@ -29,16 +64,84 @@ export const UserProvider = ({ children }) => {
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
-        error: "Failed to load user profile", 
+        error: "Failed to create user profile", 
         loading: false 
       }));
       return null;
     }
   };
 
+  const verifyMagicToken = async (token) => {
+    setState(prev => ({ ...prev, loading: true, error: null }));
+    
+    try {
+      if (!token) {
+        setState(prev => ({
+          ...prev,
+          loading: false,
+          error: "No token found in URL"
+        }));
+        return { success: false, error: "No token found in URL" };
+      }
+
+      const response = await fetch(`${BASE_URL}/api/users/verifyMagicLink`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setState(prev => ({
+          ...prev,
+          loading: false,
+          error: data.message || "Authentication failed"
+        }));
+        return { 
+          success: false, 
+          error: data.message || "Authentication failed" 
+        };
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      
+      setState(prev => ({
+        ...prev,
+        user: data.user,
+        loading: false
+      }));
+
+      return { success: true };
+    } catch (err) {
+      console.error("Magic link verification error:", err);
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        error: "An unexpected error occurred"
+      }));
+      return { 
+        success: false, 
+        error: "An unexpected error occurred" 
+      };
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setState(initialState);
+  };
+
   const value = {
     ...state,
     fetchUserProfile,
+    createUserProfile,
+    verifyMagicToken,
+    logout,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

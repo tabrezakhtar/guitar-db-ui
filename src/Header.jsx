@@ -24,12 +24,19 @@ function Header() {
             <li><Link to="/about" className="hover:underline">About</Link></li>
           </ul>
           
-          {user && (
+          {user ? (
             <Link to="/profile" className="flex items-center ml-6 hover:text-gray-300">
               <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium mr-2">
                 {getInitial(user.username)}
               </div>
               <span>{user.username}</span>
+            </Link>
+          ) : (
+            <Link to="/create-profile" className="flex items-center ml-6 hover:text-gray-300">
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-medium mr-2">
+                +
+              </div>
+              <span>Create Profile</span>
             </Link>
           )}
         </nav>

@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useUserContext } from "./context/UserContext";
 
 function SideMenu() {
+  const { user, logout } = useUserContext();
+  
   return (
     <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4 bg-[url(/guitar-bg.svg)] bg-contain bg-top bg-no-repeat">
       <div className="flex justify-end mb-4">

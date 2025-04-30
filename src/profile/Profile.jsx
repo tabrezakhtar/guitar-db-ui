@@ -1,16 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { formatDate } from "../dateUtils";
 
 const Profile = () => {
   const { userId } = useParams();
-  const { user, loading, error, fetchUserProfile } = useUserContext();
+  const [ profileUser, setProfileUser ] = useState(null);
+  const { user, loading, error, fetchUserProfile, logout } = useUserContext();
   
   useEffect(() => {
-    const profileId = userId || "681137efb78a78e7f4c6bc43";
-    fetchUserProfile(profileId);
-  },[]);
+    const fetchData = async () => {
+      if (userId) {
+        const userData = await fetchUserProfile(userId);
+        setProfileUser(userData);
+      } else {
+        setProfileUser(user)
+      }
+    };
+    fetchData();
+  }, []);
   
   if (loading) {
     return (
@@ -40,7 +48,17 @@ const Profile = () => {
   
   return (
     <div className="max-w-screen-md mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">User Profile</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">User Profile</h1>
+        {!userId && (
+          <button 
+            onClick={logout} 
+            className="text-blue-500 hover:text-blue-600 bg-transparent border-none cursor-pointer p-0 flex items-center"
+          >
+            Logout
+          </button>
+        )}
+      </div>
       
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center mb-6">
