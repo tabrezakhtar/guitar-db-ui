@@ -1,7 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { resizeImage, getCombinedUrl } from "../imageUtils";
-import { apiRequest } from "../apiUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -13,6 +12,7 @@ export const initialState = {
   loading: true,
   page: 1,
   totalEquipment: 0,
+  error: null
 };
 
 const GuitarContext = createContext(null);
@@ -36,28 +36,88 @@ const GuitarProvider = ({ children }) => {
   const clearFilesToUpload = () => setState((prev) => ({ ...prev, filesToUpload: null }));
 
   const fetchSettings = async () => {
-    return apiRequest(
-      `${BASE_URL}/api/equipment/settings`,
-      {},
-      (data) => setState((prev) => ({ ...prev, settings: data.settings || {} }))
-    );
+    try {
+      const response = await fetch(`${BASE_URL}/api/equipment/settings`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({
+          ...prev,
+          loading: false,
+          error: data.errors
+        }));
+        return { 
+          success: false, 
+          error: data.errors 
+        };
+      }
+      
+      setState((prev) => ({ 
+        ...prev, 
+        settings: data.settings || {},
+        error: null
+      }));
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch settings:", error);
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        error: error.message
+      }));
+      throw error;
+    }
   };
 
   const fetchEquipment = async (id, type) => {
     if (!id || !type) return;
     setLoading(true);
-    return apiRequest(
-      `${BASE_URL}/api/equipmentById?id=${id}&type=${type}`,
-      {},
-      ({ item, settings }) =>
-        setState((prev) => ({
+    setState(prev => ({ ...prev, error: null }));
+    
+    try {
+      const response = await fetch(`${BASE_URL}/api/equipmentById?id=${id}&type=${type}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({
           ...prev,
-          currentEquipment: item,
-          settings,
           loading: false,
-        })),
-      () => setLoading(false)
-    );
+          error: data.errors
+        }));
+        return { 
+          success: false, 
+          error: data.errors 
+        };
+      }
+      
+      setState((prev) => ({
+        ...prev,
+        currentEquipment: data.item,
+        settings: data.settings,
+        loading: false,
+        error: null
+      }));
+      
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch equipment:", error);
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        error: error.message
+      }));
+      throw error;
+    }
   };
 
   const addComment = async (equipmentId, text) => {
@@ -66,7 +126,6 @@ const GuitarProvider = ({ children }) => {
       return null;
     }
     
-    // const userId = localStorage.getItem("userId") || `user_${Math.random().toString(36).substring(2, 9)}`;
     const userId = "6810096ab128580c0051a9a2";
     
     if (!localStorage.getItem("userId")) {
@@ -79,37 +138,61 @@ const GuitarProvider = ({ children }) => {
       text: text.trim()
     };
     
-    return apiRequest(
-      `${BASE_URL}/api/equipment/addComment`,
-      {
+    try {
+      const response = await fetch(`${BASE_URL}/api/equipment/addComment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      },
-      (result) => {
-        setState((prev) => {
-          if (prev.currentEquipment && prev.currentEquipment._id === equipmentId) {
-            const updatedComments = prev.currentEquipment.comments 
-              ? [result, ...prev.currentEquipment.comments]
-              : [result];
-              
-            return {
-              ...prev,
-              currentEquipment: {
-                ...prev.currentEquipment,
-                comments: updatedComments
-              }
-            };
-          }
-          return prev;
-        });
-        return result;
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    );
+      
+      const result = await response.json();
+      
+      if (result && result.errors) {
+        setState(prev => ({
+          ...prev,
+          error: result.errors
+        }));
+        return { 
+          success: false, 
+          error: result.errors 
+        };
+      }
+      
+      setState((prev) => {
+        if (prev.currentEquipment && prev.currentEquipment._id === equipmentId) {
+          const updatedComments = prev.currentEquipment.comments 
+            ? [result, ...prev.currentEquipment.comments]
+            : [result];
+            
+          return {
+            ...prev,
+            currentEquipment: {
+              ...prev.currentEquipment,
+              comments: updatedComments
+            },
+            error: null
+          };
+        }
+        return prev;
+      });
+      
+      return result;
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+      setState(prev => ({
+        ...prev,
+        error: error.message
+      }));
+      throw error;
+    }
   };
 
   const addEquipment = async (type) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       setState(prev => {
         const currentEquipment = prev.currentEquipment;
         
@@ -119,22 +202,56 @@ const GuitarProvider = ({ children }) => {
           return prev;
         }
         
-        apiRequest(
-          `${BASE_URL}/api/equipment/add?type=${type}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(currentEquipment),
-          },
-          (result) => {
+        (async () => {
+          try {
+            setState(innerPrev => ({
+              ...innerPrev, 
+              error: null
+            }));
+            
+            const response = await fetch(`${BASE_URL}/api/equipment/add?type=${type}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(currentEquipment),
+            });
+            
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            
+            if (result && result.errors) {
+              setState(innerPrev => ({
+                ...innerPrev,
+                loading: false,
+                error: result.errors
+              }));
+              resolve({ 
+                success: false, 
+                error: result.errors 
+              });
+              return;
+            }
+            
             setState(innerPrev => ({
               ...innerPrev,
               currentEquipment: result,
               loading: false,
+              error: null
             }));
+            
             resolve(result);
+          } catch (error) {
+            console.error("Failed to add equipment:", error);
+            setState(innerPrev => ({
+              ...innerPrev,
+              loading: false,
+              error: error.message
+            }));
+            reject(error);
           }
-        );
+        })();
         
         return prev;
       });
@@ -142,7 +259,7 @@ const GuitarProvider = ({ children }) => {
   };
 
   const updateEquipment = async (type) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       setState((prev) => {
         const currentEquipment = prev.currentEquipment;
 
@@ -151,14 +268,38 @@ const GuitarProvider = ({ children }) => {
           return prev;
         }
 
-        apiRequest(
-          `${BASE_URL}/api/equipment/update/${currentEquipment._id}?type=${type}`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(currentEquipment),
-          },
-          (result) => {
+        (async () => {
+          try {
+            setState(innerPrev => ({
+              ...innerPrev, 
+              error: null
+            }));
+            
+            const response = await fetch(`${BASE_URL}/api/equipment/update/${currentEquipment._id}?type=${type}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(currentEquipment),
+            });
+            
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            
+            if (result && result.errors) {
+              setState(innerPrev => ({
+                ...innerPrev,
+                loading: false,
+                error: result.errors
+              }));
+              resolve({ 
+                success: false, 
+                error: result.errors 
+              });
+              return;
+            }
+            
             setState((innerPrev) => {
               const updatedFilesToUpload = innerPrev.filesToUpload.map((fileObj, index) => {
                 if (result.images[index]) {
@@ -177,11 +318,21 @@ const GuitarProvider = ({ children }) => {
                 equipment: updatedEquipment,
                 filesToUpload: updatedFilesToUpload,
                 loading: false,
+                error: null
               };
             });
+            
             resolve(result);
+          } catch (error) {
+            console.error("Failed to update equipment:", error);
+            setState(innerPrev => ({
+              ...innerPrev,
+              loading: false,
+              error: error.message
+            }));
+            reject(error);
           }
-        );
+        })();
 
         return prev;
       });
@@ -194,30 +345,89 @@ const GuitarProvider = ({ children }) => {
       console.error("No equipment selected for deletion");
       return;
     }
-    return apiRequest(
-      `${BASE_URL}/api/equipment/remove/${currentEquipment._id}`,
-      { method: "DELETE" },
-      () => clearCurrentEquipment()
-    );
+    
+    setState(prev => ({ ...prev, error: null }));
+    
+    try {
+      const response = await fetch(`${BASE_URL}/api/equipment/remove/${currentEquipment._id}`, {
+        method: "DELETE"
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      
+      if (result && result.errors) {
+        setState(prev => ({
+          ...prev,
+          error: result.errors
+        }));
+        return { 
+          success: false, 
+          error: result.errors 
+        };
+      }
+      
+      clearCurrentEquipment();
+      return result;
+    } catch (error) {
+      console.error("Failed to delete equipment:", error);
+      setState(prev => ({
+        ...prev,
+        error: error.message
+      }));
+      throw error;
+    }
   };
 
   const fetchEquipmentList = async (page, type) => {
     if (!type) return;
     setLoading(true);
-    return apiRequest(
-      `${BASE_URL}/api/equipmentList?page=${page}&limit=20&type=${type}`,
-      {},
-      (data) =>
-        setState((prev) => ({
+    setState(prev => ({ ...prev, error: null }));
+    
+    try {
+      const response = await fetch(`${BASE_URL}/api/equipmentList?page=${page}&limit=20&type=${type}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({
           ...prev,
-          equipment: page === 1 ? data.items : [...prev.equipment, ...data.items],
-          totalEquipment: page === 1 ? data.total : prev.totalEquipment,
-          page,
-          settings: data.settings,
           loading: false,
-        })),
-      () => setLoading(false)
-    );
+          error: data.errors
+        }));
+        return { 
+          success: false, 
+          error: data.errors 
+        };
+      }
+      
+      setState((prev) => ({
+        ...prev,
+        equipment: page === 1 ? data.items : [...prev.equipment, ...data.items],
+        totalEquipment: page === 1 ? data.total : prev.totalEquipment,
+        page,
+        settings: data.settings,
+        loading: false,
+        error: null
+      }));
+      
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch equipment list:", error);
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        error: error.message
+      }));
+      throw error;
+    }
   };
 
   const cloudinaryUpload = async (file) => {
@@ -235,34 +445,58 @@ const GuitarProvider = ({ children }) => {
     formData.append("upload_preset", "guitar-images");
     formData.append("api_key", apiKey);
   
-    return apiRequest(
-      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-      { method: "POST", body: formData },
-      (data) => {
-        if (data.error) {
-          console.error("Error uploading image:", data.error);
-          return null;
-        }
-  
-        setState((prev) => {
-          const updatedImages = prev.currentEquipment.images.map((image) =>
-            getCombinedUrl(image) === file.url ? data.secure_url : image
-          );
-  
-          const updatedFilesToUpload = prev.filesToUpload.map((fileObj) =>
-            fileObj.url === file.url ? { ...fileObj, url: data.secure_url } : fileObj
-          );
-  
-          return {
-            ...prev,
-            currentEquipment: { ...prev.currentEquipment, images: updatedImages },
-            filesToUpload: updatedFilesToUpload,
-          };
-        });
-  
-        return data.secure_url;
+    setState(prev => ({ ...prev, error: null }));
+    
+    try {
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: "POST",
+        body: formData
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    );
+      
+      const data = await response.json();
+      
+      if (data.error) {
+        console.error("Error uploading image:", data.error);
+        setState(prev => ({
+          ...prev,
+          error: data.error
+        }));
+        return { 
+          success: false, 
+          error: data.error 
+        };
+      }
+      
+      setState((prev) => {
+        const updatedImages = prev.currentEquipment.images.map((image) =>
+          getCombinedUrl(image) === file.url ? data.secure_url : image
+        );
+
+        const updatedFilesToUpload = prev.filesToUpload.map((fileObj) =>
+          fileObj.url === file.url ? { ...fileObj, url: data.secure_url } : fileObj
+        );
+
+        return {
+          ...prev,
+          currentEquipment: { ...prev.currentEquipment, images: updatedImages },
+          filesToUpload: updatedFilesToUpload,
+          error: null
+        };
+      });
+
+      return data.secure_url;
+    } catch (error) {
+      console.error("Failed to upload to cloudinary:", error);
+      setState(prev => ({
+        ...prev,
+        error: error.message
+      }));
+      throw error;
+    }
   };
 
   const deleteImage = async (imageUrl) => {
@@ -287,31 +521,59 @@ const GuitarProvider = ({ children }) => {
         ...prev,
         currentEquipment: { ...prev.currentEquipment, images: updatedImages },
         filesToUpload: updatedFilesToUpload,
+        error: null
       }));
       return;
     }
   
-    return apiRequest(
-      `${BASE_URL}/api/equipment/deleteImage/${currentEquipment._id}`,
-      {
+    setState(prev => ({ ...prev, error: null }));
+    
+    try {
+      const response = await fetch(`${BASE_URL}/api/equipment/deleteImage/${currentEquipment._id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ imageUrl }),
-      },
-      () => {
-        const updatedImages = currentEquipment.images.filter(
-          (image) => getCombinedUrl(image) !== imageUrl
-        );
-        const updatedFilesToUpload = state.filesToUpload.filter(
-          (fileObj) => fileObj.url !== imageUrl
-        );
-        setState((prev) => ({
-          ...prev,
-          currentEquipment: { ...prev.currentEquipment, images: updatedImages },
-          filesToUpload: updatedFilesToUpload,
-        }));
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    );
+      
+      const result = await response.json();
+      
+      if (result && result.errors) {
+        setState(prev => ({
+          ...prev,
+          error: result.errors
+        }));
+        return { 
+          success: false, 
+          error: result.errors 
+        };
+      }
+      
+      const updatedImages = currentEquipment.images.filter(
+        (image) => getCombinedUrl(image) !== imageUrl
+      );
+      const updatedFilesToUpload = state.filesToUpload.filter(
+        (fileObj) => fileObj.url !== imageUrl
+      );
+      setState((prev) => ({
+        ...prev,
+        currentEquipment: { ...prev.currentEquipment, images: updatedImages },
+        filesToUpload: updatedFilesToUpload,
+        error: null
+      }));
+      
+      return result;
+    } catch (error) {
+      console.error("Failed to delete image:", error);
+      setState(prev => ({
+        ...prev,
+        error: error.message
+      }));
+      throw error;
+    }
   };
 
   const loadMore = (type) => {

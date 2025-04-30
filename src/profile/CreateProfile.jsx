@@ -4,7 +4,7 @@ import { useUserContext } from "../context/UserContext";
 
 const CreateProfile = () => {
   const navigate = useNavigate();
-  const { loading, error, createUserProfile, setLoading } = useUserContext();
+  const { loading, error, createUserProfile, setLoading, clearError } = useUserContext();
   
   const [formData, setFormData] = useState({
     username: "",
@@ -16,6 +16,10 @@ const CreateProfile = () => {
   const [success, setSuccess] = useState(false);
   const [magicLink, setMagicLink] = useState("");
   const [copied, setCopied] = useState(false);
+  
+  useEffect(() => {
+    clearError();
+  }, []);
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,12 +55,22 @@ const CreateProfile = () => {
     setTimeout(() => setCopied(false), 2000);
   };
   
+  const handleBookmark = () => {
+    if (window.sidebar && window.sidebar.addPanel) {
+      window.sidebar.addPanel(document.title, window.location.href, "");
+    } else if (window.external && "AddFavorite" in window.external) {
+      window.external.AddFavorite(window.location.href, document.title);
+    } else {
+      alert("Press Ctrl+D (or Cmd+D on Mac) to bookmark this page");
+    }
+  };
+  
   useEffect(() => {
     if (copied) {
       const timer = setTimeout(() => setCopied(false), 2000);
       return () => clearTimeout(timer);
     }
-  });
+  }, [copied]);
   
   if (loading) {
     return (
@@ -88,7 +102,7 @@ const CreateProfile = () => {
             </button>
           </div>
           <p className="text-sm mt-2 text-amber-700">
-            ⚠️ Please save this link somewhere safe. You'll need it to log in.
+            ⚠️ Please save this link somewhere safe or bookmark this page. You'll need it to log in.
           </p>
         </div>
         
@@ -99,21 +113,65 @@ const CreateProfile = () => {
           >
             <span className="mr-2">🪄</span> Login Now
           </button>
+          
+          <button 
+            onClick={handleBookmark}
+            className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded flex items-center"
+          >
+            <span className="mr-2">🔖</span> Bookmark This Page
+          </button>
         </div>
       </div>
     );
   }
+
+  const renderErrorMessage = () => {
+    if (!error) return null;
+    
+    if (typeof error === "string") {
+      return (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <p className="font-bold">Error</p>
+          <p>{error}</p>
+        </div>
+      );
+    }
+    
+    if (Array.isArray(error)) {
+      return (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <p className="font-bold">Errors</p>
+          <ul className="list-disc pl-5">
+            {error.map((err, index) => (
+              <li key={index}>{err.msg || err.message || JSON.stringify(err)}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+    
+    if (typeof error === "object") {
+      return (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <p className="font-bold">Error</p>
+          <p>{error.message || JSON.stringify(error)}</p>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+        <p className="font-bold">Error</p>
+        <p>An unexpected error occurred</p>
+      </div>
+    );
+  };
   
   return (
     <div className="max-w-screen-md mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Create Your Profile</h1>
       
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-          <p className="font-bold">Error</p>
-          <p>{error}</p>
-        </div>
-      )}
+      {renderErrorMessage()}
       
       <div className="bg-white rounded-lg shadow-lg p-6">
         <form onSubmit={handleSubmit}>

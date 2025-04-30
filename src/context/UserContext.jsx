@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { apiRequest } from "../apiUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -32,12 +31,38 @@ export const UserProvider = ({ children }) => {
     setState(prev => ({ ...prev, loading: true, error: null }));
     
     try {
-      const data = await apiRequest(`${BASE_URL}/api/users/profile?userId=${userId}`, {});
+      const token = localStorage.getItem("token");
+      const headers = token ? { "Authorization": `Bearer ${token}` } : {};
+      
+      const response = await fetch(`${BASE_URL}/api/users/profile?userId=${userId}`, {
+        headers
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.errors, 
+          loading: false 
+        }));
+        return null;
+      }
+      
+      if (!response.ok) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.message || "Failed to fetch user profile", 
+          loading: false 
+        }));
+        return null;
+      }
+      
       return data;
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
-        error: "Failed to load user profile", 
+        error: error.message || "Failed to fetch user profile", 
         loading: false 
       }));
       return null;
@@ -50,11 +75,41 @@ export const UserProvider = ({ children }) => {
     setState(prev => ({ ...prev, loading: true, error: null }));
     
     try {
-      const data = await apiRequest(`${BASE_URL}/api/users/createProfile`, {
+      const token = localStorage.getItem("token");
+      const headers = { 
+        "Content-Type": "application/json"
+      };
+      
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch(`${BASE_URL}/api/users/createProfile`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify(userData),
       });
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.errors, 
+          loading: false 
+        }));
+        return null;
+      }
+      
+      if (!response.ok) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.message || "Failed to create user profile", 
+          loading: false 
+        }));
+        return null;
+      }
+      
       setState(prev => ({ 
         ...prev, 
         user: data, 
@@ -64,7 +119,7 @@ export const UserProvider = ({ children }) => {
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
-        error: "Failed to create user profile", 
+        error: error.message || "Failed to create user profile", 
         loading: false 
       }));
       return null;
@@ -93,6 +148,18 @@ export const UserProvider = ({ children }) => {
       });
 
       const data = await response.json();
+
+      if (data && data.errors) {
+        setState(prev => ({
+          ...prev,
+          loading: false,
+          error: data.errors
+        }));
+        return { 
+          success: false, 
+          error: data.errors 
+        };
+      }
 
       if (!response.ok) {
         setState(prev => ({
@@ -136,12 +203,17 @@ export const UserProvider = ({ children }) => {
     setState(initialState);
   };
 
+  const clearError = () => {
+    setState(prev => ({ ...prev, error: null }));
+  };
+
   const value = {
     ...state,
     fetchUserProfile,
     createUserProfile,
     verifyMagicToken,
     logout,
+    clearError,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
