@@ -14,6 +14,8 @@ const CreateProfile = () => {
   });
   
   const [success, setSuccess] = useState(false);
+  const [magicLink, setMagicLink] = useState("");
+  const [copied, setCopied] = useState(false);
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,11 +32,31 @@ const CreateProfile = () => {
     
     if (result) {
       setSuccess(true);
-      setTimeout(() => {
-        navigate(`/profile`);
-      }, 2000);
+      setMagicLink(result.magicLink);
     }
   };
+
+  const handleLogin = () => {
+    if (magicLink) {
+      const fullUrl = magicLink.startsWith("http") 
+        ? magicLink 
+        : `http://${magicLink}`;
+      window.location.href = fullUrl;
+    }
+  };
+  
+  const handleCopy = () => {
+    navigator.clipboard.writeText(magicLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  
+  useEffect(() => {
+    if (copied) {
+      const timer = setTimeout(() => setCopied(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  });
   
   if (loading) {
     return (
@@ -47,7 +69,37 @@ const CreateProfile = () => {
   if (success) {
     return (
       <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
-        <p>Profile created successfully! Redirecting to your profile...</p>
+        <p className="font-bold mb-3">🎸 Profile created successfully!</p>
+        <p className="mb-4">Your profile has been generated. Please save this magic link to log in later:</p>
+        
+        <div className="mb-4">
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={magicLink}
+              readOnly
+              className="border p-2 rounded flex-grow bg-white text-gray-800"
+            />
+            <button 
+              onClick={handleCopy}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-2 rounded flex items-center"
+            >
+              {copied ? "✅" : "📋"}
+            </button>
+          </div>
+          <p className="text-sm mt-2 text-amber-700">
+            ⚠️ Please save this link somewhere safe. You'll need it to log in.
+          </p>
+        </div>
+        
+        <div className="flex gap-3 flex-wrap">
+          <button 
+            onClick={handleLogin}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded flex items-center"
+          >
+            <span className="mr-2">🪄</span> Login Now
+          </button>
+        </div>
       </div>
     );
   }
