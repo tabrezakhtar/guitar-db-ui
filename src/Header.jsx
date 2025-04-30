@@ -19,7 +19,6 @@ function Header() {
         <nav className="pr-5 flex items-center">
           <ul className="flex space-x-4 items-center">
             <li><Link to="/" className="hover:underline">Home</Link></li>
-            <li><Link to="/login" className="hover:underline">Login</Link></li>
             <li><Link to="/contact" className="hover:underline">Contact</Link></li>
             <li><Link to="/about" className="hover:underline">About</Link></li>
           </ul>

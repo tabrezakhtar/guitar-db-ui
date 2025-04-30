@@ -47,7 +47,7 @@ const Profile = () => {
   const { username, bio, location, website, createdAt } = user;
   
   return (
-    <div className="max-w-screen-md mx-auto p-6">
+    <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">User Profile</h1>
         {!userId && (
