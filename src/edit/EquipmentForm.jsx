@@ -1,6 +1,6 @@
 import { useGuitarContext } from "../context/GuitarContext";
 import FormFields from "./FormFields";
-import StarRating from "../StarRating";
+import StarRating from "../components/StarRating";
 
 function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal }) {
   const { currentEquipment, setCurrentEquipment } = useGuitarContext();

@@ -24,8 +24,8 @@ const Comments = ({ comments: initialComments, equipmentId }) => {
       <CommentForm equipmentId={equipmentId} />
       
       <div className="space-y-4 mt-6">
-        {displayedComments.map((comment) => (
-          <div key={comment._id} className="border-b pb-3 last:border-b-0 last:pb-0">
+        {displayedComments.map((comment, index) => (
+          <div key={comment._id || `comment-${index}`} className="border-b pb-3 last:border-b-0 last:pb-0">
             <p className="text-gray-800">{comment.text}</p>
             <div className="flex justify-between mt-2 text-sm text-gray-500">
               <span>User {comment.userId ? comment.userId.substr(-4) : "Unknown"}</span>
