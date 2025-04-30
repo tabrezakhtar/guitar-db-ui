@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 
 const CreateProfile = () => {
-  const navigate = useNavigate();
-  const { loading, error, createUserProfile, setLoading, clearError } = useUserContext();
+  const { loading, error, createUserProfile, clearError } = useUserContext();
   
   const [formData, setFormData] = useState({
     username: "",
@@ -54,16 +52,7 @@ const CreateProfile = () => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-  
-  const handleBookmark = () => {
-    if (window.sidebar && window.sidebar.addPanel) {
-      window.sidebar.addPanel(document.title, window.location.href, "");
-    } else if (window.external && "AddFavorite" in window.external) {
-      window.external.AddFavorite(window.location.href, document.title);
-    } else {
-      alert("Press Ctrl+D (or Cmd+D on Mac) to bookmark this page");
-    }
-  };
+
   
   useEffect(() => {
     if (copied) {
@@ -112,13 +101,6 @@ const CreateProfile = () => {
             className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded flex items-center"
           >
             <span className="mr-2">🪄</span> Login Now
-          </button>
-          
-          <button 
-            onClick={handleBookmark}
-            className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded flex items-center"
-          >
-            <span className="mr-2">🔖</span> Bookmark This Page
           </button>
         </div>
       </div>
