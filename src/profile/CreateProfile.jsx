@@ -185,7 +185,7 @@ const CreateProfile = () => {
               {formData.username.charAt(0).toUpperCase() || "?"}
             </div>
             <div className="ml-6 flex-1">
-              <label className="block text-gray-700 mb-1">Username</label>
+              <label className="block text-gray-700 mb-1">Username <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 name="username"

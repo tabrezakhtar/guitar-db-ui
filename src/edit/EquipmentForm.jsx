@@ -11,7 +11,22 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         <FormFields type={type} isUploading={isUploading} />
 
         <div>
-          <label className="block">Name:</label>
+          <label className="block">Brand: <span className="text-red-500">*</span></label>
+          <input
+            type="text"
+            name="brand"
+            placeholder="Enter the brand name"
+            value={currentEquipment?.brand || ""}
+            onChange={(e) =>
+              setCurrentEquipment({ ...currentEquipment, brand: e.target.value })
+            }
+            className="border p-2 rounded w-full"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block">Name: <span className="text-red-500">*</span></label>
           <input
             type="text"
             name="name"
@@ -21,11 +36,12 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               setCurrentEquipment({ ...currentEquipment, name: e.target.value })
             }
             className="border p-2 rounded w-full"
+            required
           />
         </div>
 
         <div>
-          <label className="block">Description:</label>
+          <label className="block">Description: <span className="text-red-500">*</span></label>
           <input
             type="text"
             name="description"
@@ -35,6 +51,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               setCurrentEquipment({ ...currentEquipment, description: e.target.value })
             }
             className="border p-2 rounded w-full"
+            required
           />
         </div>
 
