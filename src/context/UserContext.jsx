@@ -264,6 +264,68 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const deleteAvatar = async () => {
+    setState(prev => ({ ...prev, loading: true, error: null }));
+    
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setState(prev => ({ 
+          ...prev, 
+          error: "Authorization required", 
+          loading: false 
+        }));
+        return null;
+      }
+
+      const response = await fetch(`${BASE_URL}/api/users/deleteAvatar`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ avatarUrl: state.user?.avatarUrl, userId: state.user?._id })
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.errors, 
+          loading: false 
+        }));
+        return null;
+      }
+      
+      if (!response.ok) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.message || "Failed to delete avatar", 
+          loading: false 
+        }));
+        return null;
+      }
+      
+      // Update local storage with updated user data
+      localStorage.setItem("user", JSON.stringify(data.user));
+      
+      setState(prev => ({ 
+        ...prev, 
+        user: data.user, 
+        loading: false 
+      }));
+      return data;
+    } catch (error) {
+      setState(prev => ({ 
+        ...prev, 
+        error: error.message || "Failed to delete avatar", 
+        loading: false 
+      }));
+      return null;
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -291,6 +353,7 @@ export const UserProvider = ({ children }) => {
     logout,
     clearError,
     updateUserLocal,
+    deleteAvatar,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

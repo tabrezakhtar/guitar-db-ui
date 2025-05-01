@@ -30,6 +30,13 @@ const EditProfile = () => {
     }
   }, [user]);
 
+  const handleAvatarChange = (newAvatarUrl) => {
+    setProfile((prev) => ({
+      ...prev,
+      avatarUrl: newAvatarUrl
+    }));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prev) => ({
@@ -80,6 +87,7 @@ const EditProfile = () => {
               imageUrl={profile.avatarUrl}
               username={profile.username}
               size="large"
+              onAvatarUpdated={handleAvatarChange}
             />
           </div>
           <p className="text-sm text-gray-500 text-center mt-2">

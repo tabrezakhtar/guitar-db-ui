@@ -49,7 +49,7 @@ const Profile = () => {
   
   const { username, bio, location, website, createdAt } = profileUser;
   
-  const isOwnProfile = !userId || (user && profileUser && user.id === profileUser.id);
+  const isOwnProfile = !userId || (user && profileUser && user._id === profileUser.id);
   
   return (
     <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
@@ -79,7 +79,7 @@ const Profile = () => {
       </div>
       
       <div className="bg-white rounded-lg shadow-lg p-6">
-        <div className="flex items-center mb-6">
+        <div className="flex items-center justify-center mb-6">
           <div className="relative w-24 h-24 mr-6">
             <Avatar
               imageUrl={profileUser.avatarUrl}
