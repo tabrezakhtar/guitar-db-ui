@@ -7,7 +7,7 @@ const MagicLogin = () => {
   const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { verifyMagicToken, loading, error: contextError } = useUserContext();
+  const { verifyMagicToken, error: contextError } = useUserContext();
 
   useEffect(() => {
     const verifyToken = async () => {

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { resizeImage, getCombinedUrl } from "../imageUtils";
+import { cloudinaryUpload } from "../cloudinaryUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -15,9 +16,9 @@ export const initialState = {
   error: null
 };
 
-const GuitarContext = createContext(null);
+export const GuitarContext = createContext(null);
 
-const GuitarProvider = ({ children }) => {
+export function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
 
   const setLoading = (loading) => setState((prev) => ({ ...prev, loading }));
@@ -430,54 +431,27 @@ const GuitarProvider = ({ children }) => {
     }
   };
 
-  const cloudinaryUpload = async (file) => {
-    if (!file.url.startsWith("blob:http")) {
-      return file.url;
-    }
-  
-    const cloudName = "x8d5hlk1";
-    const apiKey = "124113443758435";
-    const formData = new FormData();
-  
-    const resizedFile = await resizeImage(file.file);
-    formData.append("file", resizedFile);
-    formData.append("folder", "test");
-    formData.append("upload_preset", "guitar-images");
-    formData.append("api_key", apiKey);
-  
+  const cloudinaryUploadForGuitar = async (file) => {
     setState(prev => ({ ...prev, error: null }));
     
     try {
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-        method: "POST",
-        body: formData
-      });
+      const result = await cloudinaryUpload(file, "guitars");
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      
-      if (data.error) {
-        console.error("Error uploading image:", data.error);
+      if (!result.success && result.error) {
         setState(prev => ({
           ...prev,
-          error: data.error
+          error: result.error
         }));
-        return { 
-          success: false, 
-          error: data.error 
-        };
+        return result;
       }
       
       setState((prev) => {
         const updatedImages = prev.currentEquipment.images.map((image) =>
-          getCombinedUrl(image) === file.url ? data.secure_url : image
+          getCombinedUrl(image) === file.url ? result.secure_url : image
         );
 
         const updatedFilesToUpload = prev.filesToUpload.map((fileObj) =>
-          fileObj.url === file.url ? { ...fileObj, url: data.secure_url } : fileObj
+          fileObj.url === file.url ? { ...fileObj, url: result.secure_url } : fileObj
         );
 
         return {
@@ -488,7 +462,7 @@ const GuitarProvider = ({ children }) => {
         };
       });
 
-      return data.secure_url;
+      return result.secure_url;
     } catch (error) {
       console.error("Failed to upload to cloudinary:", error);
       setState(prev => ({
@@ -594,25 +568,23 @@ const GuitarProvider = ({ children }) => {
     updateEquipment,
     deleteEquipment,
     fetchEquipmentList,
-    cloudinaryUpload,
+    cloudinaryUpload: cloudinaryUploadForGuitar,
     deleteImage,
     loadMore,
     addComment,
   };
 
   return <GuitarContext.Provider value={value}>{children}</GuitarContext.Provider>;
-};
+}
 
 GuitarProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const useGuitarContext = () => {
+export function useGuitarContext() {
   const value = useContext(GuitarContext);
   if (!value) {
     throw new Error("useGuitarContext must be used within a GuitarProvider");
   }
   return value;
-};
-
-export { GuitarProvider, GuitarContext, useGuitarContext };
+}

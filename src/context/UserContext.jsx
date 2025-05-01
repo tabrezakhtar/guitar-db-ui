@@ -274,6 +274,14 @@ export const UserProvider = ({ children }) => {
     setState(prev => ({ ...prev, error: null }));
   };
 
+  const updateUserLocal = (newData) => {
+    setState(prev => {
+      const updatedUser = { ...prev.user, ...newData };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      return { ...prev, user: updatedUser };
+    });
+  };
+
   const value = {
     ...state,
     fetchUserProfile,
@@ -282,6 +290,7 @@ export const UserProvider = ({ children }) => {
     verifyMagicToken,
     logout,
     clearError,
+    updateUserLocal,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

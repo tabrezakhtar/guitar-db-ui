@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { formatDate } from "../dateUtils";
 import { useNavigate } from "react-router-dom";
+import Avatar from "../components/Avatar";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -79,8 +80,13 @@ const Profile = () => {
       
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center mb-6">
-          <div className="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center text-white text-3xl">
-            {username.charAt(0).toUpperCase()}
+          <div className="relative w-24 h-24 mr-6">
+            <Avatar
+              imageUrl={profileUser.avatarUrl}
+              username={username}
+              size="medium"
+              readonly={true}
+            />
           </div>
           <div className="ml-6">
             <h2 className="text-2xl font-bold">{username}</h2>
