@@ -26,7 +26,7 @@ const EditProfile = () => {
         website: user.website || ""
       });
     }
-  }, []);
+  }, [user]);
   
   const handleChange = (e) => {
     const { name, value } = e.target;

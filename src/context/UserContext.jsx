@@ -145,11 +145,13 @@ export const UserProvider = ({ children }) => {
         }));
         return null;
       }
-      
+
+      const updatedUser = { ...state.user, ...userData };
+
       const response = await fetch(`${BASE_URL}/api/users/updateProfile`, {
         method: "PUT",
         headers,
-        body: JSON.stringify(userData),
+        body: JSON.stringify(updatedUser),
       });
       
       const data = await response.json();
@@ -173,11 +175,11 @@ export const UserProvider = ({ children }) => {
       }
       
       // Update local storage with updated user data
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("user", JSON.stringify(data.user));
       
       setState(prev => ({ 
         ...prev, 
-        user: data, 
+        user: data.user, 
         loading: false 
       }));
       return data;

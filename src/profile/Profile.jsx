@@ -20,7 +20,7 @@ const Profile = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [user]);
   
   if (loading) {
     return (
