@@ -121,21 +121,15 @@ export function GuitarProvider({ children }) {
     }
   };
 
-  const addComment = async (equipmentId, text) => {
+  const addComment = async (username, equipmentId, text) => {
     if (!equipmentId || !text) {
       console.error("Missing equipmentId or text for comment");
       return null;
     }
     
-    const userId = "6810096ab128580c0051a9a2";
-    
-    if (!localStorage.getItem("userId")) {
-      localStorage.setItem("userId", userId);
-    }
-    
     const payload = {
       equipmentId,
-      userId,
+      username,
       text: text.trim()
     };
     

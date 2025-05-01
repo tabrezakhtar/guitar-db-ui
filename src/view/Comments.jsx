@@ -28,7 +28,7 @@ const Comments = ({ comments: initialComments, equipmentId }) => {
           <div key={comment._id || `comment-${index}`} className="border-b pb-3 last:border-b-0 last:pb-0">
             <p className="text-gray-800">{comment.text}</p>
             <div className="flex justify-between mt-2 text-sm text-gray-500">
-              <span>User {comment.userId ? comment.userId.substr(-4) : "Unknown"}</span>
+              <span>{`${comment.username.substring(0, 32)}`}</span>
               <span title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
             </div>
           </div>

@@ -39,9 +39,9 @@ function Avatar({ imageUrl, username, size = "medium", readonly = false }) {
     try {
       const result = await cloudinaryUpload(fileObj, "user-avatars");
 
-      if (user) {
+      // if (user) {
         updateUserLocal({ avatarUrl: result.secure_url });
-      }
+      // }
 
     } catch (error) {
       console.error("Failed to upload avatar:", error);

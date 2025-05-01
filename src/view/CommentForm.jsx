@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useGuitarContext } from "../context/GuitarContext";
+import { useUserContext } from "../context/UserContext";
 
 const CommentForm = ({ equipmentId }) => {
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { addComment } = useGuitarContext();
+  const { user } = useUserContext();
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,7 +17,7 @@ const CommentForm = ({ equipmentId }) => {
     setIsSubmitting(true);
     
     try {
-      await addComment(equipmentId, comment);
+      await addComment(user.username, equipmentId, comment);
       setComment("");
     } finally {
       setIsSubmitting(false);

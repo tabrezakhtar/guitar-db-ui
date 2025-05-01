@@ -58,7 +58,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="max-w-screen-md w-full mx-auto p-6">
+    <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
       <h1 className="text-2xl font-bold mb-6">Edit Profile</h1>
       
       {success && (

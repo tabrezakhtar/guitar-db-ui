@@ -3,18 +3,32 @@ import { useUserContext } from "../context/UserContext";
 
 const CreateProfile = () => {
   const { loading, error, createUserProfile, clearError } = useUserContext();
+  const { user } = useUserContext();
   
   const [formData, setFormData] = useState({
     username: "",
     bio: "",
     location: "",
-    website: ""
+    website: "",
+    avatarUrl: ""
   });
   
   const [success, setSuccess] = useState(false);
   const [magicLink, setMagicLink] = useState("");
   const [copied, setCopied] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        username: user.username || "",
+        bio: user.bio || "",
+        avatarUrl: user.avatarUrl || "",
+        location: user.location || "",
+        website: user.website || ""
+      });
+    }
+  }, [user]);
   
   useEffect(() => {
     clearError();
@@ -173,7 +187,7 @@ const CreateProfile = () => {
   };
   
   return (
-    <div className="max-w-screen-md mx-auto p-6">
+    <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
       <h1 className="text-2xl font-bold mb-6">Create Your Profile</h1>
       
       {renderErrorMessage(error)}
@@ -181,10 +195,7 @@ const CreateProfile = () => {
       <div className="bg-white rounded-lg shadow-lg p-6">
         <form onSubmit={handleSubmit}>
           <div className="flex items-center mb-6">
-            <div className="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center text-white text-3xl">
-              {formData.username.charAt(0).toUpperCase() || "?"}
-            </div>
-            <div className="ml-6 flex-1">
+            <div className="flex-1">
               <label className="block text-gray-700 mb-1">Username <span className="text-red-500">*</span></label>
               <input
                 type="text"
