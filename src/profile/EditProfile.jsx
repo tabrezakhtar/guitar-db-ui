@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
-import Avatar from "../components/Avatar";
+import Avatar from "./Avatar";
 
 const EditProfile = () => {
   const navigate = useNavigate();

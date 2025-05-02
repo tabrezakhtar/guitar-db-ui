@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useUserContext } from "./context/UserContext";
-import Avatar from "./components/Avatar";
+import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
 
 function Header() {
   const { user } = useUserContext();
@@ -29,7 +29,7 @@ function Header() {
               {/* <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium mr-2">
                 {getInitial(user.username)}
               </div> */}
-              <Avatar imageUrl={user.avatarUrl} username={user.username} size="small" readonly/>
+              <AvatarDisplayOnly imageUrl={user.avatarUrl} username={user.username} size="small"/>
               <span className="pl-2">{user.username}</span>
             </Link>
           ) : (

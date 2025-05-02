@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { formatDate } from "../dateUtils";
 import { useNavigate } from "react-router-dom";
-import Avatar from "../components/Avatar";
+import AvatarDisplayOnly from "./AvatarDisplayOnly";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -77,15 +77,14 @@ const Profile = () => {
           )}
         </div>
       </div>
-      
+
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center justify-center mb-6">
           <div className="relative w-24 h-24 mr-6">
-            <Avatar
+            <AvatarDisplayOnly
               imageUrl={profileUser.avatarUrl}
               username={username}
               size="medium"
-              readonly={true}
             />
           </div>
           <div className="ml-6">

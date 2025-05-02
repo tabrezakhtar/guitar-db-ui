@@ -118,7 +118,7 @@ function Avatar({ imageUrl, username, size = "medium", readonly = false, onAvata
       {!readonly && image && !isUploading && (
         <button 
           onClick={handleDeleteAvatar}
-          className="absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 bg-red-500 rounded-full w-7 h-7 flex items-center justify-center shadow-md"
+          className="absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 w-7 h-7 flex items-center justify-center"
           title="Delete avatar"
         >
           <span className="text-white text-sm">❌</span>
