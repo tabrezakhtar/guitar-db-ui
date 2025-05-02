@@ -134,18 +134,7 @@ export const UserProvider = ({ children }) => {
       const headers = { 
         "Content-Type": "application/json"
       };
-      
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      } else {
-        setState(prev => ({ 
-          ...prev, 
-          error: "Authorization required", 
-          loading: false 
-        }));
-        return null;
-      }
-
+ 
       const updatedUser = { ...state.user, ...userData };
 
       const response = await fetch(`${BASE_URL}/api/users/updateProfile`, {
@@ -269,21 +258,17 @@ export const UserProvider = ({ children }) => {
     
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        setState(prev => ({ 
-          ...prev, 
-          error: "Authorization required", 
-          loading: false 
-        }));
-        return null;
+      const headers = { 
+        "Content-Type": "application/json"
+      };
+      
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
-
+      
       const response = await fetch(`${BASE_URL}/api/users/deleteAvatar`, {
         method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
+        headers,
         body: JSON.stringify({ avatarUrl: state.user?.avatarUrl, userId: state.user?._id })
       });
       
