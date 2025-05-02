@@ -2,11 +2,11 @@ import { useState, useRef, useEffect } from "react";
 import { useUserContext } from "../context/UserContext";
 
 function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
-  const [isUploading, setIsUploading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [image, setImage] = useState(imageUrl);
   const [localFile, setLocalFile] = useState(null);
   const fileInputRef = useRef(null);
-  const { user, deleteAvatar } = useUserContext();
+  const { user } = useUserContext();
 
   const sizeClasses = {
     small: "w-12 h-12 text-lg",
@@ -30,16 +30,13 @@ function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
     const file = e.target.files[0];
     const localImageUrl = URL.createObjectURL(file);
     
-    // Store file for later upload
     setLocalFile({
       file,
       url: localImageUrl
     });
     
-    // Update the image preview
     setImage(localImageUrl);
     
-    // Notify parent component
     if (onAvatarUpdated) {
       onAvatarUpdated({
         file,
@@ -50,43 +47,36 @@ function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
   };
 
   const handleClick = () => {
-    if (isUploading || !fileInputRef.current) return;
+    if (isDeleting || !fileInputRef.current) return;
     fileInputRef.current.click();
   };
 
-  const handleDeleteAvatar = async (e) => {
+  const handleDeleteAvatar = (e) => {
     e.preventDefault();
     e.stopPropagation();
     
-    if (isUploading) return;
+    if (isDeleting) return;
     
-    // If it's a local file that hasn't been uploaded yet
-    if (localFile) {
-      setLocalFile(null);
-      setImage(null);
-      if (onAvatarUpdated) {
-        onAvatarUpdated(null);
-      }
-      return;
-    }
+    setIsDeleting(true);
     
     try {
-      const result = await deleteAvatar();
-      if (result) {
-        setImage(null);
-        if (onAvatarUpdated) {
-          onAvatarUpdated(null);
-        }
+      setImage(null);
+      
+      if (onAvatarUpdated) {
+        onAvatarUpdated({
+          deleteRequested: true,
+          originalUrl: image
+        });
       }
-    } catch (error) {
-      console.error("Failed to delete avatar:", error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   return (
     <div className="relative">
       <div 
-        className={`${sizeClasses[size] || sizeClasses.medium} bg-blue-500 rounded-full flex items-center justify-center text-white overflow-hidden ${!isUploading ? "cursor-pointer" : ""}`}
+        className={`${sizeClasses[size] || sizeClasses.medium} bg-blue-500 rounded-full flex items-center justify-center text-white overflow-hidden ${!isDeleting ? "cursor-pointer" : ""}`}
         onClick={handleClick}
       >
         {image ? (
@@ -99,9 +89,10 @@ function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
           <span>{getInitial(username)}</span>
         )}
         
-        {isUploading && (
+        {isDeleting && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <span className="ml-2 text-white text-xs">Deleting...</span>
           </div>
         )}
         
@@ -111,21 +102,22 @@ function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
           accept="image/*"
           onChange={handleFileChange}
           className="hidden"
-          disabled={isUploading}
+          disabled={isDeleting}
         />
         
-        {!isUploading && (
+        {!isDeleting && (
           <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white text-center text-xs py-1 opacity-0 hover:opacity-100 transition-opacity">
             Change
           </div>
         )}
       </div>
       
-      {image && !isUploading && (
+      {image && !isDeleting && (
         <button 
           onClick={handleDeleteAvatar}
           className="absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 w-7 h-7 flex items-center justify-center"
           title="Delete avatar"
+          disabled={isDeleting}
         >
           <span className="text-white text-sm">❌</span>
         </button>

@@ -6,7 +6,7 @@ import Avatar from "./Avatar";
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  const { user, updateUserProfile } = useUserContext();
+  const { user, updateUserProfile, deleteAvatar } = useUserContext();
   const [profile, setProfile] = useState({
     username: "",
     bio: "",
@@ -16,6 +16,8 @@ const EditProfile = () => {
     website: ""
   });
   const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarDeleted, setAvatarDeleted] = useState(false);
+  const [originalAvatarUrl, setOriginalAvatarUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -29,6 +31,7 @@ const EditProfile = () => {
         location: user.location || "",
         website: user.website || ""
       });
+      setOriginalAvatarUrl(user.avatarUrl || "");
     }
   }, [user]);
 
@@ -42,9 +45,19 @@ const EditProfile = () => {
       return;
     }
     
-    // Store the file for later upload and use the local URL for preview
+    if (newAvatar.deleteRequested) {
+      setAvatarDeleted(true);
+      setAvatarFile(null);
+      setProfile((prev) => ({
+        ...prev,
+        avatarUrl: ""
+      }));
+      return;
+    }
+    
     if (newAvatar.isNew) {
       setAvatarFile(newAvatar);
+      setAvatarDeleted(false);
       setProfile((prev) => ({
         ...prev,
         avatarUrl: newAvatar.url
@@ -73,8 +86,10 @@ const EditProfile = () => {
     try {
       let updatedProfile = { ...profile };
       
-      // Check if we need to upload avatar to Cloudinary
-      if (avatarFile && avatarFile.isNew) {
+      if (avatarDeleted && originalAvatarUrl) {
+        await deleteAvatar();
+        updatedProfile.avatarUrl = "";
+      } else if (avatarFile && avatarFile.isNew) {
         const result = await cloudinaryUpload(
           { file: avatarFile.file, url: avatarFile.url }, 
           "user-avatars"
@@ -84,15 +99,14 @@ const EditProfile = () => {
           throw new Error(result.error || "Failed to upload avatar");
         }
         
-        // Update the profile with the Cloudinary URL
         updatedProfile.avatarUrl = result.secure_url;
       }
       
-      // Send the updated profile to the backend
       await updateUserProfile(updatedProfile);
       
-      // Clear the avatarFile state since it's been uploaded
       setAvatarFile(null);
+      setAvatarDeleted(false);
+      setOriginalAvatarUrl(updatedProfile.avatarUrl);
       
       setSuccess(true);
     } catch (err) {
