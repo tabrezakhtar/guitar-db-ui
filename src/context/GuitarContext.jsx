@@ -13,7 +13,8 @@ export const initialState = {
   loading: true,
   page: 1,
   totalEquipment: 0,
-  error: null
+  error: null,
+  tags: []
 };
 
 export const GuitarContext = createContext(null);
@@ -69,6 +70,45 @@ export function GuitarProvider({ children }) {
       setState(prev => ({
         ...prev,
         loading: false,
+        error: error.message
+      }));
+      throw error;
+    }
+  };
+
+  const fetchTags = async () => {
+    setState(prev => ({ ...prev, error: null }));
+    
+    try {
+      const response = await fetch(`${BASE_URL}/api/equipment/tags`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({
+          ...prev,
+          error: data.errors
+        }));
+        return { 
+          success: false, 
+          error: data.errors 
+        };
+      }
+      
+      setState((prev) => ({ 
+        ...prev, 
+        tags: data.tags || [],
+        error: null
+      }));
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch tags:", error);
+      setState(prev => ({
+        ...prev,
         error: error.message
       }));
       throw error;
@@ -557,6 +597,7 @@ export function GuitarProvider({ children }) {
     setFilesToUpload,
     clearFilesToUpload,
     fetchSettings,
+    fetchTags,
     fetchEquipment,
     addEquipment,
     updateEquipment,
