@@ -21,19 +21,21 @@ function App() {
           <UserProvider>
             <Header />
 
-            <Routes>
-              <Route path="/" element={<ContentContainer />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/edit/:id" element={<EditGuitar />} />
-              <Route path="/view/:id" element={<ViewGuitar />} />
-              <Route path="/add" element={<AddGuitar />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/profile/:userId" element={<Profile />} />
-              <Route path="/create-profile" element={<CreateProfile />} />
-              <Route path="/edit-profile" element={<EditProfile />} />
-              <Route path="/login/magic" element={<MagicLogin />} />
-            </Routes>
+            <div>
+              <Routes>
+                <Route path="/" element={<ContentContainer />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/edit/:id" element={<EditGuitar />} />
+                <Route path="/view/:id" element={<ViewGuitar />} />
+                <Route path="/add" element={<AddGuitar />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/:userId" element={<Profile />} />
+                <Route path="/create-profile" element={<CreateProfile />} />
+                <Route path="/edit-profile" element={<EditProfile />} />
+                <Route path="/login/magic" element={<MagicLogin />} />
+              </Routes>
+            </div>
           </UserProvider>
         </GuitarProvider>
       </Router>
