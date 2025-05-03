@@ -7,6 +7,7 @@ const initialState = {
   user: null,
   loading: false,
   error: null,
+  showHeader: true,
 };
 
 const UserContext = createContext(null);
@@ -329,6 +330,10 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  const setHeaderVisibility = (visible) => {
+    setState(prev => ({ ...prev, showHeader: visible }));
+  };
+
   const value = {
     ...state,
     fetchUserProfile,
@@ -339,6 +344,7 @@ export const UserProvider = ({ children }) => {
     clearError,
     updateUserLocal,
     deleteAvatar,
+    setHeaderVisibility,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useUserContext } from "../context/UserContext";
 import Avatar from "./Avatar";
 import { cloudinaryUpload } from "../cloudinaryUtils";
+import MagicLinkSuccess from "../components/MagicLinkSuccess";
 
 const CreateProfile = () => {
   const { loading: contextLoading, error, createUserProfile, clearError } = useUserContext();
@@ -18,7 +19,6 @@ const CreateProfile = () => {
   const [avatarFile, setAvatarFile] = useState(null);
   const [success, setSuccess] = useState(false);
   const [magicLink, setMagicLink] = useState("");
-  const [copied, setCopied] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -146,20 +146,6 @@ const CreateProfile = () => {
     }
   };
   
-  const handleCopy = () => {
-    navigator.clipboard.writeText(magicLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  
-  useEffect(() => {
-    if (copied) {
-      const timer = setTimeout(() => setCopied(false), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [copied]);
-  
   if (contextLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -169,41 +155,7 @@ const CreateProfile = () => {
   }
   
   if (success) {
-    return (
-      <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
-        <p className="font-bold mb-3">🎸 Profile created successfully!</p>
-        <p className="mb-4">Your profile has been generated. Please save this magic link to log in later:</p>
-        
-        <div className="mb-4">
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              value={magicLink}
-              readOnly
-              className="border p-2 rounded flex-grow bg-white text-gray-800"
-            />
-            <button 
-              onClick={handleCopy}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-2 rounded flex items-center"
-            >
-              {copied ? "✅" : "📋"}
-            </button>
-          </div>
-          <p className="text-sm mt-2 text-amber-700">
-            ⚠️ Please save this link somewhere safe or bookmark this page. You'll need it to log in.
-          </p>
-        </div>
-        
-        <div className="flex gap-3 flex-wrap">
-          <button 
-            onClick={handleLogin}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded flex items-center"
-          >
-            <span className="mr-2">🪄</span> Login Now
-          </button>
-        </div>
-      </div>
-    );
+    return <MagicLinkSuccess magicLink={magicLink} onLogin={handleLogin} />;
   }
 
   const renderErrorMessage = (errorMsg) => {

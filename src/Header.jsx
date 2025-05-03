@@ -76,7 +76,7 @@ function MenuContent({ isOpen, onClose, isMobile, user }) {
 }
 
 function Header() {
-  const { user } = useUserContext();
+  const { user, showHeader } = useUserContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const buttonRef = useRef(null);
@@ -101,6 +101,9 @@ function Header() {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  // If showHeader is false, don't render the header
+  if (!showHeader) return null;
 
   return (
     <header className="bg-gray-800 text-white p-4 flex">
