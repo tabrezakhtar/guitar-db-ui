@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useUserContext } from "../context/UserContext";
+import Avatar from "./Avatar";
+import { cloudinaryUpload } from "../cloudinaryUtils";
 
 const CreateProfile = () => {
-  const { loading, error, createUserProfile, clearError } = useUserContext();
+  const { loading: contextLoading, error, createUserProfile, clearError } = useUserContext();
   const { user } = useUserContext();
   
   const [formData, setFormData] = useState({
@@ -13,10 +15,12 @@ const CreateProfile = () => {
     avatarUrl: ""
   });
   
+  const [avatarFile, setAvatarFile] = useState(null);
   const [success, setSuccess] = useState(false);
   const [magicLink, setMagicLink] = useState("");
   const [copied, setCopied] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -34,6 +38,39 @@ const CreateProfile = () => {
     clearError();
   }, []);
   
+  const handleAvatarChange = (newAvatar) => {
+    if (newAvatar === null) {
+      setFormData((prev) => ({
+        ...prev,
+        avatarUrl: ""
+      }));
+      setAvatarFile(null);
+      return;
+    }
+    
+    if (newAvatar.deleteRequested) {
+      setAvatarFile(null);
+      setFormData((prev) => ({
+        ...prev,
+        avatarUrl: ""
+      }));
+      return;
+    }
+    
+    if (newAvatar.isNew) {
+      setAvatarFile(newAvatar);
+      setFormData((prev) => ({
+        ...prev,
+        avatarUrl: newAvatar.url
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        avatarUrl: newAvatar
+      }));
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -67,11 +104,36 @@ const CreateProfile = () => {
       return;
     }
     
-    const result = await createUserProfile(formData);
+    setLoading(true);
     
-    if (result) {
-      setSuccess(true);
-      setMagicLink(result.magicLink);
+    try {
+      let updatedFormData = { ...formData };
+      
+      if (avatarFile && avatarFile.isNew) {
+        try {
+          const result = await cloudinaryUpload(
+            { file: avatarFile.file, url: avatarFile.url }, 
+            "user-avatars"
+          );
+          
+          if (!result.success && result.error) {
+            throw new Error(result.error || "Failed to upload avatar");
+          }
+          
+          updatedFormData.avatarUrl = result.secure_url;
+        } catch (err) {
+          console.error("Avatar upload failed:", err);
+        }
+      }
+      
+      const result = await createUserProfile(updatedFormData);
+      
+      if (result) {
+        setSuccess(true);
+        setMagicLink(result.magicLink);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,7 +160,7 @@ const CreateProfile = () => {
     }
   }, [copied]);
   
-  if (loading) {
+  if (contextLoading) {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -194,6 +256,20 @@ const CreateProfile = () => {
       
       <div className="bg-white rounded-lg shadow-lg p-6">
         <form onSubmit={handleSubmit}>
+          <div className="mb-6">
+            <div className="flex justify-center">
+              <Avatar
+                imageUrl={formData.avatarUrl}
+                username={formData.username}
+                size="large"
+                onAvatarUpdated={handleAvatarChange}
+              />
+            </div>
+            <p className="text-sm text-gray-500 text-center mt-2">
+              Click to add a profile picture
+            </p>
+          </div>
+          
           <div className="flex items-center mb-6">
             <div className="flex-1">
               <label className="block text-gray-700 mb-1">Username <span className="text-red-500">*</span></label>
