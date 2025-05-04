@@ -1,14 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGuitarContext } from "./context/GuitarContext";
 import Tag from "./components/Tag";
+import TagSearch from "./components/TagSearch";
 
 function SideMenu() {
   const { fetchTags, tags } = useGuitarContext();
+  const [filteredTags, setFilteredTags] = useState([]);
   
-useEffect(()=>{
-  fetchTags();
-}, [])
+  useEffect(() => {
+    fetchTags();
+  }, [])
+
+  useEffect(() => {
+    setFilteredTags(tags);
+  }, [tags])
+
+  const handleSearch = (searchTerm) => {
+    if (!searchTerm.trim()) {
+      setFilteredTags(tags);
+    } else {
+      const filtered = tags.filter(tag => 
+        tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredTags(filtered);
+    }
+  };
 
   return (
     <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4 bg-[url(/guitar-bg.svg)] bg-contain bg-top bg-no-repeat">
@@ -40,8 +57,9 @@ useEffect(()=>{
 
       <div className="mt-4">
         <div className="text-sm font-semibold mb-2">Select Tags</div>
+        <TagSearch onSearch={handleSearch} />
         <div className="flex flex-wrap space-x-2">
-          {tags.map((tag) => (
+          {filteredTags.map((tag) => (
             <Tag key={tag._id} tag={tag} />
           ))}
         </div>
