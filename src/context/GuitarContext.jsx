@@ -14,7 +14,9 @@ export const initialState = {
   page: 1,
   totalEquipment: 0,
   error: null,
-  tags: []
+  tags: [],
+  filteredTags: [],
+  tagSearchTerm: ""
 };
 
 export const GuitarContext = createContext(null);
@@ -99,9 +101,11 @@ export function GuitarProvider({ children }) {
         };
       }
       
+      const tagsData = data.tags || [];
       setState((prev) => ({ 
         ...prev, 
-        tags: data.tags || [],
+        tags: tagsData,
+        filteredTags: tagsData,
         error: null
       }));
       return data;
@@ -113,6 +117,22 @@ export function GuitarProvider({ children }) {
       }));
       throw error;
     }
+  };
+
+  const searchTags = (searchTerm) => {
+    setState(prev => {
+      const filtered = searchTerm.trim() === "" 
+        ? prev.tags 
+        : prev.tags.filter(tag => 
+            tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+      
+      return {
+        ...prev,
+        filteredTags: filtered,
+        tagSearchTerm: searchTerm
+      };
+    });
   };
 
   const fetchEquipment = async (id, type) => {
@@ -598,6 +618,7 @@ export function GuitarProvider({ children }) {
     clearFilesToUpload,
     fetchSettings,
     fetchTags,
+    searchTags,
     fetchEquipment,
     addEquipment,
     updateEquipment,

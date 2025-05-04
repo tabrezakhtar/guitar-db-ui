@@ -1,13 +1,11 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useGuitarContext } from "../context/GuitarContext";
 
-function TagSearch({ onSearch }) {
-  const [searchTerm, setSearchTerm] = useState("");
+function TagSearch() {
+  const { searchTags, tagSearchTerm } = useGuitarContext();
 
   const handleChange = (e) => {
     const value = e.target.value;
-    setSearchTerm(value);
-    onSearch(value);
+    searchTags(value);
   };
 
   return (
@@ -15,16 +13,12 @@ function TagSearch({ onSearch }) {
       <input
         type="text"
         placeholder="Search tags..."
-        value={searchTerm}
+        value={tagSearchTerm}
         onChange={handleChange}
         className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 text-gray-800"
       />
     </div>
   );
 }
-
-TagSearch.propTypes = {
-  onSearch: PropTypes.func.isRequired
-};
 
 export default TagSearch;

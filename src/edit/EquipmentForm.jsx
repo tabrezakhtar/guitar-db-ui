@@ -56,6 +56,21 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         </div>
 
         <div>
+          <label className="block">Tags: <span className="text-red-500">*</span></label>
+          <input
+            type="text"
+            name="tags"
+            placeholder="Add some tags"
+            // value={currentEquipment?.tags || ""}
+            // onChange={(e) =>
+            //   setCurrentEquipment({ ...currentEquipment, description: e.target.value })
+            // }
+            className="border p-2 rounded w-full"
+            required
+          />
+        </div>
+
+        <div>
           <label className="block">Why:</label>
           <textarea
             name="why"
