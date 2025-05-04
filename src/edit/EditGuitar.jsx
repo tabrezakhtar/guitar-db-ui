@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGuitarContext } from "../context/GuitarContext";
+import { useUserContext } from "../context/UserContext";
 import EditImages from "./EditImages";
 import Modal from "../Modal";
 import LoadingSpinner from "./LoadingSpinner";
@@ -10,6 +11,7 @@ import EquipmentForm from "./EquipmentForm";
 function EditGuitar({ mode = "edit", type = "guitar" }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useUserContext();
   const {
     currentEquipment,
     loading,
@@ -32,7 +34,21 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
   useEffect(() => {
     if (mode === "edit") {
       if (!currentEquipment || currentEquipment._id !== id) {
-        fetchEquipment(id, type);
+        fetchEquipment(id, type).then(data => {
+          if (data?.item && !data.item.userId && user?._id) {
+            // If the equipment exists but has no userId, add it
+            setCurrentEquipment({
+              ...data.item,
+              userId: user._id
+            });
+          }
+        });
+      } else if (currentEquipment && !currentEquipment.userId && user?._id) {
+        // Add userId to existing equipment if missing
+        setCurrentEquipment({
+          ...currentEquipment,
+          userId: user._id
+        });
       }
     } else if (mode === "add" && !initialized) {
       const defaultEquipment = {
@@ -42,6 +58,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
         recommendation: "",
         type: type.charAt(0).toUpperCase() + type.slice(1),
         why: "",
+        userId: user?._id,
       };
 
       if (type === "guitar") {
@@ -75,6 +92,14 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
       }
       setUploadProgress(null);
 
+      // Ensure userId is set before saving
+      if (!currentEquipment.userId && user?._id) {
+        setCurrentEquipment({
+          ...currentEquipment,
+          userId: user._id
+        });
+      }
+      
       if (!currentEquipment._id) {
         const result = await addEquipment(type);
         setSaved(true);

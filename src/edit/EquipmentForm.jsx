@@ -102,7 +102,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         </div>
 
         <div>
-          <label className="block">Tags: <span className="text-red-500">*</span></label>
+          <label className="block">Tags:</label>
           <Select
             isMulti
             name="tags"
