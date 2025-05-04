@@ -1,9 +1,55 @@
+import { useEffect } from "react";
 import { useGuitarContext } from "../context/GuitarContext";
 import FormFields from "./FormFields";
 import StarRating from "../components/StarRating";
+import Tag from "../components/Tag";
+import Select from "react-select";
 
 function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal }) {
-  const { currentEquipment, setCurrentEquipment } = useGuitarContext();
+  const { 
+    currentEquipment, 
+    setCurrentEquipment, 
+    tags, 
+    fetchTags 
+  } = useGuitarContext();
+
+  useEffect(() => {
+    if (tags.length === 0) {
+      fetchTags();
+    }
+  }, []);
+
+  const formatOptionLabel = ({ value, label, colour, icon }) => (
+    <div className="flex items-center">
+      <Tag tag={{ name: label, colour, icon }} />
+    </div>
+  );
+
+  const handleTagChange = (selectedOptions) => {
+    const selectedTags = selectedOptions ? selectedOptions.map(option => ({
+      _id: option.value,
+      name: option.label,
+      colour: option.colour,
+      icon: option.icon
+    })) : [];
+    
+    setCurrentEquipment({ ...currentEquipment, tags: selectedTags });
+  };
+
+  const tagOptions = tags.map(tag => ({
+    value: tag._id,
+    label: tag.name,
+    colour: tag.colour,
+    icon: tag.icon
+  }));
+
+  const selectedTags = currentEquipment?.tags ? 
+    currentEquipment.tags.map(tag => ({
+      value: tag._id,
+      label: tag.name,
+      colour: tag.colour,
+      icon: tag.icon
+    })) : [];
 
   return (
     <form className={`space-y-4 ${isUploading ? "opacity-50" : ""}`} onSubmit={saveEquipment}>
@@ -57,16 +103,17 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
 
         <div>
           <label className="block">Tags: <span className="text-red-500">*</span></label>
-          <input
-            type="text"
+          <Select
+            isMulti
             name="tags"
-            placeholder="Add some tags"
-            // value={currentEquipment?.tags || ""}
-            // onChange={(e) =>
-            //   setCurrentEquipment({ ...currentEquipment, description: e.target.value })
-            // }
-            className="border p-2 rounded w-full"
-            required
+            options={tagOptions}
+            value={selectedTags}
+            onChange={handleTagChange}
+            formatOptionLabel={formatOptionLabel}
+            placeholder="Select tags"
+            className="react-select-container"
+            classNamePrefix="react-select"
+            isDisabled={isUploading}
           />
         </div>
 
