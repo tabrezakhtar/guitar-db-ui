@@ -16,7 +16,8 @@ export const initialState = {
   error: null,
   tags: [],
   filteredTags: [],
-  tagSearchTerm: ""
+  tagSearchTerm: "",
+  selectedTags: []
 };
 
 export const GuitarContext = createContext(null);
@@ -38,6 +39,30 @@ export function GuitarProvider({ children }) {
   };
 
   const clearFilesToUpload = () => setState((prev) => ({ ...prev, filesToUpload: null }));
+
+  const handleTagSelection = (tag) => {
+    setState(prev => {
+      const isSelected = prev.selectedTags.some(t => t._id === tag._id);
+      if (isSelected) {
+        return {
+          ...prev,
+          selectedTags: prev.selectedTags.filter(t => t._id !== tag._id)
+        };
+      } else {
+        return {
+          ...prev,
+          selectedTags: [...prev.selectedTags, tag]
+        };
+      }
+    });
+  };
+
+  const clearSelectedTags = () => {
+    setState(prev => ({
+      ...prev,
+      selectedTags: []
+    }));
+  };
 
   const fetchSettings = async () => {
     try {
@@ -628,6 +653,8 @@ export function GuitarProvider({ children }) {
     deleteImage,
     loadMore,
     addComment,
+    handleTagSelection,
+    clearSelectedTags
   };
 
   return <GuitarContext.Provider value={value}>{children}</GuitarContext.Provider>;

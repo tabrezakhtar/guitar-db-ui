@@ -5,7 +5,13 @@ import Tag from "./components/Tag";
 import TagSearch from "./components/TagSearch";
 
 function SideMenu() {
-  const { fetchTags, filteredTags } = useGuitarContext();
+  const { 
+    fetchTags, 
+    filteredTags, 
+    selectedTags, 
+    handleTagSelection, 
+    clearSelectedTags 
+  } = useGuitarContext();
   
   useEffect(() => {
     fetchTags();
@@ -40,11 +46,31 @@ function SideMenu() {
       </div>
 
       <div className="mt-4">
-        <div className="text-sm font-semibold mb-2">Select Tags</div>
+        <div className="flex items-center justify-between mb-2">
+          <div className="text-sm font-semibold flex items-center">
+            Select Tags
+          </div>
+          <div>
+            {selectedTags.length > 0 && (
+              <button 
+                onClick={clearSelectedTags}
+                className="text-xs ml-2 px-2 py-1 bg-blue-600 hover:bg-gray-700 rounded"
+              >
+                Clear Selection
+              </button>
+            )}
+          </div>
+        </div>
         <TagSearch />
-        <div className="flex flex-wrap space-x-2">
+
+        <div className="flex flex-wrap">
           {filteredTags.map((tag) => (
-            <Tag key={tag._id} tag={tag} />
+            <Tag 
+              key={tag._id} 
+              tag={tag} 
+              selected={selectedTags.some(t => t._id === tag._id)}
+              onClick={handleTagSelection}
+            />
           ))}
         </div>
       </div>

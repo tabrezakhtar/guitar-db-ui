@@ -1,22 +1,31 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function Tag({ tag }) {
+function Tag({ tag, selected = false, onClick }) {
   const [isHovered, setIsHovered] = useState(false);
   
   const tagColor = tag.colour || "#6b7280";
   const textColor = isLightColor(tagColor) ? "#000000" : "#ffffff";
   
+  const handleClick = () => {
+    if (onClick) {
+      onClick(tag);
+    }
+  };
+  
   return (
     <span 
-      className="inline-flex items-center px-3 py-1.5 rounded-sm m-1 transition-transform duration-100 hover:scale-105 relative text-xs"
+      className={`inline-flex items-center px-3 py-1.5 rounded-sm m-1 transition-transform duration-100 hover:scale-105 relative text-xs cursor-pointer ${selected ? "ring-2 ring-offset-1" : ""}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClick}
       style={{ 
         backgroundColor: tagColor,
         color: textColor,
         filter: isHovered ? "brightness(1.1)" : "none",
-        paddingLeft: "24px"
+        paddingLeft: "24px",
+        transform: selected ? "scale(1.05)" : "none",
+        ringColor: selected ? "#2563eb" : "transparent"
       }}
     >
       <span 
@@ -24,7 +33,9 @@ function Tag({ tag }) {
         style={{
           width: "8px",
           height: "8px",
-          backgroundColor: isLightColor(tagColor) ? "rgba(0,0,0,0.25)" : "rgba(255,255,255,0.25)"
+          backgroundColor: selected 
+            ? "#2563eb" // Bright blue when selected
+            : isLightColor(tagColor) ? "rgba(0,0,0,0.25)" : "rgba(255,255,255,0.25)"
         }}
       ></span>
       {tag.icon && <span className="mr-1">{tag.icon}</span>}
@@ -63,7 +74,9 @@ Tag.propTypes = {
     name: PropTypes.string.isRequired,
     icon: PropTypes.string,
     colour: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  selected: PropTypes.bool,
+  onClick: PropTypes.func
 };
 
 export default Tag;
