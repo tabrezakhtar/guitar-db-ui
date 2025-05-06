@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";

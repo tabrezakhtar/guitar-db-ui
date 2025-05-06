@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useGuitarContext } from "./context/GuitarContext";
@@ -143,7 +143,9 @@ function GuitarsGrid() {
             
             <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-white shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
               <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
-              <span className="pl-2 text-xs text-blue-500 hover:underline">{item.user ? item.user?.username.slice(0.12) : ""}</span>
+              <Link to={item.user?._id ? `/profile/${item.user._id}` : "#"} onClick={(e) => e.stopPropagation()} className="pl-2 text-xs text-blue-500 hover:underline">
+                <span className="">{item.user ? item.user?.username.slice(0,12) : ""}</span>
+              </Link>
             </div>
             
             <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md flex items-center justify-center">
