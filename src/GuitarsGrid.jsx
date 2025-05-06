@@ -143,7 +143,7 @@ function GuitarsGrid() {
             
             <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-white shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
               <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
-              <span className="pl-2 text-xs">{item.user ? item.user?.username.slice(0.12) : ""}</span>
+              <span className="pl-2 text-xs text-blue-500 hover:underline">{item.user ? item.user?.username.slice(0.12) : ""}</span>
             </div>
             
             <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md flex items-center justify-center">
