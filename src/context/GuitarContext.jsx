@@ -17,7 +17,9 @@ export const initialState = {
   tags: [],
   filteredTags: [],
   tagSearchTerm: "",
-  selectedTags: []
+  selectedTags: [],
+  sortBy: "date",
+  sortOrder: "desc"
 };
 
 export const GuitarContext = createContext(null);
@@ -468,7 +470,7 @@ export function GuitarProvider({ children }) {
     setState(prev => ({ ...prev, error: null }));
     
     try {
-      const response = await fetch(`${BASE_URL}/api/equipmentList?page=${page}&limit=20&type=${type}`);
+      const response = await fetch(`${BASE_URL}/api/equipmentList?page=${page}&limit=20&type=${type}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -634,6 +636,14 @@ export function GuitarProvider({ children }) {
     fetchEquipmentList(nextPage, type);
   };
 
+  const setSortOptions = (sortBy, sortOrder) => {
+    setState(prev => ({
+      ...prev,
+      sortBy,
+      sortOrder
+    }));
+  };
+
   const value = {
     ...state,
     setLoading,
@@ -654,7 +664,8 @@ export function GuitarProvider({ children }) {
     loadMore,
     addComment,
     handleTagSelection,
-    clearSelectedTags
+    clearSelectedTags,
+    setSortOptions
   };
 
   return <GuitarContext.Provider value={value}>{children}</GuitarContext.Provider>;

@@ -14,12 +14,15 @@ function GuitarsGrid() {
     loadMore, 
     fetchEquipmentList, 
     setCurrentEquipment,
-    updateEquipment 
+    updateEquipment,
+    setSortOptions,
+    sortBy,
+    sortOrder,
   } = useGuitarContext();
 
   useEffect(() => {
     fetchEquipmentList(1, "guitar");
-  }, []);
+  }, [sortBy, sortOrder]);
 
   const generateObjectId = () => {
     const timestamp = Math.floor(new Date().getTime() / 1000).toString(16);
@@ -28,6 +31,11 @@ function GuitarsGrid() {
     const counter = Math.floor(Math.random() * 16777216).toString(16).padStart(6, "0");
     
     return timestamp + machineId + processId + counter;
+  };
+
+  const handleSortChange = (event) => {
+    const [newSortBy, newSortOrder] = event.target.value.split("|");
+    setSortOptions(newSortBy, newSortOrder);
   };
 
   const handleLikeClick = (e, equipmentItem) => {
@@ -62,6 +70,24 @@ function GuitarsGrid() {
         </div>
       }
     >
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold">{totalEquipment || 0} guitars</h2>
+        
+        <div className="flex items-center">
+          <select 
+            id="sort" 
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+            onChange={handleSortChange}
+            value={`${sortBy}|${sortOrder}`}
+          >
+            <option value="date|desc">Newest First</option>
+            <option value="date|asc">Oldest First</option>
+            <option value="brand|asc">Brand (A-Z)</option>
+            <option value="brand|desc">Brand (Z-A)</option>
+          </select>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {equipment.map((item) => (
           <div
