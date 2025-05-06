@@ -35,7 +35,8 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
     if (mode === "edit") {
       if (!currentEquipment || currentEquipment._id !== id) {
         fetchEquipment(id, type).then(data => {
-          if (data?.item && !data.item.userId && user?._id) {
+          debugger;
+          if (data?.item && !data.item.user._id && user?._id) {
             // If the equipment exists but has no userId, add it
             setCurrentEquipment({
               ...data.item,
@@ -43,13 +44,14 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
             });
           }
         });
-      } else if (currentEquipment && !currentEquipment.userId && user?._id) {
-        // Add userId to existing equipment if missing
-        setCurrentEquipment({
-          ...currentEquipment,
-          userId: user._id
-        });
-      }
+      } 
+      // else if (currentEquipment && !currentEquipment.userId && user?._id) {
+      //   // Add userId to existing equipment if missing
+      //   setCurrentEquipment({
+      //     ...currentEquipment,
+      //     userId: user._id
+      //   });
+      // }
     } else if (mode === "add" && !initialized) {
       const defaultEquipment = {
         brand: "",
@@ -93,7 +95,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
       setUploadProgress(null);
 
       // Ensure userId is set before saving
-      if (!currentEquipment.userId && user?._id) {
+      if (!currentEquipment.user?._id && user?._id) {
         setCurrentEquipment({
           ...currentEquipment,
           userId: user._id

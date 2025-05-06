@@ -6,6 +6,7 @@ function AvatarDisplayOnly({ imageUrl, username, size = "medium",  }) {
   const { user } = useUserContext();
 
   const sizeClasses = {
+    xsmall: "w-8 h-8 text-sm",
     small: "w-12 h-12 text-lg",
     medium: "w-24 h-24 text-3xl",
     large: "w-32 h-32 text-4xl"

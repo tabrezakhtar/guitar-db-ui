@@ -5,6 +5,7 @@ import { useGuitarContext } from "./context/GuitarContext";
 import { useEffect } from "react";
 import SkeletonImage from "./SkeletonImage";
 import Tag from "./components/Tag";
+import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
 
 function GuitarsGrid() {
   const navigate = useNavigate();
@@ -52,6 +53,26 @@ function GuitarsGrid() {
     
     setCurrentEquipment(updatedEquipment);
     updateEquipment(equipmentItem.type.toLowerCase());
+  };
+
+  const handleAvatarClick = (e, userId) => {
+    e.stopPropagation();
+    if (userId) {
+      navigate(`/profile/${userId}`);
+    }
+  };
+
+  const getEquipmentIcon = (type) => {
+    switch(type?.toLowerCase()) {
+      case "guitar":
+        return "/guitar.png";
+      case "amp":
+        return "/amp.png";
+      case "pedal":
+        return "/pedal.png";
+      default:
+        return "/guitar.png";
+    }
   };
 
   if (loading && equipment.length === 0) {
@@ -111,7 +132,7 @@ function GuitarsGrid() {
         {equipment.map((item) => (
           <div
             key={item._id}
-            className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200"
+            className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative"
             onClick={() => navigate("/view/" + item._id)}
           >
             {item.images && item.images.length > 0 ? (
@@ -119,6 +140,20 @@ function GuitarsGrid() {
             ) : (
               <SkeletonImage />
             )}
+            
+            <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-white shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
+              <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
+              <span className="pl-2 text-xs">{item.user ? item.user?.username.slice(0.12) : ""}</span>
+            </div>
+            
+            <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md flex items-center justify-center">
+              <img 
+                src={getEquipmentIcon(item.type)} 
+                alt={item.type} 
+                className="w-6 h-6"
+              />
+            </div>
+            
             <div className="p-3 bg-gray-200">
               <h2 className="text-lg font-semibold">{item.brand} {item.name}</h2>
               <p className="text-sm text-gray-600">{item.description}</p>
