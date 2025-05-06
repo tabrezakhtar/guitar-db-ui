@@ -470,7 +470,14 @@ export function GuitarProvider({ children }) {
     setState(prev => ({ ...prev, error: null }));
     
     try {
-      const response = await fetch(`${BASE_URL}/api/equipmentList?page=${page}&limit=20&type=${type}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`);
+      let url = `${BASE_URL}/api/equipmentList?page=${page}&limit=20&type=${type}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
+      
+      if (state.selectedTags.length > 0) {
+        const tagsParam = JSON.stringify(state.selectedTags.map(tag => tag._id));
+        url += `&tags=${encodeURIComponent(tagsParam)}`;
+      }
+      
+      const response = await fetch(url);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

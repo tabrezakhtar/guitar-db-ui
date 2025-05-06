@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useGuitarContext } from "./context/GuitarContext";
 import { useEffect } from "react";
 import SkeletonImage from "./SkeletonImage";
+import Tag from "./components/Tag";
 
 function GuitarsGrid() {
   const navigate = useNavigate();
@@ -18,11 +19,13 @@ function GuitarsGrid() {
     setSortOptions,
     sortBy,
     sortOrder,
+    selectedTags,
+    handleTagSelection,
   } = useGuitarContext();
 
   useEffect(() => {
     fetchEquipmentList(1, "guitar");
-  }, [sortBy, sortOrder]);
+  }, [sortBy, sortOrder, selectedTags]);
 
   const generateObjectId = () => {
     const timestamp = Math.floor(new Date().getTime() / 1000).toString(16);
@@ -87,6 +90,22 @@ function GuitarsGrid() {
           </select>
         </div>
       </div>
+
+      {selectedTags.length > 0 && (
+        <div className="mb-4 flex flex-wrap gap-1 items-center">
+          <span className="text-sm text-gray-600">Filtered by:</span>
+          {selectedTags.map(tag => (
+            <span className="m-1" key={tag._id}>
+              <Tag 
+                key={tag._id} 
+                tag={tag} 
+                selected={true}
+                onClick={handleTagSelection}
+              />
+            </span>
+          ))}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {equipment.map((item) => (
