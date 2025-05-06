@@ -63,15 +63,23 @@ function SideMenu() {
         </div>
         <TagSearch />
 
-        <div className="flex flex-wrap">
-          {filteredTags.map((tag) => (
-            <Tag 
-              key={tag._id} 
-              tag={tag} 
-              selected={selectedTags.some(t => t._id === tag._id)}
-              onClick={handleTagSelection}
-            />
-          ))}
+        <div className="relative">
+          <div className="flex flex-wrap max-h-[700px] overflow-y-auto pr-1 pb-16 scrollbar-hide" style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}>
+            <style jsx>{`
+              .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+            {filteredTags.map((tag) => (
+              <Tag 
+                key={tag._id} 
+                tag={tag} 
+                selected={selectedTags.some(t => t._id === tag._id)}
+                onClick={handleTagSelection}
+              />
+            ))}
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-500 to-transparent pointer-events-none"></div>
         </div>
       </div>
     </aside>
