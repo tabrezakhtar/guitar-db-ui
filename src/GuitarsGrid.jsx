@@ -108,6 +108,8 @@ function GuitarsGrid() {
             <option value="date|asc">Oldest First</option>
             <option value="brand|asc">Brand (A-Z)</option>
             <option value="brand|desc">Brand (Z-A)</option>
+            <option value="rating|asc">Lowest Rated</option>
+            <option value="rating|desc">Highest Rated</option>
           </select>
         </div>
       </div>
