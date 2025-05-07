@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
+import { useGuitarContext } from "../context/GuitarContext";
 import { formatDate } from "../dateUtils";
 import { useNavigate } from "react-router-dom";
 import AvatarDisplayOnly from "./AvatarDisplayOnly";
+import Thumbnail from "../Thumbnail";
 
 const Profile = () => {
   const { userId } = useParams();
   const [ profileUser, setProfileUser ] = useState(null);
-  const { user, loading, error, fetchUserProfile, logout } = useUserContext();
+  const [ userEquipment, setUserEquipment ] = useState({
+    guitars: [],
+    amps: [],
+    pedals: []
+  });
+  const [ loading, setLoading ] = useState(false);
+  const { user, error: userError, fetchUserProfile, logout } = useUserContext();
+  const { fetchUserEquipment, error: equipmentError } = useGuitarContext();
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -23,7 +32,83 @@ const Profile = () => {
     fetchData();
   }, [user]);
   
-  if (loading) {
+  useEffect(() => {
+    const fetchEquipment = async () => {
+      if (!profileUser) return;
+      
+      const userToFetch = userId || (profileUser && profileUser._id);
+      if (!userToFetch) return;
+      
+      setLoading(true);
+      try {
+        const data = await fetchUserEquipment(userToFetch);
+        
+        if (data && data.items) {
+          const guitars = [];
+          const amps = [];
+          const pedals = [];
+          
+          data.items.forEach(item => {
+            const type = item.type?.toLowerCase();
+            if (type === "guitar") {
+              guitars.push(item);
+            } else if (type === "amp") {
+              amps.push(item);
+            } else if (type === "pedal") {
+              pedals.push(item);
+            }
+          });
+          
+          setUserEquipment({ guitars, amps, pedals });
+        }
+      } catch (error) {
+        console.error("Error fetching user equipment:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchEquipment();
+  }, [profileUser, userId]);
+  
+  const renderEquipmentSection = (items, title, emoji) => {
+    if (!items || items.length === 0) return null;
+    
+    return (
+      <div className="mb-6 bg-gray-100 p-4 rounded-md">
+        <h3 className="text-lg font-semibold mb-2 flex items-center">
+          {emoji} {title} ({items.length})
+        </h3>
+        <div className="flex flex-wrap gap-4">
+          {items.map(item => (
+            <div 
+              key={item._id} 
+              className="w-[140px] border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all"
+              onClick={() => navigate(`/view/${item._id}`)}
+            >
+              {item.images && item.images.length > 0 ? (
+                <Thumbnail url={item.images[0]} alt={`${item.brand} ${item.name}`} />
+              ) : (
+                <div className="w-full aspect-square bg-gray-200 flex items-center justify-center">
+                  <img 
+                    src={`/${item.type?.toLowerCase()}.png`}
+                    alt={item.type}
+                    className="w-12 h-12 opacity-50"
+                  />
+                </div>
+              )}
+              <div className="p-2 bg-white">
+                <p className="font-medium text-sm truncate">{item.brand}</p>
+                <p className="text-xs truncate">{item.name}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+  
+  if (loading && !profileUser) {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -31,10 +116,10 @@ const Profile = () => {
     );
   }
   
-  if (error) {
+  if (userError || equipmentError) {
     return (
       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
-        <p>{error}</p>
+        <p>{userError || equipmentError}</p>
       </div>
     );
   }
@@ -49,7 +134,7 @@ const Profile = () => {
   
   const { username, bio, location, website, createdAt } = profileUser;
   
-  const isOwnProfile = !userId || (user && profileUser && user._id === profileUser.id);
+  const isOwnProfile = !userId || (user && profileUser && user._id === profileUser._id);
   
   return (
     <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
@@ -115,8 +200,28 @@ const Profile = () => {
             <p className="text-gray-500">No website added</p>
           )}
         </div>
+
+        <h3 className="text-xl font-bold mb-4">Equipment</h3>
         
-        <div className="bg-gray-100 p-4 rounded-md text-gray-600 text-sm">
+        {loading ? (
+          <div className="flex justify-center p-4">
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : (
+          <>
+            {renderEquipmentSection(userEquipment.guitars, "Guitars", "🎸")}
+            {renderEquipmentSection(userEquipment.amps, "Amplifiers", "🔊")}
+            {renderEquipmentSection(userEquipment.pedals, "Effects & Pedals", "🎛️")}
+            
+            {!userEquipment.guitars.length && !userEquipment.amps.length && !userEquipment.pedals.length && (
+              <div className="bg-gray-100 p-4 rounded-md text-gray-600">
+                <p className="text-center">No equipment added yet.</p>
+              </div>
+            )}
+          </>
+        )}
+        
+        <div className="bg-gray-100 p-4 rounded-md text-gray-600 text-sm mt-6">
           <p>🗓️ Member since {formatDate(createdAt)}</p>
         </div>
       </div>

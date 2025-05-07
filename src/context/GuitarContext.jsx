@@ -651,6 +651,42 @@ export function GuitarProvider({ children }) {
     }));
   };
 
+  const fetchUserEquipment = async (userId) => {
+    if (!userId) return null;
+    
+    setState(prev => ({ ...prev, error: null }));
+    
+    try {
+      const response = await fetch(`${BASE_URL}/api/equipment/user/${userId}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({
+          ...prev,
+          error: data.errors
+        }));
+        return { 
+          success: false, 
+          error: data.errors 
+        };
+      }
+      
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch user equipment:", error);
+      setState(prev => ({
+        ...prev,
+        error: error.message
+      }));
+      throw error;
+    }
+  };
+
   const value = {
     ...state,
     setLoading,
@@ -666,6 +702,7 @@ export function GuitarProvider({ children }) {
     updateEquipment,
     deleteEquipment,
     fetchEquipmentList,
+    fetchUserEquipment,
     cloudinaryUpload: cloudinaryUploadForGuitar,
     deleteImage,
     loadMore,
