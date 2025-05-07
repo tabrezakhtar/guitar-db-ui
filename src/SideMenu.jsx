@@ -64,7 +64,7 @@ function SideMenu() {
         <TagSearch />
 
         <div className="relative">
-          <div className="flex flex-wrap max-h-[700px] overflow-y-auto pr-1 pb-16 scrollbar-hide" style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}>
+          <div className="flex flex-wrap max-h-[250px] sm:max-h-[250px] md:max-h-[500px] lg:max-h-[700px] overflow-y-auto pr-1 pb-16 scrollbar-hide" style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}>
             <style jsx>{`
               .scrollbar-hide::-webkit-scrollbar {
                 display: none;
