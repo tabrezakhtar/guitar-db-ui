@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { useGuitarContext } from "../context/GuitarContext";
+import { useUserContext } from "../context/UserContext";
 import SkeletonImage from "../SkeletonImage";
 import Comments from "./Comments";
 
@@ -10,6 +11,7 @@ const ViewGuitar = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { currentEquipment: equipment, loading, fetchEquipment, clearCurrentEquipment } = useGuitarContext();
+  const { user } = useUserContext();
 
   useEffect(() => {
     fetchEquipment(id, "guitar");
@@ -24,21 +26,24 @@ const ViewGuitar = () => {
   }
 
   const likesCount = equipment.likes ? (Array.isArray(equipment.likes) ? equipment.likes.length : 0) : 0;
+  const canEdit = user && equipment.user && user._id === equipment.user._id;
 
   return (
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
         <div className="mb-4">
           <Link to="/" className="hover:underline mr-4">Back</Link>
-          <button
-            onClick={() => {
-              clearCurrentEquipment();
-              navigate(`/edit/${equipment._id}`);
-            }}
-            className="hover:underline text-blue-500"
-          >
-            Edit
-          </button>
+          {canEdit && (
+            <button
+              onClick={() => {
+                clearCurrentEquipment();
+                navigate(`/edit/${equipment._id}`);
+              }}
+              className="hover:underline text-blue-500"
+            >
+              Edit
+            </button>
+          )}
         </div>
         <h1 className="text-3xl font-bold mb-6">My Stuff!</h1>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">

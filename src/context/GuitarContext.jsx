@@ -42,7 +42,7 @@ function decodeJWT(token) {
 export function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
 
-  const validateTokenSafely = async () => {
+  const validateToken = async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return false;
@@ -85,7 +85,6 @@ export function GuitarProvider({ children }) {
         localStorage.setItem("token", data.token);
         return true;
       } else {
-        //localStorage.removeItem("token");
         setState(prev => ({
           ...prev,
           error: data.message || "Session expired"
@@ -93,7 +92,6 @@ export function GuitarProvider({ children }) {
         return false;
       }
     } catch (error) {
-      //localStorage.removeItem("token");
       setState(prev => ({
         ...prev,
         error: "Authentication failed"
@@ -289,7 +287,7 @@ export function GuitarProvider({ children }) {
       return null;
     }
 
-    const isValid = await validateTokenSafely();
+    const isValid = await validateToken();
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -367,7 +365,7 @@ export function GuitarProvider({ children }) {
   };
 
   const addEquipment = async (type) => {
-    const isValid = await validateTokenSafely();
+    const isValid = await validateToken();
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -452,7 +450,7 @@ export function GuitarProvider({ children }) {
   };
 
   const updateEquipment = async (type) => {
-    const isValid = await validateTokenSafely();
+    const isValid = await validateToken();
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -552,7 +550,7 @@ export function GuitarProvider({ children }) {
   };
 
   const deleteEquipment = async () => {
-    const isValid = await validateTokenSafely();
+    const isValid = await validateToken();
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -710,7 +708,7 @@ export function GuitarProvider({ children }) {
   };
 
   const deleteImage = async (imageUrl) => {
-    const isValid = await validateTokenSafely();
+    const isValid = await validateToken();
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -876,7 +874,7 @@ export function GuitarProvider({ children }) {
     handleTagSelection,
     clearSelectedTags,
     setSortOptions,
-    validateTokenSafely
+    validateToken
   };
 
   return <GuitarContext.Provider value={value}>{children}</GuitarContext.Provider>;

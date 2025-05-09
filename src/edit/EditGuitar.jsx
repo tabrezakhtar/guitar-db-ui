@@ -30,28 +30,46 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
   const [saved, setSaved] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [initialized, setInitialized] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
     if (mode === "edit") {
       if (!currentEquipment || currentEquipment._id !== id) {
         fetchEquipment(id, type).then(data => {
-          if (data?.item && !data.item.user._id && user?._id) {
-            // If the equipment exists but has no userId, add it
-            setCurrentEquipment({
-              ...data.item,
-              userId: user._id
-            });
+          if (data?.item) {
+            const canEdit = user && data.item.user && user._id === data.item.user._id;
+            
+            if (!canEdit) {
+              navigate("/");
+              return;
+            }
+            
+            if (!data.item.user._id && user?._id) {
+              setCurrentEquipment({
+                ...data.item,
+                userId: user._id
+              });
+            }
           }
+          setAuthChecked(true);
+        })
+        .catch(() => {
+          navigate("/");
         });
-      } 
-      // else if (currentEquipment && !currentEquipment.userId && user?._id) {
-      //   // Add userId to existing equipment if missing
-      //   setCurrentEquipment({
-      //     ...currentEquipment,
-      //     userId: user._id
-      //   });
-      // }
+      } else {
+        const canEdit = user && currentEquipment.user && user._id === currentEquipment.user._id;
+        if (!canEdit) {
+          navigate("/");
+          return;
+        }
+        setAuthChecked(true);
+      }
     } else if (mode === "add" && !initialized) {
+      if (!user) {
+        navigate("/");
+        return;
+      }
+      
       const defaultEquipment = {
         brand: "",
         description: "",
@@ -59,7 +77,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
         recommendation: "",
         type: type.charAt(0).toUpperCase() + type.slice(1),
         why: "",
-        userId: user?._id,
+        userId: user._id,
       };
 
       if (type === "guitar") {
@@ -72,6 +90,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
 
       setCurrentEquipment(defaultEquipment);
       setInitialized(true);
+      setAuthChecked(true);
     }
   }, []);
 
@@ -93,7 +112,6 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
       }
       setUploadProgress(null);
 
-      // Ensure userId is set before saving
       if (!currentEquipment.user?._id && user?._id) {
         setCurrentEquipment({
           ...currentEquipment,
@@ -124,6 +142,10 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
   };
 
   if (loading && mode === "edit") {
+    return <LoadingSpinner />;
+  }
+
+  if (!authChecked) {
     return <LoadingSpinner />;
   }
 

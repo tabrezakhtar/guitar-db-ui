@@ -25,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const checkToken = async () => {
+    const validateToken = async () => {
       if (!user) {
         setIsChecking(false);
         return;
@@ -62,7 +62,7 @@ const ProtectedRoute = ({ children }) => {
       }
     };
     
-    checkToken();
+    validateToken();
   }, [user]);
   
   if (isChecking) {
@@ -84,7 +84,7 @@ const ProtectedRoute = ({ children }) => {
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
           <p className="font-bold">Authentication Error</p>
           <p>{authError || "Your authentication token is invalid or expired."}</p>
-          <p className="mt-2">Please refresh your token.</p>
+          <p className="mt-2">Please login again.</p>
           <button 
             onClick={() => {
               window.location.href = "/create-profile";
