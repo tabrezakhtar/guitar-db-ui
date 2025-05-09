@@ -15,7 +15,7 @@ function Tag({ tag, selected = false, onClick }) {
   
   return (
     <span 
-      className={`inline-flex items-center px-3 py-1.5 rounded-sm m-1 transition-transform duration-100 hover:scale-105 relative text-xs cursor-pointer ${selected ? "ring-2 ring-offset-1" : ""}`}
+      className={`inline-flex items-center ml-2 px-3 py-1.5 rounded-sm m-1 transition-transform duration-100 hover:scale-105 relative text-xs cursor-pointer ${selected ? "ring-2 ring-offset-1" : ""}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}

@@ -24,8 +24,83 @@ export const initialState = {
 
 export const GuitarContext = createContext(null);
 
+function decodeJWT(token) {
+  try {
+    const base64Url = token.split(".")[1];
+    if (!base64Url) throw new Error("Invalid JWT");
+
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = atob(base64);
+    const decoded = JSON.parse(jsonPayload);
+    return decoded;
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+    return null;
+  }
+}
+
 export function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
+
+  const validateTokenSafely = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return false;
+
+      const decodedToken = decodeJWT(token);
+      if (!decodedToken) return false;
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      
+      if (decodedToken.exp && decodedToken.exp > currentTime) {
+        return true;
+      } else {
+        return await refreshToken();
+      }
+    } catch (error) {
+      setState(prev => ({
+        ...prev,
+        error: "Authentication error: " + (error.message || "Failed to validate token")
+      }));
+      return false;
+    }
+  };
+
+  const refreshToken = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/users/refreshToken`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        localStorage.setItem("token", data.token);
+        return true;
+      } else {
+        //localStorage.removeItem("token");
+        setState(prev => ({
+          ...prev,
+          error: data.message || "Session expired"
+        }));
+        return false;
+      }
+    } catch (error) {
+      //localStorage.removeItem("token");
+      setState(prev => ({
+        ...prev,
+        error: "Authentication failed"
+      }));
+      return false;
+    }
+  };
 
   const setLoading = (loading) => setState((prev) => ({ ...prev, loading }));
 
@@ -69,27 +144,27 @@ export function GuitarProvider({ children }) {
   const fetchSettings = async () => {
     try {
       const response = await fetch(`${BASE_URL}/api/equipment/settings`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data && data.errors) {
         setState(prev => ({
           ...prev,
           loading: false,
           error: data.errors
         }));
-        return { 
-          success: false, 
-          error: data.errors 
+        return {
+          success: false,
+          error: data.errors
         };
       }
-      
-      setState((prev) => ({ 
-        ...prev, 
+
+      setState((prev) => ({
+        ...prev,
         settings: data.settings || {},
         error: null
       }));
@@ -107,30 +182,30 @@ export function GuitarProvider({ children }) {
 
   const fetchTags = async () => {
     setState(prev => ({ ...prev, error: null }));
-    
+
     try {
       const response = await fetch(`${BASE_URL}/api/equipment/tags`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data && data.errors) {
         setState(prev => ({
           ...prev,
           error: data.errors
         }));
-        return { 
-          success: false, 
-          error: data.errors 
+        return {
+          success: false,
+          error: data.errors
         };
       }
-      
+
       const tagsData = data.tags || [];
-      setState((prev) => ({ 
-        ...prev, 
+      setState((prev) => ({
+        ...prev,
         tags: tagsData,
         filteredTags: tagsData,
         error: null
@@ -148,12 +223,12 @@ export function GuitarProvider({ children }) {
 
   const searchTags = (searchTerm) => {
     setState(prev => {
-      const filtered = searchTerm.trim() === "" 
-        ? prev.tags 
-        : prev.tags.filter(tag => 
-            tag.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-      
+      const filtered = searchTerm.trim() === ""
+        ? prev.tags
+        : prev.tags.filter(tag =>
+          tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
       return {
         ...prev,
         filteredTags: filtered,
@@ -166,28 +241,28 @@ export function GuitarProvider({ children }) {
     if (!id || !type) return;
     setLoading(true);
     setState(prev => ({ ...prev, error: null }));
-    
+
     try {
       const response = await fetch(`${BASE_URL}/api/equipmentById?id=${id}&type=${type}`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data && data.errors) {
         setState(prev => ({
           ...prev,
           loading: false,
           error: data.errors
         }));
-        return { 
-          success: false, 
-          error: data.errors 
+        return {
+          success: false,
+          error: data.errors
         };
       }
-      
+
       setState((prev) => ({
         ...prev,
         currentEquipment: data.item,
@@ -195,7 +270,7 @@ export function GuitarProvider({ children }) {
         loading: false,
         error: null
       }));
-      
+
       return data;
     } catch (error) {
       console.error("Failed to fetch equipment:", error);
@@ -213,43 +288,61 @@ export function GuitarProvider({ children }) {
       console.error("Missing equipmentId or text for comment");
       return null;
     }
-    
+
+    const isValid = await validateTokenSafely();
+    if (!isValid) {
+      setState(prev => ({
+        ...prev,
+        error: "Your session has expired. Please login again."
+      }));
+      return null;
+    }
+
     const payload = {
       equipmentId,
       username,
       text: text.trim()
     };
-    
+
     try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(`${BASE_URL}/api/equipment/addComment`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify(payload),
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const result = await response.json();
-      
+
       if (result && result.errors) {
         setState(prev => ({
           ...prev,
           error: result.errors
         }));
-        return { 
-          success: false, 
-          error: result.errors 
+        return {
+          success: false,
+          error: result.errors
         };
       }
-      
+
       setState((prev) => {
         if (prev.currentEquipment && prev.currentEquipment._id === equipmentId) {
-          const updatedComments = prev.currentEquipment.comments 
+          const updatedComments = prev.currentEquipment.comments
             ? [result, ...prev.currentEquipment.comments]
             : [result];
-            
+
           return {
             ...prev,
             currentEquipment: {
@@ -261,7 +354,7 @@ export function GuitarProvider({ children }) {
         }
         return prev;
       });
-      
+
       return result;
     } catch (error) {
       console.error("Failed to add comment:", error);
@@ -274,55 +367,73 @@ export function GuitarProvider({ children }) {
   };
 
   const addEquipment = async (type) => {
+    const isValid = await validateTokenSafely();
+    if (!isValid) {
+      setState(prev => ({
+        ...prev,
+        error: "Your session has expired. Please login again.",
+        loading: false
+      }));
+      return null;
+    }
+
     return new Promise((resolve, reject) => {
       setState(prev => {
         const currentEquipment = prev.currentEquipment;
-        
-        console.log("addEquipment()", currentEquipment);
+
         if (!type || !currentEquipment) {
           resolve(null);
           return prev;
         }
-        
+
         (async () => {
           try {
             setState(innerPrev => ({
-              ...innerPrev, 
+              ...innerPrev,
               error: null
             }));
-            
+
+            const token = localStorage.getItem("token");
+            const headers = {
+              "Content-Type": "application/json"
+            };
+
+            if (token) {
+              headers["Authorization"] = `Bearer ${token}`;
+            }
+
             const response = await fetch(`${BASE_URL}/api/equipment/add?type=${type}`, {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers,
               body: JSON.stringify(currentEquipment),
             });
-            
+
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const result = await response.json();
-            
+
             if (result && result.errors) {
               setState(innerPrev => ({
                 ...innerPrev,
                 loading: false,
                 error: result.errors
               }));
-              resolve({ 
-                success: false, 
-                error: result.errors 
+              resolve({
+                success: false,
+                error: result.errors
               });
               return;
             }
-            
+
             setState(innerPrev => ({
               ...innerPrev,
               currentEquipment: result,
               loading: false,
               error: null
             }));
-            
+
             resolve(result);
           } catch (error) {
             console.error("Failed to add equipment:", error);
@@ -334,13 +445,23 @@ export function GuitarProvider({ children }) {
             reject(error);
           }
         })();
-        
+
         return prev;
       });
     });
   };
 
   const updateEquipment = async (type) => {
+    const isValid = await validateTokenSafely();
+    if (!isValid) {
+      setState(prev => ({
+        ...prev,
+        error: "Your session has expired. Please login again.",
+        loading: false
+      }));
+      return null;
+    }
+
     return new Promise((resolve, reject) => {
       setState((prev) => {
         const currentEquipment = prev.currentEquipment;
@@ -353,44 +474,53 @@ export function GuitarProvider({ children }) {
         (async () => {
           try {
             setState(innerPrev => ({
-              ...innerPrev, 
+              ...innerPrev,
               error: null
             }));
-            
+
+            const token = localStorage.getItem("token");
+            const headers = {
+              "Content-Type": "application/json"
+            };
+
+            if (token) {
+              headers["Authorization"] = `Bearer ${token}`;
+            }
+
             const response = await fetch(`${BASE_URL}/api/equipment/update/${currentEquipment._id}?type=${type}`, {
               method: "PUT",
-              headers: { "Content-Type": "application/json" },
+              headers,
               body: JSON.stringify(currentEquipment),
             });
-            
+
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const result = await response.json();
-            
+
             if (result && result.errors) {
               setState(innerPrev => ({
                 ...innerPrev,
                 loading: false,
                 error: result.errors
               }));
-              resolve({ 
-                success: false, 
-                error: result.errors 
+              resolve({
+                success: false,
+                error: result.errors
               });
               return;
             }
-            
+
             setState((innerPrev) => {
-              const updatedFilesToUpload = innerPrev.filesToUpload.map((fileObj, index) => {
-                if (result.images[index]) {
+              const updatedFilesToUpload = innerPrev.filesToUpload?.map((fileObj, index) => {
+                if (result.images && result.images[index]) {
                   return { ...fileObj, url: result.images[index] };
                 }
                 return fileObj;
-              });
+              }) || [];
 
-              const updatedEquipment = innerPrev.equipment.map(item => 
+              const updatedEquipment = innerPrev.equipment.map(item =>
                 item._id === result._id ? result : item
               );
 
@@ -403,7 +533,7 @@ export function GuitarProvider({ children }) {
                 error: null
               };
             });
-            
+
             resolve(result);
           } catch (error) {
             console.error("Failed to update equipment:", error);
@@ -422,36 +552,54 @@ export function GuitarProvider({ children }) {
   };
 
   const deleteEquipment = async () => {
+    const isValid = await validateTokenSafely();
+    if (!isValid) {
+      setState(prev => ({
+        ...prev,
+        error: "Your session has expired. Please login again.",
+        loading: false
+      }));
+      return null;
+    }
+
     const currentEquipment = state.currentEquipment;
     if (!currentEquipment?._id) {
       console.error("No equipment selected for deletion");
       return;
     }
-    
+
     setState(prev => ({ ...prev, error: null }));
-    
+
     try {
+      const token = localStorage.getItem("token");
+      const headers = {};
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(`${BASE_URL}/api/equipment/remove/${currentEquipment._id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const result = await response.json();
-      
+
       if (result && result.errors) {
         setState(prev => ({
           ...prev,
           error: result.errors
         }));
-        return { 
-          success: false, 
-          error: result.errors 
+        return {
+          success: false,
+          error: result.errors
         };
       }
-      
+
       clearCurrentEquipment();
       return result;
     } catch (error) {
@@ -468,35 +616,35 @@ export function GuitarProvider({ children }) {
     if (!type) return;
     setLoading(true);
     setState(prev => ({ ...prev, error: null }));
-    
+
     try {
       let url = `${BASE_URL}/api/equipmentList?page=${page}&limit=20&type=${type}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
-      
+
       if (state.selectedTags.length > 0) {
         const tagsParam = JSON.stringify(state.selectedTags.map(tag => tag._id));
         url += `&tags=${encodeURIComponent(tagsParam)}`;
       }
-      
+
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data && data.errors) {
         setState(prev => ({
           ...prev,
           loading: false,
           error: data.errors
         }));
-        return { 
-          success: false, 
-          error: data.errors 
+        return {
+          success: false,
+          error: data.errors
         };
       }
-      
+
       setState((prev) => ({
         ...prev,
         equipment: page === 1 ? data.items : [...prev.equipment, ...data.items],
@@ -506,7 +654,7 @@ export function GuitarProvider({ children }) {
         loading: false,
         error: null
       }));
-      
+
       return data;
     } catch (error) {
       console.error("Failed to fetch equipment list:", error);
@@ -521,10 +669,10 @@ export function GuitarProvider({ children }) {
 
   const cloudinaryUploadForGuitar = async (file) => {
     setState(prev => ({ ...prev, error: null }));
-    
+
     try {
       const result = await cloudinaryUpload(file, "guitars");
-      
+
       if (!result.success && result.error) {
         setState(prev => ({
           ...prev,
@@ -532,7 +680,7 @@ export function GuitarProvider({ children }) {
         }));
         return result;
       }
-      
+
       setState((prev) => {
         const updatedImages = prev.currentEquipment.images.map((image) =>
           getCombinedUrl(image) === file.url ? result.secure_url : image
@@ -562,6 +710,15 @@ export function GuitarProvider({ children }) {
   };
 
   const deleteImage = async (imageUrl) => {
+    const isValid = await validateTokenSafely();
+    if (!isValid) {
+      setState(prev => ({
+        ...prev,
+        error: "Your session has expired. Please login again."
+      }));
+      return null;
+    }
+
     const currentEquipment = state.currentEquipment;
     if (!currentEquipment) {
       console.error("No equipment selected for deletion");
@@ -571,7 +728,7 @@ export function GuitarProvider({ children }) {
       console.error("No image URL provided for deletion");
       return;
     }
-  
+
     if (imageUrl.startsWith("blob:http")) {
       const updatedImages = currentEquipment.images.filter(
         (image) => getCombinedUrl(image) !== imageUrl
@@ -587,33 +744,42 @@ export function GuitarProvider({ children }) {
       }));
       return;
     }
-  
+
     setState(prev => ({ ...prev, error: null }));
-    
+
     try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(`${BASE_URL}/api/equipment/deleteImage/${currentEquipment._id}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ imageUrl }),
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const result = await response.json();
-      
+
       if (result && result.errors) {
         setState(prev => ({
           ...prev,
           error: result.errors
         }));
-        return { 
-          success: false, 
-          error: result.errors 
+        return {
+          success: false,
+          error: result.errors
         };
       }
-      
+
       const updatedImages = currentEquipment.images.filter(
         (image) => getCombinedUrl(image) !== imageUrl
       );
@@ -626,7 +792,7 @@ export function GuitarProvider({ children }) {
         filesToUpload: updatedFilesToUpload,
         error: null
       }));
-      
+
       return result;
     } catch (error) {
       console.error("Failed to delete image:", error);
@@ -653,29 +819,29 @@ export function GuitarProvider({ children }) {
 
   const fetchUserEquipment = async (userId) => {
     if (!userId) return null;
-    
+
     setState(prev => ({ ...prev, error: null }));
-    
+
     try {
       const response = await fetch(`${BASE_URL}/api/equipment/user/${userId}`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data && data.errors) {
         setState(prev => ({
           ...prev,
           error: data.errors
         }));
-        return { 
-          success: false, 
-          error: data.errors 
+        return {
+          success: false,
+          error: data.errors
         };
       }
-      
+
       return data;
     } catch (error) {
       console.error("Failed to fetch user equipment:", error);
@@ -709,7 +875,8 @@ export function GuitarProvider({ children }) {
     addComment,
     handleTagSelection,
     clearSelectedTags,
-    setSortOptions
+    setSortOptions,
+    validateTokenSafely
   };
 
   return <GuitarContext.Provider value={value}>{children}</GuitarContext.Provider>;

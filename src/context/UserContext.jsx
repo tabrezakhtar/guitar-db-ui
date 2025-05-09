@@ -8,6 +8,8 @@ const initialState = {
   loading: false,
   error: null,
   showHeader: true,
+  isTokenValid: false,
+  isValidatingToken: false
 };
 
 const UserContext = createContext(null);
@@ -17,16 +19,108 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+    
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
         setState(prev => ({ ...prev, user: parsedUser }));
+        
+        if (token) {
+          validateToken();
+        }
       } catch (error) {
         console.error("Failed to parse user from localStorage:", error);
         localStorage.removeItem("user");
       }
     }
   }, []);
+
+  const validateToken = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setState(prev => ({ ...prev, isTokenValid: false }));
+      return false;
+    }
+
+    setState(prev => ({ ...prev, isValidatingToken: true }));
+    
+    try {
+      const response = await fetch(`${BASE_URL}/api/users/validateToken`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 200) {
+        setState(prev => ({ 
+          ...prev, 
+          isTokenValid: true,
+          isValidatingToken: false
+        }));
+        return true;
+      } else {
+        // Token invalid or expired, try to refresh
+        return await refreshToken();
+      }
+    } catch (error) {
+      console.error("Token validation failed:", error);
+      setState(prev => ({ 
+        ...prev, 
+        isTokenValid: false,
+        isValidatingToken: false,
+        error: "Authentication failed"
+      }));
+      return false;
+    }
+  };
+
+  const refreshToken = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+    
+    try {
+      const response = await fetch(`${BASE_URL}/api/users/refreshToken`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.token) {
+        localStorage.setItem("token", data.token);
+        setState(prev => ({ 
+          ...prev, 
+          isTokenValid: true,
+          isValidatingToken: false
+        }));
+        return true;
+      } else {
+        // Refresh failed, clear auth data
+        // localStorage.removeItem("token");
+        setState(prev => ({ 
+          ...prev, 
+          isTokenValid: false,
+          isValidatingToken: false,
+          error: data.message || "Session expired"
+        }));
+        return false;
+      }
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      // localStorage.removeItem("token");
+      setState(prev => ({ 
+        ...prev, 
+        isTokenValid: false,
+        isValidatingToken: false,
+        error: "Authentication failed"
+      }));
+      return false;
+    }
+  };
 
   const fetchUserProfile = async (userId) => {
     setState(prev => ({ ...prev, loading: true, error: null }));
@@ -128,6 +222,16 @@ export const UserProvider = ({ children }) => {
   };
 
   const updateUserProfile = async (userData) => {
+    const isValid = await validateToken();
+    if (!isValid) {
+      setState(prev => ({ 
+        ...prev, 
+        error: "Your session has expired. Please login again.", 
+        loading: false 
+      }));
+      return null;
+    }
+
     setState(prev => ({ ...prev, loading: true, error: null }));
     
     try {
@@ -135,6 +239,10 @@ export const UserProvider = ({ children }) => {
       const headers = { 
         "Content-Type": "application/json"
       };
+      
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
  
       const updatedUser = { ...state.user, ...userData };
 
@@ -164,7 +272,6 @@ export const UserProvider = ({ children }) => {
         return null;
       }
       
-      // Update local storage with updated user data
       localStorage.setItem("user", JSON.stringify(data.user));
       
       setState(prev => ({ 
@@ -255,6 +362,16 @@ export const UserProvider = ({ children }) => {
   };
 
   const deleteAvatar = async () => {
+    const isValid = await validateToken();
+    if (!isValid) {
+      setState(prev => ({ 
+        ...prev, 
+        error: "Your session has expired. Please login again.", 
+        loading: false 
+      }));
+      return null;
+    }
+
     setState(prev => ({ ...prev, loading: true, error: null }));
     
     try {
@@ -293,7 +410,6 @@ export const UserProvider = ({ children }) => {
         return null;
       }
       
-      // Update local storage with updated user data
       localStorage.setItem("user", JSON.stringify(data.user));
       
       setState(prev => ({ 
@@ -345,6 +461,8 @@ export const UserProvider = ({ children }) => {
     updateUserLocal,
     deleteAvatar,
     setHeaderVisibility,
+    validateToken,
+    refreshToken
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

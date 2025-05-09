@@ -35,7 +35,6 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
     if (mode === "edit") {
       if (!currentEquipment || currentEquipment._id !== id) {
         fetchEquipment(id, type).then(data => {
-          debugger;
           if (data?.item && !data.item.user._id && user?._id) {
             // If the equipment exists but has no userId, add it
             setCurrentEquipment({

@@ -12,13 +12,14 @@ import { UserProvider } from "./context/UserContext";
 import { GuitarProvider } from "./context/GuitarContext";
 import Header from "./Header";
 import MagicLogin from "./MagicLogin";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
     <div className="flex flex-col h-screen">
       <Router>
-        <GuitarProvider>
-          <UserProvider>
+        <UserProvider>
+          <GuitarProvider>
             <Header />
 
             <div>
@@ -26,18 +27,39 @@ function App() {
                 <Route path="/" element={<ContentContainer />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
-                <Route path="/edit/:id" element={<EditGuitar />} />
+                <Route 
+                  path="/edit/:id" 
+                  element={
+                    <ProtectedRoute>
+                      <EditGuitar />
+                    </ProtectedRoute>
+                  } 
+                />
                 <Route path="/view/:id" element={<ViewGuitar />} />
-                <Route path="/add" element={<AddGuitar />} />
+                <Route 
+                  path="/add" 
+                  element={
+                    <ProtectedRoute>
+                      <AddGuitar />
+                    </ProtectedRoute>
+                  } 
+                />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile/:userId" element={<Profile />} />
                 <Route path="/create-profile" element={<CreateProfile />} />
-                <Route path="/edit-profile" element={<EditProfile />} />
+                <Route 
+                  path="/edit-profile" 
+                  element={
+                    <ProtectedRoute>
+                      <EditProfile />
+                    </ProtectedRoute>
+                  } 
+                />
                 <Route path="/login/magic" element={<MagicLogin />} />
               </Routes>
             </div>
-          </UserProvider>
-        </GuitarProvider>
+          </GuitarProvider>
+        </UserProvider>
       </Router>
     </div>
   );
