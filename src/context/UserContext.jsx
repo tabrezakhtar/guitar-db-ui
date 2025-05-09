@@ -3,6 +3,21 @@ import PropTypes from "prop-types";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+function decodeJWT(token) {
+  try {
+    const base64Url = token.split(".")[1];
+    if (!base64Url) throw new Error("Invalid JWT");
+
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = atob(base64);
+    const decoded = JSON.parse(jsonPayload);
+    return decoded;
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+    return null;
+  }
+}
+
 const initialState = {
   user: null,
   loading: false,
@@ -46,13 +61,19 @@ export const UserProvider = ({ children }) => {
     setState(prev => ({ ...prev, isValidatingToken: true }));
     
     try {
-      const response = await fetch(`${BASE_URL}/api/users/validateToken`, {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      });
+      const decodedToken = decodeJWT(token);
+      if (!decodedToken) {
+        setState(prev => ({ 
+          ...prev, 
+          isTokenValid: false,
+          isValidatingToken: false
+        }));
+        return false;
+      }
+
+      const currentTime = Math.floor(Date.now() / 1000);
       
-      if (response.status === 200) {
+      if (decodedToken.exp && decodedToken.exp > currentTime) {
         setState(prev => ({ 
           ...prev, 
           isTokenValid: true,
@@ -60,7 +81,6 @@ export const UserProvider = ({ children }) => {
         }));
         return true;
       } else {
-        // Token invalid or expired, try to refresh
         return await refreshToken();
       }
     } catch (error) {
@@ -99,8 +119,6 @@ export const UserProvider = ({ children }) => {
         }));
         return true;
       } else {
-        // Refresh failed, clear auth data
-        // localStorage.removeItem("token");
         setState(prev => ({ 
           ...prev, 
           isTokenValid: false,
@@ -111,7 +129,6 @@ export const UserProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Token refresh failed:", error);
-      // localStorage.removeItem("token");
       setState(prev => ({ 
         ...prev, 
         isTokenValid: false,
