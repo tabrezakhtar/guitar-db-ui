@@ -10,12 +10,31 @@ import Comments from "./Comments";
 const ViewGuitar = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { currentEquipment: equipment, loading, fetchEquipment, clearCurrentEquipment } = useGuitarContext();
+  const { currentEquipment: equipment, loading, fetchEquipment, clearCurrentEquipment, toggleLike } = useGuitarContext();
   const { user } = useUserContext();
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     fetchEquipment(id, "guitar");
   }, []);
+
+  const handleLikeToggle = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    
+    if (equipment.user && user._id === equipment.user._id) {
+      return;
+    }
+    
+    try {
+      await toggleLike(equipment._id);
+      setIsLiked(!isLiked);
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
+  };
 
   if (loading || !equipment) {
     return (
@@ -25,7 +44,7 @@ const ViewGuitar = () => {
     );
   }
 
-  const likesCount = equipment.likes ? (Array.isArray(equipment.likes) ? equipment.likes.length : 0) : 0;
+  const likesCount = equipment.likesCount || 0;
   const canEdit = user && equipment.user && user._id === equipment.user._id;
 
   return (
@@ -60,14 +79,16 @@ const ViewGuitar = () => {
             ) : (
               <SkeletonImage />
             )}
-            {likesCount > 0 && (
-              <div className="absolute top-4 right-4">
-                <span className="inline-flex items-center bg-purple-400 text-purple-900 px-2 py-1 rounded">
-                  <span className="mr-1 text-lg">👍</span>
-                  {likesCount} {likesCount === 1 ? "Like" : "Likes"}
-                </span>
-              </div>
-            )}
+            <div className="absolute top-4 right-4 flex flex-col gap-2">
+              <button 
+                onClick={handleLikeToggle}
+                disabled={canEdit}
+                className={`inline-flex items-center ${isLiked ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} px-2 py-1 rounded transition-colors duration-200`}
+              >
+                <span className="mr-1 text-lg">👍</span>
+                {likesCount} {likesCount === 1 ? "Like" : "Likes"}
+              </button>
+            </div>
           </div>
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">
             {equipment?.description}

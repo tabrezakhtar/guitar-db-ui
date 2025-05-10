@@ -802,6 +802,78 @@ export function GuitarProvider({ children }) {
     }
   };
 
+  const toggleLike = async (equipmentId) => {
+    const isValid = await validateToken();
+    if (!isValid) {
+      setState(prev => ({
+        ...prev,
+        error: "Your session has expired. Please login again."
+      }));
+      return null;
+    }
+
+    setState(prev => ({ ...prev, error: null }));
+
+    try {
+      const token = localStorage.getItem("token");
+      const headers = {};
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${BASE_URL}/api/equipment/toggleLike/${equipmentId}`, {
+        method: "POST",
+        headers
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result && result.errors) {
+        setState(prev => ({
+          ...prev,
+          error: result.errors
+        }));
+        return {
+          success: false,
+          error: result.errors
+        };
+      }
+
+      setState(prev => {
+        const updatedEquipment = prev.equipment.map(item => {
+          if (item._id === equipmentId) {
+            return { ...item, likesCount: result.likes };
+          }
+          return item;
+        });
+
+        const updatedCurrentEquipment = prev.currentEquipment && prev.currentEquipment._id === equipmentId
+          ? { ...prev.currentEquipment, likesCount: result.likes }
+          : prev.currentEquipment;
+
+        return {
+          ...prev,
+          equipment: updatedEquipment,
+          currentEquipment: updatedCurrentEquipment
+        };
+      });
+
+      return result;
+    } catch (error) {
+      console.error("Failed to toggle like:", error);
+      setState(prev => ({
+        ...prev,
+        error: error.message
+      }));
+      throw error;
+    }
+  };
+
   const loadMore = (type) => {
     const nextPage = state.page + 1;
     fetchEquipmentList(nextPage, type);
@@ -874,7 +946,8 @@ export function GuitarProvider({ children }) {
     handleTagSelection,
     clearSelectedTags,
     setSortOptions,
-    validateToken
+    validateToken,
+    toggleLike
   };
 
   return <GuitarContext.Provider value={value}>{children}</GuitarContext.Provider>;

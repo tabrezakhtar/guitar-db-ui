@@ -2,7 +2,8 @@ import { useNavigate, Link } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useGuitarContext } from "./context/GuitarContext";
-import { useEffect } from "react";
+import { useUserContext } from "./context/UserContext";
+import { useEffect, useState } from "react";
 import SkeletonImage from "./SkeletonImage";
 import Tag from "./components/Tag";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
@@ -15,44 +16,47 @@ function GuitarsGrid() {
     loading, 
     loadMore, 
     fetchEquipmentList, 
-    setCurrentEquipment,
-    updateEquipment,
-    setSortOptions,
     sortBy,
     sortOrder,
     selectedTags,
     handleTagSelection,
+    setSortOptions,
+    toggleLike
   } = useGuitarContext();
+  
+  const { user } = useUserContext();
+  const [likedEquipment, setLikedEquipment] = useState({});
 
   useEffect(() => {
     fetchEquipmentList(1, "guitar");
   }, [sortBy, sortOrder, selectedTags]);
-
-  const generateObjectId = () => {
-    const timestamp = Math.floor(new Date().getTime() / 1000).toString(16);
-    const machineId = Math.floor(Math.random() * 16777216).toString(16).padStart(6, "0");
-    const processId = Math.floor(Math.random() * 65536).toString(16).padStart(4, "0");
-    const counter = Math.floor(Math.random() * 16777216).toString(16).padStart(6, "0");
-    
-    return timestamp + machineId + processId + counter;
-  };
 
   const handleSortChange = (event) => {
     const [newSortBy, newSortOrder] = event.target.value.split("|");
     setSortOptions(newSortBy, newSortOrder);
   };
 
-  const handleLikeClick = (e, equipmentItem) => {
+  const handleLikeClick = async (e, equipmentItem) => {
     e.stopPropagation();
     
-    const newObjectId = generateObjectId();
-    const updatedEquipment = {
-      ...equipmentItem,
-      likes: [...(equipmentItem.likes || []), newObjectId]
-    };
+    if (!user) {
+      navigate("/login");
+      return;
+    }
     
-    setCurrentEquipment(updatedEquipment);
-    updateEquipment(equipmentItem.type.toLowerCase());
+    if (equipmentItem.user?._id === user._id) {
+      return;
+    }
+    
+    try {
+      await toggleLike(equipmentItem._id);
+      setLikedEquipment(prev => ({
+        ...prev,
+        [equipmentItem._id]: !prev[equipmentItem._id]
+      }));
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
   };
 
   const handleAvatarClick = (e, userId) => {
@@ -163,11 +167,12 @@ function GuitarsGrid() {
               <p className="text-sm text-gray-600">{item.description}</p>
               <div className="flex items-center justify-end gap-2 mt-2">
                 <button
-                  className="bg-purple-400 text-purple-900 text-xs px-2 py-1 rounded inline-flex items-center"
+                  className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200`}
                   onClick={(e) => handleLikeClick(e, item)}
+                  disabled={item.user?._id === user?._id}
                 >
                   <span className="mr-1">👍</span>
-                  {item.likes ? item.likes.length : 0}
+                  {item.likesCount || 0}
                 </button>
                 {item.commentCount > 0 && (
                   <span className="bg-teal-400 text-teal-900 text-xs px-2 py-1 rounded inline-flex items-center">
