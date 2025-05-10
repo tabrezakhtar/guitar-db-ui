@@ -174,12 +174,12 @@ function GuitarsGrid() {
                   <span className="mr-1">👍</span>
                   {item.likesCount || 0}
                 </button>
-                {item.commentCount > 0 && (
-                  <span className="bg-teal-400 text-teal-900 text-xs px-2 py-1 rounded inline-flex items-center">
-                    <span className="mr-1">💬</span>
-                    {item.commentCount}
-                  </span>
-                )}
+                
+                <span className="bg-teal-400 text-teal-900 text-xs px-2 py-1 rounded inline-flex items-center">
+                  <span className="mr-1">💬</span>
+                  {item.commentCount}
+                </span>
+                
               </div>
             </div>
           </div>
