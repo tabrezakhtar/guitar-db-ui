@@ -148,7 +148,7 @@ const EditProfile = () => {
         </div>
         
         <div className="mb-4">
-          <label htmlFor="username" className="block text-gray-700 mb-2">Username</label>
+          <label htmlFor="username" className="block text-gray-700 mb-2">Username: <span className="text-red-500">*</span></label>
           <input
             type="text"
             id="username"
@@ -159,9 +159,22 @@ const EditProfile = () => {
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+
+        <div className="mb-4">
+          <label htmlFor="email" className="block text-gray-700 mb-2">Email: <span class="text-red-500">*</span></label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={profile.email}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
         
         <div className="mb-4">
-          <label htmlFor="location" className="block text-gray-700 mb-2">Location</label>
+          <label htmlFor="location" className="block text-gray-700 mb-2">Location:</label>
           <input
             type="text"
             id="location"
@@ -173,7 +186,7 @@ const EditProfile = () => {
         </div>
         
         <div className="mb-4">
-          <label htmlFor="website" className="block text-gray-700 mb-2">Website</label>
+          <label htmlFor="website" className="block text-gray-700 mb-2">Website:</label>
           <input
             type="text"
             id="website"
@@ -185,7 +198,7 @@ const EditProfile = () => {
         </div>
         
         <div className="mb-4">
-          <label htmlFor="bio" className="block text-gray-700 mb-2">Bio</label>
+          <label htmlFor="bio" className="block text-gray-700 mb-2">Bio:</label>
           <textarea
             id="bio"
             name="bio"
