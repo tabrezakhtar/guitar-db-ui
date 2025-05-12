@@ -10,6 +10,7 @@ const CreateProfile = () => {
   
   const [formData, setFormData] = useState({
     username: "",
+    email: "",
     bio: "",
     location: "",
     website: "",
@@ -26,6 +27,7 @@ const CreateProfile = () => {
     if (user) {
       setFormData({
         username: user.username || "",
+        email: user.email || "",
         bio: user.bio || "",
         avatarUrl: user.avatarUrl || "",
         location: user.location || "",
@@ -80,8 +82,15 @@ const CreateProfile = () => {
     
     if (name === "username" && value.trim()) {
       setValidationErrors(prev => ({
-        ...prev,
-        username: null
+      ...prev,
+      username: null
+      }));
+    }
+
+    if (name === "email" && value.trim()) {
+      setValidationErrors(prev => ({
+      ...prev,
+      email: null
       }));
     }
   };
@@ -91,6 +100,10 @@ const CreateProfile = () => {
     
     if (!formData.username.trim()) {
       errors.username = "Username is required";
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
     }
     
     setValidationErrors(errors);
@@ -224,7 +237,7 @@ const CreateProfile = () => {
           
           <div className="flex items-center mb-6">
             <div className="flex-1">
-              <label className="block text-gray-700 mb-1">Username <span className="text-red-500">*</span></label>
+              <label className="block text-gray-700 mb-1">Username: <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 name="username"
@@ -239,9 +252,27 @@ const CreateProfile = () => {
               )}
             </div>
           </div>
+
+          <div className="flex items-center mb-6">
+            <div className="flex-1">
+              <label className="block text-gray-700 mb-1">Email: <span className="text-red-500">*</span></label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className={`border p-2 rounded w-full ${validationErrors.email ? "border-red-500" : ""}`}
+                placeholder="Enter your username"
+              />
+              {validationErrors.email && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+              )}
+            </div>
+          </div>
           
           <div className="mb-6">
-            <label className="block text-gray-700 mb-1">Location</label>
+            <label className="block text-gray-700 mb-1">Location:</label>
             <input
               type="text"
               name="location"
@@ -253,7 +284,7 @@ const CreateProfile = () => {
           </div>
           
           <div className="mb-6">
-            <label className="block text-gray-700 mb-1">About</label>
+            <label className="block text-gray-700 mb-1">About:</label>
             <textarea
               name="bio"
               value={formData.bio}
@@ -265,7 +296,7 @@ const CreateProfile = () => {
           </div>
           
           <div className="mb-6">
-            <label className="block text-gray-700 mb-1">Website</label>
+            <label className="block text-gray-700 mb-1">Website:</label>
             <input
               type="text"
               name="website"

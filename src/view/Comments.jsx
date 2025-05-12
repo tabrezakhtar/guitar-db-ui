@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { formatDate, getTimeFromNow } from "../dateUtils";
 import CommentForm from "./CommentForm";
+import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 
 const Comments = ({ comments: initialComments, equipmentId }) => {
   const [expandedComments, setExpandedComments] = useState(false);
@@ -26,10 +27,17 @@ const Comments = ({ comments: initialComments, equipmentId }) => {
       <div className="space-y-4 mt-6">
         {displayedComments.map((comment, index) => (
           <div key={comment._id || `comment-${index}`} className="border-b pb-3 last:border-b-0 last:pb-0">
-            <p className="text-gray-800">{comment.text}</p>
-            <div className="flex justify-between mt-2 text-sm text-gray-500">
-              <span>{`${comment.username.substring(0, 32)}`}</span>
-              <span title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
+            <div className="flex">
+              <div className="mr-3 self-center">
+                <AvatarDisplayOnly imageUrl={comment.avatarUrl} username={comment.username} size="xsmall" />
+              </div>
+              <div className="flex-1">
+                <p className="text-gray-800">{comment.text}</p>
+                <div className="flex justify-between mt-2 text-sm text-gray-500">
+                  <span>{`${comment.username?.substring(0, 32)}`}</span>
+                  <span title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
+                </div>
+              </div>
             </div>
           </div>
         ))}

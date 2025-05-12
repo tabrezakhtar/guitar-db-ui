@@ -17,7 +17,7 @@ const CommentForm = ({ equipmentId }) => {
     setIsSubmitting(true);
     
     try {
-      await addComment(user.username, equipmentId, comment);
+      await addComment(user.username, user.avatarUrl, equipmentId, comment);
       setComment("");
     } finally {
       setIsSubmitting(false);
