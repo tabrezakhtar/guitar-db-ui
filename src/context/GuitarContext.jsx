@@ -281,7 +281,7 @@ export function GuitarProvider({ children }) {
     }
   };
 
-  const addComment = async (username, avatarUrl, equipmentId, text) => {
+  const addComment = async (username, equipmentId, text) => {
     if (!equipmentId || !text) {
       console.error("Missing equipmentId or text for comment");
       return null;
@@ -298,8 +298,6 @@ export function GuitarProvider({ children }) {
 
     const payload = {
       equipmentId,
-      username,
-      avatarUrl,
       text: text.trim()
     };
 
