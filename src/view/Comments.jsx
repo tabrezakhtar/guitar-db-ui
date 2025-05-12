@@ -29,7 +29,7 @@ const Comments = ({ comments: initialComments, equipmentId }) => {
           <div key={comment._id || `comment-${index}`} className="border-b pb-3 last:border-b-0 last:pb-0">
             <div className="flex">
               <div className="mr-3 self-center">
-                <AvatarDisplayOnly imageUrl={comment.user?.avatarUrl} username={comment.username} size="xsmall" />
+                <AvatarDisplayOnly imageUrl={comment.user?.avatarUrl} username={comment.user?.username} size="xsmall" />
               </div>
               <div className="flex-1">
                 <p className="text-gray-800">{comment.text}</p>
