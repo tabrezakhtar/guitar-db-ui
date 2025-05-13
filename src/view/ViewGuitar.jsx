@@ -6,6 +6,9 @@ import { useGuitarContext } from "../context/GuitarContext";
 import { useUserContext } from "../context/UserContext";
 import SkeletonImage from "../SkeletonImage";
 import Comments from "./Comments";
+import StarRating from "../components/StarRating";
+import { formatDate } from "../dateUtils";
+import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 
 const ViewGuitar = () => {
   const { id } = useParams();
@@ -64,7 +67,7 @@ const ViewGuitar = () => {
             </button>
           )}
         </div>
-        <h1 className="text-3xl font-bold mb-6">My Stuff!</h1>
+        <h1 className="text-3xl font-bold mb-6">{equipment.name || "My Stuff!"}</h1>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4 relative">
             {equipment?.images && equipment.images.length > 0 ? (
@@ -90,8 +93,83 @@ const ViewGuitar = () => {
               </button>
             </div>
           </div>
-          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4">
-            {equipment?.description}
+          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4 overflow-hidden">
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <h2 className="text-xl font-semibold mb-2">Details</h2>
+                <div className="space-y-2">
+                  <p><span className="font-medium">Brand:</span> {equipment.brand || "Not specified"}</p>
+                  <p><span className="font-medium">Type:</span> {equipment.type || "Not specified"}</p>
+                  {equipment.shape && (
+                    <p><span className="font-medium">Shape:</span> {equipment.shape}</p>
+                  )}
+                  {equipment.year && (
+                    <p><span className="font-medium">Year:</span> {equipment.year}</p>
+                  )}
+                  {equipment.ampType && (
+                    <p><span className="font-medium">Amp Type:</span> {equipment.ampType}</p>
+                  )}
+                  {equipment.effectType && (
+                    <p><span className="font-medium">Effect Type:</span> {equipment.effectType}</p>
+                  )}
+                  <p><span className="font-medium">Added:</span> {formatDate(equipment.date)}</p>
+                  <div className="flex items-center">
+                    <span className="font-medium mr-2">Rating:</span>
+                    <StarRating rating={equipment.rating || 0} disabled={true} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <h2 className="text-xl font-semibold mb-2">Description</h2>
+                <div className="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
+                  {equipment.description || "No description provided."}
+                </div>
+              </div>
+              
+              {equipment.why && (
+                <div className="mt-4">
+                  <h2 className="text-xl font-semibold mb-2">Why I Like It</h2>
+                  <div className="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
+                    {equipment.why}
+                  </div>
+                </div>
+              )}
+              
+              {equipment.recommendation && (
+                <div className="mt-4">
+                  <h2 className="text-xl font-semibold mb-2">Recommendation</h2>
+                  <div className="bg-gray-50 rounded-lg p-4 max-h-40 overflow-y-auto whitespace-pre-wrap break-words">
+                    {equipment.recommendation}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {equipment.tags && equipment.tags.length > 0 && (
+              <div className="mt-4">
+                <h2 className="text-xl font-semibold mb-2">Tags</h2>
+                <div className="flex flex-wrap gap-2">
+                  {equipment.tags.map((tag, index) => (
+                    <span key={index} className="bg-gray-200 px-2 py-1 rounded text-sm">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <div className="mt-4">
+              <h2 className="text-xl font-semibold mb-2">Owner</h2>
+              <div className="flex items-center gap-3">
+                <AvatarDisplayOnly 
+                  imageUrl={equipment.user?.avatarUrl} 
+                  username={equipment.user?.username || "Unknown"}
+                  size="small"
+                />
+                <span className="font-medium">{equipment.user?.username || "Unknown"}</span>
+              </div>
+            </div>
           </div>
         </div>
         

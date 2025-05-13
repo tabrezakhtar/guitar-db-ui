@@ -88,11 +88,11 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
 
         <div>
           <label className="block">Description: <span className="text-red-500">*</span></label>
-          <input
-            type="text"
+          <textarea
             name="description"
-            placeholder="Enter a brief description of the equipment"
+            placeholder="Enter a detailed description of the equipment"
             value={currentEquipment?.description || ""}
+            rows="4"
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, description: e.target.value })
             }
