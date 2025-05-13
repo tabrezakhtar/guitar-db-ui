@@ -1,28 +1,28 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function Tag({ tag, selected = false, onClick }) {
+function Tag({ tag, selected = false, onClick, readonly = false }) {
   const [isHovered, setIsHovered] = useState(false);
   
   const tagColor = tag.colour || "#6b7280";
   const textColor = isLightColor(tagColor) ? "#000000" : "#ffffff";
   
   const handleClick = () => {
-    if (onClick) {
+    if (onClick && !readonly) {
       onClick(tag);
     }
   };
   
   return (
     <span 
-      className={`inline-flex items-center ml-2 px-3 py-1.5 rounded-sm m-1 transition-transform duration-100 hover:scale-105 relative text-xs cursor-pointer ${selected ? "ring-2 ring-offset-1" : ""}`}
+      className={`inline-flex items-center ml-2 px-3 py-1.5 rounded-sm m-1 transition-transform duration-100 ${!readonly ? "hover:scale-105" : ""} relative text-xs ${readonly ? "" : "cursor-pointer"} ${selected ? "ring-2 ring-offset-1" : ""}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
       style={{ 
         backgroundColor: tagColor,
         color: textColor,
-        filter: isHovered ? "brightness(1.1)" : "none",
+        filter: isHovered && !readonly ? "brightness(1.1)" : "none",
         paddingLeft: "24px",
         transform: selected ? "scale(1.05)" : "none",
         ringColor: selected ? "#2563eb" : "transparent"
@@ -76,7 +76,8 @@ Tag.propTypes = {
     colour: PropTypes.string
   }).isRequired,
   selected: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  readonly: PropTypes.bool
 };
 
 export default Tag;

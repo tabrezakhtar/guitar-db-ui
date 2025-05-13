@@ -7,6 +7,7 @@ import { useUserContext } from "../context/UserContext";
 import SkeletonImage from "../SkeletonImage";
 import Comments from "./Comments";
 import StarRating from "../components/StarRating";
+import Tag from "../components/Tag";
 import { formatDate } from "../dateUtils";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 
@@ -155,10 +156,13 @@ const ViewGuitar = () => {
               <div className="mt-4">
                 <h2 className="text-xl font-semibold mb-2">Tags</h2>
                 <div className="flex flex-wrap gap-2">
-                  {equipment.tags.map((tag, index) => (
-                    <span key={index} className="bg-gray-200 px-2 py-1 rounded text-sm">
-                      {tag}
-                    </span>
+                  {equipment.tags.map((tag) => (
+                    <Tag 
+                      key={tag._id} 
+                      tag={tag} 
+                      selected={true}
+                      readonly={true}
+                    />
                   ))}
                 </div>
               </div>
