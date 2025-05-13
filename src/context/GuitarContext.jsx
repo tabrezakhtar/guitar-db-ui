@@ -517,14 +517,9 @@ export function GuitarProvider({ children }) {
                 return fileObj;
               }) || [];
 
-              const updatedEquipment = innerPrev.equipment.map(item =>
-                item._id === result._id ? result : item
-              );
-
               return {
                 ...innerPrev,
                 currentEquipment: result,
-                equipment: updatedEquipment,
                 filesToUpload: updatedFilesToUpload,
                 loading: false,
                 error: null
