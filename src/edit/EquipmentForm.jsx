@@ -36,6 +36,17 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
     setCurrentEquipment({ ...currentEquipment, tags: selectedTags });
   };
 
+  const validateYoutubeUrl = (url) => {
+    if (!url) return true;
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+    return youtubeRegex.test(url);
+  };
+
+  const handleYoutubeUrlChange = (e) => {
+    const url = e.target.value;
+    setCurrentEquipment({ ...currentEquipment, url });
+  };
+
   const tagOptions = tags.map(tag => ({
     value: tag._id,
     label: tag.name,
@@ -99,6 +110,21 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             className="border p-2 rounded w-full"
             required
           />
+        </div>
+
+        <div>
+          <label className="block">YouTube URL:</label>
+          <input
+            type="url"
+            name="url"
+            placeholder="https://www.youtube.com/watch?v=..."
+            value={currentEquipment?.url || ""}
+            onChange={handleYoutubeUrlChange}
+            className={`border p-2 rounded w-full ${!validateYoutubeUrl(currentEquipment?.url) ? "border-red-500" : ""}`}
+          />
+          {!validateYoutubeUrl(currentEquipment?.url) && (
+            <p className="text-red-500 text-sm mt-1">Please enter a valid YouTube URL</p>
+          )}
         </div>
 
         <div>
