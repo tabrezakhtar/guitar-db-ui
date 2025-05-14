@@ -665,6 +665,10 @@ export function GuitarProvider({ children }) {
     try {
       const result = await cloudinaryUpload(file, "guitars");
 
+      if (typeof result === "string" && result.includes("res.cloudinary.com")) {
+        return true;
+      }
+
       if (!result.success && result.error) {
         setState(prev => ({
           ...prev,
