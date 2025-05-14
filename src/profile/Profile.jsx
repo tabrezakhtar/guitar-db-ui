@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { useGuitarContext } from "../context/GuitarContext";
 import { formatDate } from "../dateUtils";
@@ -234,11 +234,12 @@ const Profile = () => {
               {userComments.map(comment => (
                 <div key={comment._id} className="bg-white p-3 rounded-md shadow-sm">
                   <div className="flex justify-between items-start mb-2">
-                    <div className="cursor-pointer" onClick={() => navigate(`/view/${comment.equipmentId._id}`)}>
-                      <p className="text-blue-500 hover:underline text-sm">
-                        💬 { comment.equipmentId.brand } { comment.equipmentId.name } ...
-                      </p>
-                    </div>
+                    <NavLink 
+                      to={`/view/${comment.equipmentId._id}`}
+                      className="text-blue-500 hover:underline text-sm"
+                    >
+                      💬 { comment.equipmentId.brand } { comment.equipmentId.name }
+                    </NavLink>
                     <p className="text-xs text-gray-500">{formatDate(comment.date)}</p>
                   </div>
                   <p className="text-gray-700 whitespace-pre-wrap break-words">{comment.text.slice(0, 100)}</p>
