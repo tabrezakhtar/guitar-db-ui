@@ -24,6 +24,7 @@ const Profile = () => {
   
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       if (userId) {
         const userData = await fetchUserProfile(userId);
         setProfileUser(userData);
@@ -34,9 +35,10 @@ const Profile = () => {
           setProfileUser(user);
         }
       }
+      setLoading(false);
     };
     fetchData();
-  }, [user]);
+  }, []);
   
   useEffect(() => {
     const fetchEquipment = async () => {
@@ -114,7 +116,7 @@ const Profile = () => {
     );
   };
   
-  if (loading && !profileUser) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -227,30 +229,28 @@ const Profile = () => {
           </>
         )}
 
-        <h3 className="text-xl font-bold mb-4 mt-6">Recent Comments</h3>
-        {userComments && userComments.length > 0 ? (
-          <div className="mb-6 bg-gray-100 p-4 rounded-md">
-            <div className="space-y-4">
-              {userComments.map(comment => (
-                <div key={comment._id} className="bg-white p-3 rounded-md shadow-sm">
-                  <div className="flex justify-between items-start mb-2">
-                    <NavLink 
-                      to={`/view/${comment.equipmentId._id}`}
-                      className="text-blue-500 hover:underline text-sm"
-                    >
-                      💬 { comment.equipmentId.brand } { comment.equipmentId.name }
-                    </NavLink>
-                    <p className="text-xs text-gray-500">{formatDate(comment.date)}</p>
+        {userComments && userComments.length > 0 && (
+          <>
+            <h3 className="text-xl font-bold mb-4 mt-6">Recent Comments</h3>
+            <div className="mb-6 bg-gray-100 p-4 rounded-md">
+              <div className="space-y-4">
+                {userComments.map(comment => (
+                  <div key={comment._id} className="bg-white p-3 rounded-md shadow-sm">
+                    <div className="flex justify-between items-start mb-2">
+                      <NavLink 
+                        to={`/view/${comment.equipmentId._id}`}
+                        className="text-blue-500 hover:underline text-sm"
+                      >
+                        💬 { comment.equipmentId.brand } { comment.equipmentId.name }
+                      </NavLink>
+                      <p className="text-xs text-gray-500">{formatDate(comment.date)}</p>
+                    </div>
+                    <p className="text-gray-700 whitespace-pre-wrap break-words">{comment.text.slice(0, 100)}{comment.text.length > 100 ? "..." : ""}</p>
                   </div>
-                  <p className="text-gray-700 whitespace-pre-wrap break-words">{comment.text.slice(0, 100)}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="mb-6 bg-gray-100 p-4 rounded-md text-gray-600">
-            <p className="text-center">No comments yet.</p>
-          </div>
+          </>
         )}
         
         <div className="bg-gray-100 p-4 rounded-md text-gray-600 text-sm mt-6">
