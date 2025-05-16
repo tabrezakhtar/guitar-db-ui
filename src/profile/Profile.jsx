@@ -5,11 +5,12 @@ import { useGuitarContext } from "../context/GuitarContext";
 import { formatDate } from "../dateUtils";
 import { useNavigate } from "react-router-dom";
 import AvatarDisplayOnly from "./AvatarDisplayOnly";
-import Thumbnail from "../Thumbnail";
+import EquipmentCard, { EquipmentCarousel } from "./EquipmentCard";
 
 const Profile = () => {
   const { userId } = useParams();
   const [ profileUser, setProfileUser ] = useState(null);
+  const [ likedEquipment, setLikedEquipment ] = useState([]);
   const [ userEquipment, setUserEquipment ] = useState({
     guitars: [],
     amps: [],
@@ -27,18 +28,21 @@ const Profile = () => {
       setLoading(true);
       if (userId) {
         const userData = await fetchUserProfile(userId);
-        setProfileUser(userData);
+        setProfileUser(userData.user);
+        setUserComments(userData.comments || []);
+        setLikedEquipment(userData.likedEquipment || []);
       } else {
         if (user) {
           const userData = await fetchUserProfile(user._id);
-          setUserComments(userData.comments);
+          setUserComments(userData.comments || []);
+          setLikedEquipment(userData.likedEquipment || []);
           setProfileUser(user);
         }
       }
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [user]);
   
   useEffect(() => {
     const fetchEquipment = async () => {
@@ -87,31 +91,10 @@ const Profile = () => {
         <h3 className="text-lg font-semibold mb-2 flex items-center">
           {emoji} {title} ({items.length})
         </h3>
-        <div className="flex flex-wrap gap-4">
-          {items.map(item => (
-            <div 
-              key={item._id} 
-              className="w-[140px] border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all"
-              onClick={() => navigate(`/view/${item._id}`)}
-            >
-              {item.images && item.images.length > 0 ? (
-                <Thumbnail url={item.images[0]} alt={`${item.brand} ${item.name}`} />
-              ) : (
-                <div className="w-full aspect-square bg-gray-200 flex items-center justify-center">
-                  <img 
-                    src={`/${item.type?.toLowerCase()}.png`}
-                    alt={item.type}
-                    className="w-12 h-12 opacity-50"
-                  />
-                </div>
-              )}
-              <div className="p-2 bg-white">
-                <p className="font-medium text-sm truncate">{item.brand}</p>
-                <p className="text-xs truncate">{item.name}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <EquipmentCarousel 
+          items={items} 
+          onClick={(id) => navigate(`/view/${id}`)}
+        />
       </div>
     );
   };
@@ -226,6 +209,17 @@ const Profile = () => {
                 <p className="text-center">No equipment added yet.</p>
               </div>
             )}
+          </>
+        )}
+
+        {likedEquipment && likedEquipment.length > 0 && (
+          <>
+            <h3 className="text-xl font-bold mb-4 mt-6">Liked Equipment</h3>
+            <div className="mb-6 bg-gray-100 p-4 rounded-md">
+              <EquipmentCarousel 
+                items={likedEquipment} 
+              />
+            </div>
           </>
         )}
 
