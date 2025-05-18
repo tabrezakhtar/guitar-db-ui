@@ -31,10 +31,13 @@ function getCloudinaryThumbnail(url, width = 150) {
 }
 
 function getCombinedUrl(file) {
-  return Object.keys(file)
-    .filter(key => key !== "chosen" && key !== "selected")
-    .map(key => file[key])
-    .join("");
+  let result = "";
+  for (const key of Object.keys(file)) {
+    if (file[key].length === 1) {
+      result += file[key];
+    }
+  }
+  return result;
 }
 
 export { getCloudinaryThumbnail, resizeImage, getCombinedUrl };
