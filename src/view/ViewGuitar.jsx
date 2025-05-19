@@ -73,7 +73,7 @@ const ViewGuitar = () => {
       if (videoId) {
         galleryItems.push({
           original: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
-          thumbnail: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+          thumbnail: `https://res.cloudinary.com/dx8d5hlk1/image/fetch/c_crop,g_center,w_150,h_150/https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
           embedUrl: `https://www.youtube.com/embed/${videoId}`,
           renderItem: () => (
             <div className="image-gallery-image">
