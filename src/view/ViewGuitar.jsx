@@ -10,6 +10,7 @@ import StarRating from "../components/StarRating";
 import Tag from "../components/Tag";
 import { formatDate } from "../dateUtils";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
+import { getCloudinaryThumbnail } from "../imageUtils";
 
 const ViewGuitar = () => {
   const { id } = useParams();
@@ -54,7 +55,7 @@ const ViewGuitar = () => {
   const getGalleryItems = () => {
     const galleryItems = equipment.images?.map(image => ({
       original: image,
-      thumbnail: image,
+      thumbnail: getCloudinaryThumbnail(image),
     })) || [];
     
     if (equipment.url && equipment.url.includes("youtube.com")) {
