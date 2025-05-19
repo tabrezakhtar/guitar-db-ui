@@ -192,7 +192,7 @@ const Profile = () => {
           )}
         </div>
 
-        <h3 className="text-xl font-bold mb-4">Equipment</h3>
+        <h3 className="text-xl font-bold mb-4">My Equipment</h3>
         
         {loading ? (
           <div className="flex justify-center p-4">
@@ -214,7 +214,7 @@ const Profile = () => {
 
         {likedEquipment && likedEquipment.length > 0 && (
           <>
-            <h3 className="text-xl font-bold mb-4 mt-6">Liked Equipment</h3>
+            <h3 className="text-xl font-bold mb-4 mt-6">My Liked Equipment</h3>
             <div className="mb-6 bg-gray-100 p-4 rounded-md">
               <EquipmentCarousel 
                 items={likedEquipment} 
@@ -225,7 +225,7 @@ const Profile = () => {
 
         {userComments && userComments.length > 0 && (
           <>
-            <h3 className="text-xl font-bold mb-4 mt-6">Recent Comments</h3>
+            <h3 className="text-xl font-bold mb-4 mt-6">My Recent Comments</h3>
             <div className="mb-6 bg-gray-100 p-4 rounded-md">
               <div className="space-y-4">
                 {userComments.map(comment => (
