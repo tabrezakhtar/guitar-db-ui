@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css";
 import { useGuitarContext } from "../context/GuitarContext";
 import { useUserContext } from "../context/UserContext";
-import SkeletonImage from "../SkeletonImage";
 import Comments from "./Comments";
 import StarRating from "../components/StarRating";
 import Tag from "../components/Tag";
 import { formatDate } from "../dateUtils";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
-import { getCloudinaryThumbnail } from "../imageUtils";
+import Gallery from "./Gallery";
 
 const ViewGuitar = () => {
   const { id } = useParams();
@@ -51,51 +48,6 @@ const ViewGuitar = () => {
 
   const likesCount = equipment.likesCount || 0;
   const canEdit = user && equipment.user && user._id === equipment.user._id;
-  
-  const getGalleryItems = () => {
-    const galleryItems = equipment.images?.map(image => ({
-      original: image,
-      thumbnail: getCloudinaryThumbnail(image),
-    })) || [];
-    
-    if (equipment.url && equipment.url.includes("youtube.com")) {
-      let videoId;
-      
-      if (equipment.url.includes("/shorts/")) {
-        // Extract video ID from YouTube Shorts URL
-        const shortsMatch = equipment.url.match(/\/shorts\/([^/?]+)/);
-        videoId = shortsMatch ? shortsMatch[1] : null;
-      } else {
-        // Extract video ID from traditional YouTube URL
-        videoId = new URL(equipment.url).searchParams.get("v");
-      }
-      
-      if (videoId) {
-        galleryItems.push({
-          original: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
-          thumbnail: `https://res.cloudinary.com/dx8d5hlk1/image/fetch/c_crop,g_center,w_150,h_150/https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
-          embedUrl: `https://www.youtube.com/embed/${videoId}`,
-          renderItem: () => (
-            <div className="image-gallery-image">
-              <iframe
-                width="100%"
-                height="100%"
-                src={`https://www.youtube.com/embed/${videoId}`}
-                title="YouTube video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-          )
-        });
-      }
-    }
-    
-    return galleryItems;
-  };
-  
-  const galleryItems = getGalleryItems();
 
   return (
     <div className="max-w-screen-xl mx-auto w-full">
@@ -117,20 +69,7 @@ const ViewGuitar = () => {
         <h1 className="text-3xl font-bold mb-6">{equipment.name || "My Stuff!"}</h1>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4 relative flex flex-col">
-            <div className="flex-grow h-full">
-              {galleryItems.length > 0 ? (
-                <div className="h-full flex flex-col">
-                  <ImageGallery 
-                    items={galleryItems}
-                    showPlayButton={false}
-                    lazyLoad={true}
-                    additionalClass="h-full flex-grow gallery-container"
-                  />
-                </div>
-              ) : (
-                <SkeletonImage />
-              )}
-            </div>
+            <Gallery equipment={equipment} />
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               <button 
                 onClick={handleLikeToggle}
