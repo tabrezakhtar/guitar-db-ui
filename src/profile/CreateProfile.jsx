@@ -3,6 +3,7 @@ import { useUserContext } from "../context/UserContext";
 import Avatar from "./Avatar";
 import { cloudinaryUpload } from "../cloudinaryUtils";
 import MagicLinkSuccess from "../components/MagicLinkSuccess";
+import Spinner from "../components/Spinner";
 
 const CreateProfile = () => {
   const { loading: contextLoading, error, createUserProfile, clearError } = useUserContext();
@@ -162,7 +163,7 @@ const CreateProfile = () => {
   if (contextLoading) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <Spinner />
       </div>
     );
   }
@@ -315,7 +316,7 @@ const CreateProfile = () => {
             >
               {loading ? (
                 <span className="flex items-center">
-                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+                  <Spinner width={4} height={4} />
                   Creating...
                 </span>
               ) : "Create Profile"}

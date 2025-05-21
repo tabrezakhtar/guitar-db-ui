@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserContext } from "./context/UserContext";
+import Spinner from "./components/Spinner";
 
 const MagicLogin = () => {
   const [status, setStatus] = useState("verifying");
@@ -49,7 +50,7 @@ const MagicLogin = () => {
         {status === "verifying" && (
           <div className="text-center py-4">
             <div className="flex justify-center mb-2">
-              <div className="animate-spin h-12 w-12 text-blue-500">🔄</div>
+              <Spinner />
             </div>
             <p className="text-gray-600">Verifying your login...</p>
           </div>

@@ -918,6 +918,8 @@ export function GuitarProvider({ children }) {
         error: error.message
       }));
       throw error;
+    } finally {
+      setState(prev => ({ ...prev, loading: false }));
     }
   };
 

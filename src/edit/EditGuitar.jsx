@@ -4,9 +4,9 @@ import { useGuitarContext } from "../context/GuitarContext";
 import { useUserContext } from "../context/UserContext";
 import EditImages from "./EditImages";
 import Modal from "../Modal";
-import LoadingSpinner from "./LoadingSpinner";
 import SuccessMessage from "./SuccessMessage";
 import EquipmentForm from "./EquipmentForm";
+import Spinner from "../components/Spinner";
 
 function EditGuitar({ mode = "edit", type = "guitar" }) {
   const { id } = useParams();
@@ -142,11 +142,17 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
   };
 
   if (loading && mode === "edit") {
-    return <LoadingSpinner />;
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Spinner />
+      </div>  
+    );
   }
 
   if (!authChecked) {
-    return <LoadingSpinner />;
+    <div className="flex justify-center items-center h-full">
+      <Spinner />
+    </div>  
   }
 
   return (

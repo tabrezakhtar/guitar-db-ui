@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useGuitarContext } from "./context/GuitarContext";
 import { getCombinedUrl } from "./imageUtils";
 import Modal from "./Modal";
+import Spinner from "./components/Spinner";
 
 const Thumbnail = ({ index, url, alt, showDelete }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +29,7 @@ const Thumbnail = ({ index, url, alt, showDelete }) => {
       }
       {(isLoading || isDeleting) && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <Spinner />
         </div>
       )}
       {showDelete && !isDeleting && (

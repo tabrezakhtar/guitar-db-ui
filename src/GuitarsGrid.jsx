@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import SkeletonImage from "./SkeletonImage";
 import Tag from "./components/Tag";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
+import Spinner from "./components/Spinner";
 
 function GuitarsGrid() {
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ function GuitarsGrid() {
   if (loading && equipment.length === 0) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <Spinner />
       </div>
     );
   }
@@ -94,7 +95,7 @@ function GuitarsGrid() {
       hasMore={totalEquipment > equipment.length}
       loader={
         <div className="flex justify-center p-4">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <Spinner />
         </div>
       }
     >

@@ -5,7 +5,8 @@ import { useGuitarContext } from "../context/GuitarContext";
 import { formatDate } from "../dateUtils";
 import { useNavigate } from "react-router-dom";
 import AvatarDisplayOnly from "./AvatarDisplayOnly";
-import EquipmentCard, { EquipmentCarousel } from "./EquipmentCard";
+import { EquipmentCarousel } from "./EquipmentCard";
+import Spinner from "../components/Spinner";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -17,15 +18,13 @@ const Profile = () => {
     pedals: []
   });
   const [ userComments, setUserComments ] = useState([]);
-  const [ loading, setLoading ] = useState(false);
-  const { user, error: userError, fetchUserProfile, logout } = useUserContext();
-  const { fetchUserEquipment, error: equipmentError } = useGuitarContext();
+  const { user, error: userError, fetchUserProfile, logout, loading: userLoading } = useUserContext();
+  const { fetchUserEquipment, error: equipmentError, loading: equipmentLoading } = useGuitarContext();
 
   const navigate = useNavigate();
   
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       if (userId) {
         const userData = await fetchUserProfile(userId);
         setProfileUser(userData.user);
@@ -39,11 +38,10 @@ const Profile = () => {
           setProfileUser(user);
         }
       }
-      setLoading(false);
     };
     fetchData();
   }, [user]);
-  
+
   useEffect(() => {
     const fetchEquipment = async () => {
       if (!profileUser) return;
@@ -51,7 +49,6 @@ const Profile = () => {
       const userToFetch = userId || (profileUser && profileUser._id);
       if (!userToFetch) return;
       
-      setLoading(true);
       try {
         const data = await fetchUserEquipment(userToFetch);
         
@@ -75,9 +72,7 @@ const Profile = () => {
         }
       } catch (error) {
         console.error("Error fetching user equipment:", error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
     
     fetchEquipment();
@@ -99,10 +94,10 @@ const Profile = () => {
     );
   };
   
-  if (loading) {
+  if (userLoading || equipmentLoading) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <Spinner />
       </div>
     );
   }
@@ -194,9 +189,9 @@ const Profile = () => {
 
         <h3 className="text-xl font-bold mb-4">My Equipment</h3>
         
-        {loading ? (
+        {equipmentLoading ? (
           <div className="flex justify-center p-4">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <Spinner />
           </div>
         ) : (
           <>

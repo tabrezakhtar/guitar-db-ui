@@ -8,6 +8,7 @@ import Tag from "../components/Tag";
 import { formatDate } from "../dateUtils";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Gallery from "./Gallery";
+import Spinner from "../components/Spinner";
 
 const ViewGuitar = () => {
   const { id } = useParams();
@@ -41,7 +42,7 @@ const ViewGuitar = () => {
   if (loading || !equipment) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <Spinner />
       </div>
     );
   }

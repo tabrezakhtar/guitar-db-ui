@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useUserContext } from "./context/UserContext";
+import Spinner from "./components/Spinner";
 
 const ProtectedRoute = ({ children }) => {
   const [isChecking, setIsChecking] = useState(true);
@@ -33,7 +34,7 @@ const ProtectedRoute = ({ children }) => {
   if (isChecking || isValidatingToken) {
     return (
       <div className="flex justify-center items-center h-full py-12">
-        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <Spinner />
         <span className="ml-3 text-gray-600">Verifying authentication...</span>
       </div>
     );

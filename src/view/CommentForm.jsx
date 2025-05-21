@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useGuitarContext } from "../context/GuitarContext";
 import { useUserContext } from "../context/UserContext";
+import Spinner from "../components/Spinner";
 
 const CommentForm = ({ equipmentId }) => {
   const [comment, setComment] = useState("");
@@ -42,7 +43,7 @@ const CommentForm = ({ equipmentId }) => {
         >
           {isSubmitting ? (
             <span className="flex items-center">
-              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+              <Spinner width={4} height={4} />
               Posting...
             </span>
           ) : "Post Comment"}

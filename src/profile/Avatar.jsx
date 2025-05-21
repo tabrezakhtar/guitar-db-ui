@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useUserContext } from "../context/UserContext";
+import Spinner from "../components/Spinner";
 
 function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [image, setImage] = useState(imageUrl);
-  const [localFile, setLocalFile] = useState(null);
+  const [setLocalFile] = useState(null);
   const fileInputRef = useRef(null);
   const { user } = useUserContext();
 
@@ -91,7 +92,7 @@ function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
         
         {isDeleting && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <Spinner width={8} height={8} />
             <span className="ml-2 text-white text-xs">Deleting...</span>
           </div>
         )}
