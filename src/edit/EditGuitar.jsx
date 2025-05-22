@@ -9,7 +9,7 @@ import EquipmentForm from "./EquipmentForm";
 import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 
-function EditGuitar({ mode = "edit", type = "guitar" }) {
+function EditGuitar({ mode = "edit", type = "" }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useUserContext();
@@ -36,7 +36,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
   useEffect(() => {
     if (mode === "edit") {
       if (!currentEquipment || currentEquipment._id !== id) {
-        fetchEquipment(id, type).then(data => {
+        fetchEquipment(id).then(data => {
           if (data?.item) {
             const canEdit = user && data.item.user && user._id === data.item.user._id;
             
@@ -76,7 +76,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
         description: "",
         name: "",
         recommendation: "",
-        type: type.charAt(0).toUpperCase() + type.slice(1),
+        type,
         why: "",
         userId: user._id,
       };
@@ -90,10 +90,10 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
       }
 
       setCurrentEquipment(defaultEquipment);
-      setInitialized(true);
+      // setInitialized(true);
       setAuthChecked(true);
     }
-  }, []);
+  }, [type]);
 
   async function saveEquipment(e) {
     e.preventDefault();
@@ -126,7 +126,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
         navigate(`/edit/${result._id}`);
         return;
       } else {
-        await updateEquipment(type);
+        await updateEquipment();
       }
 
       setSaved(true);

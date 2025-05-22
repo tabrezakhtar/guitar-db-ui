@@ -235,8 +235,8 @@ export function GuitarProvider({ children }) {
     });
   };
 
-  const fetchEquipment = async (id, type) => {
-    if (!id || !type) return;
+  const fetchEquipment = async (id, type="") => {
+    if (!id) return;
     setLoading(true);
     setState(prev => ({ ...prev, error: null }));
 
@@ -448,7 +448,7 @@ export function GuitarProvider({ children }) {
     });
   };
 
-  const updateEquipment = async (type) => {
+  const updateEquipment = async () => {
     const isValid = await validateToken();
     if (!isValid) {
       setState(prev => ({
@@ -463,7 +463,7 @@ export function GuitarProvider({ children }) {
       setState((prev) => {
         const currentEquipment = prev.currentEquipment;
 
-        if (!type || !currentEquipment?._id) {
+        if (!currentEquipment?._id) {
           resolve(null);
           return prev;
         }
@@ -484,7 +484,7 @@ export function GuitarProvider({ children }) {
               headers["Authorization"] = `Bearer ${token}`;
             }
 
-            const response = await fetch(`${BASE_URL}/api/equipment/update/${currentEquipment._id}?type=${type}`, {
+            const response = await fetch(`${BASE_URL}/api/equipment/update/${currentEquipment._id}`, {
               method: "PUT",
               headers,
               body: JSON.stringify(currentEquipment),
@@ -604,8 +604,7 @@ export function GuitarProvider({ children }) {
     }
   };
 
-  const fetchEquipmentList = async (page, type) => {
-    if (!type) return;
+  const fetchEquipmentList = async (page, type="") => {
     setLoading(true);
     setState(prev => ({ ...prev, error: null }));
 

@@ -29,7 +29,7 @@ function GuitarsGrid() {
   const [likedEquipment, setLikedEquipment] = useState({});
 
   useEffect(() => {
-    fetchEquipmentList(1, "guitar");
+    fetchEquipmentList(1);
   }, [sortBy, sortOrder, selectedTags]);
 
   const handleSortChange = (event) => {

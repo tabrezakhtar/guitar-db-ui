@@ -19,7 +19,7 @@ const ViewGuitar = () => {
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
-    fetchEquipment(id, "guitar");
+    fetchEquipment(id);
   }, []);
 
   const handleLikeToggle = async () => {
