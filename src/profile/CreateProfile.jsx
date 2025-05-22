@@ -4,6 +4,7 @@ import Avatar from "./Avatar";
 import { cloudinaryUpload } from "../cloudinaryUtils";
 import MagicLinkSuccess from "../components/MagicLinkSuccess";
 import Spinner from "../components/Spinner";
+import Breadcrumbs from "../components/Breadcrumbs";
 
 const CreateProfile = () => {
   const { loading: contextLoading, error, createUserProfile, clearError } = useUserContext();
@@ -216,6 +217,10 @@ const CreateProfile = () => {
   
   return (
     <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
+      <div className="mb-4">
+        <Breadcrumbs items={[{ label: "Create Profile", url: "/create-profile" }]} />
+      </div>
+      
       <h1 className="text-2xl font-bold mb-6">Create Your Profile</h1>
       
       {renderErrorMessage(error)}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { cloudinaryUpload } from "../cloudinaryUtils";
 import Avatar from "./Avatar";
+import Breadcrumbs from "../components/Breadcrumbs";
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -117,6 +118,9 @@ const EditProfile = () => {
 
   return (
     <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
+      <div className="mb-4">
+        <Breadcrumbs items={[{ label: "Edit Profile", url: "/edit-profile" }]} />
+      </div>
       <h1 className="text-2xl font-bold mb-6">Edit Profile</h1>
       
       {success && (
