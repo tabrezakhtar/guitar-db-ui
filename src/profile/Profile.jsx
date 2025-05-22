@@ -27,12 +27,14 @@ const Profile = () => {
     const fetchData = async () => {
       if (userId) {
         const userData = await fetchUserProfile(userId);
-        setProfileUser(userData.user);
-        setUserComments(userData.comments || []);
-        setLikedEquipment(userData.likedEquipment || []);
+        if (userData) {
+          setProfileUser(userData.user);
+          setUserComments(userData.comments || []);
+          setLikedEquipment(userData.likedEquipment || []);
+        }
       } else {
-        if (user) {
-          const userData = await fetchUserProfile(user._id);
+        const userData = await fetchUserProfile(user._id);
+        if (userData) {
           setUserComments(userData.comments || []);
           setLikedEquipment(userData.likedEquipment || []);
           setProfileUser(user);
@@ -94,6 +96,20 @@ const Profile = () => {
     );
   };
   
+    if (userError || equipmentError) {
+    return (
+      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
+        <p>{userError || equipmentError}</p>
+        <NavLink
+          to="/"
+          className="inline-block mt-4 text-blue-500 hover:underline text-sm"
+        >
+          ⬅️ Back to Home
+        </NavLink>
+      </div>
+    );
+  }
+
   if (userLoading || equipmentLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -102,18 +118,16 @@ const Profile = () => {
     );
   }
   
-  if (userError || equipmentError) {
-    return (
-      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
-        <p>{userError || equipmentError}</p>
-      </div>
-    );
-  }
-  
   if (!profileUser) {
     return (
       <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
         <p>User profile not found.</p>
+        <NavLink
+          to="/"
+          className="inline-block mt-4 text-blue-500 hover:underline text-sm"
+        >
+          ⬅️ Back to Home
+        </NavLink>
       </div>
     );
   }
