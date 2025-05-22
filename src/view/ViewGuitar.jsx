@@ -53,7 +53,7 @@ const ViewGuitar = () => {
   
   const breadcrumbItems = [
     {
-      label: equipment.type ? "Viewing " + equipment.type.charAt(0).toUpperCase() + equipment.type.slice(1) + "s" : "Equipment",
+      label: equipment.type ? "Viewing " + equipment.type.charAt(0).toUpperCase() + equipment.type.slice(1) : "Equipment",
       url: "/"
     },
   ];
@@ -62,9 +62,7 @@ const ViewGuitar = () => {
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
         <div className="mb-4">
-          <div className="mb-2">
-            <Breadcrumbs items={breadcrumbItems} />
-          </div>
+          <Breadcrumbs items={breadcrumbItems} />
         </div>
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold">{equipment.name || "My Stuff!"}</h1>

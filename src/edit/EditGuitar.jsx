@@ -7,6 +7,7 @@ import Modal from "../components/Modal";
 import SuccessMessage from "./SuccessMessage";
 import EquipmentForm from "./EquipmentForm";
 import Spinner from "../components/Spinner";
+import Breadcrumbs from "../components/Breadcrumbs";
 
 function EditGuitar({ mode = "edit", type = "guitar" }) {
   const { id } = useParams();
@@ -155,10 +156,25 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
     </div>  
   }
 
+  const breadcrumbItems = [
+    {
+      label: currentEquipment?.type ? "View " + currentEquipment?.type.charAt(0).toUpperCase() + currentEquipment?.type.slice(1) : "Equipment",
+      url: "/view/" + currentEquipment?._id
+    },
+    {
+      label: currentEquipment?.type ? "Editing " + currentEquipment?.type.charAt(0).toUpperCase() + currentEquipment?.type.slice(1) : "Equipment",
+      url: "/"
+    },
+  ];
+
   return (
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
         {saved && <SuccessMessage />}
+
+        <div className="mb-4">
+          <Breadcrumbs items={breadcrumbItems} />
+        </div>
 
         {mode === "edit" && (
           <button
