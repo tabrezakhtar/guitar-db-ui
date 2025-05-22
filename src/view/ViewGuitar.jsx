@@ -9,6 +9,7 @@ import { formatDate } from "../dateUtils";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Gallery from "./Gallery";
 import Spinner from "../components/Spinner";
+import Breadcrumbs from "../components/Breadcrumbs";
 
 const ViewGuitar = () => {
   const { id } = useParams();
@@ -49,25 +50,36 @@ const ViewGuitar = () => {
 
   const likesCount = equipment.likesCount || 0;
   const canEdit = user && equipment.user && user._id === equipment.user._id;
+  
+  const breadcrumbItems = [
+    {
+      label: equipment.type ? "Viewing " + equipment.type.charAt(0).toUpperCase() + equipment.type.slice(1) + "s" : "Equipment",
+      url: "/"
+    },
+  ];
 
   return (
     <div className="max-w-screen-xl mx-auto w-full">
       <div className="p-6">
         <div className="mb-4">
-          <Link to="/" className="hover:underline mr-4">Back</Link>
+          <div className="mb-2">
+            <Breadcrumbs items={breadcrumbItems} />
+          </div>
+        </div>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold">{equipment.name || "My Stuff!"}</h1>
           {canEdit && (
             <button
               onClick={() => {
                 clearCurrentEquipment();
                 navigate(`/edit/${equipment._id}`);
               }}
-              className="hover:underline text-blue-500"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
             >
-              Edit
+              ✏️Edit
             </button>
           )}
         </div>
-        <h1 className="text-3xl font-bold mb-6">{equipment.name || "My Stuff!"}</h1>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4 relative flex flex-col">
             <Gallery equipment={equipment} />
