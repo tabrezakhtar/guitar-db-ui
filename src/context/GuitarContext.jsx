@@ -871,9 +871,9 @@ export function GuitarProvider({ children }) {
     }
   };
 
-  const loadMore = (type) => {
+  const loadMore = () => {
     const nextPage = state.page + 1;
-    fetchEquipmentList(nextPage, type);
+    fetchEquipmentList(nextPage);
   };
 
   const setSortOptions = (sortBy, sortOrder) => {

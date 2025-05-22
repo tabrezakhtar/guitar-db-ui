@@ -91,7 +91,7 @@ function GuitarsGrid() {
   return (
     <InfiniteScroll
       dataLength={equipment.length}
-      next={() => loadMore("guitar")}
+      next={() => loadMore("")}
       hasMore={totalEquipment > equipment.length}
       loader={
         <div className="flex justify-center p-4">
@@ -100,7 +100,7 @@ function GuitarsGrid() {
       }
     >
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">{totalEquipment || 0} guitars</h2>
+        <h2 className="text-xl font-bold">{totalEquipment || 0} Results</h2>
         
         <div className="flex items-center">
           <select 
