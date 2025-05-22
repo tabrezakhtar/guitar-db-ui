@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useGuitarContext } from "../context/GuitarContext";
 import { useUserContext } from "../context/UserContext";
 import EditImages from "./EditImages";
-import Modal from "../Modal";
+import Modal from "../components/Modal";
 import SuccessMessage from "./SuccessMessage";
 import EquipmentForm from "./EquipmentForm";
 import Spinner from "../components/Spinner";

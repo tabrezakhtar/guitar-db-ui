@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import Thumbnail from "../Thumbnail";
+import Thumbnail from "../components/Thumbnail";
 
 const EquipmentCarousel = ({ items, onClick }) => {
   return (

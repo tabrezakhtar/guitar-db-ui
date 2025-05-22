@@ -1,5 +1,5 @@
 import { ReactSortable } from "react-sortablejs";
-import Thumbnail from "../Thumbnail";
+import Thumbnail from "../components/Thumbnail";
 import { useGuitarContext } from "../context/GuitarContext";
 import FileDropZone from "../FileDropZone";
 

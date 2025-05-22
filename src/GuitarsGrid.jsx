@@ -1,10 +1,10 @@
 import { useNavigate, Link } from "react-router-dom";
-import Thumbnail from "./Thumbnail";
+import Thumbnail from "./components/Thumbnail";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useGuitarContext } from "./context/GuitarContext";
 import { useUserContext } from "./context/UserContext";
 import { useEffect, useState } from "react";
-import SkeletonImage from "./SkeletonImage";
+import SkeletonImage from "./components/SkeletonImage";
 import Tag from "./components/Tag";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
 import Spinner from "./components/Spinner";

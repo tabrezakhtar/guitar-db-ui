@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useGuitarContext } from "./context/GuitarContext";
-import { getCombinedUrl } from "./imageUtils";
+import { useGuitarContext } from "../context/GuitarContext";
+import { getCombinedUrl } from "../imageUtils";
 import Modal from "./Modal";
-import Spinner from "./components/Spinner";
+import Spinner from "./Spinner";
 
 const Thumbnail = ({ index, url, alt, showDelete }) => {
   const [isLoading, setIsLoading] = useState(true);
