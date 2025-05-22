@@ -137,7 +137,8 @@ const Profile = () => {
   const isOwnProfile = !userId || (user && profileUser && user._id === profileUser._id);
   
   return (
-    <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
+    // <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
+    <div className="max-w-screen-xl mx-auto w-full p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">User Profile</h1>
         <div className="flex gap-4">
