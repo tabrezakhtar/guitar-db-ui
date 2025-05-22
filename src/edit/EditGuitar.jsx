@@ -172,11 +172,13 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
       <div className="p-6">
         {saved && <SuccessMessage />}
 
-        <div className="mb-4">
-          <Breadcrumbs items={breadcrumbItems} />
-        </div>
+        { mode === "edit" && (
+          <div className="mb-4">
+            <Breadcrumbs items={breadcrumbItems} />
+          </div>
+        )}
 
-        {mode === "edit" && (
+        {/* {mode === "edit" && (
           <button
             onClick={() => {
               clearCurrentEquipment();
@@ -187,7 +189,7 @@ function EditGuitar({ mode = "edit", type = "guitar" }) {
           >
             View
           </button>
-        )}
+        )} */}
 
         {showModal && (
           <Modal
