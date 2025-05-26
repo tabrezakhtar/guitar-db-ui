@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { cloudinaryUpload } from "../cloudinaryUtils";
 import Avatar from "./Avatar";
 import Breadcrumbs from "../components/Breadcrumbs";
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  const { user, updateUserProfile, deleteAvatar } = useUserContext();
+  const { user, updateUserProfile, deleteAvatar } = useContext(UserContext);
   const [profile, setProfile] = useState({
     username: "",
     bio: "",

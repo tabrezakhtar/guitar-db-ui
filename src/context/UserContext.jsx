@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -29,7 +29,7 @@ const initialState = {
 
 const UserContext = createContext(null);
 
-export const UserProvider = ({ children }) => {
+const UserProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
@@ -489,10 +489,4 @@ UserProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export const useUserContext = () => {
-  const value = useContext(UserContext);
-  if (!value) {
-    throw new Error("useUserContext must be used within a UserProvider");
-  }
-  return value;
-};
+export { UserContext, UserProvider };

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useUserContext } from "./context/UserContext";
+import { UserContext } from "./context/UserContext";
 import Spinner from "./components/Spinner";
 
 const MagicLogin = () => {
@@ -8,7 +8,7 @@ const MagicLogin = () => {
   const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { verifyMagicToken, error: contextError } = useUserContext();
+  const { verifyMagicToken, error: contextError } = useContext(UserContext);
 
   useEffect(() => {
     const verifyToken = async () => {

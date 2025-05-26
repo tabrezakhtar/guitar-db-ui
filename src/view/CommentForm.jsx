@@ -1,14 +1,13 @@
-import { useState } from "react";
-import { useGuitarContext } from "../context/GuitarContext";
-import { useUserContext } from "../context/UserContext";
+import { useState, useContext } from "react";
+import { GuitarContext } from "../context/GuitarContext";
+import { UserContext } from "../context/UserContext";
 import Spinner from "../components/Spinner";
 
 const CommentForm = ({ equipmentId }) => {
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { addComment } = useGuitarContext();
-  const { user } = useUserContext();
-  
+  const { addComment } = useContext(GuitarContext);
+  const { user } = useContext(UserContext); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();

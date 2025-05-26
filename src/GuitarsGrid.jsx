@@ -1,9 +1,9 @@
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Thumbnail from "./components/Thumbnail";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useGuitarContext } from "./context/GuitarContext";
-import { useUserContext } from "./context/UserContext";
-import { useEffect, useState } from "react";
+import { GuitarContext } from "./context/GuitarContext";
+import { UserContext } from "./context/UserContext";
 import SkeletonImage from "./components/SkeletonImage";
 import Tag from "./components/Tag";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
@@ -23,9 +23,9 @@ function GuitarsGrid() {
     handleTagSelection,
     setSortOptions,
     toggleLike
-  } = useGuitarContext();
+  } = useContext(GuitarContext);
   
-  const { user } = useUserContext();
+  const { user } = useContext(UserContext);
   const [likedEquipment, setLikedEquipment] = useState({});
 
   useEffect(() => {

@@ -1,7 +1,7 @@
+import { useContext, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { useUserContext } from "./context/UserContext";
+import { UserContext } from "./context/UserContext";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
-import { useState, useEffect, useRef } from "react";
 
 function MenuContent({ isOpen, onClose, isMobile, user }) {
   const menuRef = useRef(null);
@@ -76,7 +76,7 @@ function MenuContent({ isOpen, onClose, isMobile, user }) {
 }
 
 function Header() {
-  const { user, showHeader } = useUserContext();
+  const { user, showHeader } = useContext(UserContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const buttonRef = useRef(null);
@@ -102,7 +102,6 @@ function Header() {
     setIsMenuOpen(false);
   };
 
-  // If showHeader is false, don't render the header
   if (!showHeader) return null;
 
   return (

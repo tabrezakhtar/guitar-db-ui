@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useGuitarContext } from "../context/GuitarContext";
-import { useUserContext } from "../context/UserContext";
+import { GuitarContext } from "../context/GuitarContext";
+import { UserContext } from "../context/UserContext";
 import EditImages from "./EditImages";
 import Modal from "../components/Modal";
 import SuccessMessage from "./SuccessMessage";
@@ -12,7 +12,7 @@ import Breadcrumbs from "../components/Breadcrumbs";
 function EditGuitar({ mode = "edit", type = "" }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useUserContext();
+  const { user } = useContext(UserContext);
   const {
     currentEquipment,
     loading,
@@ -24,7 +24,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
     cloudinaryUpload,
     filesToUpload,
     clearCurrentEquipment,
-  } = useGuitarContext();
+  } = useContext(GuitarContext);
 
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(null);

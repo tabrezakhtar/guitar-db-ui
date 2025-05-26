@@ -1,10 +1,11 @@
+import { useContext } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Thumbnail from "../components/Thumbnail";
-import { useGuitarContext } from "../context/GuitarContext";
+import { GuitarContext } from "../context/GuitarContext";
 import FileDropZone from "../FileDropZone";
 
 export default function EditImages({ disabled }) {
-  const { currentEquipment, setCurrentEquipment } = useGuitarContext();
+  const { currentEquipment, setCurrentEquipment } = useContext(GuitarContext);
 
   const handleSort = (newList) => {
     if (disabled) return;

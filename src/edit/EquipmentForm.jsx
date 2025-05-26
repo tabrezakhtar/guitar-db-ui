@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useGuitarContext } from "../context/GuitarContext";
+import { useEffect, useContext } from "react";
+import { GuitarContext } from "../context/GuitarContext";
 import FormFields from "./FormFields";
 import StarRating from "../components/StarRating";
 import Tag from "../components/Tag";
@@ -11,7 +11,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
     setCurrentEquipment, 
     tags, 
     fetchTags 
-  } = useGuitarContext();
+  } = useContext(GuitarContext);
 
   useEffect(() => {
     if (tags.length === 0) {

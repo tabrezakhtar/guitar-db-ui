@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { useUserContext } from "../context/UserContext";
+import { useState, useRef, useEffect, useContext } from "react";
+import { UserContext } from "../context/UserContext";
 import Spinner from "../components/Spinner";
 
 function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
@@ -7,7 +7,7 @@ function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
   const [image, setImage] = useState(imageUrl);
   const [setLocalFile] = useState(null);
   const fileInputRef = useRef(null);
-  const { user } = useUserContext();
+  const { user } = useContext(UserContext);
 
   const sizeClasses = {
     small: "w-12 h-12 text-lg",

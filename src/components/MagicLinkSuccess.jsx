@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { useUserContext } from "../context/UserContext";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 const MagicLinkSuccess = ({ magicLink, onLogin }) => {
   const [copied, setCopied] = useState(false);
-  const { setHeaderVisibility } = useUserContext();
+  const { setHeaderVisibility } = useContext(UserContext);
   
   const handleCopy = () => {
     navigator.clipboard.writeText(magicLink);

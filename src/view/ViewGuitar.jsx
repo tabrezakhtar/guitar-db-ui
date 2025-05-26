@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useGuitarContext } from "../context/GuitarContext";
-import { useUserContext } from "../context/UserContext";
+import { GuitarContext } from "../context/GuitarContext";
+import { UserContext } from "../context/UserContext";
 import Comments from "./Comments";
 import StarRating from "../components/StarRating";
 import Tag from "../components/Tag";
@@ -14,8 +14,8 @@ import Breadcrumbs from "../components/Breadcrumbs";
 const ViewGuitar = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { currentEquipment: equipment, loading, fetchEquipment, clearCurrentEquipment, toggleLike } = useGuitarContext();
-  const { user } = useUserContext();
+  const { currentEquipment: equipment, loading, fetchEquipment, clearCurrentEquipment, toggleLike } = useContext(GuitarContext);
+  const { user } = useContext(UserContext);
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {

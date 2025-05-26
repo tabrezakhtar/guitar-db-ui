@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useUserContext } from "./context/UserContext";
+import { UserContext } from "./context/UserContext";
 import Spinner from "./components/Spinner";
 
 const ProtectedRoute = ({ children }) => {
   const [isChecking, setIsChecking] = useState(true);
   const [authError, setAuthError] = useState(null);
-  const { user, validateToken, isTokenValid, isValidatingToken } = useUserContext();
+  const { user, validateToken, isTokenValid, isValidatingToken } = useContext(UserContext);
   const location = useLocation();
 
   useEffect(() => {

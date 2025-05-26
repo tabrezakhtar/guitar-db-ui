@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, NavLink } from "react-router-dom";
-import { useUserContext } from "../context/UserContext";
-import { useGuitarContext } from "../context/GuitarContext";
+import { UserContext } from "../context/UserContext";
+import { GuitarContext } from "../context/GuitarContext";
 import { formatDate } from "../dateUtils";
 import { useNavigate } from "react-router-dom";
 import AvatarDisplayOnly from "./AvatarDisplayOnly";
@@ -19,8 +19,8 @@ const Profile = () => {
     pedals: []
   });
   const [ userComments, setUserComments ] = useState([]);
-  const { user, error: userError, fetchUserProfile, logout, loading: userLoading } = useUserContext();
-  const { fetchUserEquipment, error: equipmentError, loading: equipmentLoading } = useGuitarContext();
+  const { user, error: userError, fetchUserProfile, logout, loading: userLoading } = useContext(UserContext);
+  const { fetchUserEquipment, error: equipmentError, loading: equipmentLoading } = useContext(GuitarContext);
 
   const navigate = useNavigate();
   

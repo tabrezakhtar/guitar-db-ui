@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { useGuitarContext } from "./context/GuitarContext";
+import { GuitarContext } from "./context/GuitarContext";
 import Tag from "./components/Tag";
 import TagSearch from "./components/TagSearch";
 
@@ -11,7 +11,7 @@ function SideMenu() {
     selectedTags, 
     handleTagSelection, 
     clearSelectedTags 
-  } = useGuitarContext();
+  } = useContext(GuitarContext);
   
   useEffect(() => {
     fetchTags();

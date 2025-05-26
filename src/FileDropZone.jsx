@@ -1,9 +1,9 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { useDropzone } from "react-dropzone";
-import { useGuitarContext } from "./context/GuitarContext";
+import { GuitarContext } from "./context/GuitarContext";
 
 export default function FileDropZone() {
-  const { currentEquipment, setCurrentEquipment, setFilesToUpload } = useGuitarContext();
+  const { currentEquipment, setCurrentEquipment, setFilesToUpload } = useContext(GuitarContext);
   const onDrop = useCallback((acceptedFiles) => {
     const newFiles = acceptedFiles.map((file) => ({
       file,

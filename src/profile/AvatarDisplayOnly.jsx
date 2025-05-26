@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { useUserContext } from "../context/UserContext";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 function AvatarDisplayOnly({ imageUrl, username, size = "medium",  }) {
   const [image, setImage] = useState(imageUrl);
-  const { user } = useUserContext();
+  const { user } = useContext(UserContext);
 
   const sizeClasses = {
     xsmall: "w-8 h-8 text-sm",

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useUserContext } from "../context/UserContext";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/UserContext";
 import Avatar from "./Avatar";
 import { cloudinaryUpload } from "../cloudinaryUtils";
 import MagicLinkSuccess from "../components/MagicLinkSuccess";
@@ -7,8 +7,7 @@ import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 
 const CreateProfile = () => {
-  const { loading: contextLoading, error, createUserProfile, clearError } = useUserContext();
-  const { user } = useUserContext();
+  const { loading: contextLoading, error, createUserProfile, clearError, user } = useContext(UserContext);
   
   const [formData, setFormData] = useState({
     username: "",

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import PropTypes from "prop-types";
 import { resizeImage, getCombinedUrl } from "../imageUtils";
 import { cloudinaryUpload } from "../cloudinaryUtils";
@@ -22,7 +22,7 @@ export const initialState = {
   sortOrder: "desc"
 };
 
-export const GuitarContext = createContext(null);
+const GuitarContext = createContext(null);
 
 function decodeJWT(token) {
   try {
@@ -39,7 +39,7 @@ function decodeJWT(token) {
   }
 }
 
-export function GuitarProvider({ children }) {
+function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
 
   const validateToken = async () => {
@@ -956,10 +956,4 @@ GuitarProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export function useGuitarContext() {
-  const value = useContext(GuitarContext);
-  if (!value) {
-    throw new Error("useGuitarContext must be used within a GuitarProvider");
-  }
-  return value;
-}
+export { GuitarContext, GuitarProvider };

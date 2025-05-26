@@ -1,8 +1,9 @@
-import { useGuitarContext } from "../context/GuitarContext";
+import { useContext } from "react";
+import { GuitarContext } from "../context/GuitarContext";
 import Select from "react-select";
 
 function FormFields({ type, isUploading }) {
-  const { currentEquipment, setCurrentEquipment } = useGuitarContext();
+  const { currentEquipment, setCurrentEquipment } = useContext(GuitarContext);
 
   const fieldMapping = {
     guitar: [
