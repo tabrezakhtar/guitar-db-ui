@@ -145,7 +145,7 @@ function GuitarsGrid() {
         {equipment.map((item) => (
           <div
             key={item._id}
-            className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative"
+            className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative animate__animated animate__fadeIn"
             onClick={() => navigate("/view/" + item._id)}
           >
             {item.images && item.images.length > 0 ? (
