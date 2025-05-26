@@ -75,6 +75,12 @@ function GuitarsGrid() {
         return "/amp.png";
       case "pedal":
         return "/pedal.png";
+      case "bass":
+        return "/bass.png";
+      case "acoustic":
+        return "/acoustic.png";
+      case "accessory":
+        return "/accessory.png";
       default:
         return "/guitar.png";
     }
@@ -159,7 +165,7 @@ function GuitarsGrid() {
               <img 
                 src={getEquipmentIcon(item.type)} 
                 alt={item.type} 
-                className="w-6 h-6"
+                className="w-8 h-8"
               />
             </div>
             
