@@ -20,27 +20,30 @@ function SideMenu() {
   return (
     <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4 bg-[url(/guitar-bg.svg)] bg-contain bg-top bg-no-repeat">
       <div className="flex justify-end mb-4">
-        <Link to="/add" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        <Link to="/add" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" title="Add a new instrument">
           Add New
         </Link>
       </div>
       <div className="mt-4">
-        <div className="text-sm font-semibold mb-2">Select Shape</div>
-        <div className="flex space-x-2">
-          <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
-            <span className="w-6 h-6">All</span>
+        <div className="text-sm font-semibold mb-2">Select Equipment</div>
+        <div className="flex justify-between space-x-2 flex-wrap">
+          <button className="flex items-center justify-center hover:bg-gray-200" title="Guitar">
+            <img className="w-14 h-14" src="/guitar.png" alt="Guitar" />
           </button>
-          <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
-            <img src="/shapes/singlecut_outline.png" alt="Icon" className="w-6 h-6" />
+          <button className="flex items-center justify-center hover:bg-gray-200" title="Bass">
+            <img className="w-14 h-14" src="/bass.png" alt="Bass" />
           </button>
-          <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
-            <img src="/shapes/stype_outline.png" alt="Icon" className="w-6 h-6" />
+          <button className="flex items-center justify-center hover:bg-gray-200" title="Acoustic">
+            <img className="w-14 h-14" src="/acoustic.png" alt="Acoustic" />
           </button>
-          <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
-            <img src="/shapes/ttype_outline.png" alt="Icon" className="w-6 h-6" />
+          <button className="flex items-center justify-center hover:bg-gray-200" title="Amp">
+            <img className="w-14 h-14" src="/amp.png" alt="Amp" />
           </button>
-          <button className="w-8 h-8 border flex items-center justify-center hover:bg-gray-200">
-            <img src="/shapes/v_outline.png" alt="Icon" className="w-6 h-6" />
+          <button className="flex items-center justify-center hover:bg-gray-200" title="Pedal">
+            <img className="w-14 h-14" src="/pedal.png" alt="Pedal" />
+          </button>
+          <button className="flex items-center justify-center hover:bg-gray-200" title="Accessory">
+            <img className="w-14 h-14" src="/accessory.png" alt="Accessory" />
           </button>
         </div>
       </div>
@@ -55,6 +58,7 @@ function SideMenu() {
               <button 
                 onClick={clearSelectedTags}
                 className="text-xs ml-2 px-2 py-1 bg-blue-600 hover:bg-gray-700 rounded"
+                title="Clear selected tags"
               >
                 Clear Selection
               </button>
@@ -71,6 +75,7 @@ function SideMenu() {
                 tag={tag} 
                 selected={selectedTags.some(t => t._id === tag._id)}
                 onClick={handleTagSelection}
+                title={tag.name}
               />
             ))}
           </div>
