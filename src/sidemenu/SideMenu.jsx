@@ -1,8 +1,8 @@
 import { useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-import { GuitarContext } from "./context/GuitarContext";
-import Tag from "./components/Tag";
-import TagSearch from "./components/TagSearch";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { GuitarContext } from "../context/GuitarContext";
+import Tag from "../components/Tag";
+import TagSearch from "../components/TagSearch";
 
 function SideMenu() {
   const { 
@@ -12,10 +12,18 @@ function SideMenu() {
     handleTagSelection, 
     clearSelectedTags 
   } = useContext(GuitarContext);
+  const navigate = useNavigate();
+  const location = useLocation();
   
   useEffect(() => {
     fetchTags();
   }, [])
+
+  const handleTypeClick = (type) => {
+    const params = new URLSearchParams();
+    params.set("type", type);
+    navigate(`?${params.toString()}`);
+  };
 
   return (
     <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4 bg-[url(/guitar-bg.svg)] bg-contain bg-top bg-no-repeat">
@@ -26,24 +34,24 @@ function SideMenu() {
       </div>
       <div className="mt-4">
         <div className="text-sm font-semibold mb-2">Select Equipment</div>
-        <div className="flex justify-between space-x-2 flex-wrap">
-          <button className="flex items-center justify-center hover:bg-gray-200" title="Guitar">
-            <img className="w-14 h-14" src="/guitar.png" alt="Guitar" />
+        <div className="grid grid-cols-3 gap-2 justify-items-center">
+          <button className="flex items-center justify-center group cursor-pointer" title="Guitar" onClick={() => handleTypeClick("guitar")}> 
+            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/guitar.png" alt="Guitar" />
           </button>
-          <button className="flex items-center justify-center hover:bg-gray-200" title="Bass">
-            <img className="w-14 h-14" src="/bass.png" alt="Bass" />
+          <button className="flex items-center justify-center group cursor-pointer" title="Bass" onClick={() => handleTypeClick("bass")}> 
+            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/bass.png" alt="Bass" />
           </button>
-          <button className="flex items-center justify-center hover:bg-gray-200" title="Acoustic">
-            <img className="w-14 h-14" src="/acoustic.png" alt="Acoustic" />
+          <button className="flex items-center justify-center group cursor-pointer" title="Acoustic" onClick={() => handleTypeClick("acoustic")}> 
+            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/acoustic.png" alt="Acoustic" />
           </button>
-          <button className="flex items-center justify-center hover:bg-gray-200" title="Amp">
-            <img className="w-14 h-14" src="/amp.png" alt="Amp" />
+          <button className="flex items-center justify-center group cursor-pointer" title="Amp" onClick={() => handleTypeClick("amp")}> 
+            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/amp.png" alt="Amp" />
           </button>
-          <button className="flex items-center justify-center hover:bg-gray-200" title="Pedal">
-            <img className="w-14 h-14" src="/pedal.png" alt="Pedal" />
+          <button className="flex items-center justify-center group cursor-pointer" title="Pedal" onClick={() => handleTypeClick("pedal")}> 
+            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/pedal.png" alt="Pedal" />
           </button>
-          <button className="flex items-center justify-center hover:bg-gray-200" title="Accessory">
-            <img className="w-14 h-14" src="/accessory.png" alt="Accessory" />
+          <button className="flex items-center justify-center group cursor-pointer" title="Accessory" onClick={() => handleTypeClick("accessory")}> 
+            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/accessory.png" alt="Accessory" />
           </button>
         </div>
       </div>

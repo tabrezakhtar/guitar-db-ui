@@ -1,4 +1,4 @@
-import SideMenu from "./SideMenu";
+import SideMenu from "./sidemenu/SideMenu";
 import GuitarsGrid from "./GuitarsGrid";
 
 function ContentContainer() {
