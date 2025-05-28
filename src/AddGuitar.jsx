@@ -63,8 +63,8 @@ function AddGuitar() {
           onClick={() => setEquipType("accessory")}
           className={`flex flex-col items-center bg-gray-200 rounded-md p-4 hover:bg-gray-300 cursor-pointer ${equipType === "accessory" ? "outline-3 outline-blue-500" : ""}`}
         >
-          <img src="/accessory.png" alt="Accessory" className="w-24 h-24 mb-2" />
-          <span className="text-sm font-medium">Accessory</span>
+          <img src="/accessory.png" alt="Accessory / Parts" className="w-24 h-24 mb-2" />
+          <span className="text-sm font-medium">Accessory / Parts</span>
         </button>
       </div>
 

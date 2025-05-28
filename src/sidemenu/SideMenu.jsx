@@ -50,8 +50,8 @@ function SideMenu() {
           <button className="flex items-center justify-center group cursor-pointer" title="Pedal" onClick={() => handleTypeClick("pedal")}> 
             <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/pedal.png" alt="Pedal" />
           </button>
-          <button className="flex items-center justify-center group cursor-pointer" title="Accessory" onClick={() => handleTypeClick("accessory")}> 
-            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/accessory.png" alt="Accessory" />
+          <button className="flex items-center justify-center group cursor-pointer" title="Accessory / Parts" onClick={() => handleTypeClick("accessory")}> 
+            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/accessory.png" alt="Accessory / Parts" />
           </button>
         </div>
       </div>
