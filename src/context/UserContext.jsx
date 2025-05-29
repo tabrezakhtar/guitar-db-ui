@@ -100,7 +100,7 @@ const UserProvider = ({ children }) => {
     if (!token) return false;
     
     try {
-      const response = await fetch(`${BASE_URL}/api/users/refreshToken`, {
+      const response = await fetch(`${BASE_URL}/api/auth/refreshToken`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -196,12 +196,12 @@ const UserProvider = ({ children }) => {
         headers["Authorization"] = `Bearer ${token}`;
       }
       
-      const response = await fetch(`${BASE_URL}/api/users/createProfile`, {
+      const response = await fetch(`${BASE_URL}/api/auth/createProfile`, {
         method: "POST",
         headers,
         body: JSON.stringify(userData),
       });
-      
+
       const data = await response.json();
       
       if (data && data.errors) {
@@ -320,7 +320,7 @@ const UserProvider = ({ children }) => {
         return { success: false, error: "No token found in URL" };
       }
 
-      const response = await fetch(`${BASE_URL}/api/users/verifyMagicLink`, {
+      const response = await fetch(`${BASE_URL}/api/auth/verifyMagicLink`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

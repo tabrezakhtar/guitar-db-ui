@@ -71,7 +71,7 @@ function GuitarProvider({ children }) {
     if (!token) return false;
 
     try {
-      const response = await fetch(`${BASE_URL}/api/users/refreshToken`, {
+      const response = await fetch(`${BASE_URL}/api/auth/refreshToken`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

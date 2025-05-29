@@ -5,7 +5,7 @@ import Spinner from "../components/Spinner";
 function Avatar({ imageUrl, username, size = "medium", onAvatarUpdated }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [image, setImage] = useState(imageUrl);
-  const [setLocalFile] = useState(null);
+  const [localFile, setLocalFile] = useState(null);
   const fileInputRef = useRef(null);
   const { user } = useContext(UserContext);
 
