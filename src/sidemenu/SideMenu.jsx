@@ -26,57 +26,62 @@ function SideMenu() {
   };
 
   return (
-    <aside className="bg-gray-500 text-white w-full md:w-1/4 lg:w-1/5 p-4 bg-[url(/guitar-bg.svg)] bg-contain bg-top bg-no-repeat">
-      <div className="flex justify-end mb-4">
-        <Link to="/add" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" title="Add a new instrument">
-          Add New
+    <aside className="bg-gray-800 text-white w-full md:w-1/4 p-6 shadow-lg min-h-[400px] flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat">
+      <div className="mb-4">
+        <Link to="/add" className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center font-semibold" title="Add a new instrument">
+          + Add New Equipment
         </Link>
       </div>
-      <div className="mt-4">
-        <div className="text-sm font-semibold mb-2">Select Equipment</div>
-        <div className="grid grid-cols-3 gap-2 justify-items-center">
-          <button className="flex items-center justify-center group cursor-pointer" title="Guitar" onClick={() => handleTypeClick("guitar")}> 
-            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/guitar.png" alt="Guitar" />
+      <div>
+        <div className="text-sm font-semibold mb-2 tracking-wide uppercase">Select Equipment</div>
+        <div className="grid grid-cols-3 gap-3">
+          <button className="bg-blue-700 hover:bg-blue-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Guitar" onClick={() => handleTypeClick("guitar")}> 
+            <img className="w-10 h-10 mb-1" src="/guitar.png" alt="Guitar" />
+            <span className="text-xs">Guitar</span>
           </button>
-          <button className="flex items-center justify-center group cursor-pointer" title="Bass" onClick={() => handleTypeClick("bass")}> 
-            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/bass.png" alt="Bass" />
+          <button className="bg-red-700 hover:bg-red-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Bass" onClick={() => handleTypeClick("bass")}> 
+            <img className="w-10 h-10 mb-1" src="/bass.png" alt="Bass" />
+            <span className="text-xs">Bass</span>
           </button>
-          <button className="flex items-center justify-center group cursor-pointer" title="Acoustic" onClick={() => handleTypeClick("acoustic")}> 
-            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/acoustic.png" alt="Acoustic" />
+          <button className="bg-amber-700 hover:bg-amber-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Acoustic" onClick={() => handleTypeClick("acoustic")}> 
+            <img className="w-10 h-10 mb-1" src="/acoustic.png" alt="Acoustic" />
+            <span className="text-xs">Acoustic</span>
           </button>
-          <button className="flex items-center justify-center group cursor-pointer" title="Amp" onClick={() => handleTypeClick("amp")}> 
-            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/amp.png" alt="Amp" />
+          <button className="bg-green-700 hover:bg-green-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Amp" onClick={() => handleTypeClick("amp")}> 
+            <img className="w-10 h-10 mb-1" src="/amp.png" alt="Amp" />
+            <span className="text-xs">Amp</span>
           </button>
-          <button className="flex items-center justify-center group cursor-pointer" title="Pedal" onClick={() => handleTypeClick("pedal")}> 
-            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/pedal.png" alt="Pedal" />
+          <button className="bg-purple-700 hover:bg-purple-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Pedal" onClick={() => handleTypeClick("pedal")}> 
+            <img className="w-10 h-10 mb-1" src="/pedal.png" alt="Pedal" />
+            <span className="text-xs">Pedal</span>
           </button>
-          <button className="flex items-center justify-center group cursor-pointer" title="Accessory / Parts" onClick={() => handleTypeClick("accessory")}> 
-            <img className="w-14 h-14 transition-transform duration-200 group-hover:scale-130" src="/accessory.png" alt="Accessory / Parts" />
+          <button className="bg-teal-700 hover:bg-teal-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Accessory / Parts" onClick={() => handleTypeClick("accessory")}> 
+            <img className="w-10 h-10 mb-1" src="/accessory.png" alt="Accessory / Parts" />
+            <span className="text-xs">Accessory</span>
           </button>
         </div>
       </div>
-
-      <div className="mt-4">
+      <div>
         <div className="flex items-center justify-between mb-2">
-          <div className="text-sm font-semibold flex items-center">
+          <div className="text-sm font-semibold flex items-center tracking-wide uppercase">
             Select Tags
           </div>
           <div>
             {selectedTags.length > 0 && (
               <button 
                 onClick={clearSelectedTags}
-                className="text-xs ml-2 px-2 py-1 bg-blue-600 hover:bg-gray-700 rounded"
+                className="text-xs ml-2 px-2 py-1 bg-blue-600 hover:bg-gray-700 rounded transition-colors duration-200"
                 title="Clear selected tags"
               >
-                Clear Selection
+                Clear
               </button>
             )}
           </div>
         </div>
         <TagSearch />
-
-        <div className="relative">
-          <div className="flex flex-wrap max-h-[250px] sm:max-h-[250px] md:max-h-[500px] lg:max-h-[700px] overflow-y-auto pr-1 pb-16 scrollbar-hide">
+        <div className="relative bg-gray-700 rounded-lg p-3 mt-2" style={{ minHeight: 250, maxHeight: 800 }}>
+          <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-gray-700 to-transparent pointer-events-none rounded-t-lg z-10"></div>
+          <div className="flex flex-wrap overflow-y-auto pr-1 pb-8 gap-2 scrollbar-hide relative z-0" style={{ maxHeight: 700 }}>
             {filteredTags.map((tag) => (
               <Tag 
                 key={tag._id} 
@@ -87,7 +92,7 @@ function SideMenu() {
               />
             ))}
           </div>
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-500 to-transparent pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-gray-700 to-transparent pointer-events-none rounded-b-lg z-10"></div>
         </div>
       </div>
     </aside>
