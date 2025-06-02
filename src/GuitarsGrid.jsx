@@ -107,11 +107,16 @@ function GuitarsGrid() {
     >
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">{totalEquipment || 0} Results</h2>
-        
         <div className="flex items-center">
+          <input
+            type="text"
+            placeholder="Search equipment..."
+            className="border border-gray-300 rounded-lg p-2.5 text-sm"
+          />
+
           <select 
             id="sort" 
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 ml-4"
             onChange={handleSortChange}
             value={`${sortBy}|${sortOrder}`}
           >
