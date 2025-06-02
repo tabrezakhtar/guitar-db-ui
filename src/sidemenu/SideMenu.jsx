@@ -35,27 +35,27 @@ function SideMenu() {
       <div>
         <div className="text-sm font-semibold mb-2 tracking-wide uppercase">Select Equipment</div>
         <div className="grid grid-cols-3 gap-3">
-          <button className="bg-blue-700 hover:bg-blue-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Guitar" onClick={() => handleTypeClick("guitar")}> 
+          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Guitar" onClick={() => handleTypeClick("guitar")}> 
             <img className="w-10 h-10 mb-1" src="/guitar.png" alt="Guitar" />
             <span className="text-xs">Guitar</span>
           </button>
-          <button className="bg-red-700 hover:bg-red-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Bass" onClick={() => handleTypeClick("bass")}> 
+          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Bass" onClick={() => handleTypeClick("bass")}> 
             <img className="w-10 h-10 mb-1" src="/bass.png" alt="Bass" />
             <span className="text-xs">Bass</span>
           </button>
-          <button className="bg-amber-700 hover:bg-amber-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Acoustic" onClick={() => handleTypeClick("acoustic")}> 
+          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Acoustic" onClick={() => handleTypeClick("acoustic")}> 
             <img className="w-10 h-10 mb-1" src="/acoustic.png" alt="Acoustic" />
             <span className="text-xs">Acoustic</span>
           </button>
-          <button className="bg-green-700 hover:bg-green-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Amp" onClick={() => handleTypeClick("amp")}> 
+          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Amp" onClick={() => handleTypeClick("amp")}> 
             <img className="w-10 h-10 mb-1" src="/amp.png" alt="Amp" />
             <span className="text-xs">Amp</span>
           </button>
-          <button className="bg-purple-700 hover:bg-purple-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Pedal" onClick={() => handleTypeClick("pedal")}> 
+          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Pedal" onClick={() => handleTypeClick("pedal")}> 
             <img className="w-10 h-10 mb-1" src="/pedal.png" alt="Pedal" />
             <span className="text-xs">Pedal</span>
           </button>
-          <button className="bg-teal-700 hover:bg-teal-800 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Accessory / Parts" onClick={() => handleTypeClick("accessory")}> 
+          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Accessory / Parts" onClick={() => handleTypeClick("accessory")}> 
             <img className="w-10 h-10 mb-1" src="/accessory.png" alt="Accessory / Parts" />
             <span className="text-xs">Accessory</span>
           </button>
@@ -79,8 +79,8 @@ function SideMenu() {
           </div>
         </div>
         <TagSearch />
-        <div className="relative bg-gray-700 rounded-lg p-3 mt-2" style={{ minHeight: 250, maxHeight: 800 }}>
-          <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-gray-700 to-transparent pointer-events-none rounded-t-lg z-10"></div>
+        <div className="relative bg-gray-700/50 rounded-lg p-3 mt-2" style={{ minHeight: 250, maxHeight: 800 }}>
+          <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-gray-700/50 to-transparent pointer-events-none rounded-t-lg z-10"></div>
           <div className="flex flex-wrap overflow-y-auto pr-1 pb-8 gap-2 scrollbar-hide relative z-0" style={{ maxHeight: 700 }}>
             {filteredTags.map((tag) => (
               <Tag 
@@ -92,7 +92,7 @@ function SideMenu() {
               />
             ))}
           </div>
-          <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-gray-700 to-transparent pointer-events-none rounded-b-lg z-10"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-gray-700/50 to-transparent pointer-events-none rounded-b-lg z-10"></div>
         </div>
       </div>
     </aside>
