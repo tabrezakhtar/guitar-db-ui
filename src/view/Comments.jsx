@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatDate, getTimeFromNow } from "../dateUtils";
+import { formatDate, getTimeFromNow } from "../utils/dateUtils";
 import CommentForm from "./CommentForm";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 

@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 import Comments from "./Comments";
 import StarRating from "../components/StarRating";
 import Tag from "../components/Tag";
-import { formatDate } from "../dateUtils";
+import { formatDate } from "../utils/dateUtils";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Gallery from "./Gallery";
 import Spinner from "../components/Spinner";

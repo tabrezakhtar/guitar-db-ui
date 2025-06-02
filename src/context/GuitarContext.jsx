@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 import PropTypes from "prop-types";
-import { resizeImage, getCombinedUrl } from "../imageUtils";
-import { cloudinaryUpload } from "../cloudinaryUtils";
+import { resizeImage, getCombinedUrl } from "../utils/imageUtils";
+import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

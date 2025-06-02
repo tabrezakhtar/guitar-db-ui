@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import Avatar from "./Avatar";
-import { cloudinaryUpload } from "../cloudinaryUtils";
+import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 import MagicLinkSuccess from "../components/MagicLinkSuccess";
 import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";

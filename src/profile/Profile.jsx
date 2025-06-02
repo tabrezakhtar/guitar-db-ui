@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { GuitarContext } from "../context/GuitarContext";
-import { formatDate } from "../dateUtils";
+import { formatDate } from "../utils/dateUtils";
 import { useNavigate } from "react-router-dom";
 import AvatarDisplayOnly from "./AvatarDisplayOnly";
 import { EquipmentCarousel } from "./EquipmentCard";
