@@ -242,7 +242,7 @@ function GuitarProvider({ children }) {
     setState(prev => ({ ...prev, error: null }));
 
     try {
-      const response = await fetch(`${BASE_URL}/api/equipmentById?id=${id}&type=${type}`);
+      const response = await fetch(`${BASE_URL}/api/equipment/byid?id=${id}&type=${type}`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -610,7 +610,7 @@ function GuitarProvider({ children }) {
     setState(prev => ({ ...prev, error: null }));
 
     try {
-      let url = `${BASE_URL}/api/equipmentList?page=${page}&limit=20&type=${type}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
+      let url = `${BASE_URL}/api/equipment/list?page=${page}&limit=20&type=${type}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
 
       if (state.selectedTags.length > 0) {
         const tagsParam = JSON.stringify(state.selectedTags.map(tag => tag._id));
