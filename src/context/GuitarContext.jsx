@@ -20,7 +20,8 @@ export const initialState = {
   selectedTags: [],
   sortBy: "date",
   sortOrder: "desc",
-  searchTerm: ""
+  searchTerm: "",
+  equipmentType: "",
 };
 
 const GuitarContext = createContext(null);
@@ -605,12 +606,12 @@ function GuitarProvider({ children }) {
     }
   };
 
-  const fetchEquipmentList = async (page, type="") => {
+  const fetchEquipmentList = async (page) => {
     setLoading(true);
     setState(prev => ({ ...prev, error: null }));
 
     try {
-      let url = `${BASE_URL}/api/equipment/list?page=${page}&limit=20&type=${type}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
+      let url = `${BASE_URL}/api/equipment/list?page=${page}&limit=20&type=${state.equipmentType}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
 
       if (state.selectedTags.length > 0) {
         const tagsParam = JSON.stringify(state.selectedTags.map(tag => tag._id));
