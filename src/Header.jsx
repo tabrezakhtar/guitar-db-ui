@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
+import { GuitarContext } from "./context/GuitarContext";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
 
 function MenuContent({ isOpen, onClose, isMobile, user }) {
@@ -77,6 +78,7 @@ function MenuContent({ isOpen, onClose, isMobile, user }) {
 
 function Header() {
   const { user, showHeader } = useContext(UserContext);
+  const { setEquipmentType } = useContext(GuitarContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const buttonRef = useRef(null);
@@ -108,7 +110,7 @@ function Header() {
     <header className="bg-gray-800 text-white p-4 flex">
       <div className="flex justify-between items-center max-w-screen-xl mx-auto w-full">
         <div className="flex items-center pl-6 animate__animated animate__rubberBand" >
-          <Link to="/" className="text-lg font-bold hover:underline">Guitar Explorer</Link>
+          <Link to="/" className="text-lg font-bold hover:underline" onClick={() => setEquipmentType("")}>Guitar Explorer</Link>
           <span>🔥</span>
         </div>
         

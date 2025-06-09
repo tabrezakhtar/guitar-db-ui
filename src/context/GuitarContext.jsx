@@ -1,7 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { resizeImage, getCombinedUrl } from "../utils/imageUtils";
 import { cloudinaryUpload } from "../utils/cloudinaryUtils";
+import { getQueryStringParam } from "../utils/urlUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -43,6 +44,15 @@ function decodeJWT(token) {
 
 function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
+
+  // useEffect(() => {
+  //   if (window.location.pathname === "/") {
+  //     setState(prev => ({
+  //       ...prev,
+  //       equipmentType: ""
+  //     }));
+  //   }
+  // }, [window.location.pathname]);
 
   const validateToken = async () => {
     try {
@@ -611,7 +621,9 @@ function GuitarProvider({ children }) {
     setState(prev => ({ ...prev, error: null }));
 
     try {
-      let url = `${BASE_URL}/api/equipment/list?page=${page}&limit=20&type=${state.equipmentType}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
+      // Read type from URL querystring if present, else use state.equipmentType
+      const urlType = getQueryStringParam("type") || state.equipmentType;
+      let url = `${BASE_URL}/api/equipment/list?page=${page}&limit=20&type=${urlType}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
 
       if (state.selectedTags.length > 0) {
         const tagsParam = JSON.stringify(state.selectedTags.map(tag => tag._id));
