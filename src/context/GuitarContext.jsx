@@ -45,15 +45,6 @@ function decodeJWT(token) {
 function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
 
-  // useEffect(() => {
-  //   if (window.location.pathname === "/") {
-  //     setState(prev => ({
-  //       ...prev,
-  //       equipmentType: ""
-  //     }));
-  //   }
-  // }, [window.location.pathname]);
-
   const validateToken = async () => {
     try {
       const token = localStorage.getItem("token");

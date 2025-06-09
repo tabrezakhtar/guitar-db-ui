@@ -12,7 +12,8 @@ function SideMenu() {
     handleTagSelection, 
     clearSelectedTags,
     setEquipmentType,
-    fetchEquipmentList
+    fetchEquipmentList,
+    equipmentType
   } = useContext(GuitarContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,14 +22,45 @@ function SideMenu() {
     fetchTags();
   }, [])
 
-  const handleTypeClick = (type) => {
-    const params = new URLSearchParams();
-    params.set("type", type);
-    navigate(`?${params.toString()}`);
+  // Update URL when equipmentType changes
+  useEffect(() => {
+    if (equipmentType) {
+      const currentParams = new URLSearchParams(location.search);
+      if (currentParams.get("type") !== equipmentType) {
+        const params = new URLSearchParams();
+        params.set("type", equipmentType);
+        navigate(`?${params.toString()}`, { replace: true });
+      }
+    }
+  }, [equipmentType, location.pathname]);
 
-    setEquipmentType(type);
-    fetchEquipmentList(1);
+  const handleTypeClick = (type) => {
+    const isAlreadySelected = selectedType === type;
+    if (isAlreadySelected) {
+      navigate("?");
+      setEquipmentType("");
+      fetchEquipmentList(1);
+    } else {
+      const params = new URLSearchParams();
+      params.set("type", type);
+      navigate(`?${params.toString()}`);
+
+      setEquipmentType(type);
+      fetchEquipmentList(1);
+    }
   };
+
+  const equipmentTypes = [
+    { key: "guitar", label: "Guitar", img: "/guitar.png" },
+    { key: "bass", label: "Bass", img: "/bass.png" },
+    { key: "acoustic", label: "Acoustic", img: "/acoustic.png" },
+    { key: "amp", label: "Amp", img: "/amp.png" },
+    { key: "pedal", label: "Pedal", img: "/pedal.png" },
+    { key: "accessory", label: "Accessory", img: "/accessory.png" }
+  ];
+  const selectedType = location.search.includes("type=")
+    ? new URLSearchParams(location.search).get("type")
+    : undefined;
 
   return (
     <aside className="bg-gray-800 text-white w-full md:w-1/4 p-6 shadow-lg min-h-[400px] flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat">
@@ -40,30 +72,23 @@ function SideMenu() {
       <div>
         <div className="text-sm font-semibold mb-2 tracking-wide uppercase">Select Equipment</div>
         <div className="grid grid-cols-3 gap-3">
-          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Guitar" onClick={() => handleTypeClick("guitar")}> 
-            <img className="w-10 h-10 mb-1" src="/guitar.png" alt="Guitar" />
-            <span className="text-xs">Guitar</span>
-          </button>
-          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Bass" onClick={() => handleTypeClick("bass")}> 
-            <img className="w-10 h-10 mb-1" src="/bass.png" alt="Bass" />
-            <span className="text-xs">Bass</span>
-          </button>
-          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Acoustic" onClick={() => handleTypeClick("acoustic")}> 
-            <img className="w-10 h-10 mb-1" src="/acoustic.png" alt="Acoustic" />
-            <span className="text-xs">Acoustic</span>
-          </button>
-          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Amp" onClick={() => handleTypeClick("amp")}> 
-            <img className="w-10 h-10 mb-1" src="/amp.png" alt="Amp" />
-            <span className="text-xs">Amp</span>
-          </button>
-          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Pedal" onClick={() => handleTypeClick("pedal")}> 
-            <img className="w-10 h-10 mb-1" src="/pedal.png" alt="Pedal" />
-            <span className="text-xs">Pedal</span>
-          </button>
-          <button className="bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full" title="Accessory / Parts" onClick={() => handleTypeClick("accessory")}> 
-            <img className="w-10 h-10 mb-1" src="/accessory.png" alt="Accessory / Parts" />
-            <span className="text-xs">Accessory</span>
-          </button>
+          {equipmentTypes.map(typeObj => {
+            const isSelected = selectedType === typeObj.key;
+            return (
+              <button
+                key={typeObj.key}
+                className={`bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full relative border-2 ${isSelected ? "ring-2 ring-offset-1 ring-white border-white scale-105" : "border-transparent"}`}
+                title={typeObj.label}
+                onClick={() => handleTypeClick(typeObj.key)}
+                style={{
+                  boxShadow: isSelected ? "0 0 0 2px #fff" : undefined
+                }}
+              >
+                <img className="w-10 h-10 mb-1" src={typeObj.img} alt={typeObj.label} />
+                <span className="text-xs">{typeObj.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
       <div>
@@ -86,7 +111,11 @@ function SideMenu() {
         <TagSearch />
         <div className="relative bg-gray-700/50 rounded-lg p-3 mt-2" style={{ minHeight: 250, maxHeight: 800 }}>
           <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-gray-700/50 to-transparent pointer-events-none rounded-t-lg z-10"></div>
-          <div className="flex flex-wrap overflow-y-auto pr-1 pb-8 gap-2 scrollbar-hide relative z-0" style={{ maxHeight: 700 }}>
+          <div className="flex flex-wrap overflow-y-auto pr-1 pb-8 gap-2 relative z-0 custom-scrollbar" style={{ 
+            maxHeight: 700,
+            scrollbarWidth: 'thin',
+            scrollbarColor: 'rgba(255,255,255,0.3) transparent'
+          }}>
             {filteredTags.map((tag) => (
               <Tag 
                 key={tag._id} 
