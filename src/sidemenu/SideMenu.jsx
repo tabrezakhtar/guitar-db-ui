@@ -10,7 +10,9 @@ function SideMenu() {
     filteredTags, 
     selectedTags, 
     handleTagSelection, 
-    clearSelectedTags 
+    clearSelectedTags,
+    setEquipmentType,
+    fetchEquipmentList
   } = useContext(GuitarContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,6 +25,9 @@ function SideMenu() {
     const params = new URLSearchParams();
     params.set("type", type);
     navigate(`?${params.toString()}`);
+
+    setEquipmentType(type);
+    fetchEquipmentList(1);
   };
 
   return (

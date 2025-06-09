@@ -893,6 +893,13 @@ function GuitarProvider({ children }) {
     }));
   };
 
+  const setEquipmentType = (equipmentType) => {
+    setState(prev => ({
+      ...prev,
+      equipmentType
+    }));
+  };
+
   const searchEquipment = async (searchTerm) => {
     setLoading(true);
     setState(prev => ({ ...prev, error: null }));
@@ -997,6 +1004,7 @@ function GuitarProvider({ children }) {
     validateToken,
     toggleLike,
     setSearchTerm,
+    setEquipmentType,
     searchEquipment
   };
 

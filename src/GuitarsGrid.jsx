@@ -25,7 +25,8 @@ function GuitarsGrid() {
     toggleLike,
     searchTerm,
     setSearchTerm,
-    searchEquipment
+    searchEquipment,
+    equipmentType
   } = useContext(GuitarContext);
   
   const { user } = useContext(UserContext);
@@ -33,7 +34,7 @@ function GuitarsGrid() {
 
   useEffect(() => {
     fetchEquipmentList(1);
-  }, [sortBy, sortOrder, selectedTags]);
+  }, [sortBy, sortOrder, selectedTags, equipmentType]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
