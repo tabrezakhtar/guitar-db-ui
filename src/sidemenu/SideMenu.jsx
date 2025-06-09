@@ -39,14 +39,11 @@ function SideMenu() {
     if (isAlreadySelected) {
       navigate("?");
       setEquipmentType("");
-      fetchEquipmentList(1);
     } else {
       const params = new URLSearchParams();
       params.set("type", type);
       navigate(`?${params.toString()}`);
-
       setEquipmentType(type);
-      fetchEquipmentList(1);
     }
   };
 
