@@ -1,8 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { resizeImage, getCombinedUrl } from "../utils/imageUtils";
+import { getCombinedUrl } from "../utils/imageUtils";
 import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 import { getQueryStringParam } from "../utils/urlUtils";
+import { validateToken } from "../utils/tokenUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -27,80 +28,16 @@ export const initialState = {
 
 const GuitarContext = createContext(null);
 
-function decodeJWT(token) {
-  try {
-    const base64Url = token.split(".")[1];
-    if (!base64Url) throw new Error("Invalid JWT");
 
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = atob(base64);
-    const decoded = JSON.parse(jsonPayload);
-    return decoded;
-  } catch (error) {
-    console.error("Error decoding JWT:", error);
-    return null;
-  }
-}
 
 function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
 
-  const validateToken = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return false;
-
-      const decodedToken = decodeJWT(token);
-      if (!decodedToken) return false;
-
-      const currentTime = Math.floor(Date.now() / 1000);
-      
-      if (decodedToken.exp && decodedToken.exp > currentTime) {
-        return true;
-      } else {
-        return await refreshToken();
-      }
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        error: "Authentication error: " + (error.message || "Failed to validate token")
-      }));
-      return false;
-    }
-  };
-
-  const refreshToken = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return false;
-
-    try {
-      const response = await fetch(`${BASE_URL}/api/auth/refreshToken`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.token) {
-        localStorage.setItem("token", data.token);
-        return true;
-      } else {
-        setState(prev => ({
-          ...prev,
-          error: data.message || "Session expired"
-        }));
-        return false;
-      }
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        error: "Authentication failed"
-      }));
-      return false;
-    }
+  const handleAuthError = (errorMsg) => {
+    setState(prev => ({
+      ...prev,
+      error: "Authentication error: " + errorMsg
+    }));
   };
 
   const setLoading = (loading) => setState((prev) => ({ ...prev, loading }));
@@ -290,7 +227,7 @@ function GuitarProvider({ children }) {
       return null;
     }
 
-    const isValid = await validateToken();
+    const isValid = await validateToken(handleAuthError);
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -367,7 +304,7 @@ function GuitarProvider({ children }) {
   };
 
   const addEquipment = async (type) => {
-    const isValid = await validateToken();
+    const isValid = await validateToken(handleAuthError);
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -452,7 +389,7 @@ function GuitarProvider({ children }) {
   };
 
   const updateEquipment = async () => {
-    const isValid = await validateToken();
+    const isValid = await validateToken(handleAuthError);
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -547,7 +484,7 @@ function GuitarProvider({ children }) {
   };
 
   const deleteEquipment = async () => {
-    const isValid = await validateToken();
+    const isValid = await validateToken(handleAuthError);
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -710,7 +647,7 @@ function GuitarProvider({ children }) {
   };
 
   const deleteImage = async (imageUrl) => {
-    const isValid = await validateToken();
+    const isValid = await validateToken(handleAuthError);
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -805,7 +742,7 @@ function GuitarProvider({ children }) {
   };
 
   const toggleLike = async (equipmentId) => {
-    const isValid = await validateToken();
+    const isValid = await validateToken(handleAuthError);
     if (!isValid) {
       setState(prev => ({
         ...prev,
@@ -1004,7 +941,7 @@ function GuitarProvider({ children }) {
     handleTagSelection,
     clearSelectedTags,
     setSortOptions,
-    validateToken,
+    validateToken: (callback) => validateToken(callback || handleAuthError),
     toggleLike,
     setSearchTerm,
     setEquipmentType,

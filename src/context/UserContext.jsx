@@ -1,22 +1,8 @@
 import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { validateToken } from "../utils/tokenUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-function decodeJWT(token) {
-  try {
-    const base64Url = token.split(".")[1];
-    if (!base64Url) throw new Error("Invalid JWT");
-
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = atob(base64);
-    const decoded = JSON.parse(jsonPayload);
-    return decoded;
-  } catch (error) {
-    console.error("Error decoding JWT:", error);
-    return null;
-  }
-}
 
 const initialState = {
   user: null,
@@ -42,7 +28,7 @@ const UserProvider = ({ children }) => {
         setState(prev => ({ ...prev, user: parsedUser }));
         
         if (token) {
-          validateToken();
+          handleTokenValidation();
         }
       } catch (error) {
         console.error("Failed to parse user from localStorage:", error);
@@ -50,8 +36,8 @@ const UserProvider = ({ children }) => {
       }
     }
   }, []);
-
-  const validateToken = async () => {
+  
+  const handleTokenValidation = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       setState(prev => ({ ...prev, isTokenValid: false }));
@@ -60,83 +46,25 @@ const UserProvider = ({ children }) => {
 
     setState(prev => ({ ...prev, isValidatingToken: true }));
     
-    try {
-      const decodedToken = decodeJWT(token);
-      if (!decodedToken) {
-        setState(prev => ({ 
-          ...prev, 
-          isTokenValid: false,
-          isValidatingToken: false
-        }));
-        return false;
-      }
-
-      const currentTime = Math.floor(Date.now() / 1000);
-      
-      if (decodedToken.exp && decodedToken.exp > currentTime) {
-        setState(prev => ({ 
-          ...prev, 
-          isTokenValid: true,
-          isValidatingToken: false
-        }));
-        return true;
-      } else {
-        return await refreshToken();
-      }
-    } catch (error) {
-      console.error("Token validation failed:", error);
-      setState(prev => ({ 
-        ...prev, 
-        isTokenValid: false,
-        isValidatingToken: false,
-        error: "Authentication failed"
-      }));
-      return false;
-    }
-  };
-
-  const refreshToken = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return false;
+    const isValid = await validateToken(handleAuthError);
     
-    try {
-      const response = await fetch(`${BASE_URL}/api/auth/refreshToken`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok && data.token) {
-        localStorage.setItem("token", data.token);
-        setState(prev => ({ 
-          ...prev, 
-          isTokenValid: true,
-          isValidatingToken: false
-        }));
-        return true;
-      } else {
-        setState(prev => ({ 
-          ...prev, 
-          isTokenValid: false,
-          isValidatingToken: false,
-          error: data.message || "Session expired"
-        }));
-        return false;
-      }
-    } catch (error) {
-      console.error("Token refresh failed:", error);
-      setState(prev => ({ 
-        ...prev, 
-        isTokenValid: false,
-        isValidatingToken: false,
-        error: "Authentication failed"
-      }));
-      return false;
-    }
+        setState(prev => ({
+      ...prev, 
+      isTokenValid: isValid,
+      isValidatingToken: false
+    }));
+    
+    return isValid;
+  };
+  
+  const handleAuthError = (errorMsg) => {
+    console.error("Auth error:", errorMsg);
+    setState(prev => ({ 
+      ...prev, 
+      isTokenValid: false,
+      isValidatingToken: false,
+      error: errorMsg || "Authentication failed"
+    }));
   };
 
   const fetchUserProfile = async (userId) => {
@@ -239,7 +167,7 @@ const UserProvider = ({ children }) => {
   };
 
   const updateUserProfile = async (userData) => {
-    const isValid = await validateToken();
+    const isValid = await handleTokenValidation();
     if (!isValid) {
       setState(prev => ({ 
         ...prev, 
@@ -379,7 +307,7 @@ const UserProvider = ({ children }) => {
   };
 
   const deleteAvatar = async () => {
-    const isValid = await validateToken();
+    const isValid = await handleTokenValidation();
     if (!isValid) {
       setState(prev => ({ 
         ...prev, 
@@ -478,8 +406,7 @@ const UserProvider = ({ children }) => {
     updateUserLocal,
     deleteAvatar,
     setHeaderVisibility,
-    validateToken,
-    refreshToken
+    validateToken: handleTokenValidation
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
