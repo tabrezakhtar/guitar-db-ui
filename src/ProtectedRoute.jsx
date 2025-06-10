@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import Spinner from "./components/Spinner";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ProtectedRoute = ({ children }) => {
   const [isChecking, setIsChecking] = useState(true);
@@ -53,7 +54,7 @@ const ProtectedRoute = ({ children }) => {
           <p className="mt-2">Please login again.</p>
           <button 
             onClick={() => {
-              window.location.href = "/create-profile";
+              window.location.href = `${BASE_URL}/login`;
             }}
             className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
           >
