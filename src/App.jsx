@@ -11,7 +11,6 @@ import EditProfile from "./profile/EditProfile";
 import { UserProvider } from "./context/UserContext";
 import { GuitarProvider } from "./context/GuitarContext";
 import Header from "./Header";
-import MagicLogin from "./MagicLogin";
 import ProtectedRoute from "./ProtectedRoute";
 import SaveCredentials from "./SaveCredentials";
 
