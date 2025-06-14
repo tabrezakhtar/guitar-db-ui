@@ -42,15 +42,16 @@ const ProtectedRoute = ({ children }) => {
   }
   
   if (!user) {
-    return <Navigate to="/create-profile" state={{ from: location }} replace />;
+    window.location.href = `${BASE_URL}/login`;
+    return;
   }
 
   if (!isTokenValid) {
     return (
       <div className="p-6">
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-          <p className="font-bold">Authentication Error</p>
-          <p>{authError || "Your authentication token is invalid or expired."}</p>
+          <p className="font-bold">Login Error</p>
+          <p>{authError || "Your credentials are either invalid or expired."}</p>
           <p className="mt-2">Please login again.</p>
           <button 
             onClick={() => {

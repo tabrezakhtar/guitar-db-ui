@@ -226,19 +226,6 @@ const CreateProfile = () => {
       
       <div className="bg-white rounded-lg shadow-lg p-6">
         <form onSubmit={handleSubmit}>
-          <div className="mb-6">
-            <div className="flex justify-center">
-              <Avatar
-                imageUrl={formData.avatarUrl}
-                username={formData.username}
-                size="large"
-                onAvatarUpdated={handleAvatarChange}
-              />
-            </div>
-            <p className="text-sm text-gray-500 text-center mt-2">
-              Click to add a profile picture
-            </p>
-          </div>
           
           <div className="flex items-center mb-6">
             <div className="flex-1">
@@ -276,41 +263,6 @@ const CreateProfile = () => {
             </div>
           </div>
           
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-1">Location:</label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="border p-2 rounded w-full"
-              placeholder="Enter your location"
-            />
-          </div>
-          
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-1">About:</label>
-            <textarea
-              name="bio"
-              value={formData.bio}
-              onChange={handleChange}
-              rows="4"
-              className="border p-2 rounded w-full"
-              placeholder="Tell us about yourself"
-            />
-          </div>
-          
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-1">Website:</label>
-            <input
-              type="text"
-              name="website"
-              value={formData.website}
-              onChange={handleChange}
-              className="border p-2 rounded w-full"
-              placeholder="Enter your website URL"
-            />
-          </div>
           
           <div className="flex justify-end">
             <button

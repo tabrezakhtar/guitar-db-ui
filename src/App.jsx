@@ -13,6 +13,7 @@ import { GuitarProvider } from "./context/GuitarContext";
 import Header from "./Header";
 import MagicLogin from "./MagicLogin";
 import ProtectedRoute from "./ProtectedRoute";
+import SaveCredentials from "./SaveCredentials";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
                   } 
                 />
                 <Route path="/login/magic" element={<MagicLogin />} />
+                <Route path="/auth" element={<SaveCredentials />} />
               </Routes>
             </div>
           </GuitarProvider>
