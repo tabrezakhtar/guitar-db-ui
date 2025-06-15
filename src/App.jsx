@@ -12,6 +12,7 @@ import { GuitarProvider } from "./context/GuitarContext";
 import Header from "./Header";
 import ProtectedRoute from "./ProtectedRoute";
 import SaveCredentials from "./SaveCredentials";
+import MagicLogin from "./MagicLogin";
 
 function App() {
   return (
