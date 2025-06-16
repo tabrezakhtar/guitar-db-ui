@@ -42,7 +42,8 @@ const ProtectedRoute = ({ children }) => {
   }
   
   if (!user) {
-    window.location.href = `${BASE_URL}/login`;
+    const redirectUrl = encodeURIComponent(window.location.pathname + window.location.search);
+    window.location.href = `${BASE_URL}/login?redirectUrl=${redirectUrl}`;
     return;
   }
 
