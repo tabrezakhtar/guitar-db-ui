@@ -25,7 +25,7 @@ const SaveCredentials = () => {
       
       setSaved(true);
       
-      navigate("/profile");
+      navigate("/");
     } catch (err) {
       console.error("Error parsing user data:", err);
       setError("Invalid user data format");
