@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Thumbnail from "./components/Thumbnail";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { GuitarContext } from "./context/GuitarContext";
 import { UserContext } from "./context/UserContext";
 import SkeletonImage from "./components/SkeletonImage";
 import Tag from "./components/Tag";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
 import Spinner from "./components/Spinner";
+import useImageDimensions from "./utils/useImageDimensions";
+import useInfiniteScroll from "./utils/useInfiniteScroll";
 
 function GuitarsGrid() {
   const navigate = useNavigate();
@@ -31,22 +32,46 @@ function GuitarsGrid() {
   
   const { user } = useContext(UserContext);
   const [likedEquipment, setLikedEquipment] = useState({});
+  const [imageDimensions, setImageDimensions] = useState({});
 
   useEffect(() => {
+    if (searchTerm.trim()) return;
     fetchEquipmentList(1);
-  }, [sortBy, sortOrder, selectedTags, equipmentType]);
+  }, [sortBy, sortOrder, selectedTags, equipmentType, searchTerm]);
 
   useEffect(() => {
+    if (!searchTerm.trim()) return;
     const timeoutId = setTimeout(() => {
-      if (searchTerm.trim()) {
-        searchEquipment(searchTerm);
-      } else {
-        fetchEquipmentList(1);
-      }
+      searchEquipment(searchTerm);
     }, 500);
-
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
+
+  useEffect(() => {
+    const newDimensions = {};
+    let isMounted = true;
+    const promises = equipment.map((item) => {
+      const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
+      if (!imageUrl) return Promise.resolve();
+      return new Promise((resolve) => {
+        const img = new window.Image();
+        img.onload = function () {
+          if (isMounted) {
+            newDimensions[item._id] = { width: img.naturalWidth, height: img.naturalHeight };
+          }
+          resolve();
+        };
+        img.onerror = function () {
+          resolve();
+        };
+        img.src = imageUrl;
+      });
+    });
+    Promise.all(promises).then(() => {
+      if (isMounted) setImageDimensions(newDimensions);
+    });
+    return () => { isMounted = false; };
+  }, [equipment]);
 
   const handleSortChange = (event) => {
     const [newSortBy, newSortOrder] = event.target.value.split("|");
@@ -102,27 +127,16 @@ function GuitarsGrid() {
     }
   };
 
-  if (loading && equipment.length === 0) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Spinner />
-      </div>
-    );
-  }
+  const containerRef = useInfiniteScroll({
+    hasMore: totalEquipment > equipment.length,
+    loading,
+    onLoadMore: () => loadMore("")
+  });
 
   return (
-    <InfiniteScroll
-      dataLength={equipment.length}
-      next={() => loadMore("")}
-      hasMore={totalEquipment > equipment.length}
-      loader={
-        <div className="flex justify-center p-4">
-          <Spinner />
-        </div>
-      }
-    >
+    <div ref={containerRef} className="min-h-screen">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">{totalEquipment || 0} Results</h2>
+        <h2 className="text-xl font-bold">{searchTerm.trim() ? equipment.length : totalEquipment || 0} Results</h2>
         <div className="flex items-center">
           <div className="relative">
             <input
@@ -139,9 +153,7 @@ function GuitarsGrid() {
                 type="button"
                 aria-label="Clear search"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <span className="text-lg">✖️</span>
               </button>
             )}
           </div>
@@ -177,58 +189,68 @@ function GuitarsGrid() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {equipment.map((item) => (
-          <div
-            key={item._id}
-            className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative animate__animated animate__fadeIn"
-            onClick={() => navigate("/view/" + item._id)}
-          >
-            {item.images && item.images.length > 0 ? (
-              <Thumbnail url={item.images[0]} alt={`Thumbnail: ${item.brand} ${item.name}`} />
-            ) : (
-              <SkeletonImage />
-            )}
-            
-            <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-white shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
-              <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
-              <Link to={item.user?._id ? `/profile/${item.user._id}` : "#"} onClick={(e) => e.stopPropagation()} className="pl-2 text-xs text-blue-500 hover:underline">
-                <span className="">{item.user ? item.user?.username.slice(0,12) : ""}</span>
-              </Link>
-            </div>
-            
-            <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md flex items-center justify-center">
-              <img 
-                src={getEquipmentIcon(item.type)} 
-                alt={item.type} 
-                className="w-8 h-8"
-              />
-            </div>
-            
-            <div className="p-3 bg-gray-200">
-              <h2 className="text-lg font-semibold">{item.brand} {item.name}</h2>
-              <p className="text-sm text-gray-600">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
-              <div className="flex items-center justify-end gap-2 mt-2">
-                <button
-                  className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200`}
-                  onClick={(e) => handleLikeClick(e, item)}
-                  disabled={item.user?._id === user?._id}
-                >
-                  <span className="mr-1">👍</span>
-                  {item.likesCount || 0}
-                </button>
-                
-                <span className="bg-teal-400 text-teal-900 text-xs px-2 py-1 rounded inline-flex items-center">
-                  <span className="mr-1">💬</span>
-                  {item.commentCount}
-                </span>
-                
+      <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
+        {equipment.map((item) => {
+          const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
+          const dims = imageDimensions[item._id] || { width: 1, height: 1 };
+          let tileClass = "aspect-square";
+          if (dims.width > dims.height * 1.2) {
+            tileClass = "aspect-video";
+          } else if (dims.height > dims.width * 1.2) {
+            tileClass = "aspect-[3/4]";
+          }
+          return (
+            <div
+              key={item._id}
+              className={`break-inside-avoid border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative animate__animated animate__fadeIn bg-white ${tileClass}`}
+              onClick={() => navigate("/view/" + item._id)}
+            >
+              {imageUrl ? (
+                <Thumbnail url={imageUrl} alt={`Thumbnail: ${item.brand} ${item.name}`} />
+              ) : (
+                <SkeletonImage />
+              )}
+              <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-white shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
+                <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
+                <Link to={item.user?._id ? `/profile/${item.user._id}` : "#"} onClick={(e) => e.stopPropagation()} className="pl-2 text-xs text-blue-500 hover:underline">
+                  <span className="">{item.user ? item.user?.username.slice(0,12) : ""}</span>
+                </Link>
+              </div>
+              <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md flex items-center justify-center">
+                <img 
+                  src={getEquipmentIcon(item.type)} 
+                  alt={item.type} 
+                  className="w-8 h-8"
+                />
+              </div>
+              <div className="p-3 bg-gray-200">
+                <h2 className="text-lg font-semibold">{item.brand} {item.name}</h2>
+                <p className="text-sm text-gray-600">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
+                <div className="flex items-center justify-end gap-2 mt-2">
+                  <button
+                    className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200`}
+                    onClick={(e) => handleLikeClick(e, item)}
+                    disabled={item.user?._id === user?._id}
+                  >
+                    <span className="mr-1">👍</span>
+                    {item.likesCount || 0}
+                  </button>
+                  <span className="bg-teal-400 text-teal-900 text-xs px-2 py-1 rounded inline-flex items-center">
+                    <span className="mr-1">💬</span>
+                    {item.commentCount}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-    </InfiniteScroll>
+      {loading && (
+        <div className="flex justify-center p-4">
+          <Spinner />
+        </div>
+      )}
+    </div>
   );
 }
 
