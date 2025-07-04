@@ -233,16 +233,16 @@ function GuitarsGrid() {
             {column.map((item) => {
               const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
               const dims = imageDimensions[item._id] || { width: 1, height: 1 };
-              let tileClass = "aspect-square";
+              let tileClass = "aspect-[4/5]";
               if (dims.width > dims.height * 1.2) {
-                tileClass = "aspect-video";
+                tileClass = "aspect-[4/3]";
               } else if (dims.height > dims.width * 1.2) {
-                tileClass = "aspect-[3/4]";
+                tileClass = "aspect-[3/5]";
               }
               return (
                 <div
                   key={item._id}
-                  className={`break-inside-avoid border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative animate__animated animate__fadeIn group ${tileClass}`}
+                  className={`break-inside-avoid rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative animate__animated animate__fadeIn group ${tileClass}`}
                   onClick={() => navigate("/view/" + item._id)}
                 >
                   {imageUrl ? (
