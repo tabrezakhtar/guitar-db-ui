@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Thumbnail from "./components/Thumbnail";
 import { GuitarContext } from "./context/GuitarContext";
@@ -7,7 +7,6 @@ import SkeletonImage from "./components/SkeletonImage";
 import Tag from "./components/Tag";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
 import Spinner from "./components/Spinner";
-import useImageDimensions from "./utils/useImageDimensions";
 import useInfiniteScroll from "./utils/useInfiniteScroll";
 
 function GuitarsGrid() {
@@ -33,6 +32,23 @@ function GuitarsGrid() {
   const { user } = useContext(UserContext);
   const [likedEquipment, setLikedEquipment] = useState({});
   const [imageDimensions, setImageDimensions] = useState({});
+  const [columnsCount, setColumnsCount] = useState(1);
+
+  const updateColumnsCount = useCallback(() => {
+    if (window.innerWidth >= 1024) {
+      setColumnsCount(3);
+    } else if (window.innerWidth >= 640) {
+      setColumnsCount(2);
+    } else {
+      setColumnsCount(1);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateColumnsCount();
+    window.addEventListener("resize", updateColumnsCount);
+    return () => window.removeEventListener("resize", updateColumnsCount);
+  }, [updateColumnsCount]);
 
   useEffect(() => {
     if (searchTerm.trim()) return;
@@ -133,24 +149,27 @@ function GuitarsGrid() {
     onLoadMore: () => loadMore("")
   });
 
-  function sortMasonryItems(items, columnsCount) {
+  function sortMasonryItems(items, columnsCount, imageDimensions) {
     const columns = Array.from({ length: columnsCount }, () => []);
-    items.forEach((item, idx) => {
-      columns[idx % columnsCount].push(item);
+    const columnsHeights = Array.from({ length: columnsCount }, () => 0);
+    items.forEach((item) => {
+      const dims = imageDimensions[item._id] || { width: 1, height: 1 };
+      let aspect = 1;
+      if (dims.width > dims.height * 1.2) {
+        aspect = 16 / 9;
+      } else if (dims.height > dims.width * 1.2) {
+        aspect = 3 / 4;
+      }
+      // Estimate height for balancing
+      const estimatedHeight = 1 / aspect;
+      const minCol = columnsHeights.indexOf(Math.min(...columnsHeights));
+      columns[minCol].push(item);
+      columnsHeights[minCol] += estimatedHeight;
     });
     return columns;
   }
 
-  // determine columnsCount based on screen size
-  let columnsCount = 1;
-  if (typeof window !== "undefined") {
-    if (window.innerWidth >= 1024) {
-      columnsCount = 3;
-    } else if (window.innerWidth >= 640) {
-      columnsCount = 2;
-    }
-  }
-  const masonryColumns = sortMasonryItems(equipment, columnsCount);
+  const masonryColumns = sortMasonryItems(equipment, columnsCount, imageDimensions);
 
   return (
     <div ref={containerRef} className="min-h-screen">
