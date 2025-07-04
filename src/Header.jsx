@@ -29,8 +29,7 @@ function MenuContent({ isOpen, onClose, isMobile, user }) {
     <>
       {isOpen && isMobile && (
         <div 
-          className="fixed inset-0 z-40"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+          className="fixed inset-0 z-40 bg-black bg-opacity-50"
           onClick={onClose}
         />
       )}
@@ -38,7 +37,7 @@ function MenuContent({ isOpen, onClose, isMobile, user }) {
         ref={menuRef}
         className={`${isMobile ? (isOpen ? "flex" : "hidden") : "flex"} ${isMobile ? "absolute top-16 right-0 bg-gray-800 w-full z-50 flex-col items-start p-4 shadow-lg" : "pr-5 items-center"}`}
       >
-        <ul className={`${isMobile ? "flex-col w-full" : "flex"} space-y-${isMobile ? "4" : "0"} space-x-${isMobile ? "0" : "4"} items-${isMobile ? "start" : "center"}`}>
+        <ul className={`${isMobile ? "flex-col w-full" : "flex"} ${isMobile ? "space-y-4" : "space-x-4"} items-${isMobile ? "start" : "center"}`}>
           <li className={isMobile ? "w-full border-b border-gray-700 pb-2" : ""}>
             <Link to="/" className="hover:underline block py-2" onClick={() => isMobile && onClose()}>Home</Link>
           </li>
@@ -60,8 +59,8 @@ function MenuContent({ isOpen, onClose, isMobile, user }) {
             <span className="pl-2">{user.username}</span>
           </Link>
         ) : (
-          <Link 
-            to="/create-profile" 
+          <a 
+            href={`${import.meta.env.VITE_API_BASE_URL}/register`} 
             className={`${isMobile ? "mt-4 w-full" : "ml-6"} flex items-center hover:text-gray-300`}
             onClick={() => isMobile && onClose()}
           >
@@ -69,7 +68,7 @@ function MenuContent({ isOpen, onClose, isMobile, user }) {
               +
             </div>
             <span>Create Profile</span>
-          </Link>
+          </a>
         )}
       </nav>
     </>
