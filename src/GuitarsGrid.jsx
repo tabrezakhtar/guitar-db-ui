@@ -249,7 +249,7 @@ function GuitarsGrid() {
                     <img 
                       src={imageUrl} 
                       alt={`Thumbnail: ${item.brand} ${item.name}`} 
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                     />
                   ) : (
                     <div className="absolute inset-0 w-full h-full">
