@@ -273,25 +273,26 @@ function GuitarsGrid() {
                     <div className="px-3 py-2 rounded bg-[rgba(31,41,55,0.3)] group-hover:[transform:rotateY(180deg)] transition-transform duration-500 [transform-style:preserve-3d]">
                       <div className="[backface-visibility:hidden]">
                         <h2 className="text-lg font-semibold text-center text-white drop-shadow-md">{item.brand} {item.name}</h2>
-                        <div className="flex items-center justify-center gap-2 mt-2">
-                          <button
-                            className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200 drop-shadow-md pointer-events-auto`}
-                            onClick={(e) => handleLikeClick(e, item)}
-                            disabled={item.user?._id === user?._id}
-                          >
-                            <span className="mr-1">👍</span>
-                            {item.likesCount || 0}
-                          </button>
-                          <span className="bg-teal-400 text-white text-xs px-2 py-1 rounded inline-flex items-center drop-shadow-md pointer-events-auto">
-                            <span className="mr-1">💬</span>
-                            {item.commentCount}
-                          </span>
-                        </div>
                       </div>
                       <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-center items-center p-3">
                         <p className="text-sm text-white text-center drop-shadow-md">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
                       </div>
                     </div>
+                  </div>
+                  <div className="absolute bottom-2 right-2 flex items-center gap-2 pointer-events-none">
+                    <button
+                      className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200 drop-shadow-md pointer-events-auto`}
+                      onClick={(e) => handleLikeClick(e, item)}
+                      disabled={item.user?._id === user?._id}
+                      title={!user ? "Create an account to like!" : ""}
+                    >
+                      <span className="mr-1">👍</span>
+                      {item.likesCount || 0}
+                    </button>
+                    <span className="bg-teal-400 text-white text-xs px-2 py-1 rounded inline-flex items-center drop-shadow-md pointer-events-auto">
+                      <span className="mr-1">💬</span>
+                      {item.commentCount}
+                    </span>
                   </div>
                 </div>
               );
