@@ -22,6 +22,33 @@ function SideMenu() {
     fetchTags();
   }, [])
 
+  // useEffect(() => {
+  //   const logBreakpoint = () => {
+  //     const width = window.innerWidth;
+  //     let breakpoint = "";
+      
+  //     if (width >= 1536) {
+  //       breakpoint = "2xl (extra large)";
+  //     } else if (width >= 1280) {
+  //       breakpoint = "xl (extra large)";
+  //     } else if (width >= 1024) {
+  //       breakpoint = "lg (large)";
+  //     } else if (width >= 768) {
+  //       breakpoint = "md (medium)";
+  //     } else if (width >= 640) {
+  //       breakpoint = "sm (small)";
+  //     } else {
+  //       breakpoint = "xs (extra small)";
+  //     }
+      
+  //     console.log(`Screen breakpoint: ${breakpoint} (${width}px)`);
+  //   };
+
+  //   logBreakpoint();
+  //   window.addEventListener("resize", logBreakpoint);
+  //   return () => window.removeEventListener("resize", logBreakpoint);
+  // }, []);
+
   // Update URL when equipmentType changes
   useEffect(() => {
     if (equipmentType) {
@@ -60,7 +87,7 @@ function SideMenu() {
     : undefined;
 
   return (
-    <aside className="bg-gray-800 text-white w-full md:w-1/4 p-6 shadow-lg min-h-[400px] flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat">
+    <aside className="bg-gray-800 text-white w-full md:w-80 lg:w-1/4 p-6 shadow-lg min-h-[400px] flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat">
       <div className="mb-4">
         <Link to="/add" className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center font-semibold" title="Add a new instrument">
           + Add New Equipment
@@ -68,13 +95,13 @@ function SideMenu() {
       </div>
       <div>
         <div className="text-sm font-semibold mb-2 tracking-wide uppercase">Select Equipment</div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="flex flex-wrap gap-3">
           {equipmentTypes.map(typeObj => {
             const isSelected = selectedType === typeObj.key;
             return (
               <button
                 key={typeObj.key}
-                className={`bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer w-full relative border-2 ${isSelected ? "ring-2 ring-offset-1 ring-white border-white scale-105" : "border-transparent"}`}
+                className={`bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer relative border-2 aspect-square min-w-[80px] flex-shrink-0 ${isSelected ? "ring-2 ring-offset-1 ring-white border-white scale-105" : "border-transparent"}`}
                 title={typeObj.label}
                 onClick={() => handleTypeClick(typeObj.key)}
                 style={{
@@ -108,8 +135,7 @@ function SideMenu() {
         <TagSearch />
         <div className="relative bg-gray-700/50 rounded-lg p-3 mt-2" style={{ minHeight: 250, maxHeight: 800 }}>
           <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-gray-700/50 to-transparent pointer-events-none rounded-t-lg z-10"></div>
-          <div className="flex flex-wrap overflow-y-auto pr-1 pb-8 gap-2 relative z-0 custom-scrollbar" style={{ 
-            maxHeight: 700,
+          <div className="flex flex-wrap overflow-y-auto pr-1 pb-8 gap-2 relative z-0 custom-scrollbar max-h-[250px] lg:max-h-[700px]" style={{ 
             scrollbarWidth: 'thin',
             scrollbarColor: 'rgba(255,255,255,0.3) transparent'
           }}>

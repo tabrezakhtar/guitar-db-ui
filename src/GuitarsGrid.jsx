@@ -37,7 +37,7 @@ function GuitarsGrid() {
   const updateColumnsCount = useCallback(() => {
     if (window.innerWidth >= 1024) {
       setColumnsCount(3);
-    } else if (window.innerWidth >= 640) {
+    } else if (window.innerWidth >= 768) {
       setColumnsCount(2);
     } else {
       setColumnsCount(1);
