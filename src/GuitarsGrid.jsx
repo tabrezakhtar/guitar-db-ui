@@ -133,6 +133,25 @@ function GuitarsGrid() {
     onLoadMore: () => loadMore("")
   });
 
+  function sortMasonryItems(items, columnsCount) {
+    const columns = Array.from({ length: columnsCount }, () => []);
+    items.forEach((item, idx) => {
+      columns[idx % columnsCount].push(item);
+    });
+    return columns;
+  }
+
+  // determine columnsCount based on screen size
+  let columnsCount = 1;
+  if (typeof window !== "undefined") {
+    if (window.innerWidth >= 1024) {
+      columnsCount = 3;
+    } else if (window.innerWidth >= 640) {
+      columnsCount = 2;
+    }
+  }
+  const masonryColumns = sortMasonryItems(equipment, columnsCount);
+
   return (
     <div ref={containerRef} className="min-h-screen">
       <div className="flex justify-between items-center mb-4">
@@ -189,61 +208,65 @@ function GuitarsGrid() {
         </div>
       )}
 
-      <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
-        {equipment.map((item) => {
-          const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
-          const dims = imageDimensions[item._id] || { width: 1, height: 1 };
-          let tileClass = "aspect-square";
-          if (dims.width > dims.height * 1.2) {
-            tileClass = "aspect-video";
-          } else if (dims.height > dims.width * 1.2) {
-            tileClass = "aspect-[3/4]";
-          }
-          return (
-            <div
-              key={item._id}
-              className={`break-inside-avoid border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative animate__animated animate__fadeIn bg-white ${tileClass}`}
-              onClick={() => navigate("/view/" + item._id)}
-            >
-              {imageUrl ? (
-                <Thumbnail url={imageUrl} alt={`Thumbnail: ${item.brand} ${item.name}`} />
-              ) : (
-                <SkeletonImage />
-              )}
-              <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-white shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
-                <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
-                <Link to={item.user?._id ? `/profile/${item.user._id}` : "#"} onClick={(e) => e.stopPropagation()} className="pl-2 text-xs text-blue-500 hover:underline">
-                  <span className="">{item.user ? item.user?.username.slice(0,12) : ""}</span>
-                </Link>
-              </div>
-              <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md flex items-center justify-center">
-                <img 
-                  src={getEquipmentIcon(item.type)} 
-                  alt={item.type} 
-                  className="w-8 h-8"
-                />
-              </div>
-              <div className="p-3 bg-gray-200">
-                <h2 className="text-lg font-semibold">{item.brand} {item.name}</h2>
-                <p className="text-sm text-gray-600">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
-                <div className="flex items-center justify-end gap-2 mt-2">
-                  <button
-                    className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200`}
-                    onClick={(e) => handleLikeClick(e, item)}
-                    disabled={item.user?._id === user?._id}
-                  >
-                    <span className="mr-1">👍</span>
-                    {item.likesCount || 0}
-                  </button>
-                  <span className="bg-teal-400 text-teal-900 text-xs px-2 py-1 rounded inline-flex items-center">
-                    <span className="mr-1">💬</span>
-                    {item.commentCount}
-                  </span>
+      <div className="flex gap-4">
+        {masonryColumns.map((column, colIdx) => (
+          <div key={colIdx} className="flex-1 flex flex-col space-y-4">
+            {column.map((item) => {
+              const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
+              const dims = imageDimensions[item._id] || { width: 1, height: 1 };
+              let tileClass = "aspect-square";
+              if (dims.width > dims.height * 1.2) {
+                tileClass = "aspect-video";
+              } else if (dims.height > dims.width * 1.2) {
+                tileClass = "aspect-[3/4]";
+              }
+              return (
+                <div
+                  key={item._id}
+                  className={`break-inside-avoid border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative animate__animated animate__fadeIn bg-white ${tileClass}`}
+                  onClick={() => navigate("/view/" + item._id)}
+                >
+                  {imageUrl ? (
+                    <Thumbnail url={imageUrl} alt={`Thumbnail: ${item.brand} ${item.name}`} />
+                  ) : (
+                    <SkeletonImage />
+                  )}
+                  <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-white shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
+                    <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
+                    <Link to={item.user?._id ? `/profile/${item.user._id}` : "#"} onClick={(e) => e.stopPropagation()} className="pl-2 text-xs text-blue-500 hover:underline">
+                      <span className="">{item.user ? item.user?.username.slice(0,12) : ""}</span>
+                    </Link>
+                  </div>
+                  <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md flex items-center justify-center">
+                    <img 
+                      src={getEquipmentIcon(item.type)} 
+                      alt={item.type} 
+                      className="w-8 h-8"
+                    />
+                  </div>
+                  <div className="p-3 bg-gray-200">
+                    <h2 className="text-lg font-semibold">{item.brand} {item.name}</h2>
+                    <p className="text-sm text-gray-600">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
+                    <div className="flex items-center justify-end gap-2 mt-2">
+                      <button
+                        className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200`}
+                        onClick={(e) => handleLikeClick(e, item)}
+                        disabled={item.user?._id === user?._id}
+                      >
+                        <span className="mr-1">👍</span>
+                        {item.likesCount || 0}
+                      </button>
+                      <span className="bg-teal-400 text-teal-900 text-xs px-2 py-1 rounded inline-flex items-center">
+                        <span className="mr-1">💬</span>
+                        {item.commentCount}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        ))}
       </div>
       {loading && (
         <div className="flex justify-center p-4">
