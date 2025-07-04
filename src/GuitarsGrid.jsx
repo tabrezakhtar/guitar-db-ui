@@ -172,7 +172,7 @@ function GuitarsGrid() {
   const masonryColumns = sortMasonryItems(equipment, columnsCount, imageDimensions);
 
   return (
-    <div ref={containerRef} className="min-h-screen">
+    <div ref={containerRef} className="min-h-screen max-w-7xl mx-auto px-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">{searchTerm.trim() ? equipment.length : totalEquipment || 0} Results</h2>
         <div className="flex items-center">
@@ -242,43 +242,51 @@ function GuitarsGrid() {
               return (
                 <div
                   key={item._id}
-                  className={`break-inside-avoid border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative animate__animated animate__fadeIn bg-white ${tileClass}`}
+                  className={`break-inside-avoid border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative animate__animated animate__fadeIn ${tileClass}`}
                   onClick={() => navigate("/view/" + item._id)}
                 >
                   {imageUrl ? (
-                    <Thumbnail url={imageUrl} alt={`Thumbnail: ${item.brand} ${item.name}`} />
+                    <img 
+                      src={imageUrl} 
+                      alt={`Thumbnail: ${item.brand} ${item.name}`} 
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
                   ) : (
-                    <SkeletonImage />
+                    <div className="absolute inset-0 w-full h-full">
+                      <SkeletonImage />
+                    </div>
                   )}
-                  <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-white shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
+                  <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-[rgba(31,41,55,0.3)] shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
                     <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
-                    <Link to={item.user?._id ? `/profile/${item.user._id}` : "#"} onClick={(e) => e.stopPropagation()} className="pl-2 text-xs text-blue-500 hover:underline">
+                    <Link to={item.user?._id ? `/profile/${item.user._id}` : "#"} onClick={(e) => e.stopPropagation()} className="pl-2 text-xs text-white drop-shadow-md hover:underline">
                       <span className="">{item.user ? item.user?.username.slice(0,12) : ""}</span>
                     </Link>
                   </div>
-                  <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md flex items-center justify-center">
+                  <div className="absolute top-2 right-2 bg-[rgba(31,41,55,0.3)] rounded-full p-1 shadow-md flex items-center justify-center">
                     <img 
                       src={getEquipmentIcon(item.type)} 
                       alt={item.type} 
                       className="w-8 h-8"
                     />
                   </div>
-                  <div className="p-3 bg-gray-200">
-                    <h2 className="text-lg font-semibold">{item.brand} {item.name}</h2>
-                    <p className="text-sm text-gray-600">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
-                    <div className="flex items-center justify-end gap-2 mt-2">
-                      <button
-                        className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200`}
-                        onClick={(e) => handleLikeClick(e, item)}
-                        disabled={item.user?._id === user?._id}
-                      >
-                        <span className="mr-1">👍</span>
-                        {item.likesCount || 0}
-                      </button>
-                      <span className="bg-teal-400 text-teal-900 text-xs px-2 py-1 rounded inline-flex items-center">
-                        <span className="mr-1">💬</span>
-                        {item.commentCount}
-                      </span>
+                  <div className="absolute inset-0 flex flex-col justify-center items-center p-3 pointer-events-none">
+                    <div className="px-3 py-2 rounded bg-[rgba(31,41,55,0.3)]">
+                      <h2 className="text-lg font-semibold text-center text-white drop-shadow-md">{item.brand} {item.name}</h2>
+                      <p className="text-sm text-white text-center drop-shadow-md">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
+                      <div className="flex items-center justify-center gap-2 mt-2">
+                        <button
+                          className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200 drop-shadow-md pointer-events-auto`}
+                          onClick={(e) => handleLikeClick(e, item)}
+                          disabled={item.user?._id === user?._id}
+                        >
+                          <span className="mr-1">👍</span>
+                          {item.likesCount || 0}
+                        </button>
+                        <span className="bg-teal-400 text-white text-xs px-2 py-1 rounded inline-flex items-center drop-shadow-md pointer-events-auto">
+                          <span className="mr-1">💬</span>
+                          {item.commentCount}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
