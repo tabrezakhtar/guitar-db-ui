@@ -826,58 +826,11 @@ function GuitarProvider({ children }) {
     }));
   };
 
-  const setSearchTerm = (searchTerm) => {
-    setState(prev => ({
-      ...prev,
-      searchTerm
-    }));
-  };
-
   const setEquipmentType = (equipmentType) => {
     setState(prev => ({
       ...prev,
       equipmentType
     }));
-  };
-
-  const searchEquipment = async (searchTerm) => {
-    setLoading(true);
-    setState(prev => ({ ...prev, error: null }));
-
-    try {
-      const url = `${BASE_URL}/api/equipment/searchByText?q=${encodeURIComponent(searchTerm)}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
-      
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data && data.errors) {
-        throw new Error(data.errors.join(", "));
-      }
-
-      setState((prev) => ({
-        ...prev,
-        equipment: data.items || [],
-        totalEquipment: data.total || 0,
-        page: 1,
-        loading: false,
-        error: null
-      }));
-
-      return data;
-    } catch (error) {
-      console.error("Failed to search equipment:", error);
-      setState(prev => ({
-        ...prev,
-        loading: false,
-        error: error.message
-      }));
-      throw error;
-    }
   };
 
   const fetchUserEquipment = async (userId) => {
@@ -943,9 +896,7 @@ function GuitarProvider({ children }) {
     setSortOptions,
     validateToken: (callback) => validateToken(callback || handleAuthError),
     toggleLike,
-    setSearchTerm,
-    setEquipmentType,
-    searchEquipment
+    setEquipmentType
   };
 
   return <GuitarContext.Provider value={value}>{children}</GuitarContext.Provider>;

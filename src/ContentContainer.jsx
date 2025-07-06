@@ -1,5 +1,5 @@
 import SideMenu from "./sidemenu/SideMenu";
-import GuitarsGrid from "./GuitarsGrid";
+import Grid from "./guitars/Grid";
 
 function ContentContainer() {
   return (
@@ -7,7 +7,7 @@ function ContentContainer() {
       <SideMenu />
 
       <main className="flex-1 bg-white p-4">
-        <GuitarsGrid />
+        <Grid />
       </main>
     </div>
   );

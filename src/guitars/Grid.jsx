@@ -1,35 +1,29 @@
 import { useContext, useEffect, useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Thumbnail from "./components/Thumbnail";
-import { GuitarContext } from "./context/GuitarContext";
-import { UserContext } from "./context/UserContext";
-import SkeletonImage from "./components/SkeletonImage";
-import Tag from "./components/Tag";
-import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
-import Spinner from "./components/Spinner";
-import useInfiniteScroll from "./utils/useInfiniteScroll";
+import { GuitarContext } from "../context/GuitarContext";
+import { UserContext } from "../context/UserContext";
+import SkeletonImage from "../components/SkeletonImage";
+import Tag from "../components/Tag";
+import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
+import Spinner from "../components/Spinner";
+import useInfiniteScroll from "../utils/useInfiniteScroll";
+import { useDataApi } from "./useDataApi";
 
-function GuitarsGrid() {
+function Grid() {
   const navigate = useNavigate();
   const { 
-    equipment, 
-    totalEquipment, 
     loading, 
     loadMore, 
-    fetchEquipmentList, 
     sortBy,
     sortOrder,
     selectedTags,
     handleTagSelection,
     setSortOptions,
     toggleLike,
-    searchTerm,
-    setSearchTerm,
-    searchEquipment,
-    equipmentType
   } = useContext(GuitarContext);
   
   const { user } = useContext(UserContext);
+  const { searchTerm, handleSearch, clearSearch, equipment, totalEquipment } = useDataApi();
   const [likedEquipment, setLikedEquipment] = useState({});
   const [imageDimensions, setImageDimensions] = useState({});
   const [columnsCount, setColumnsCount] = useState(1);
@@ -49,19 +43,6 @@ function GuitarsGrid() {
     window.addEventListener("resize", updateColumnsCount);
     return () => window.removeEventListener("resize", updateColumnsCount);
   }, [updateColumnsCount]);
-
-  useEffect(() => {
-    if (searchTerm.trim()) return;
-    fetchEquipmentList(1);
-  }, [sortBy, sortOrder, selectedTags, equipmentType, searchTerm]);
-
-  useEffect(() => {
-    if (!searchTerm.trim()) return;
-    const timeoutId = setTimeout(() => {
-      searchEquipment(searchTerm);
-    }, 500);
-    return () => clearTimeout(timeoutId);
-  }, [searchTerm]);
 
   useEffect(() => {
     const newDimensions = {};
@@ -182,12 +163,12 @@ function GuitarsGrid() {
               placeholder="Search equipment..."
               className="border border-gray-300 rounded-lg p-2.5 pr-8 text-sm"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value)}
             />
             {searchTerm && (
               <button
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                onClick={() => setSearchTerm("")}
+                onClick={clearSearch}
                 type="button"
                 aria-label="Clear search"
               >
@@ -309,4 +290,4 @@ function GuitarsGrid() {
   );
 }
 
-export default GuitarsGrid;
+export default Grid;
