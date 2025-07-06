@@ -8,6 +8,8 @@ import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Spinner from "../components/Spinner";
 import useInfiniteScroll from "../utils/useInfiniteScroll";
 import { useDataApi } from "./useDataApi";
+import { useImageDimensions } from "./useImageDimensions";
+import TileSkeleton from "./TileSkeleton";
 
 function Grid() {
   const navigate = useNavigate();
@@ -24,8 +26,8 @@ function Grid() {
   
   const { user } = useContext(UserContext);
   const { searchTerm, handleSearch, clearSearch, equipment, totalEquipment } = useDataApi();
+  const { imageDimensions, loadingImages } = useImageDimensions(equipment);
   const [likedEquipment, setLikedEquipment] = useState({});
-  const [imageDimensions, setImageDimensions] = useState({});
   const [columnsCount, setColumnsCount] = useState(1);
 
   const updateColumnsCount = useCallback(() => {
@@ -43,32 +45,6 @@ function Grid() {
     window.addEventListener("resize", updateColumnsCount);
     return () => window.removeEventListener("resize", updateColumnsCount);
   }, [updateColumnsCount]);
-
-  useEffect(() => {
-    const newDimensions = {};
-    let isMounted = true;
-    const promises = equipment.map((item) => {
-      const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
-      if (!imageUrl) return Promise.resolve();
-      return new Promise((resolve) => {
-        const img = new window.Image();
-        img.onload = function () {
-          if (isMounted) {
-            newDimensions[item._id] = { width: img.naturalWidth, height: img.naturalHeight };
-          }
-          resolve();
-        };
-        img.onerror = function () {
-          resolve();
-        };
-        img.src = imageUrl;
-      });
-    });
-    Promise.all(promises).then(() => {
-      if (isMounted) setImageDimensions(newDimensions);
-    });
-    return () => { isMounted = false; };
-  }, [equipment]);
 
   const handleSortChange = (event) => {
     const [newSortBy, newSortOrder] = event.target.value.split("|");
@@ -220,6 +196,12 @@ function Grid() {
               } else if (dims.height > dims.width * 1.2) {
                 tileClass = "aspect-[3/5]";
               }
+
+              // Show skeleton while image is loading
+              if (imageUrl && loadingImages.has(item._id)) {
+                return <TileSkeleton key={item._id} tileClass={tileClass} />;
+              }
+
               return (
                 <div
                   key={item._id}
