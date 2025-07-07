@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { GuitarContext } from "../context/GuitarContext";
-import { getCombinedUrl } from "../utils/imageUtils";
+import { getCombinedUrl } from "../utils/cloudinaryUtils";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
 

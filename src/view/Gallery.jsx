@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
-import { getCloudinaryThumbnail } from "../utils/imageUtils";
+import { getCloudinaryThumbnail } from "../utils/cloudinaryUtils";
 import SkeletonImage from "../components/SkeletonImage";
 
 const Gallery = ({ equipment }) => {

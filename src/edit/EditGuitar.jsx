@@ -23,7 +23,10 @@ function EditGuitar({ mode = "edit", type = "" }) {
     setEquipment: setCurrentEquipment,
     cloudinaryUpload,
     filesToUpload,
+    setFilesToUpload,
+    clearFilesToUpload,
     clearCurrentEquipment,
+    deleteImage
   } = useEditEquipmentData(id, mode);
 
   const [isUploading, setIsUploading] = useState(false);

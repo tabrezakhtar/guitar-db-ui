@@ -1,29 +1,21 @@
 // useEditEquipmentData.js
 import { useContext, useEffect, useState } from "react";
-import { GuitarContext } from "../context/GuitarContext";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import { validateToken } from "../utils/tokenUtils";
+import { cloudinaryUpload, getCombinedUrl } from "../utils/cloudinaryUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const useEditEquipmentData = (id, mode = "edit") => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const { 
-    setLoading, 
-    setCurrentEquipment, 
-    clearCurrentEquipment, 
-    updateEquipment, 
-    addEquipment, 
-    deleteEquipment,
-    cloudinaryUpload,
-    filesToUpload
-  } = useContext(GuitarContext);
   
   const [equipment, setEquipmentState] = useState(null);
   const [settings, setSettings] = useState({});
   const [loading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filesToUpload, setFilesToUploadState] = useState([]);
 
   const fetchEquipment = async (equipmentId) => {
     if (!equipmentId) return;
@@ -65,6 +57,334 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     }
   };
 
+  const handleAuthError = (errorMsg) => {
+    setError("Authentication error: " + errorMsg);
+  };
+
+  const updateEquipment = async () => {
+    const isValid = await validateToken(handleAuthError);
+    if (!isValid) {
+      setError("Your session has expired. Please login again.");
+      setIsLoading(false);
+      return null;
+    }
+
+    return new Promise((resolve, reject) => {
+      if (!equipment?._id) {
+        resolve(null);
+        return;
+      }
+
+      try {
+        setError(null);
+        setIsLoading(true);
+
+        const token = localStorage.getItem("token");
+        const headers = {
+          "Content-Type": "application/json"
+        };
+
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        fetch(`${BASE_URL}/api/equipment/update/${equipment._id}`, {
+          method: "PUT",
+          headers,
+          body: JSON.stringify(equipment),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(result => {
+            if (result && result.errors) {
+              setError(result.errors.join(", "));
+              setIsLoading(false);
+              resolve({
+                success: false,
+                error: result.errors
+              });
+              return;
+            }
+
+            const updatedFilesToUpload = filesToUpload?.map((fileObj, index) => {
+              if (result.images && result.images[index]) {
+                return { ...fileObj, url: result.images[index] };
+              }
+              return fileObj;
+            }) || [];
+
+            setEquipmentState(result);
+            setFilesToUploadState(updatedFilesToUpload);
+            setIsLoading(false);
+            setError(null);
+
+            resolve(result);
+          })
+          .catch(error => {
+            console.error("Failed to update equipment:", error);
+            setError(error.message);
+            setIsLoading(false);
+            reject(error);
+          });
+      } catch (error) {
+        console.error("Failed to update equipment:", error);
+        setError(error.message);
+        setIsLoading(false);
+        reject(error);
+      }
+    });
+  };
+
+  const addEquipment = async (type) => {
+    const isValid = await validateToken(handleAuthError);
+    if (!isValid) {
+      setError("Your session has expired. Please login again.");
+      setIsLoading(false);
+      return null;
+    }
+
+    return new Promise((resolve, reject) => {
+      if (!type || !equipment) {
+        resolve(null);
+        return;
+      }
+
+      try {
+        setError(null);
+        setIsLoading(true);
+
+        const token = localStorage.getItem("token");
+        const headers = {
+          "Content-Type": "application/json"
+        };
+
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        fetch(`${BASE_URL}/api/equipment/add?type=${type}`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(equipment),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(result => {
+            if (result && result.errors) {
+              setError(result.errors.join(", "));
+              setIsLoading(false);
+              resolve({
+                success: false,
+                error: result.errors
+              });
+              return;
+            }
+
+            setEquipmentState(result);
+            setIsLoading(false);
+            setError(null);
+
+            resolve(result);
+          })
+          .catch(error => {
+            console.error("Failed to add equipment:", error);
+            setError(error.message);
+            setIsLoading(false);
+            reject(error);
+          });
+      } catch (error) {
+        console.error("Failed to add equipment:", error);
+        setError(error.message);
+        setIsLoading(false);
+        reject(error);
+      }
+    });
+  };
+
+  const deleteEquipment = async () => {
+    const isValid = await validateToken(handleAuthError);
+    if (!isValid) {
+      setError("Your session has expired. Please login again.");
+      setIsLoading(false);
+      return null;
+    }
+
+    if (!equipment?._id) {
+      console.error("No equipment selected for deletion");
+      return;
+    }
+
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      const headers = {};
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${BASE_URL}/api/equipment/remove/${equipment._id}`, {
+        method: "DELETE",
+        headers
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result && result.errors) {
+        setError(result.errors.join(", "));
+        return {
+          success: false,
+          error: result.errors
+        };
+      }
+
+      setEquipmentState(null);
+      setIsLoading(false);
+      return result;
+    } catch (error) {
+      console.error("Failed to delete equipment:", error);
+      setError(error.message);
+      setIsLoading(false);
+      throw error;
+    }
+  };
+
+  const cloudinaryUploadForGuitar = async (file) => {
+    setError(null);
+
+    try {
+      const result = await cloudinaryUpload(file, "guitars");
+
+      if (typeof result === "string" && result.includes("res.cloudinary.com")) {
+        return true;
+      }
+
+      if (!result.success && result.error) {
+        setError(result.error);
+        return result;
+      }
+
+      if (equipment && equipment.images) {
+        const updatedImages = equipment.images.map((image) =>
+          getCombinedUrl(image) === file.url ? result.secure_url : image
+        );
+
+        const updatedFilesToUpload = filesToUpload.map((fileObj) =>
+          fileObj.url === file.url ? { ...fileObj, url: result.secure_url } : fileObj
+        );
+
+        setEquipmentState({ ...equipment, images: updatedImages });
+        setFilesToUploadState(updatedFilesToUpload);
+      }
+
+      return result.secure_url;
+    } catch (error) {
+      console.error("Failed to upload to cloudinary:", error);
+      setError(error.message);
+      throw error;
+    }
+  };
+
+  const deleteImage = async (imageUrl) => {
+    const isValid = await validateToken(handleAuthError);
+    if (!isValid) {
+      setError("Your session has expired. Please login again.");
+      return null;
+    }
+
+    if (!equipment) {
+      console.error("No equipment selected for deletion");
+      return;
+    }
+    if (!imageUrl) {
+      console.error("No image URL provided for deletion");
+      return;
+    }
+
+    if (imageUrl.startsWith("blob:http")) {
+      const updatedImages = equipment.images.filter(
+        (image) => getCombinedUrl(image) !== imageUrl
+      );
+      const updatedFilesToUpload = filesToUpload.filter(
+        (fileObj) => fileObj.url !== imageUrl
+      );
+      setEquipmentState({ ...equipment, images: updatedImages });
+      setFilesToUploadState(updatedFilesToUpload);
+      return;
+    }
+
+    setError(null);
+
+    try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${BASE_URL}/api/equipment/deleteImage/${equipment._id}`, {
+        method: "DELETE",
+        headers,
+        body: JSON.stringify({ imageUrl }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result && result.errors) {
+        setError(result.errors.join(", "));
+        return {
+          success: false,
+          error: result.errors
+        };
+      }
+
+      const updatedImages = equipment.images.filter(
+        (image) => getCombinedUrl(image) !== imageUrl
+      );
+      const updatedFilesToUpload = filesToUpload.filter(
+        (fileObj) => fileObj.url !== imageUrl
+      );
+      
+      setEquipmentState({ ...equipment, images: updatedImages });
+      setFilesToUploadState(updatedFilesToUpload);
+
+      return result;
+    } catch (error) {
+      console.error("Failed to delete image:", error);
+      setError(error.message);
+      throw error;
+    }
+  };
+
+  const setFilesToUpload = (files) => {
+    setFilesToUploadState(typeof files === "function" ? files(filesToUpload) : files);
+  };
+
+  const clearFilesToUpload = () => setFilesToUploadState([]);
+
+  const clearCurrentEquipment = () => setEquipmentState(null);
+
   useEffect(() => {
     if (mode === "edit" && id) {
       fetchEquipment(id);
@@ -75,10 +395,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
 
   return {
     equipment,
-    setEquipment: (newEquipment) => {
-      setEquipmentState(newEquipment);
-      setCurrentEquipment(newEquipment);
-    },
+    setEquipment: setEquipmentState,
     settings,
     loading,
     error,
@@ -86,8 +403,11 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     updateEquipment,
     addEquipment,
     deleteEquipment,
-    cloudinaryUpload,
+    cloudinaryUpload: cloudinaryUploadForGuitar,
+    deleteImage,
     filesToUpload,
+    setFilesToUpload,
+    clearFilesToUpload,
     clearCurrentEquipment
   };
 };
