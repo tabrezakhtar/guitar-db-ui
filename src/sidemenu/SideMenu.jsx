@@ -12,7 +12,6 @@ function SideMenu() {
     handleTagSelection, 
     clearSelectedTags,
     setEquipmentType,
-    fetchEquipmentList,
     equipmentType
   } = useContext(GuitarContext);
   const navigate = useNavigate();
@@ -22,34 +21,6 @@ function SideMenu() {
     fetchTags();
   }, [])
 
-  // useEffect(() => {
-  //   const logBreakpoint = () => {
-  //     const width = window.innerWidth;
-  //     let breakpoint = "";
-      
-  //     if (width >= 1536) {
-  //       breakpoint = "2xl (extra large)";
-  //     } else if (width >= 1280) {
-  //       breakpoint = "xl (extra large)";
-  //     } else if (width >= 1024) {
-  //       breakpoint = "lg (large)";
-  //     } else if (width >= 768) {
-  //       breakpoint = "md (medium)";
-  //     } else if (width >= 640) {
-  //       breakpoint = "sm (small)";
-  //     } else {
-  //       breakpoint = "xs (extra small)";
-  //     }
-      
-  //     console.log(`Screen breakpoint: ${breakpoint} (${width}px)`);
-  //   };
-
-  //   logBreakpoint();
-  //   window.addEventListener("resize", logBreakpoint);
-  //   return () => window.removeEventListener("resize", logBreakpoint);
-  // }, []);
-
-  // Update URL when equipmentType changes
   useEffect(() => {
     if (equipmentType) {
       const currentParams = new URLSearchParams(location.search);
@@ -135,7 +106,7 @@ function SideMenu() {
         <TagSearch />
         <div className="relative bg-gray-700/50 rounded-lg p-3 mt-2" style={{ minHeight: 250, maxHeight: 800 }}>
           <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-gray-700/50 to-transparent pointer-events-none rounded-t-lg z-10"></div>
-          <div className="flex flex-wrap overflow-y-auto pr-1 pb-8 gap-2 relative z-0 custom-scrollbar max-h-[250px] lg:max-h-[700px]" style={{ 
+          <div className="flex flex-wrap overflow-y-auto pr-1 pb-8 gap-2 relative z-0 custom-scrollbar max-h-[250px] md:max-h-[700px]" style={{ 
             scrollbarWidth: 'thin',
             scrollbarColor: 'rgba(255,255,255,0.3) transparent'
           }}>
