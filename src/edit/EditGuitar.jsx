@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
 import EditImages from "./EditImages";
 import Modal from "../components/Modal";
@@ -8,62 +7,38 @@ import SuccessMessage from "./SuccessMessage";
 import EquipmentForm from "./EquipmentForm";
 import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
+import { useEditEquipmentData } from "./useEditEquipmentData";
 
 function EditGuitar({ mode = "edit", type = "" }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
+  
   const {
-    currentEquipment,
+    equipment: currentEquipment,
     loading,
-    fetchEquipment,
     updateEquipment,
     addEquipment,
     deleteEquipment,
-    setCurrentEquipment,
+    setEquipment: setCurrentEquipment,
     cloudinaryUpload,
     filesToUpload,
     clearCurrentEquipment,
-  } = useContext(GuitarContext);
+  } = useEditEquipmentData(id, mode);
 
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(null);
   const [saved, setSaved] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [initialized, setInitialized] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    if (mode === "edit") {
-      if (!currentEquipment || currentEquipment._id !== id) {
-        fetchEquipment(id).then(data => {
-          if (data?.item) {
-            const canEdit = user && data.item.user && user._id === data.item.user._id;
-            
-            if (!canEdit) {
-              navigate("/");
-              return;
-            }
-            
-            if (!data.item.user._id && user?._id) {
-              setCurrentEquipment({
-                ...data.item,
-                userId: user._id
-              });
-            }
-          }
-          setAuthChecked(true);
-        })
-        .catch(() => {
-          navigate("/");
+    if (!loading && currentEquipment) {
+      if (!currentEquipment.user?._id && user?._id) {
+        setCurrentEquipment({
+          ...currentEquipment,
+          userId: user._id
         });
-      } else {
-        const canEdit = user && currentEquipment.user && user._id === currentEquipment.user._id;
-        if (!canEdit) {
-          navigate("/");
-          return;
-        }
-        setAuthChecked(true);
       }
     } else if (mode === "add" && !initialized) {
       if (!user) {
@@ -90,10 +65,9 @@ function EditGuitar({ mode = "edit", type = "" }) {
       }
 
       setCurrentEquipment(defaultEquipment);
-      // setInitialized(true);
-      setAuthChecked(true);
+      setInitialized(true);
     }
-  }, [type]);
+  }, [loading, currentEquipment, user, mode, initialized, type, navigate, setCurrentEquipment]);
 
   async function saveEquipment(e) {
     e.preventDefault();

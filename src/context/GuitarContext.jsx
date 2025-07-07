@@ -2,7 +2,6 @@ import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { getCombinedUrl } from "../utils/imageUtils";
 import { cloudinaryUpload } from "../utils/cloudinaryUtils";
-import { getQueryStringParam } from "../utils/urlUtils";
 import { validateToken } from "../utils/tokenUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -27,8 +26,6 @@ export const initialState = {
 };
 
 const GuitarContext = createContext(null);
-
-
 
 function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
@@ -173,52 +170,6 @@ function GuitarProvider({ children }) {
         tagSearchTerm: searchTerm
       };
     });
-  };
-
-  const fetchEquipment = async (id, type="") => {
-    if (!id) return;
-    setLoading(true);
-    setState(prev => ({ ...prev, error: null }));
-
-    try {
-      const response = await fetch(`${BASE_URL}/api/equipment/byid?id=${id}&type=${type}`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data && data.errors) {
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: data.errors
-        }));
-        return {
-          success: false,
-          error: data.errors
-        };
-      }
-
-      setState((prev) => ({
-        ...prev,
-        currentEquipment: data.item,
-        settings: data.settings,
-        loading: false,
-        error: null
-      }));
-
-      return data;
-    } catch (error) {
-      console.error("Failed to fetch equipment:", error);
-      setState(prev => ({
-        ...prev,
-        loading: false,
-        error: error.message
-      }));
-      throw error;
-    }
   };
 
   const addComment = async (username, equipmentId, text) => {
@@ -544,12 +495,6 @@ function GuitarProvider({ children }) {
     }
   };
 
-  // The fetchEquipmentList function has been moved to the useDataApi hook
-  const fetchEquipmentList = async () => {
-    console.warn("fetchEquipmentList has been moved to useDataApi hook. Please update your code.");
-    return null;
-  };
-
   const cloudinaryUploadForGuitar = async (file) => {
     setState(prev => ({ ...prev, error: null }));
 
@@ -832,11 +777,9 @@ function GuitarProvider({ children }) {
     fetchSettings,
     fetchTags,
     searchTags,
-    fetchEquipment,
     addEquipment,
     updateEquipment,
     deleteEquipment,
-    fetchEquipmentList,
     fetchUserEquipment,
     cloudinaryUpload: cloudinaryUploadForGuitar,
     deleteImage,

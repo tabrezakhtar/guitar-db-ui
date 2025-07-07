@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
@@ -10,17 +10,15 @@ import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Gallery from "./Gallery";
 import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
+import { useEquipmentData } from "./useEquipmentData";
 
 const ViewGuitar = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { currentEquipment: equipment, loading, fetchEquipment, clearCurrentEquipment, toggleLike } = useContext(GuitarContext);
+  const { clearCurrentEquipment, toggleLike } = useContext(GuitarContext);
   const { user } = useContext(UserContext);
+  const { equipment, loading, error } = useEquipmentData(id);
   const [isLiked, setIsLiked] = useState(false);
-
-  useEffect(() => {
-    fetchEquipment(id);
-  }, []);
 
   const handleLikeToggle = async () => {
     if (!user) {
@@ -44,6 +42,14 @@ const ViewGuitar = () => {
     return (
       <div className="flex justify-center items-center h-full">
         <Spinner />
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <div className="text-red-500">Error: {error}</div>
       </div>
     );
   }

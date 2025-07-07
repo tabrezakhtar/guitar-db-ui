@@ -7,7 +7,7 @@ import Tag from "../components/Tag";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Spinner from "../components/Spinner";
 import useInfiniteScroll from "../utils/useInfiniteScroll";
-import { useDataApi } from "./useDataApi";
+import { useEquipmentGridData } from "./useEquipmentGridData";
 import { useImageDimensions } from "./useImageDimensions";
 import TileSkeleton from "./TileSkeleton";
 
@@ -23,7 +23,7 @@ function Grid() {
   } = useContext(GuitarContext);
   
   const { user } = useContext(UserContext);
-  const { searchTerm, handleSearch, clearSearch, equipment, totalEquipment, loading, loadMore } = useDataApi();
+  const { searchTerm, handleSearch, clearSearch, equipment, totalEquipment, loading, loadMore } = useEquipmentGridData();
   const { imageDimensions, loadingImages } = useImageDimensions(equipment);
   const [likedEquipment, setLikedEquipment] = useState({});
   const [columnsCount, setColumnsCount] = useState(1);
