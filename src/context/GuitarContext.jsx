@@ -544,60 +544,10 @@ function GuitarProvider({ children }) {
     }
   };
 
-  const fetchEquipmentList = async (page) => {
-    setLoading(true);
-    setState(prev => ({ ...prev, error: null }));
-
-    try {
-      // Read type from URL querystring if present, else use state.equipmentType
-      const urlType = getQueryStringParam("type") || state.equipmentType;
-      let url = `${BASE_URL}/api/equipment/list?page=${page}&limit=20&type=${urlType}&sortBy=${state.sortBy}&sortOrder=${state.sortOrder}`;
-
-      if (state.selectedTags.length > 0) {
-        const tagsParam = JSON.stringify(state.selectedTags.map(tag => tag._id));
-        url += `&tags=${encodeURIComponent(tagsParam)}`;
-      }
-
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data && data.errors) {
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: data.errors
-        }));
-        return {
-          success: false,
-          error: data.errors
-        };
-      }
-
-      setState((prev) => ({
-        ...prev,
-        equipment: page === 1 ? data.items : [...prev.equipment, ...data.items],
-        totalEquipment: page === 1 ? data.total : prev.totalEquipment,
-        page,
-        settings: data.settings,
-        loading: false,
-        error: null
-      }));
-
-      return data;
-    } catch (error) {
-      console.error("Failed to fetch equipment list:", error);
-      setState(prev => ({
-        ...prev,
-        loading: false,
-        error: error.message
-      }));
-      throw error;
-    }
+  // The fetchEquipmentList function has been moved to the useDataApi hook
+  const fetchEquipmentList = async () => {
+    console.warn("fetchEquipmentList has been moved to useDataApi hook. Please update your code.");
+    return null;
   };
 
   const cloudinaryUploadForGuitar = async (file) => {
@@ -813,9 +763,10 @@ function GuitarProvider({ children }) {
     }
   };
 
+  // The loadMore function has been moved to the useDataApi hook
   const loadMore = () => {
-    const nextPage = state.page + 1;
-    fetchEquipmentList(nextPage);
+    console.warn("loadMore has been moved to useDataApi hook. Please update your code.");
+    return null;
   };
 
   const setSortOptions = (sortBy, sortOrder) => {

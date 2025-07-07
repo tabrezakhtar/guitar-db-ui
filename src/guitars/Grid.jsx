@@ -14,8 +14,6 @@ import TileSkeleton from "./TileSkeleton";
 function Grid() {
   const navigate = useNavigate();
   const { 
-    loading, 
-    loadMore, 
     sortBy,
     sortOrder,
     selectedTags,
@@ -25,7 +23,7 @@ function Grid() {
   } = useContext(GuitarContext);
   
   const { user } = useContext(UserContext);
-  const { searchTerm, handleSearch, clearSearch, equipment, totalEquipment } = useDataApi();
+  const { searchTerm, handleSearch, clearSearch, equipment, totalEquipment, loading, loadMore } = useDataApi();
   const { imageDimensions, loadingImages } = useImageDimensions(equipment);
   const [likedEquipment, setLikedEquipment] = useState({});
   const [columnsCount, setColumnsCount] = useState(1);
@@ -103,7 +101,7 @@ function Grid() {
   const containerRef = useInfiniteScroll({
     hasMore: totalEquipment > equipment.length,
     loading,
-    onLoadMore: () => loadMore("")
+    onLoadMore: loadMore
   });
 
   function sortMasonryItems(items, columnsCount, imageDimensions) {
