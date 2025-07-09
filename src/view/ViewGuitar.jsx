@@ -4,7 +4,7 @@ import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
 import Comments from "./Comments";
 import StarRating from "../components/StarRating";
-import Tag from "../components/Tag";
+import Tag from "../tags/Tag";
 import { formatDate } from "../utils/dateUtils";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Gallery from "./Gallery";

@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
 import SkeletonImage from "../components/SkeletonImage";
-import Tag from "../components/Tag";
+import Tag from "../tags/Tag";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Spinner from "../components/Spinner";
 import useInfiniteScroll from "../utils/useInfiniteScroll";

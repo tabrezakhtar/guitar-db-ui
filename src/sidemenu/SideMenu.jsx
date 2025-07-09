@@ -1,8 +1,8 @@
 import { useEffect, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
-import Tag from "../components/Tag";
-import TagSearch from "../components/TagSearch";
+import Tag from "../tags/Tag";
+import TagSearch from "../tags/TagSearch";
 
 function SideMenu() {
   const { 

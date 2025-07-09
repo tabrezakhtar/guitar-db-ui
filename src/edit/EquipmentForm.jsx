@@ -2,7 +2,7 @@ import { useEffect, useContext } from "react";
 import { GuitarContext } from "../context/GuitarContext";
 import FormFields from "./FormFields";
 import StarRating from "../components/StarRating";
-import Tag from "../components/Tag";
+import Tag from "../tags/Tag";
 import Select from "react-select";
 
 function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal }) {
