@@ -1,25 +1,22 @@
 import { useEffect, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
+import { useTagData } from "../tags/useTagData";
 import Tag from "../tags/Tag";
 import TagSearch from "../tags/TagSearch";
 
 function SideMenu() {
   const { 
-    fetchTags, 
-    filteredTags, 
     selectedTags, 
     handleTagSelection, 
     clearSelectedTags,
     setEquipmentType,
     equipmentType
   } = useContext(GuitarContext);
+  
+  const { filteredTags } = useTagData();
   const navigate = useNavigate();
   const location = useLocation();
-  
-  useEffect(() => {
-    fetchTags();
-  }, [])
 
   useEffect(() => {
     if (equipmentType) {

@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import { GuitarContext } from "../context/GuitarContext";
+import { useTagData } from "./useTagData";
 
 function TagSearch() {
-  const { searchTags, tagSearchTerm } = useContext(GuitarContext);
+  const { searchTags, tagSearchTerm } = useTagData();
 
   const handleChange = (e) => {
     const value = e.target.value;

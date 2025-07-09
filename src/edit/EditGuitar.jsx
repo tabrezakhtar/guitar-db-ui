@@ -36,14 +36,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (!loading && currentEquipment) {
-      if (!currentEquipment.user?._id && user?._id) {
-        setCurrentEquipment({
-          ...currentEquipment,
-          userId: user._id
-        });
-      }
-    } else if (mode === "add" && !initialized) {
+    if (mode === "add" && !initialized) {
       if (!user) {
         navigate("/");
         return;
@@ -70,7 +63,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
       setCurrentEquipment(defaultEquipment);
       setInitialized(true);
     }
-  }, [loading, currentEquipment, user, mode, initialized, type, navigate, setCurrentEquipment]);
+  }, [mode, initialized, user, type, navigate]);
 
   async function saveEquipment(e) {
     e.preventDefault();
@@ -125,12 +118,6 @@ function EditGuitar({ mode = "edit", type = "" }) {
         <Spinner />
       </div>  
     );
-  }
-
-  if (!authChecked) {
-    <div className="flex justify-center items-center h-full">
-      <Spinner />
-    </div>  
   }
 
   const breadcrumbItems = [

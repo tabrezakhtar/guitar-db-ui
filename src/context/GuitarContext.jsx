@@ -15,9 +15,6 @@ export const initialState = {
   page: 1,
   totalEquipment: 0,
   error: null,
-  tags: [],
-  filteredTags: [],
-  tagSearchTerm: "",
   selectedTags: [],
   sortBy: "date",
   sortOrder: "desc",
@@ -113,63 +110,6 @@ function GuitarProvider({ children }) {
       }));
       throw error;
     }
-  };
-
-  const fetchTags = async () => {
-    setState(prev => ({ ...prev, error: null }));
-
-    try {
-      const response = await fetch(`${BASE_URL}/api/equipment/tags`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data && data.errors) {
-        setState(prev => ({
-          ...prev,
-          error: data.errors
-        }));
-        return {
-          success: false,
-          error: data.errors
-        };
-      }
-
-      const tagsData = data.tags || [];
-      setState((prev) => ({
-        ...prev,
-        tags: tagsData,
-        filteredTags: tagsData,
-        error: null
-      }));
-      return data;
-    } catch (error) {
-      console.error("Failed to fetch tags:", error);
-      setState(prev => ({
-        ...prev,
-        error: error.message
-      }));
-      throw error;
-    }
-  };
-
-  const searchTags = (searchTerm) => {
-    setState(prev => {
-      const filtered = searchTerm.trim() === ""
-        ? prev.tags
-        : prev.tags.filter(tag =>
-          tag.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-
-      return {
-        ...prev,
-        filteredTags: filtered,
-        tagSearchTerm: searchTerm
-      };
-    });
   };
 
   const addComment = async (username, equipmentId, text) => {
@@ -387,8 +327,6 @@ function GuitarProvider({ children }) {
     setFilesToUpload,
     clearFilesToUpload,
     fetchSettings,
-    fetchTags,
-    searchTags,
     fetchUserEquipment,
     addComment,
     handleTagSelection,

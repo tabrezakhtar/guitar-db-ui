@@ -1,5 +1,6 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { GuitarContext } from "../context/GuitarContext";
+import { useTagData } from "../tags/useTagData";
 import FormFields from "./FormFields";
 import StarRating from "../components/StarRating";
 import Tag from "../tags/Tag";
@@ -8,16 +9,10 @@ import Select from "react-select";
 function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal }) {
   const { 
     currentEquipment, 
-    setCurrentEquipment, 
-    tags, 
-    fetchTags 
+    setCurrentEquipment
   } = useContext(GuitarContext);
-
-  useEffect(() => {
-    if (tags.length === 0) {
-      fetchTags();
-    }
-  }, []);
+  
+  const { tags } = useTagData();
 
   const formatOptionLabel = ({ value, label, colour, icon }) => (
     <div className="flex items-center">
