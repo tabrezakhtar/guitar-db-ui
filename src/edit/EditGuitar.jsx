@@ -154,19 +154,6 @@ function EditGuitar({ mode = "edit", type = "" }) {
           </div>
         )}
 
-        {/* {mode === "edit" && (
-          <button
-            onClick={() => {
-              clearCurrentEquipment();
-              navigate(`/view/${currentEquipment._id}`);
-            }}
-            className="hover:underline text-blue-500"
-            disabled={isUploading}
-          >
-            View
-          </button>
-        )} */}
-
         {showModal && (
           <Modal
             title="Delete Confirmation"
