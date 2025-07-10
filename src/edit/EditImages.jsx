@@ -1,8 +1,8 @@
-import { ReactSortable } from "react-sortablejs";
+import DragSortable from "../components/DragSortable";
 import Thumbnail from "../components/Thumbnail";
 import FileDropZone from "../FileDropZone";
 
-export default function EditImages({ disabled, currentEquipment, setCurrentEquipment, setFilesToUpload }) {
+export default function EditImages({ disabled, currentEquipment, setCurrentEquipment, setFilesToUpload, deleteImage }) {
 
   const handleSort = (newList) => {
     if (disabled) return;
@@ -25,7 +25,7 @@ export default function EditImages({ disabled, currentEquipment, setCurrentEquip
         ℹ️ Drag the images to reorder
       </span>
       {currentEquipment?.images ? (
-        <ReactSortable 
+        <DragSortable 
           list={currentEquipment.images} 
           setList={handleSort}
           className="grid grid-cols-2 gap-2"
@@ -41,10 +41,11 @@ export default function EditImages({ disabled, currentEquipment, setCurrentEquip
                 alt={`Thumbnail ${index + 1}: ${currentEquipment.brand} ${currentEquipment.name}`}
                 showDelete={!disabled}
                 disabled={disabled}
+                deleteImage={deleteImage}
               />
             </div>
           ))}
-        </ReactSortable>
+        </DragSortable>
       ) : null}
     </div>
   );

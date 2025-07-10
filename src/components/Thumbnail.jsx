@@ -1,14 +1,12 @@
-import { useState, useContext } from "react";
-import { GuitarContext } from "../context/GuitarContext";
+import { useState } from "react";
 import { getCombinedUrl } from "../utils/cloudinaryUtils";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
 
-const Thumbnail = ({ index, url, alt, showDelete }) => {
+const Thumbnail = ({ index, url, alt, showDelete, deleteImage }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const { deleteImage } = useContext(GuitarContext);
 
   const handleDelete = async () => {
     setShowModal(false);
