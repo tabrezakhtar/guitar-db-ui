@@ -11,7 +11,7 @@ const Modal = ({ message, onConfirm, onCancel }) => {
       onClick={handleBackgroundClick}
     >
       <div className="bg-white p-4 rounded shadow-md">
-        <p className="mb-4">{message}</p>
+        <div className="mb-4">{message}</div>
         <div className="flex justify-end space-x-2">
           <button
             onClick={onCancel}
