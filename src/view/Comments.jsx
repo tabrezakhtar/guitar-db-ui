@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { formatDate, getTimeFromNow } from "../utils/dateUtils";
 import CommentForm from "./CommentForm";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
+import { GuitarContext } from "../context/GuitarContext";
 
-const Comments = ({ comments: initialComments, equipmentId }) => {
+const Comments = ({ equipmentId }) => {
   const [expandedComments, setExpandedComments] = useState(false);
+  const { currentEquipment } = useContext(GuitarContext);
   
-  if (!initialComments || initialComments.length === 0) {
+  const comments = currentEquipment?.comments || [];
+  
+  if (!comments || comments.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-4">
         <h3 className="text-xl font-semibold mb-4">Comments</h3>
@@ -16,7 +20,7 @@ const Comments = ({ comments: initialComments, equipmentId }) => {
     );
   }
   
-  const displayedComments = expandedComments ? initialComments : initialComments.slice(0, 5);
+  const displayedComments = expandedComments ? comments : comments.slice(0, 5);
   
   return (
     <div className="bg-white rounded-lg shadow p-4">
@@ -43,12 +47,12 @@ const Comments = ({ comments: initialComments, equipmentId }) => {
         ))}
       </div>
       
-      {initialComments.length > 5 && (
+      {comments.length > 5 && (
         <button 
           className="mt-3 text-blue-500 hover:text-blue-700 text-sm"
           onClick={() => setExpandedComments(!expandedComments)}
         >
-          {expandedComments ? "Show Less" : `Show All (${initialComments.length}) Comments`} 
+          {expandedComments ? "Show Less" : `Show All (${comments.length}) Comments`} 
         </button>
       )}
     </div>

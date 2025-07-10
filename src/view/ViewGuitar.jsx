@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
@@ -15,10 +15,21 @@ import { useEquipmentData } from "./useEquipmentData";
 const ViewGuitar = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { clearCurrentEquipment, toggleLike } = useContext(GuitarContext);
+  const { clearCurrentEquipment, setCurrentEquipment, toggleLike } = useContext(GuitarContext);
   const { user } = useContext(UserContext);
   const { equipment, loading, error } = useEquipmentData(id);
   const [isLiked, setIsLiked] = useState(false);
+
+  // Set currentEquipment in context when equipment is loaded
+  useEffect(() => {
+    if (equipment) {
+      setCurrentEquipment(equipment);
+    }
+    return () => {
+      // Clear current equipment when component unmounts
+      clearCurrentEquipment();
+    };
+  }, [equipment]); // Only depend on equipment changing
 
   const handleLikeToggle = async () => {
     if (!user) {
@@ -182,7 +193,7 @@ const ViewGuitar = () => {
         </div>
         
         <div className="mt-6">
-          <Comments comments={equipment.comments} equipmentId={equipment._id} />
+          <Comments equipmentId={equipment._id} />
         </div>
       </div>
     </div>

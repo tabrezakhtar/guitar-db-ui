@@ -131,7 +131,7 @@ const EditProfile = () => {
       const result = await deleteProfile();
       
       if (result) {
-        navigate("/");
+        window.location.href = window.location.origin;
       }
     } catch (err) {
       setError(err.message || "Failed to delete profile");
@@ -255,15 +255,20 @@ const EditProfile = () => {
           message={
             deleteLoading ? (
               <div className="text-center max-w-md mx-auto">
-                <div className="text-blue-600 text-6xl mb-4">⏳</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Deleting Profile...
+                <div className="text-red-600 text-6xl mb-6">🗑️</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Deleting Your Profile...
                 </h3>
-                <p className="text-gray-600 mb-4">
-                  Please wait while we delete your profile and all associated data. This may take a few moments.
+                <p className="text-gray-700 mb-6 text-lg">
+                  Please wait while we permanently delete your profile, images, and all equipment data.
                 </p>
-                <div className="flex justify-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative">
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-200 border-t-red-600"></div>
+                  </div>
+                  <p className="text-sm text-gray-500 animate-pulse">
+                    This may take a few moments...
+                  </p>
                 </div>
               </div>
             ) : (
