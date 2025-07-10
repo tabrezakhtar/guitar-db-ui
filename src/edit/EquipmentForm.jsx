@@ -1,17 +1,10 @@
-import { useContext } from "react";
-import { GuitarContext } from "../context/GuitarContext";
 import { useTagData } from "../tags/useTagData";
 import FormFields from "./FormFields";
 import StarRating from "../components/StarRating";
 import Tag from "../tags/Tag";
 import Select from "react-select";
 
-function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal }) {
-  const { 
-    currentEquipment, 
-    setCurrentEquipment
-  } = useContext(GuitarContext);
-  
+function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal, currentEquipment, setCurrentEquipment }) {
   const { tags } = useTagData();
 
   const formatOptionLabel = ({ value, label, colour, icon }) => (

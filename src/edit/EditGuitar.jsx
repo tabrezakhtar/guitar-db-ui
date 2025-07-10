@@ -24,9 +24,6 @@ function EditGuitar({ mode = "edit", type = "" }) {
     cloudinaryUpload,
     filesToUpload,
     setFilesToUpload,
-    clearFilesToUpload,
-    clearCurrentEquipment,
-    deleteImage
   } = useEditEquipmentData(id, mode);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -60,10 +57,11 @@ function EditGuitar({ mode = "edit", type = "" }) {
         Object.assign(defaultEquipment, { effectType: "" });
       }
 
+      // Set both the hook's equipment state and mark as initialized
       setCurrentEquipment(defaultEquipment);
       setInitialized(true);
     }
-  }, [mode, initialized, user, type, navigate]);
+  }, [mode, initialized, user, type, navigate, setCurrentEquipment]);
 
   async function saveEquipment(e) {
     e.preventDefault();
@@ -74,29 +72,42 @@ function EditGuitar({ mode = "edit", type = "" }) {
     setIsUploading(true);
     setUploadProgress(null);
     try {
+      let updatedEquipment = { ...currentEquipment };
+      
       if (filesToUpload && filesToUpload.length > 0) {
         for (let i = 0; i < filesToUpload.length; i++) {
           setUploadProgress(`Saving Image (${i + 1} of ${filesToUpload.length})`);
-          const result = await cloudinaryUpload(filesToUpload[i]);
+          const result = await cloudinaryUpload(filesToUpload[i], updatedEquipment);
           console.log("uploaded", result);
+          
+          // Update the local equipment object with the new image URL
+          if (updatedEquipment.images) {
+            updatedEquipment = {
+              ...updatedEquipment,
+              images: updatedEquipment.images.map((image) =>
+                image === filesToUpload[i].url ? result : image
+              )
+            };
+          }
         }
       }
       setUploadProgress(null);
 
-      if (!currentEquipment.user?._id && user?._id) {
-        setCurrentEquipment({
-          ...currentEquipment,
+      if (!updatedEquipment.user?._id && user?._id) {
+        updatedEquipment = {
+          ...updatedEquipment,
           userId: user._id
-        });
+        };
       }
       
-      if (!currentEquipment._id) {
-        const result = await addEquipment(type);
+      if (!updatedEquipment._id) {
+        // Pass the updated equipment data to addEquipment
+        const result = await addEquipment(type, updatedEquipment);
         setSaved(true);
         navigate(`/edit/${result._id}`);
         return;
       } else {
-        await updateEquipment();
+        await updateEquipment(updatedEquipment);
       }
 
       setSaved(true);
@@ -166,7 +177,12 @@ function EditGuitar({ mode = "edit", type = "" }) {
 
         <div className="grid sm:grid-cols-1 md:grid-cols-5 gap-4">
           <div className="md:col-span-2">
-            <EditImages disabled={isUploading} />
+            <EditImages 
+              disabled={isUploading}
+              currentEquipment={currentEquipment}
+              setCurrentEquipment={setCurrentEquipment}
+              setFilesToUpload={setFilesToUpload}
+            />
           </div>
 
           <div className="md:col-span-3">
@@ -177,6 +193,8 @@ function EditGuitar({ mode = "edit", type = "" }) {
               mode={mode}
               saveEquipment={saveEquipment}
               setShowModal={setShowModal}
+              currentEquipment={currentEquipment}
+              setCurrentEquipment={setCurrentEquipment}
             />
           </div>
         </div>

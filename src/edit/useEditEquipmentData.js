@@ -44,7 +44,6 @@ export const useEditEquipmentData = (id, mode = "edit") => {
       }
 
       setEquipmentState(data.item);
-      setCurrentEquipment(data.item);  // Update context
       setSettings(data.settings || {});
       setIsLoading(false);
 
@@ -61,7 +60,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     setError("Authentication error: " + errorMsg);
   };
 
-  const updateEquipment = async () => {
+  const updateEquipment = async (equipmentData = null) => {
     const isValid = await validateToken(handleAuthError);
     if (!isValid) {
       setError("Your session has expired. Please login again.");
@@ -69,8 +68,10 @@ export const useEditEquipmentData = (id, mode = "edit") => {
       return null;
     }
 
+    const dataToSend = equipmentData || equipment;
+
     return new Promise((resolve, reject) => {
-      if (!equipment?._id) {
+      if (!dataToSend?._id) {
         resolve(null);
         return;
       }
@@ -88,10 +89,10 @@ export const useEditEquipmentData = (id, mode = "edit") => {
           headers["Authorization"] = `Bearer ${token}`;
         }
 
-        fetch(`${BASE_URL}/api/equipment/update/${equipment._id}`, {
+        fetch(`${BASE_URL}/api/equipment/update/${dataToSend._id}`, {
           method: "PUT",
           headers,
-          body: JSON.stringify(equipment),
+          body: JSON.stringify(dataToSend),
         })
           .then(response => {
             if (!response.ok) {
@@ -139,7 +140,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     });
   };
 
-  const addEquipment = async (type) => {
+  const addEquipment = async (type, equipmentData = null) => {
     const isValid = await validateToken(handleAuthError);
     if (!isValid) {
       setError("Your session has expired. Please login again.");
@@ -147,8 +148,10 @@ export const useEditEquipmentData = (id, mode = "edit") => {
       return null;
     }
 
+    const dataToSend = equipmentData || equipment;
+
     return new Promise((resolve, reject) => {
-      if (!type || !equipment) {
+      if (!type || !dataToSend) {
         resolve(null);
         return;
       }
@@ -169,7 +172,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
         fetch(`${BASE_URL}/api/equipment/add?type=${type}`, {
           method: "POST",
           headers,
-          body: JSON.stringify(equipment),
+          body: JSON.stringify(dataToSend),
         })
           .then(response => {
             if (!response.ok) {
@@ -263,8 +266,10 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     }
   };
 
-  const cloudinaryUploadForGuitar = async (file) => {
+  const cloudinaryUploadForGuitar = async (file, currentEquipmentData = null) => {
     setError(null);
+
+    const equipmentToUse = currentEquipmentData || equipment;
 
     try {
       const result = await cloudinaryUpload(file, "guitars");
@@ -278,8 +283,8 @@ export const useEditEquipmentData = (id, mode = "edit") => {
         return result;
       }
 
-      if (equipment && equipment.images) {
-        const updatedImages = equipment.images.map((image) =>
+      if (equipmentToUse && equipmentToUse.images) {
+        const updatedImages = equipmentToUse.images.map((image) =>
           getCombinedUrl(image) === file.url ? result.secure_url : image
         );
 
@@ -287,8 +292,11 @@ export const useEditEquipmentData = (id, mode = "edit") => {
           fileObj.url === file.url ? { ...fileObj, url: result.secure_url } : fileObj
         );
 
-        setEquipmentState({ ...equipment, images: updatedImages });
+        const updatedEquipment = { ...equipmentToUse, images: updatedImages };
+        setEquipmentState(updatedEquipment);
         setFilesToUploadState(updatedFilesToUpload);
+        
+        return result.secure_url;
       }
 
       return result.secure_url;

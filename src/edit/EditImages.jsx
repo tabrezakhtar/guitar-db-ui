@@ -1,11 +1,8 @@
-import { useContext } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Thumbnail from "../components/Thumbnail";
-import { GuitarContext } from "../context/GuitarContext";
 import FileDropZone from "../FileDropZone";
 
-export default function EditImages({ disabled }) {
-  const { currentEquipment, setCurrentEquipment } = useContext(GuitarContext);
+export default function EditImages({ disabled, currentEquipment, setCurrentEquipment, setFilesToUpload }) {
 
   const handleSort = (newList) => {
     if (disabled) return;
@@ -18,7 +15,12 @@ export default function EditImages({ disabled }) {
 
   return (
     <div className={disabled ? "pointer-events-none opacity-60" : ""}>
-      <FileDropZone disabled={disabled} />
+      <FileDropZone 
+        disabled={disabled} 
+        currentEquipment={currentEquipment}
+        setCurrentEquipment={setCurrentEquipment}
+        setFilesToUpload={setFilesToUpload}
+      />
       <span className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 font-medium w-full">
         ℹ️ Drag the images to reorder
       </span>
