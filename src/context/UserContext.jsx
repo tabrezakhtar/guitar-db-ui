@@ -373,6 +373,70 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const deleteProfile = async () => {
+    const isValid = await handleTokenValidation();
+    if (!isValid) {
+      setState(prev => ({ 
+        ...prev, 
+        error: "Your session has expired. Please login again.", 
+        loading: false 
+      }));
+      return null;
+    }
+
+    setState(prev => ({ ...prev, loading: true, error: null }));
+    
+    try {
+      const token = localStorage.getItem("token");
+      const headers = { 
+        "Content-Type": "application/json"
+      };
+      
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch(`${BASE_URL}/api/users/deleteProfile`, {
+        method: "DELETE",
+        headers,
+        body: JSON.stringify({ userId: state.user?._id })
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.errors, 
+          loading: false 
+        }));
+        return null;
+      }
+      
+      if (!response.ok) {
+        setState(prev => ({ 
+          ...prev, 
+          error: data.message || "Failed to delete profile", 
+          loading: false 
+        }));
+        return null;
+      }
+      
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      
+      setState(initialState);
+      return data;
+    } catch (error) {
+      setState(prev => ({ 
+        ...prev, 
+        error: error.message || "Failed to delete profile", 
+        loading: false 
+      }));
+      return null;
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -405,6 +469,7 @@ const UserProvider = ({ children }) => {
     clearError,
     updateUserLocal,
     deleteAvatar,
+    deleteProfile,
     setHeaderVisibility,
     validateToken: handleTokenValidation
   };

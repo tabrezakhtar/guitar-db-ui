@@ -4,10 +4,11 @@ import { UserContext } from "../context/UserContext";
 import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 import Avatar from "./Avatar";
 import Breadcrumbs from "../components/Breadcrumbs";
+import Modal from "../components/Modal";
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  const { user, updateUserProfile, deleteAvatar } = useContext(UserContext);
+  const { user, updateUserProfile, deleteAvatar, deleteProfile } = useContext(UserContext);
   const [profile, setProfile] = useState({
     username: "",
     bio: "",
@@ -21,6 +22,8 @@ const EditProfile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -116,6 +119,27 @@ const EditProfile = () => {
     }
   };
 
+  const handleDeleteProfile = () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteProfile = async () => {
+    setDeleteLoading(true);
+    setError(null);
+    
+    try {
+      const result = await deleteProfile();
+      
+      if (result) {
+        navigate("/");
+      }
+    } catch (err) {
+      setError(err.message || "Failed to delete profile");
+      setDeleteLoading(false);
+      setShowDeleteModal(false);
+    }
+  };
+
   return (
     <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px]">
       <div className="mb-4">
@@ -199,23 +223,68 @@ const EditProfile = () => {
           />
         </div>
         
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-between">
           <button 
             type="button" 
-            onClick={() => navigate("/profile")}
-            className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            onClick={handleDeleteProfile}
+            className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
           >
-            Cancel
+            Delete Profile
           </button>
-          <button 
-            type="submit" 
-            disabled={loading}
-            className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-          >
-            {loading ? "Saving..." : "Save Profile"}
-          </button>
+          <div className="flex space-x-4">
+            <button 
+              type="button" 
+              onClick={() => navigate("/profile")}
+              className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+            >
+              {loading ? "Saving..." : "Save Profile"}
+            </button>
+          </div>
         </div>
       </form>
+
+      {showDeleteModal && (
+        <Modal
+          message={
+            deleteLoading ? (
+              <div className="text-center max-w-md mx-auto">
+                <div className="text-blue-600 text-6xl mb-4">⏳</div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Deleting Profile...
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Please wait while we delete your profile and all associated data. This may take a few moments.
+                </p>
+                <div className="flex justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center max-w-md mx-auto">
+                <div className="text-red-600 text-6xl mb-4">⚠️</div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Are you sure you want to delete your profile?
+                </h3>
+                <p className="text-gray-600 mb-2">
+                  This action will permanently delete your profile, all your uploaded images, and all your equipment data.
+                </p>
+                <p className="text-red-600 font-semibold">
+                  This cannot be undone.
+                </p>
+              </div>
+            )
+          }
+          onConfirm={deleteLoading ? undefined : confirmDeleteProfile}
+          onCancel={deleteLoading ? undefined : () => setShowDeleteModal(false)}
+        />
+      )}
     </div>
   );
 };
