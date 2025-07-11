@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from "react";
 const CustomImageGallery = ({ items, additionalClass = "" }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
   const thumbnailsRef = useRef(null);
 
   const goToPrevious = () => {
@@ -33,6 +35,49 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
   useEffect(() => {
     scrollToThumbnail(currentIndex);
   }, [currentIndex]);
+
+  useEffect(() => {
+    const handleTouchMove = (e) => {
+      if (touchStart !== null) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    return () => {
+      document.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [touchStart]);
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = (e) => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && items.length > 1) {
+      goToNext();
+    }
+    if (isRightSwipe && items.length > 1) {
+      goToPrevious();
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
 
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
@@ -65,8 +110,11 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
       {/* Main Image Display */}
       <div className="relative bg-gray-100 rounded-lg overflow-hidden h-96">
         <div 
-          className="flex transition-transform duration-300 ease-in-out h-full"
+          className="flex transition-transform duration-300 ease-in-out h-full touch-pan-y"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
         >
           {items.map((item, index) => (
             <div key={index} className="w-full h-full flex-shrink-0">
@@ -164,8 +212,11 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
         >
           <div className="relative w-full h-full flex items-center justify-center p-4">
             <div 
-              className="flex transition-transform duration-300 ease-in-out h-full w-full"
+              className="flex transition-transform duration-300 ease-in-out h-full w-full touch-pan-y"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
             >
               {items.map((item, index) => (
                 <div key={index} className="w-full h-full flex-shrink-0 flex items-center justify-center">
