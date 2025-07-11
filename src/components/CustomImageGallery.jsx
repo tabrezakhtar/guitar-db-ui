@@ -70,17 +70,23 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
           <>
             <button
               onClick={goToPrevious}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all z-10"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-4 transition-all z-10"
+              style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
               aria-label="Previous image"
             >
-              ←
+              <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="48" height="48">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
             </button>
             <button
               onClick={goToNext}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all z-10"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-4 transition-all z-10"
+              style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
               aria-label="Next image"
             >
-              →
+              <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="48" height="48">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
             </button>
           </>
         )}
@@ -88,10 +94,13 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
         {/* Fullscreen Button */}
         <button
           onClick={toggleFullscreen}
-          className="absolute top-2 left-2 bg-black bg-opacity-50 text-white p-2 rounded hover:bg-opacity-70 transition-all z-10"
+          className="absolute top-2 left-2 bg-transparent text-white hover:text-gray-300 p-3 transition-all z-10"
+          style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
           aria-label="Fullscreen"
         >
-          ⛶
+          <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="28" height="28">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+          </svg>
         </button>
 
         {/* Image Counter */}
@@ -136,18 +145,27 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
           aria-label="Fullscreen image gallery"
         >
           <div className="relative w-full h-full flex items-center justify-center p-4">
-            {currentItem.renderItem ? (
-              <div className="w-full h-full max-w-4xl max-h-full">
-                {currentItem.renderItem()}
-              </div>
-            ) : (
-              <img
-                src={currentItem.original}
-                alt={`Fullscreen image ${currentIndex + 1}`}
-                className="w-auto h-full max-w-full object-contain"
-                onClick={(e) => e.stopPropagation()}
-              />
-            )}
+            <div 
+              className="flex transition-transform duration-300 ease-in-out h-full w-full"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
+              {items.map((item, index) => (
+                <div key={index} className="w-full h-full flex-shrink-0 flex items-center justify-center">
+                  {item.renderItem ? (
+                    <div className="w-full h-full max-w-4xl max-h-full">
+                      {item.renderItem()}
+                    </div>
+                  ) : (
+                    <img
+                      src={item.original}
+                      alt={`Fullscreen image ${index + 1}`}
+                      className="w-auto h-full max-w-full object-contain"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
 
             {/* Fullscreen Navigation */}
             {items.length > 1 && (
@@ -157,20 +175,26 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
                     e.stopPropagation();
                     goToPrevious();
                   }}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all text-xl"
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-5 transition-all z-10"
+                  style={{ filter: 'drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.8))' }}
                   aria-label="Previous image"
                 >
-                  ←
+                  <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" width="56" height="56">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
                 </button>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     goToNext();
                   }}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all text-xl"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-5 transition-all z-10"
+                  style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
                   aria-label="Next image"
                 >
-                  →
+                  <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" width="56" height="56">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
                 </button>
               </>
             )}
@@ -178,10 +202,12 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
             {/* Close Button */}
             <button
               onClick={toggleFullscreen}
-              className="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded hover:bg-opacity-70 transition-all text-xl"
+              className="absolute top-4 right-4 bg-transparent text-white hover:text-gray-300 p-3 transition-all z-10"
               aria-label="Close fullscreen"
             >
-              ✕
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
+                <path d="M18 6L6 18M6 6l12 12"></path>
+              </svg>
             </button>
 
             {/* Fullscreen Counter */}
