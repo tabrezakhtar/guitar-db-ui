@@ -1,6 +1,4 @@
-import { useState } from "react";
-import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css";
+import CustomImageGallery from "../components/CustomImageGallery";
 import { getCloudinaryThumbnail } from "../utils/cloudinaryUtils";
 import SkeletonImage from "../components/SkeletonImage";
 
@@ -52,10 +50,8 @@ const Gallery = ({ equipment }) => {
     <div className="flex-grow h-full">
       {galleryItems.length > 0 ? (
         <div className="h-full flex flex-col">
-          <ImageGallery 
+          <CustomImageGallery 
             items={galleryItems}
-            showPlayButton={false}
-            lazyLoad={true}
             additionalClass="h-full flex-grow gallery-container"
           />
         </div>
