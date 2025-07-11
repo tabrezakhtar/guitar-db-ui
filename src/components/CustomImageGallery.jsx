@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const CustomImageGallery = ({ items, additionalClass = "" }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const thumbnailsRef = useRef(null);
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
@@ -15,6 +16,23 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
   const goToSlide = (index) => {
     setCurrentIndex(index);
   };
+
+  const scrollToThumbnail = (index) => {
+    if (thumbnailsRef.current) {
+      const thumbnail = thumbnailsRef.current.children[index];
+      if (thumbnail) {
+        thumbnail.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center"
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    scrollToThumbnail(currentIndex);
+  }, [currentIndex]);
 
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
@@ -113,7 +131,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
 
       {/* Thumbnails */}
       {items.length > 1 && (
-        <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+        <div ref={thumbnailsRef} className="flex gap-2 mt-4 overflow-x-auto pb-2">
           {items.map((item, index) => (
             <button
               key={index}
