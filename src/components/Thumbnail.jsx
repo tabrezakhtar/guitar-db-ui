@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { getCombinedUrl } from "../utils/cloudinaryUtils";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
 
@@ -12,7 +11,7 @@ const Thumbnail = ({ index, url, alt, showDelete, deleteImage }) => {
     setShowModal(false);
     setIsDeleting(true);
     try {
-      await deleteImage(getCombinedUrl(url));
+      await deleteImage(url);
     } finally {
       setIsDeleting(false);
     }

@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { validateToken } from "../utils/tokenUtils";
-import { cloudinaryUpload, getCombinedUrl } from "../utils/cloudinaryUtils";
+import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -285,7 +285,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
 
       if (equipmentToUse && equipmentToUse.images) {
         const updatedImages = equipmentToUse.images.map((image) =>
-          getCombinedUrl(image) === file.url ? result.secure_url : image
+          image === file.url ? result.secure_url : image
         );
 
         const updatedFilesToUpload = filesToUpload.map((fileObj) =>
@@ -325,7 +325,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
 
     if (imageUrl.startsWith("blob:http")) {
       const updatedImages = equipment.images.filter(
-        (image) => getCombinedUrl(image) !== imageUrl
+        (image) => image !== imageUrl
       );
       const updatedFilesToUpload = filesToUpload.filter(
         (fileObj) => fileObj.url !== imageUrl
@@ -368,7 +368,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
       }
 
       const updatedImages = equipment.images.filter(
-        (image) => getCombinedUrl(image) !== imageUrl
+        (image) => image !== imageUrl
       );
       const updatedFilesToUpload = filesToUpload.filter(
         (fileObj) => fileObj.url !== imageUrl

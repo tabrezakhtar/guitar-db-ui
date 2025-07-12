@@ -1,7 +1,5 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import PropTypes from "prop-types";
-import { getCombinedUrl } from "../utils/cloudinaryUtils";
-import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 import { validateToken } from "../utils/tokenUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
