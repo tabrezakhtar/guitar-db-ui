@@ -7,7 +7,8 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ProtectedRoute = ({ children }) => {
   const [isChecking, setIsChecking] = useState(true);
   const [authError, setAuthError] = useState(null);
-  const { user, validateToken, isTokenValid, isValidatingToken } = useContext(UserContext);
+  const [hasRedirectedForDeletion, setHasRedirectedForDeletion] = useState(false);
+  const { user, validateToken, isTokenValid, isValidatingToken, profileDeleted, clearProfileDeleted } = useContext(UserContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -42,8 +43,19 @@ const ProtectedRoute = ({ children }) => {
   }
   
   if (!user) {
-    window.location.href = `${BASE_URL}/login`;
-    return;
+    // If profile was deleted, redirect to home page instead of login
+    if (profileDeleted && !hasRedirectedForDeletion) {
+      setHasRedirectedForDeletion(true);
+      clearProfileDeleted();
+      window.location.href = window.location.origin;
+      return null;
+    }
+    
+    // Don't redirect to login if we've already handled a profile deletion
+    if (!hasRedirectedForDeletion) {
+      window.location.href = `${BASE_URL}/login`;
+    }
+    return null;
   }
 
   if (!isTokenValid) {

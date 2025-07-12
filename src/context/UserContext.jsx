@@ -10,7 +10,8 @@ const initialState = {
   error: null,
   showHeader: true,
   isTokenValid: false,
-  isValidatingToken: false
+  isValidatingToken: false,
+  profileDeleted: false
 };
 
 const UserContext = createContext(null);
@@ -425,7 +426,10 @@ const UserProvider = ({ children }) => {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       
-      setState(initialState);
+      setState(prev => ({ 
+        ...initialState, 
+        profileDeleted: true 
+      }));
       return data;
     } catch (error) {
       setState(prev => ({ 
@@ -459,6 +463,10 @@ const UserProvider = ({ children }) => {
     setState(prev => ({ ...prev, showHeader: visible }));
   };
 
+  const clearProfileDeleted = () => {
+    setState(prev => ({ ...prev, profileDeleted: false }));
+  };
+
   const value = {
     ...state,
     fetchUserProfile,
@@ -471,6 +479,7 @@ const UserProvider = ({ children }) => {
     deleteAvatar,
     deleteProfile,
     setHeaderVisibility,
+    clearProfileDeleted,
     validateToken: handleTokenValidation
   };
 

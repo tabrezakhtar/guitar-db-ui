@@ -131,7 +131,8 @@ const EditProfile = () => {
       const result = await deleteProfile();
       
       if (result) {
-        window.location.href = window.location.origin;
+        // ProtectedRoute will handle the redirect to home page
+        setShowDeleteModal(false);
       }
     } catch (err) {
       setError(err.message || "Failed to delete profile");
