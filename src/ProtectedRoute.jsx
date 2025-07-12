@@ -43,7 +43,6 @@ const ProtectedRoute = ({ children }) => {
   }
   
   if (!user) {
-    // If profile was deleted, redirect to home page instead of login
     if (profileDeleted && !hasRedirectedForDeletion) {
       setHasRedirectedForDeletion(true);
       clearProfileDeleted();
@@ -51,7 +50,6 @@ const ProtectedRoute = ({ children }) => {
       return null;
     }
     
-    // Don't redirect to login if we've already handled a profile deletion
     if (!hasRedirectedForDeletion) {
       window.location.href = `${BASE_URL}/login`;
     }

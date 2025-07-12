@@ -30,17 +30,17 @@ const Comments = ({ equipmentId }) => {
       
       <div className="space-y-4 mt-6">
         {displayedComments.map((comment, index) => (
-          <div key={comment._id || `comment-${index}`} className="border-b pb-3 last:border-b-0 last:pb-0">
+          <div key={comment._id || `comment-${index}`} className="bg-gray-50 rounded-lg p-4 border border-gray-200 shadow-sm">
             <div className="flex">
               <div className="mr-3 self-center">
                 <AvatarDisplayOnly imageUrl={comment.user?.avatarUrl} username={comment.user?.username} size="xsmall" />
               </div>
               <div className="flex-1">
-                <p className="text-gray-800">{comment.text}</p>
-                <div className="flex justify-between mt-2 text-sm text-gray-500">
-                  <span>{`${comment.user?.username?.substring(0, 32)}`}</span>
-                  <span title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
+                <div className="flex justify-between items-start mb-2">
+                  <span className="font-medium text-gray-900">{comment.user?.username?.substring(0, 32)}</span>
+                  <span className="text-xs text-gray-500" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
                 </div>
+                <p className="text-gray-800 leading-relaxed">{comment.text}</p>
               </div>
             </div>
           </div>
