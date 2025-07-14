@@ -9,6 +9,7 @@ import Profile from "./profile/Profile";
 import EditProfile from "./profile/EditProfile";
 import { UserProvider } from "./context/UserContext";
 import { GuitarProvider } from "./context/GuitarContext";
+import { TagProvider } from "./context/TagContext";
 import Header from "./Header";
 import ProtectedRoute from "./ProtectedRoute";
 import SaveCredentials from "./SaveCredentials";
@@ -19,7 +20,8 @@ function App() {
       <Router>
         <UserProvider>
           <GuitarProvider>
-            <Header />
+            <TagProvider>
+              <Header />
 
             <div>
               <Routes>
@@ -57,6 +59,7 @@ function App() {
                 <Route path="/auth" element={<SaveCredentials />} />
               </Routes>
             </div>
+            </TagProvider>
           </GuitarProvider>
         </UserProvider>
       </Router>

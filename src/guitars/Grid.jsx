@@ -62,11 +62,17 @@ function Grid() {
     }
     
     try {
-      await toggleLike(equipmentItem._id);
+      const result = await toggleLike(equipmentItem._id);
+      
       setLikedEquipment(prev => ({
         ...prev,
         [equipmentItem._id]: !prev[equipmentItem._id]
       }));
+      
+      if (result && result.likes !== undefined) {
+        equipmentItem.likesCount = result.likes;
+      }
+      
     } catch (error) {
       console.error("Error toggling like:", error);
     }
@@ -115,7 +121,6 @@ function Grid() {
       } else if (dims.height > dims.width * 1.2) {
         aspect = 3 / 4;
       }
-      // Estimate height for balancing
       const estimatedHeight = 1 / aspect;
       const minCol = columnsHeights.indexOf(Math.min(...columnsHeights));
       columns[minCol].push(item);
@@ -195,7 +200,6 @@ function Grid() {
                 tileClass = "aspect-[3/5]";
               }
 
-              // Show skeleton while image is loading
               if (imageUrl && loadingImages.has(item._id)) {
                 return <TileSkeleton key={item._id} tileClass={tileClass} />;
               }
@@ -242,9 +246,15 @@ function Grid() {
                       </div>
                     </div>
                   </div>
-                  <div className="absolute bottom-2 right-2 flex items-center gap-2 pointer-events-none">
+                  <div className="absolute bottom-2 left-2 pointer-events-none">
+                    <span className="bg-transparent text-white text-xs px-2 py-1 rounded inline-flex items-center drop-shadow-md pointer-events-auto">
+                      <span className="mr-1">💬</span>
+                      {item.commentCount}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-2 right-2 pointer-events-none">
                     <button
-                      className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200 drop-shadow-md pointer-events-auto`}
+                      className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200 drop-shadow-md pointer-events-auto hover:cursor-pointer`}
                       onClick={(e) => handleLikeClick(e, item)}
                       disabled={item.user?._id === user?._id}
                       title={!user ? "Create an account to like!" : ""}
@@ -252,10 +262,6 @@ function Grid() {
                       <span className="mr-1">👍</span>
                       {item.likesCount || 0}
                     </button>
-                    <span className="bg-teal-400 text-white text-xs px-2 py-1 rounded inline-flex items-center drop-shadow-md pointer-events-auto">
-                      <span className="mr-1">💬</span>
-                      {item.commentCount}
-                    </span>
                   </div>
                 </div>
               );
