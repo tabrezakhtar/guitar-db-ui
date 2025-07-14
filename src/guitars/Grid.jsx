@@ -95,6 +95,19 @@ function Grid() {
     updateParams({ search: null });
   };
 
+  const handleClearAllFilters = () => {
+    clearSearch();
+    setSelectedTagsByIds([]);
+    setEquipmentType("");
+    updateParams({ 
+      search: null, 
+      tags: null, 
+      type: null 
+    });
+  };
+
+  const hasFiltersApplied = searchTerm.trim() || selectedTags.length > 0 || equipmentType;
+
   const handleTagSelectionWithUrl = (tag) => {
     handleTagSelection(tag);
     
@@ -195,7 +208,18 @@ function Grid() {
   return (
     <div ref={containerRef} className="min-h-screen max-w-7xl mx-auto px-4">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">{searchTerm.trim() ? equipment.length : totalEquipment || 0} Results</h2>
+        <div className="flex items-center gap-3">
+          <h2 className="text-xl font-bold">{searchTerm.trim() ? equipment.length : totalEquipment || 0} Results</h2>
+          {hasFiltersApplied && (
+            <button
+              onClick={handleClearAllFilters}
+              className="text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors duration-200"
+              title="Clear all filters"
+            >
+              Clear All
+            </button>
+          )}
+        </div>
         <div className="flex items-center">
           <div className="relative">
             <input
