@@ -26,6 +26,7 @@ function Grid() {
     equipmentType,
     setEquipmentType,
     setSelectedTagsByIds,
+    setSelectedTagsByNames,
   } = useContext(GuitarContext);
   
   const { user } = useContext(UserContext);
@@ -51,7 +52,7 @@ function Grid() {
     }
 
     if (urlTags.length > 0 && tags.length > 0) {
-      setSelectedTagsByIds(urlTags, tags);
+      setSelectedTagsByNames(urlTags, tags);
     }
 
     if (urlType && urlType !== equipmentType) {
@@ -98,15 +99,15 @@ function Grid() {
     handleTagSelection(tag);
     
     const isCurrentlySelected = selectedTags.some(t => t._id === tag._id);
-    let newSelectedTagIds;
+    let newSelectedTagNames;
     
     if (isCurrentlySelected) {
-      newSelectedTagIds = selectedTags.filter(t => t._id !== tag._id).map(t => t._id);
+      newSelectedTagNames = selectedTags.filter(t => t._id !== tag._id).map(t => t.name);
     } else {
-      newSelectedTagIds = [...selectedTags.map(t => t._id), tag._id];
+      newSelectedTagNames = [...selectedTags.map(t => t.name), tag.name];
     }
     
-    updateParams({ tags: newSelectedTagIds });
+    updateParams({ tags: newSelectedTagNames });
   };
 
   const handleLikeClick = async (e, equipmentItem) => {

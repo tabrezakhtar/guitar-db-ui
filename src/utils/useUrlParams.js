@@ -10,7 +10,7 @@ export const useUrlParams = () => {
 
   const getArrayParam = useCallback((key, defaultValue = []) => {
     const value = searchParams.get(key);
-    return value ? value.split(",").filter(Boolean) : defaultValue;
+    return value ? value.split(",").map(item => decodeURIComponent(item)).filter(Boolean) : defaultValue;
   }, [searchParams]);
 
   const updateParams = useCallback((updates) => {
@@ -20,7 +20,7 @@ export const useUrlParams = () => {
       if (value === null || value === undefined || value === "" || (Array.isArray(value) && value.length === 0)) {
         newParams.delete(key);
       } else if (Array.isArray(value)) {
-        newParams.set(key, value.join(","));
+        newParams.set(key, value.map(item => encodeURIComponent(item)).join(","));
       } else {
         newParams.set(key, value.toString());
       }

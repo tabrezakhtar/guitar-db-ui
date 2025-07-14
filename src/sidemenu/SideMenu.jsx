@@ -27,15 +27,15 @@ function SideMenu() {
     handleTagSelection(tag);
     
     const isCurrentlySelected = selectedTags.some(t => t._id === tag._id);
-    let newSelectedTagIds;
+    let newSelectedTagNames;
     
     if (isCurrentlySelected) {
-      newSelectedTagIds = selectedTags.filter(t => t._id !== tag._id).map(t => t._id);
+      newSelectedTagNames = selectedTags.filter(t => t._id !== tag._id).map(t => t.name);
     } else {
-      newSelectedTagIds = [...selectedTags.map(t => t._id), tag._id];
+      newSelectedTagNames = [...selectedTags.map(t => t.name), tag.name];
     }
     
-    updateParams({ tags: newSelectedTagIds });
+    updateParams({ tags: newSelectedTagNames });
   };
 
   const handleClearTags = () => {
