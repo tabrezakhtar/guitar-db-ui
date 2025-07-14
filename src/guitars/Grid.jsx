@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
+import { useTagContext } from "../context/TagContext";
 import SkeletonImage from "../components/SkeletonImage";
 import Tag from "../tags/Tag";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
@@ -10,9 +11,11 @@ import useInfiniteScroll from "../utils/useInfiniteScroll";
 import { useEquipmentGridData } from "./useEquipmentGridData";
 import { useImageDimensions } from "./useImageDimensions";
 import TileSkeleton from "./TileSkeleton";
+import { useUrlParams } from "../utils/useUrlParams";
 
 function Grid() {
   const navigate = useNavigate();
+  const { getParam, getArrayParam, updateParams } = useUrlParams();
   const { 
     sortBy,
     sortOrder,
@@ -20,13 +23,41 @@ function Grid() {
     handleTagSelection,
     setSortOptions,
     toggleLike,
+    equipmentType,
+    setEquipmentType,
+    setSelectedTagsByIds,
   } = useContext(GuitarContext);
   
   const { user } = useContext(UserContext);
+  const { tags } = useTagContext();
   const { searchTerm, handleSearch, clearSearch, equipment, totalEquipment, loading, loadMore } = useEquipmentGridData();
   const { imageDimensions, loadingImages } = useImageDimensions(equipment);
   const [likedEquipment, setLikedEquipment] = useState({});
   const [columnsCount, setColumnsCount] = useState(1);
+
+  useEffect(() => {
+    const urlSearch = getParam("search");
+    const urlSort = getParam("sort", "date");
+    const urlOrder = getParam("order", "desc");
+    const urlTags = getArrayParam("tags");
+    const urlType = getParam("type");
+
+    if (urlSearch) {
+      handleSearch(urlSearch);
+    }
+    
+    if (urlSort !== sortBy || urlOrder !== sortOrder) {
+      setSortOptions(urlSort, urlOrder);
+    }
+
+    if (urlTags.length > 0 && tags.length > 0) {
+      setSelectedTagsByIds(urlTags, tags);
+    }
+
+    if (urlType && urlType !== equipmentType) {
+      setEquipmentType(urlType);
+    }
+  }, [tags]);
 
   const updateColumnsCount = useCallback(() => {
     if (window.innerWidth >= 1024) {
@@ -47,6 +78,35 @@ function Grid() {
   const handleSortChange = (event) => {
     const [newSortBy, newSortOrder] = event.target.value.split("|");
     setSortOptions(newSortBy, newSortOrder);
+    updateParams({
+      sort: newSortBy,
+      order: newSortOrder
+    });
+  };
+
+  const handleSearchChange = (term) => {
+    handleSearch(term);
+    updateParams({ search: term });
+  };
+
+  const handleClearSearch = () => {
+    clearSearch();
+    updateParams({ search: null });
+  };
+
+  const handleTagSelectionWithUrl = (tag) => {
+    handleTagSelection(tag);
+    
+    const isCurrentlySelected = selectedTags.some(t => t._id === tag._id);
+    let newSelectedTagIds;
+    
+    if (isCurrentlySelected) {
+      newSelectedTagIds = selectedTags.filter(t => t._id !== tag._id).map(t => t._id);
+    } else {
+      newSelectedTagIds = [...selectedTags.map(t => t._id), tag._id];
+    }
+    
+    updateParams({ tags: newSelectedTagIds });
   };
 
   const handleLikeClick = async (e, equipmentItem) => {
@@ -142,12 +202,12 @@ function Grid() {
               placeholder="Search equipment..."
               className="border border-gray-300 rounded-lg p-2.5 pr-8 text-sm"
               value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
             />
             {searchTerm && (
               <button
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                onClick={clearSearch}
+                onClick={handleClearSearch}
                 type="button"
                 aria-label="Clear search"
               >
@@ -180,7 +240,7 @@ function Grid() {
                 key={tag._id} 
                 tag={tag} 
                 selected={true}
-                onClick={handleTagSelection}
+                onClick={handleTagSelectionWithUrl}
               />
             </span>
           ))}

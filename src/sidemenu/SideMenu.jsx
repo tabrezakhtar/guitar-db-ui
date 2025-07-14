@@ -1,11 +1,13 @@
 import { useEffect, useContext } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { useTagData } from "../tags/useTagData";
 import Tag from "../tags/Tag";
 import TagSearch from "../tags/TagSearch";
+import { useUrlParams } from "../utils/useUrlParams";
 
 function SideMenu() {
+  const { updateParams } = useUrlParams();
   const { 
     selectedTags, 
     handleTagSelection, 
@@ -15,31 +17,30 @@ function SideMenu() {
   } = useContext(GuitarContext);
   
   const { filteredTags } = useTagData();
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  useEffect(() => {
-    if (equipmentType) {
-      const currentParams = new URLSearchParams(location.search);
-      if (currentParams.get("type") !== equipmentType) {
-        const params = new URLSearchParams();
-        params.set("type", equipmentType);
-        navigate(`?${params.toString()}`, { replace: true });
-      }
-    }
-  }, [equipmentType, location.pathname]);
+  const handleEquipmentTypeChange = (type) => {
+    setEquipmentType(type);
+    updateParams({ type });
+  };
 
-  const handleTypeClick = (type) => {
-    const isAlreadySelected = selectedType === type;
-    if (isAlreadySelected) {
-      navigate("?");
-      setEquipmentType("");
+  const handleTagSelectionWithUrl = (tag) => {
+    handleTagSelection(tag);
+    
+    const isCurrentlySelected = selectedTags.some(t => t._id === tag._id);
+    let newSelectedTagIds;
+    
+    if (isCurrentlySelected) {
+      newSelectedTagIds = selectedTags.filter(t => t._id !== tag._id).map(t => t._id);
     } else {
-      const params = new URLSearchParams();
-      params.set("type", type);
-      navigate(`?${params.toString()}`);
-      setEquipmentType(type);
+      newSelectedTagIds = [...selectedTags.map(t => t._id), tag._id];
     }
+    
+    updateParams({ tags: newSelectedTagIds });
+  };
+
+  const handleClearTags = () => {
+    clearSelectedTags();
+    updateParams({ tags: null });
   };
 
   const equipmentTypes = [
@@ -50,9 +51,6 @@ function SideMenu() {
     { key: "pedal", label: "Pedal", img: "/pedal.png" },
     { key: "accessory", label: "Accessory", img: "/accessory.png" }
   ];
-  const selectedType = location.search.includes("type=")
-    ? new URLSearchParams(location.search).get("type")
-    : undefined;
 
   return (
     <aside className="bg-gray-800 text-white w-full md:w-80 lg:w-1/4 p-6 shadow-lg min-h-[400px] flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat">
@@ -65,13 +63,13 @@ function SideMenu() {
         <div className="text-sm font-semibold mb-2 tracking-wide uppercase">Select Equipment</div>
         <div className="flex flex-wrap gap-3">
           {equipmentTypes.map(typeObj => {
-            const isSelected = selectedType === typeObj.key;
+            const isSelected = equipmentType === typeObj.key;
             return (
               <button
                 key={typeObj.key}
                 className={`bg-gray-700/50 hover:bg-gray-600/60 flex flex-col items-center justify-center p-2 rounded-lg transition-transform hover:scale-105 cursor-pointer relative border-2 aspect-square min-w-[80px] flex-shrink-0 ${isSelected ? "ring-2 ring-offset-1 ring-white border-white scale-105" : "border-transparent"}`}
                 title={typeObj.label}
-                onClick={() => handleTypeClick(typeObj.key)}
+                onClick={() => handleEquipmentTypeChange(typeObj.key === equipmentType ? "" : typeObj.key)}
                 style={{
                   boxShadow: isSelected ? "0 0 0 2px #fff" : undefined
                 }}
@@ -91,7 +89,7 @@ function SideMenu() {
           <div>
             {selectedTags.length > 0 && (
               <button 
-                onClick={clearSelectedTags}
+                onClick={handleClearTags}
                 className="text-xs ml-2 px-2 py-1 bg-blue-600 hover:bg-gray-700 rounded transition-colors duration-200"
                 title="Clear selected tags"
               >
@@ -112,7 +110,7 @@ function SideMenu() {
                 key={tag._id} 
                 tag={tag} 
                 selected={selectedTags.some(t => t._id === tag._id)}
-                onClick={handleTagSelection}
+                onClick={handleTagSelectionWithUrl}
                 title={tag.name}
               />
             ))}

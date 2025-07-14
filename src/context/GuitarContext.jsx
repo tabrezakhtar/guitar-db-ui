@@ -71,6 +71,19 @@ function GuitarProvider({ children }) {
     }));
   };
 
+  const setSelectedTagsByIds = (tagIds, allTags) => {
+    if (!Array.isArray(tagIds) || tagIds.length === 0) {
+      clearSelectedTags();
+      return;
+    }
+    
+    const selectedTags = allTags.filter(tag => tagIds.includes(tag._id));
+    setState(prev => ({
+      ...prev,
+      selectedTags
+    }));
+  };
+
   const fetchSettings = async () => {
     try {
       const response = await fetch(`${BASE_URL}/api/equipment/settings`);
@@ -329,6 +342,7 @@ function GuitarProvider({ children }) {
     addComment,
     handleTagSelection,
     clearSelectedTags,
+    setSelectedTagsByIds,
     setSortOptions,
     validateToken: (callback) => validateToken(callback || handleAuthError),
     toggleLike,
