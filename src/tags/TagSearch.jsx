@@ -1,7 +1,7 @@
-import { useTagData } from "./useTagData";
+import { useTagContext } from "../context/TagContext";
 
 function TagSearch() {
-  const { searchTags, tagSearchTerm } = useTagData();
+  const { searchTags, tagSearchTerm } = useTagContext();
 
   const handleChange = (e) => {
     const value = e.target.value;

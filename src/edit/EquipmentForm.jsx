@@ -1,11 +1,11 @@
-import { useTagData } from "../tags/useTagData";
+import { useTagContext } from "../context/TagContext";
 import FormFields from "./FormFields";
 import StarRating from "../components/StarRating";
 import Tag from "../tags/Tag";
 import Select from "react-select";
 
 function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal, currentEquipment, setCurrentEquipment }) {
-  const { tags } = useTagData();
+  const { tags } = useTagContext();
 
   const formatOptionLabel = ({ value, label, colour, icon }) => (
     <div className="flex items-center">

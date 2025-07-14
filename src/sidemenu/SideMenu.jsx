@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
-import { useTagData } from "../tags/useTagData";
+import { useTagContext } from "../context/TagContext";
 import Tag from "../tags/Tag";
 import TagSearch from "../tags/TagSearch";
 import { useUrlParams } from "../utils/useUrlParams";
@@ -16,7 +16,7 @@ function SideMenu() {
     equipmentType
   } = useContext(GuitarContext);
   
-  const { filteredTags } = useTagData();
+  const { filteredTags } = useTagContext();
 
   const handleEquipmentTypeChange = (type) => {
     setEquipmentType(type);

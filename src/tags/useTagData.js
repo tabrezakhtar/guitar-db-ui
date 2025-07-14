@@ -19,7 +19,7 @@ export const useTagData = () => {
 
   useEffect(() => {
     setFilteredTags(tags);
-  });
+  }, [tags]);
 
   return {
     tags,

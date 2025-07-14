@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 
 const TagContext = createContext();
 
@@ -14,6 +14,8 @@ export const TagProvider = ({ children }) => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [tagSearchTerm, setTagSearchTerm] = useState("");
+  const [filteredTags, setFilteredTags] = useState([]);
 
   const fetchTags = async () => {
     if (tags.length > 0 || loading) {
@@ -44,12 +46,43 @@ export const TagProvider = ({ children }) => {
     fetchTags();
   });
 
+  const setSelectedTagsByIds = useCallback((tagIds) => {
+    const selectedTags = tags.filter(tag => tagIds.includes(tag.id));
+    return selectedTags;
+  }, [tags]);
+
+  const setSelectedTagsByNames = useCallback((tagNames) => {
+    const selectedTags = tags.filter(tag => tagNames.includes(tag.name));
+    return selectedTags;
+  }, [tags]);
+
+  const searchTags = useCallback((searchTerm) => {
+    setTagSearchTerm(searchTerm);
+    if (!searchTerm) {
+      setFilteredTags(tags);
+    } else {
+      const filtered = tags.filter((tag) => 
+        tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredTags(filtered);
+    }
+  }, [tags]);
+
+  useEffect(() => {
+    setFilteredTags(tags);
+  }, [tags]);
+
   const value = {
     tags,
     loading,
     error,
     fetchTags,
-    setTags
+    setTags,
+    setSelectedTagsByIds,
+    setSelectedTagsByNames,
+    tagSearchTerm,
+    filteredTags,
+    searchTags
   };
 
   return (
