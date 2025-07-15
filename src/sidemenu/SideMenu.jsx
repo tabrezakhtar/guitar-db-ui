@@ -9,14 +9,16 @@ import { useUrlParams } from "../utils/useUrlParams";
 function SideMenu() {
   const { updateParams } = useUrlParams();
   const { 
-    selectedTags, 
-    handleTagSelection, 
-    clearSelectedTags,
     setEquipmentType,
     equipmentType
   } = useContext(GuitarContext);
   
-  const { filteredTags } = useTagContext();
+  const { 
+    filteredTags, 
+    selectedTags,
+    handleTagSelection,
+    clearSelectedTags 
+  } = useTagContext();
 
   const handleEquipmentTypeChange = (type) => {
     setEquipmentType(type);

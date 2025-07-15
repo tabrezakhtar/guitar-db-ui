@@ -1,6 +1,7 @@
 // useDataApi.js
 import { useContext, useEffect, useState } from "react";
 import { GuitarContext } from "../context/GuitarContext";
+import { useTagContext } from "../context/TagContext";
 import { getQueryStringParam } from "../utils/urlUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -10,11 +11,12 @@ export const useEquipmentGridData = () => {
     setLoading,
     sortBy,
     sortOrder,
-    selectedTags,
     equipmentType,
     error,
     setEquipmentType
   } = useContext(GuitarContext);
+
+  const { selectedTags } = useTagContext();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);

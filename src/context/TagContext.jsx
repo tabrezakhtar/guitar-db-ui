@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { produce } from "immer";
 
 const TagContext = createContext();
 
@@ -12,6 +13,7 @@ export const useTagContext = () => {
 
 export const TagProvider = ({ children }) => {
   const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [tagSearchTerm, setTagSearchTerm] = useState("");
@@ -44,16 +46,42 @@ export const TagProvider = ({ children }) => {
 
   useEffect(() => {
     fetchTags();
-  });
+  }, []); // Only run once on mount
 
-  const setSelectedTagsByIds = useCallback((tagIds) => {
-    const selectedTags = tags.filter(tag => tagIds.includes(tag.id));
-    return selectedTags;
+  const handleTagSelection = (tag) => {
+    setSelectedTags(produce(draft => {
+      const isSelected = draft.some(t => t._id === tag._id);
+      if (isSelected) {
+        const index = draft.findIndex(t => t._id === tag._id);
+        draft.splice(index, 1);
+      } else {
+        draft.push(tag);
+      }
+    }));
+  };
+
+  const clearSelectedTags = () => {
+    setSelectedTags([]);
+  };
+
+  const setSelectedTagsByIds = useCallback((tagIds, allTags = tags) => {
+    if (!Array.isArray(tagIds) || tagIds.length === 0) {
+      clearSelectedTags();
+      return;
+    }
+    
+    const selectedTagsData = allTags.filter(tag => tagIds.includes(tag._id));
+    setSelectedTags(selectedTagsData);
   }, [tags]);
 
-  const setSelectedTagsByNames = useCallback((tagNames) => {
-    const selectedTags = tags.filter(tag => tagNames.includes(tag.name));
-    return selectedTags;
+  const setSelectedTagsByNames = useCallback((tagNames, allTags = tags) => {
+    if (!Array.isArray(tagNames) || tagNames.length === 0) {
+      clearSelectedTags();
+      return;
+    }
+    
+    const selectedTagsData = allTags.filter(tag => tagNames.includes(tag.name));
+    setSelectedTags(selectedTagsData);
   }, [tags]);
 
   const searchTags = useCallback((searchTerm) => {
@@ -74,10 +102,13 @@ export const TagProvider = ({ children }) => {
 
   const value = {
     tags,
+    selectedTags,
     loading,
     error,
     fetchTags,
     setTags,
+    handleTagSelection,
+    clearSelectedTags,
     setSelectedTagsByIds,
     setSelectedTagsByNames,
     tagSearchTerm,

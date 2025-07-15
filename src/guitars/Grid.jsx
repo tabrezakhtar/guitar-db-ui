@@ -19,15 +19,18 @@ function Grid() {
   const { 
     sortBy,
     sortOrder,
-    selectedTags,
-    handleTagSelection,
     setSortOptions,
     toggleLike,
     equipmentType,
     setEquipmentType,
+  } = useContext(GuitarContext);
+  
+  const {
+    selectedTags,
+    handleTagSelection,
     setSelectedTagsByIds,
     setSelectedTagsByNames,
-  } = useContext(GuitarContext);
+  } = useTagContext();
   
   const { user } = useContext(UserContext);
   const { tags } = useTagContext();

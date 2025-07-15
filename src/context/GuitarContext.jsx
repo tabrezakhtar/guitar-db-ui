@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import PropTypes from "prop-types";
 import { validateToken } from "../utils/tokenUtils";
+import { produce } from "immer";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -13,7 +14,6 @@ export const initialState = {
   page: 1,
   totalEquipment: 0,
   error: null,
-  selectedTags: [],
   sortBy: "date",
   sortOrder: "desc",
   searchTerm: "",
@@ -26,76 +26,32 @@ function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
 
   const handleAuthError = (errorMsg) => {
-    setState(prev => ({
-      ...prev,
-      error: "Authentication error: " + errorMsg
+    setState(produce(draft => {
+      draft.error = "Authentication error: " + errorMsg;
     }));
   };
 
-  const setLoading = (loading) => setState((prev) => ({ ...prev, loading }));
+  const setLoading = (loading) => setState(produce(draft => {
+    draft.loading = loading;
+  }));
 
-  const setCurrentEquipment = (equipment) => setState((prev) => ({ ...prev, currentEquipment: equipment }));
+  const setCurrentEquipment = (equipment) => setState(produce(draft => {
+    draft.currentEquipment = equipment;
+  }));
 
-  const clearCurrentEquipment = () => setState((prev) => ({ ...prev, currentEquipment: null }));
+  const clearCurrentEquipment = () => setState(produce(draft => {
+    draft.currentEquipment = null;
+  }));
 
   const setFilesToUpload = (files) => {
-    setState((prev) => ({
-      ...prev,
-      filesToUpload: typeof files === "function" ? files(prev.filesToUpload) : files
+    setState(produce(draft => {
+      draft.filesToUpload = typeof files === "function" ? files(draft.filesToUpload) : files;
     }));
   };
 
-  const clearFilesToUpload = () => setState((prev) => ({ ...prev, filesToUpload: null }));
-
-  const handleTagSelection = (tag) => {
-    setState(prev => {
-      const isSelected = prev.selectedTags.some(t => t._id === tag._id);
-      if (isSelected) {
-        return {
-          ...prev,
-          selectedTags: prev.selectedTags.filter(t => t._id !== tag._id)
-        };
-      } else {
-        return {
-          ...prev,
-          selectedTags: [...prev.selectedTags, tag]
-        };
-      }
-    });
-  };
-
-  const clearSelectedTags = () => {
-    setState(prev => ({
-      ...prev,
-      selectedTags: []
-    }));
-  };
-
-  const setSelectedTagsByIds = (tagIds, allTags) => {
-    if (!Array.isArray(tagIds) || tagIds.length === 0) {
-      clearSelectedTags();
-      return;
-    }
-    
-    const selectedTags = allTags.filter(tag => tagIds.includes(tag._id));
-    setState(prev => ({
-      ...prev,
-      selectedTags
-    }));
-  };
-
-  const setSelectedTagsByNames = (tagNames, allTags) => {
-    if (!Array.isArray(tagNames) || tagNames.length === 0) {
-      clearSelectedTags();
-      return;
-    }
-    
-    const selectedTags = allTags.filter(tag => tagNames.includes(tag.name));
-    setState(prev => ({
-      ...prev,
-      selectedTags
-    }));
-  };
+  const clearFilesToUpload = () => setState(produce(draft => {
+    draft.filesToUpload = null;
+  }));
 
   const fetchSettings = async () => {
     try {
@@ -108,10 +64,9 @@ function GuitarProvider({ children }) {
       const data = await response.json();
 
       if (data && data.errors) {
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: data.errors
+        setState(produce(draft => {
+          draft.loading = false;
+          draft.error = data.errors;
         }));
         return {
           success: false,
@@ -119,18 +74,16 @@ function GuitarProvider({ children }) {
         };
       }
 
-      setState((prev) => ({
-        ...prev,
-        settings: data.settings || {},
-        error: null
+      setState(produce(draft => {
+        draft.settings = data.settings || {};
+        draft.error = null;
       }));
       return data;
     } catch (error) {
       console.error("Failed to fetch settings:", error);
-      setState(prev => ({
-        ...prev,
-        loading: false,
-        error: error.message
+      setState(produce(draft => {
+        draft.loading = false;
+        draft.error = error.message;
       }));
       throw error;
     }
@@ -144,9 +97,8 @@ function GuitarProvider({ children }) {
 
     const isValid = await validateToken(handleAuthError);
     if (!isValid) {
-      setState(prev => ({
-        ...prev,
-        error: "Your session has expired. Please login again."
+      setState(produce(draft => {
+        draft.error = "Your session has expired. Please login again.";
       }));
       return null;
     }
@@ -179,9 +131,8 @@ function GuitarProvider({ children }) {
       const result = await response.json();
 
       if (result && result.errors) {
-        setState(prev => ({
-          ...prev,
-          error: result.errors
+        setState(produce(draft => {
+          draft.error = result.errors;
         }));
         return {
           success: false,
@@ -189,30 +140,22 @@ function GuitarProvider({ children }) {
         };
       }
 
-      setState((prev) => {
-        if (prev.currentEquipment && prev.currentEquipment._id === equipmentId) {
-          const updatedComments = prev.currentEquipment.comments
-            ? [result, ...prev.currentEquipment.comments]
-            : [result];
-
-          return {
-            ...prev,
-            currentEquipment: {
-              ...prev.currentEquipment,
-              comments: updatedComments
-            },
-            error: null
-          };
+      setState(produce(draft => {
+        if (draft.currentEquipment && draft.currentEquipment._id === equipmentId) {
+          if (draft.currentEquipment.comments) {
+            draft.currentEquipment.comments.unshift(result);
+          } else {
+            draft.currentEquipment.comments = [result];
+          }
+          draft.error = null;
         }
-        return prev;
-      });
+      }));
 
       return result;
     } catch (error) {
       console.error("Failed to add comment:", error);
-      setState(prev => ({
-        ...prev,
-        error: error.message
+      setState(produce(draft => {
+        draft.error = error.message;
       }));
       throw error;
     }
@@ -221,14 +164,15 @@ function GuitarProvider({ children }) {
   const toggleLike = async (equipmentId) => {
     const isValid = await validateToken(handleAuthError);
     if (!isValid) {
-      setState(prev => ({
-        ...prev,
-        error: "Your session has expired. Please login again."
+      setState(produce(draft => {
+        draft.error = "Your session has expired. Please login again.";
       }));
       return null;
     }
 
-    setState(prev => ({ ...prev, error: null }));
+    setState(produce(draft => {
+      draft.error = null;
+    }));
 
     try {
       const token = localStorage.getItem("token");
@@ -250,9 +194,8 @@ function GuitarProvider({ children }) {
       const result = await response.json();
 
       if (result && result.errors) {
-        setState(prev => ({
-          ...prev,
-          error: result.errors
+        setState(produce(draft => {
+          draft.error = result.errors;
         }));
         return {
           success: false,
@@ -260,55 +203,48 @@ function GuitarProvider({ children }) {
         };
       }
 
-      setState(prev => {
-        const updatedEquipment = prev.equipment.map(item => {
+      setState(produce(draft => {
+        draft.equipment = draft.equipment.map(item => {
           if (item._id === equipmentId) {
             return { ...item, likesCount: result.likes };
           }
           return item;
         });
 
-        const updatedCurrentEquipment = prev.currentEquipment && prev.currentEquipment._id === equipmentId
-          ? { ...prev.currentEquipment, likesCount: result.likes }
-          : prev.currentEquipment;
-
-        return {
-          ...prev,
-          equipment: updatedEquipment,
-          currentEquipment: updatedCurrentEquipment
-        };
-      });
+        if (draft.currentEquipment && draft.currentEquipment._id === equipmentId) {
+          draft.currentEquipment.likesCount = result.likes;
+        }
+      }));
 
       return result;
     } catch (error) {
       console.error("Failed to toggle like:", error);
-      setState(prev => ({
-        ...prev,
-        error: error.message
+      setState(produce(draft => {
+        draft.error = error.message;
       }));
       throw error;
     }
   };
 
   const setSortOptions = (sortBy, sortOrder) => {
-    setState(prev => ({
-      ...prev,
-      sortBy,
-      sortOrder
+    setState(produce(draft => {
+      draft.sortBy = sortBy;
+      draft.sortOrder = sortOrder;
     }));
   };
 
   const setEquipmentType = (equipmentType) => {
-    setState(prev => ({
-      ...prev,
-      equipmentType
+    setState(produce(draft => {
+      draft.equipmentType = equipmentType;
     }));
   };
 
   const fetchUserEquipment = async (userId) => {
     if (!userId) return null;
 
-    setState(prev => ({ ...prev, error: null }));
+    setState(produce(draft => {
+      draft.error = null;
+    }));
 
     try {
       const response = await fetch(`${BASE_URL}/api/equipment/user/${userId}`);
@@ -320,9 +256,8 @@ function GuitarProvider({ children }) {
       const data = await response.json();
 
       if (data && data.errors) {
-        setState(prev => ({
-          ...prev,
-          error: data.errors
+        setState(produce(draft => {
+          draft.error = data.errors;
         }));
         return {
           success: false,
@@ -333,13 +268,14 @@ function GuitarProvider({ children }) {
       return data;
     } catch (error) {
       console.error("Failed to fetch user equipment:", error);
-      setState(prev => ({
-        ...prev,
-        error: error.message
+      setState(produce(draft => {
+        draft.error = error.message;
       }));
       throw error;
     } finally {
-      setState(prev => ({ ...prev, loading: false }));
+      setState(produce(draft => {
+        draft.loading = false;
+      }));
     }
   };
 
@@ -353,10 +289,6 @@ function GuitarProvider({ children }) {
     fetchSettings,
     fetchUserEquipment,
     addComment,
-    handleTagSelection,
-    clearSelectedTags,
-    setSelectedTagsByIds,
-    setSelectedTagsByNames,
     setSortOptions,
     validateToken: (callback) => validateToken(callback || handleAuthError),
     toggleLike,

@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { validateToken } from "../utils/tokenUtils";
+import { produce } from "immer";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -26,7 +27,9 @@ const UserProvider = ({ children }) => {
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
-        setState(prev => ({ ...prev, user: parsedUser }));
+        setState(produce(draft => {
+          draft.user = parsedUser;
+        }));
         
         if (token) {
           handleTokenValidation();
@@ -41,18 +44,21 @@ const UserProvider = ({ children }) => {
   const handleTokenValidation = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      setState(prev => ({ ...prev, isTokenValid: false }));
+      setState(produce(draft => {
+        draft.isTokenValid = false;
+      }));
       return false;
     }
 
-    setState(prev => ({ ...prev, isValidatingToken: true }));
+    setState(produce(draft => {
+      draft.isValidatingToken = true;
+    }));
     
     const isValid = await validateToken(handleAuthError);
     
-        setState(prev => ({
-      ...prev, 
-      isTokenValid: isValid,
-      isValidatingToken: false
+    setState(produce(draft => {
+      draft.isTokenValid = isValid;
+      draft.isValidatingToken = false;
     }));
     
     return isValid;
@@ -60,16 +66,18 @@ const UserProvider = ({ children }) => {
   
   const handleAuthError = (errorMsg) => {
     console.error("Auth error:", errorMsg);
-    setState(prev => ({ 
-      ...prev, 
-      isTokenValid: false,
-      isValidatingToken: false,
-      error: errorMsg || "Authentication failed"
+    setState(produce(draft => {
+      draft.isTokenValid = false;
+      draft.isValidatingToken = false;
+      draft.error = errorMsg || "Authentication failed";
     }));
   };
 
   const fetchUserProfile = async (userId) => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState(produce(draft => {
+      draft.loading = true;
+      draft.error = null;
+    }));
     
     try {
       const token = localStorage.getItem("token");
@@ -82,38 +90,40 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       
       if (data && data.errors) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.errors, 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.errors;
+          draft.loading = false;
         }));
         return null;
       }
       
       if (!response.ok) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.message || "Failed to fetch user profile", 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.message || "Failed to fetch user profile";
+          draft.loading = false;
         }));
         return null;
       }
       
       return data;
     } catch (error) {
-      setState(prev => ({ 
-        ...prev, 
-        error: error.message || "Failed to fetch user profile", 
-        loading: false 
+      setState(produce(draft => {
+        draft.error = error.message || "Failed to fetch user profile";
+        draft.loading = false;
       }));
       return null;
     } finally {
-      setState(prev => ({ ...prev, loading: false }));
+      setState(produce(draft => {
+        draft.loading = false;
+      }));
     }
   };
 
   const createUserProfile = async (userData) => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState(produce(draft => {
+      draft.loading = true;
+      draft.error = null;
+    }));
     
     try {
       const token = localStorage.getItem("token");
@@ -134,34 +144,30 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       
       if (data && data.errors) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.errors, 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.errors;
+          draft.loading = false;
         }));
         return null;
       }
       
       if (!response.ok) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.message || "Failed to create user profile", 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.message || "Failed to create user profile";
+          draft.loading = false;
         }));
         return null;
       }
       
-      setState(prev => ({ 
-        ...prev, 
-        user: data, 
-        loading: false 
+      setState(produce(draft => {
+        draft.user = data;
+        draft.loading = false;
       }));
       return data;
     } catch (error) {
-      setState(prev => ({ 
-        ...prev, 
-        error: error.message || "Failed to create user profile", 
-        loading: false 
+      setState(produce(draft => {
+        draft.error = error.message || "Failed to create user profile";
+        draft.loading = false;
       }));
       return null;
     }
@@ -170,15 +176,17 @@ const UserProvider = ({ children }) => {
   const updateUserProfile = async (userData) => {
     const isValid = await handleTokenValidation();
     if (!isValid) {
-      setState(prev => ({ 
-        ...prev, 
-        error: "Your session has expired. Please login again.", 
-        loading: false 
+      setState(produce(draft => {
+        draft.error = "Your session has expired. Please login again.";
+        draft.loading = false;
       }));
       return null;
     }
 
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState(produce(draft => {
+      draft.loading = true;
+      draft.error = null;
+    }));
     
     try {
       const token = localStorage.getItem("token");
@@ -201,50 +209,48 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       
       if (data && data.errors) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.errors, 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.errors;
+          draft.loading = false;
         }));
         return null;
       }
       
       if (!response.ok) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.message || "Failed to update user profile", 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.message || "Failed to update user profile";
+          draft.loading = false;
         }));
         return null;
       }
       
       localStorage.setItem("user", JSON.stringify(data.user));
       
-      setState(prev => ({ 
-        ...prev, 
-        user: data.user, 
-        loading: false 
+      setState(produce(draft => {
+        draft.user = data.user;
+        draft.loading = false;
       }));
       return data;
     } catch (error) {
-      setState(prev => ({ 
-        ...prev, 
-        error: error.message || "Failed to update user profile", 
-        loading: false 
+      setState(produce(draft => {
+        draft.error = error.message || "Failed to update user profile";
+        draft.loading = false;
       }));
       return null;
     }
   };
 
   const verifyMagicToken = async (token) => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState(produce(draft => {
+      draft.loading = true;
+      draft.error = null;
+    }));
     
     try {
       if (!token) {
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: "No token found in URL"
+        setState(produce(draft => {
+          draft.loading = false;
+          draft.error = "No token found in URL";
         }));
         return { success: false, error: "No token found in URL" };
       }
@@ -260,10 +266,9 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
 
       if (data && data.errors) {
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: data.errors
+        setState(produce(draft => {
+          draft.loading = false;
+          draft.error = data.errors;
         }));
         return { 
           success: false, 
@@ -272,10 +277,9 @@ const UserProvider = ({ children }) => {
       }
 
       if (!response.ok) {
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: data.message || "Authentication failed"
+        setState(produce(draft => {
+          draft.loading = false;
+          draft.error = data.message || "Authentication failed";
         }));
         return { 
           success: false, 
@@ -286,19 +290,17 @@ const UserProvider = ({ children }) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       
-      setState(prev => ({
-        ...prev,
-        user: data.user,
-        loading: false
+      setState(produce(draft => {
+        draft.user = data.user;
+        draft.loading = false;
       }));
 
       return { success: true };
     } catch (err) {
       console.error("Magic link verification error:", err);
-      setState(prev => ({
-        ...prev,
-        loading: false,
-        error: "An unexpected error occurred"
+      setState(produce(draft => {
+        draft.loading = false;
+        draft.error = "An unexpected error occurred";
       }));
       return { 
         success: false, 
@@ -310,15 +312,17 @@ const UserProvider = ({ children }) => {
   const deleteAvatar = async () => {
     const isValid = await handleTokenValidation();
     if (!isValid) {
-      setState(prev => ({ 
-        ...prev, 
-        error: "Your session has expired. Please login again.", 
-        loading: false 
+      setState(produce(draft => {
+        draft.error = "Your session has expired. Please login again.";
+        draft.loading = false;
       }));
       return null;
     }
 
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState(produce(draft => {
+      draft.loading = true;
+      draft.error = null;
+    }));
     
     try {
       const token = localStorage.getItem("token");
@@ -339,36 +343,32 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       
       if (data && data.errors) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.errors, 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.errors;
+          draft.loading = false;
         }));
         return null;
       }
       
       if (!response.ok) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.message || "Failed to delete avatar", 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.message || "Failed to delete avatar";
+          draft.loading = false;
         }));
         return null;
       }
       
       localStorage.setItem("user", JSON.stringify(data.user));
       
-      setState(prev => ({ 
-        ...prev, 
-        user: data.user, 
-        loading: false 
+      setState(produce(draft => {
+        draft.user = data.user;
+        draft.loading = false;
       }));
       return data;
     } catch (error) {
-      setState(prev => ({ 
-        ...prev, 
-        error: error.message || "Failed to delete avatar", 
-        loading: false 
+      setState(produce(draft => {
+        draft.error = error.message || "Failed to delete avatar";
+        draft.loading = false;
       }));
       return null;
     }
@@ -377,15 +377,17 @@ const UserProvider = ({ children }) => {
   const deleteProfile = async () => {
     const isValid = await handleTokenValidation();
     if (!isValid) {
-      setState(prev => ({ 
-        ...prev, 
-        error: "Your session has expired. Please login again.", 
-        loading: false 
+      setState(produce(draft => {
+        draft.error = "Your session has expired. Please login again.";
+        draft.loading = false;
       }));
       return null;
     }
 
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState(produce(draft => {
+      draft.loading = true;
+      draft.error = null;
+    }));
     
     try {
       const token = localStorage.getItem("token");
@@ -406,19 +408,17 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       
       if (data && data.errors) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.errors, 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.errors;
+          draft.loading = false;
         }));
         return null;
       }
       
       if (!response.ok) {
-        setState(prev => ({ 
-          ...prev, 
-          error: data.message || "Failed to delete profile", 
-          loading: false 
+        setState(produce(draft => {
+          draft.error = data.message || "Failed to delete profile";
+          draft.loading = false;
         }));
         return null;
       }
@@ -426,16 +426,15 @@ const UserProvider = ({ children }) => {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       
-      setState(prev => ({ 
-        ...initialState, 
-        profileDeleted: true 
+      setState(produce(draft => {
+        Object.assign(draft, initialState);
+        draft.profileDeleted = true;
       }));
       return data;
     } catch (error) {
-      setState(prev => ({ 
-        ...prev, 
-        error: error.message || "Failed to delete profile", 
-        loading: false 
+      setState(produce(draft => {
+        draft.error = error.message || "Failed to delete profile";
+        draft.loading = false;
       }));
       return null;
     }
@@ -448,23 +447,28 @@ const UserProvider = ({ children }) => {
   };
 
   const clearError = () => {
-    setState(prev => ({ ...prev, error: null }));
+    setState(produce(draft => {
+      draft.error = null;
+    }));
   };
 
   const updateUserLocal = (newData) => {
-    setState(prev => {
-      const updatedUser = { ...prev.user, ...newData };
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      return { ...prev, user: updatedUser };
-    });
+    setState(produce(draft => {
+      Object.assign(draft.user, newData);
+      localStorage.setItem("user", JSON.stringify(draft.user));
+    }));
   };
 
   const setHeaderVisibility = (visible) => {
-    setState(prev => ({ ...prev, showHeader: visible }));
+    setState(produce(draft => {
+      draft.showHeader = visible;
+    }));
   };
 
   const clearProfileDeleted = () => {
-    setState(prev => ({ ...prev, profileDeleted: false }));
+    setState(produce(draft => {
+      draft.profileDeleted = false;
+    }));
   };
 
   const value = {
