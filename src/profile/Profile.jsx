@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { GuitarContext } from "../context/GuitarContext";
+import { useProfileData } from "./useProfileData";
 import { formatDate } from "../utils/dateUtils";
 import { useNavigate } from "react-router-dom";
 import AvatarDisplayOnly from "./AvatarDisplayOnly";
@@ -19,8 +20,9 @@ const Profile = () => {
     pedals: []
   });
   const [ userComments, setUserComments ] = useState([]);
-  const { user, error: userError, fetchUserProfile, logout, loading: userLoading } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const { fetchUserEquipment, error: equipmentError, loading: equipmentLoading } = useContext(GuitarContext);
+  const { fetchUserProfile, loading: profileLoading, error: profileError } = useProfileData();
 
   const navigate = useNavigate();
   
@@ -97,10 +99,10 @@ const Profile = () => {
     );
   };
   
-    if (userError || equipmentError) {
+    if (profileError || equipmentError) {
     return (
       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
-        <p>{userError || equipmentError}</p>
+        <p>{profileError || equipmentError}</p>
         <NavLink
           to="/"
           className="inline-block mt-4 text-blue-500 hover:underline text-sm"
@@ -111,7 +113,7 @@ const Profile = () => {
     );
   }
 
-  if (userLoading || equipmentLoading) {
+  if (profileLoading || equipmentLoading) {
     return (
       <div className="flex justify-center items-center h-full">
         <Spinner />

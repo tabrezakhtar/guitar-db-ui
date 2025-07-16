@@ -55,7 +55,6 @@ function App() {
                     </ProtectedRoute>
                   } 
                 />
-                {/* <Route path="/login/magic" element={<MagicLogin />} /> */}
                 <Route path="/auth" element={<SaveCredentials />} />
               </Routes>
             </div>

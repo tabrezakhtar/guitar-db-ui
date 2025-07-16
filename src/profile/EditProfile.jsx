@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import { useProfileData } from "./useProfileData";
 import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 import Avatar from "./Avatar";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -8,7 +9,8 @@ import Modal from "../components/Modal";
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  const { user, updateUserProfile, deleteAvatar, deleteProfile } = useContext(UserContext);
+  const { user, updateUserLocal } = useContext(UserContext);
+  const { updateUserProfile, deleteAvatar, deleteProfile, loading: profileLoading, error: profileError } = useProfileData();
   const [profile, setProfile] = useState({
     username: "",
     bio: "",
@@ -90,7 +92,10 @@ const EditProfile = () => {
       let updatedProfile = { ...profile };
       
       if (avatarDeleted && originalAvatarUrl) {
-        await deleteAvatar();
+        const result = await deleteAvatar(user);
+        if (result) {
+          updateUserLocal(result.user);
+        }
         updatedProfile.avatarUrl = "";
       } else if (avatarFile && avatarFile.isNew) {
         const result = await cloudinaryUpload(
@@ -105,7 +110,10 @@ const EditProfile = () => {
         updatedProfile.avatarUrl = result.secure_url;
       }
       
-      await updateUserProfile(updatedProfile);
+      const result = await updateUserProfile(updatedProfile, user);
+      if (result) {
+        updateUserLocal(result.user);
+      }
       
       setAvatarFile(null);
       setAvatarDeleted(false);
@@ -113,7 +121,7 @@ const EditProfile = () => {
       
       setSuccess(true);
     } catch (err) {
-      setError(err.message || "Failed to update profile");
+      setError(profileError || err.message || "Failed to update profile");
     } finally {
       setLoading(false);
     }
@@ -128,14 +136,16 @@ const EditProfile = () => {
     setError(null);
     
     try {
-      const result = await deleteProfile();
+      const result = await deleteProfile(user);
       
       if (result) {
-        // ProtectedRoute will handle the redirect to home page
+        // Clear user state and redirect
+        updateUserLocal(null);
         setShowDeleteModal(false);
+        navigate("/");
       }
     } catch (err) {
-      setError(err.message || "Failed to delete profile");
+      setError(profileError || err.message || "Failed to delete profile");
       setDeleteLoading(false);
       setShowDeleteModal(false);
     }
