@@ -49,46 +49,6 @@ function GuitarProvider({ children }) {
     }));
   };
 
-  const clearFilesToUpload = () => setState(produce(draft => {
-    draft.filesToUpload = null;
-  }));
-
-  const fetchSettings = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/api/equipment/settings`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data && data.errors) {
-        setState(produce(draft => {
-          draft.loading = false;
-          draft.error = data.errors;
-        }));
-        return {
-          success: false,
-          error: data.errors
-        };
-      }
-
-      setState(produce(draft => {
-        draft.settings = data.settings || {};
-        draft.error = null;
-      }));
-      return data;
-    } catch (error) {
-      console.error("Failed to fetch settings:", error);
-      setState(produce(draft => {
-        draft.loading = false;
-        draft.error = error.message;
-      }));
-      throw error;
-    }
-  };
-
   const addComment = async (username, equipmentId, text) => {
     if (!equipmentId || !text) {
       console.error("Missing equipmentId or text for comment");
@@ -285,8 +245,6 @@ function GuitarProvider({ children }) {
     setCurrentEquipment,
     clearCurrentEquipment,
     setFilesToUpload,
-    clearFilesToUpload,
-    fetchSettings,
     fetchUserEquipment,
     addComment,
     setSortOptions,
