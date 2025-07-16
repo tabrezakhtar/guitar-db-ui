@@ -446,22 +446,10 @@ const UserProvider = ({ children }) => {
     setState(initialState);
   };
 
-  const clearError = () => {
-    setState(produce(draft => {
-      draft.error = null;
-    }));
-  };
-
   const updateUserLocal = (newData) => {
     setState(produce(draft => {
       Object.assign(draft.user, newData);
       localStorage.setItem("user", JSON.stringify(draft.user));
-    }));
-  };
-
-  const setHeaderVisibility = (visible) => {
-    setState(produce(draft => {
-      draft.showHeader = visible;
     }));
   };
 
@@ -478,11 +466,9 @@ const UserProvider = ({ children }) => {
     updateUserProfile,
     verifyMagicToken,
     logout,
-    clearError,
     updateUserLocal,
     deleteAvatar,
     deleteProfile,
-    setHeaderVisibility,
     clearProfileDeleted,
     validateToken: handleTokenValidation
   };
