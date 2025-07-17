@@ -76,7 +76,7 @@ const ViewGuitar = () => {
   ];
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full">
+    <div className="max-w-screen-xl mx-auto w-full bg-white">
       <div className="p-6">
         <div className="mb-4">
           <Breadcrumbs items={breadcrumbItems} />

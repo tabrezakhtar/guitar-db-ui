@@ -1,6 +1,6 @@
 function About() {
   return (
-    <div className="max-w-screen-xl mx-auto w-full">
+    <div className="max-w-screen-xl mx-auto w-full bg-white">
       <div className="p-6">
         <h1>About Us</h1>
         <p>

@@ -1,6 +1,6 @@
 function Contact() {
   return (
-    <div className="max-w-screen-xl mx-auto w-full">
+    <div className="max-w-screen-xl mx-auto w-full bg-white">
       <div className="p-6">
         <h1>Contact Us</h1>
         <p>
