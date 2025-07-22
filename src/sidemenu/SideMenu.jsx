@@ -55,7 +55,7 @@ function SideMenu() {
   ];
 
   return (
-    <aside className="bg-gray-800 text-white w-full md:w-80 lg:w-1/4 p-6 shadow-lg min-h-[400px] flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat">
+    <aside className="bg-gray-800 text-white w-full md:w-80 p-6 shadow-lg h-full flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat">
       <div className="mb-4">
         <Link to="/add" className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center font-semibold" title="Add a new instrument">
           + Add New Equipment
