@@ -8,28 +8,24 @@ export const useSideMenuHeight = () => {
 
   useEffect(() => {
     const calculateHeights = () => {
-      const isSmallScreen = window.innerWidth < 768; // md breakpoint
+      const isSmallScreen = window.innerWidth < 768;
       
       if (isSmallScreen) {
-        // On small screens, use full viewport height
         setSideMenuHeight(`${window.innerHeight}px`);
-        
-        // Calculate remaining height for tags list
+
         if (headerSectionRef.current) {
           const headerHeight = headerSectionRef.current.offsetHeight;
-          const padding = 48; // 6 * 8px (p-6)
-          const tagsHeaderHeight = 60; // Approximate height of tags header + search
+          const padding = 48;
+          const tagsHeaderHeight = 60;
           const remainingHeight = window.innerHeight - headerHeight - padding - tagsHeaderHeight;
           setTagsListHeight(`${Math.max(remainingHeight, 200)}px`);
         }
       } else {
-        // On medium+ screens, use auto height
         setSideMenuHeight("auto");
-        setTagsListHeight("700px"); // Original max height
+        setTagsListHeight("700px");
       }
     };
 
-    // Calculate on mount and resize
     calculateHeights();
     window.addEventListener("resize", calculateHeights);
 

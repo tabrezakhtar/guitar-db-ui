@@ -31,16 +31,19 @@ function ContentContainer() {
       )}
 
       {/* Side Menu - Slides in from left on mobile */}
-      <div className={`
-        md:relative md:translate-x-0 md:block md:w-96 md:h-auto
-        fixed md:static top-0 left-0 h-full md:h-auto z-40 w-80
-        transform transition-all duration-500 ease-in-out
-        ${isSideMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-      `}>
+      <div
+        className={`
+          md:relative md:translate-x-0 md:block md:w-96 md:h-screen md:sticky md:top-0
+          fixed md:static top-0 left-0 h-full md:h-auto z-40 w-80
+          transform transition-all duration-500 ease-in-out
+          ${isSideMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        `}
+      >
         <SideMenu />
       </div>
 
-      <main className="flex-1 bg-white p-4">
+      {/* Main Content - Scrollable Grid */}
+      <main className="flex-1 bg-white p-4 overflow-y-auto">
         <Grid />
       </main>
     </div>
