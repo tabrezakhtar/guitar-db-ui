@@ -216,7 +216,7 @@ function Grid() {
           {hasFiltersApplied && (
             <button
               onClick={handleClearAllFilters}
-              className="text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors duration-200"
+              className="text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors duration-200 cursor-pointer"
               title="Clear all filters"
             >
               Clear All
