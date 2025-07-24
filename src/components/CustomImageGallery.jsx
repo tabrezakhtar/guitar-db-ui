@@ -136,7 +136,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
           <>
             <button
               onClick={goToPrevious}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-4 transition-all z-10"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-4 transition-all z-10 cursor-pointer"
               style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
               aria-label="Previous image"
             >
@@ -146,7 +146,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
             </button>
             <button
               onClick={goToNext}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-4 transition-all z-10"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-4 transition-all z-10 cursor-pointer"
               style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
               aria-label="Next image"
             >
