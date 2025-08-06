@@ -43,7 +43,7 @@ function ContentContainer() {
       </div>
 
       {/* Main Content - Scrollable Grid */}
-      <main className="flex-1 bg-white p-4 overflow-y-auto">
+      <main className="flex-1 bg-white dark:bg-[#122634] p-4 overflow-y-auto">
         <Grid />
       </main>
     </div>
