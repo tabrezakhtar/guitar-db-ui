@@ -87,8 +87,8 @@ const Profile = () => {
     if (!items || items.length === 0) return null;
     
     return (
-      <div className="mb-6 bg-gray-100 p-4 rounded-md">
-        <h3 className="text-lg font-semibold mb-2 flex items-center">
+      <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
+        <h3 className="text-lg font-semibold mb-2 flex items-center text-black dark:text-white">
           {emoji} {title} ({items.length})
         </h3>
         <EquipmentCarousel 
@@ -101,11 +101,11 @@ const Profile = () => {
   
     if (profileError || equipmentError) {
     return (
-      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
+      <div className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-400 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
         <p>{profileError || equipmentError}</p>
         <NavLink
           to="/"
-          className="inline-block mt-4 text-blue-500 hover:underline text-sm"
+          className="inline-block mt-4 text-blue-500 dark:text-blue-400 hover:underline text-sm"
         >
           ⬅️ Back to Home
         </NavLink>
@@ -123,11 +123,11 @@ const Profile = () => {
   
   if (!profileUser) {
     return (
-      <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
+      <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-400 dark:border-yellow-600 text-yellow-700 dark:text-yellow-400 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
         <p>User profile not found.</p>
         <NavLink
           to="/"
-          className="inline-block mt-4 text-blue-500 hover:underline text-sm"
+          className="inline-block mt-4 text-blue-500 dark:text-blue-400 hover:underline text-sm"
         >
           ⬅️ Back to Home
         </NavLink>
@@ -140,17 +140,17 @@ const Profile = () => {
   const isOwnProfile = !userId || (user && profileUser && user._id === profileUser._id);
   
   return (
-    <div className="max-w-screen-xl mx-auto w-full p-6">
+    <div className="max-w-screen-xl mx-auto w-full p-6 bg-white dark:bg-[#122634]">
       <div className="mb-4">
         <Breadcrumbs items={[{ label: "Profile", url: "/profile" }]} />
       </div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">User Profile</h1>
+        <h1 className="text-2xl font-bold text-black dark:text-white">User Profile</h1>
         <div className="flex gap-4">
           {isOwnProfile && (
             <button
               onClick={() => navigate("/edit-profile")}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center"
+              className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center transition-colors"
             >
               ✏️ Edit Profile
             </button>
@@ -161,7 +161,7 @@ const Profile = () => {
                 logout();
                 navigate("/");
               }} 
-              className="text-blue-500 hover:text-blue-600 bg-transparent border-none cursor-pointer p-0 flex items-center"
+              className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 bg-transparent border-none cursor-pointer p-0 flex items-center"
             >
               Logout
             </button>
@@ -169,7 +169,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         <div className="flex items-center justify-center mb-6">
           <div className="relative w-24 h-24 mr-6">
             <AvatarDisplayOnly
@@ -179,35 +179,35 @@ const Profile = () => {
             />
           </div>
           <div className="ml-6">
-            <h2 className="text-2xl font-bold">{username}</h2>
-            <p className="text-gray-600 flex items-center">
+            <h2 className="text-2xl font-bold text-black dark:text-white">{username}</h2>
+            <p className="text-gray-600 dark:text-gray-400 flex items-center">
               📍 {location || "No location set"}
             </p>
           </div>
         </div>
         
-        <div className="mb-6 bg-gray-100 p-4 rounded-md">
-          <h3 className="text-lg font-semibold mb-2">About</h3>
-          <p className="text-gray-700">{bio || "No bio available"}</p>
+        <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
+          <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">About</h3>
+          <p className="text-gray-700 dark:text-gray-300">{bio || "No bio available"}</p>
         </div>
         
-        <div className="mb-6 bg-gray-100 p-4 rounded-md">
-          <h3 className="text-lg font-semibold mb-2">Website</h3>
+        <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
+          <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Website</h3>
           {website ? (
             <a 
               href={website.startsWith("http") ? website : `https://${website}`} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-500 hover:underline flex items-center"
+              className="text-blue-500 dark:text-blue-400 hover:underline flex items-center"
             >
               🌐 {website}
             </a>
           ) : (
-            <p className="text-gray-500">No website added</p>
+            <p className="text-gray-500 dark:text-gray-400">No website added</p>
           )}
         </div>
 
-        <h3 className="text-xl font-bold mb-4">My Equipment</h3>
+        <h3 className="text-xl font-bold mb-4 text-black dark:text-white">My Equipment</h3>
         
         {equipmentLoading ? (
           <div className="flex justify-center p-4">
@@ -220,7 +220,7 @@ const Profile = () => {
             {renderEquipmentSection(userEquipment.pedals, "Effects & Pedals", "🎛️")}
             
             {!userEquipment.guitars.length && !userEquipment.amps.length && !userEquipment.pedals.length && (
-              <div className="bg-gray-100 p-4 rounded-md text-gray-600">
+              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md text-gray-600 dark:text-gray-400">
                 <p className="text-center">No equipment added yet.</p>
               </div>
             )}
@@ -229,8 +229,8 @@ const Profile = () => {
 
         {likedEquipment && likedEquipment.length > 0 && (
           <>
-            <h3 className="text-xl font-bold mb-4 mt-6">My Liked Equipment</h3>
-            <div className="mb-6 bg-gray-100 p-4 rounded-md">
+            <h3 className="text-xl font-bold mb-4 mt-6 text-black dark:text-white">My Liked Equipment</h3>
+            <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
               <EquipmentCarousel 
                 items={likedEquipment} 
               />
@@ -240,21 +240,21 @@ const Profile = () => {
 
         {userComments && userComments.length > 0 && (
           <>
-            <h3 className="text-xl font-bold mb-4 mt-6">My Recent Comments</h3>
-            <div className="mb-6 bg-gray-100 p-4 rounded-md">
+            <h3 className="text-xl font-bold mb-4 mt-6 text-black dark:text-white">My Recent Comments</h3>
+            <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
               <div className="space-y-4">
                 {userComments.map(comment => (
-                  <div key={comment._id} className="bg-white p-3 rounded-md shadow-sm">
+                  <div key={comment._id} className="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
                     <div className="flex justify-between items-start mb-2">
                       <NavLink 
                         to={`/view/${comment.equipmentId._id}`}
-                        className="text-blue-500 hover:underline text-sm"
+                        className="text-blue-500 dark:text-blue-400 hover:underline text-sm"
                       >
                         💬 { comment.equipmentId.brand } { comment.equipmentId.name }
                       </NavLink>
-                      <p className="text-xs text-gray-500">{formatDate(comment.date)}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{formatDate(comment.date)}</p>
                     </div>
-                    <p className="text-gray-700 whitespace-pre-wrap break-words">{comment.text.slice(0, 100)}{comment.text.length > 100 ? "..." : ""}</p>
+                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{comment.text.slice(0, 100)}{comment.text.length > 100 ? "..." : ""}</p>
                   </div>
                 ))}
               </div>
@@ -262,7 +262,7 @@ const Profile = () => {
           </>
         )}
         
-        <div className="bg-gray-100 p-4 rounded-md text-gray-600 text-sm mt-6">
+        <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md text-gray-600 dark:text-gray-400 text-sm mt-6">
           <p>🗓️ Member since {formatDate(createdAt)}</p>
         </div>
       </div>

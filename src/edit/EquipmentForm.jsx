@@ -2,7 +2,7 @@ import { useTagContext } from "../context/TagContext";
 import FormFields from "./FormFields";
 import StarRating from "../components/StarRating";
 import Tag from "../tags/Tag";
-import Select from "react-select";
+import Select from "../components/Select";
 
 function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal, currentEquipment, setCurrentEquipment }) {
   const { tags } = useTagContext();
@@ -55,8 +55,8 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
       <fieldset disabled={isUploading}>
         <FormFields type={type} isUploading={isUploading} />
 
-        <div>
-          <label className="block">Brand: <span className="text-red-500">*</span></label>
+        <div className="mb-4">
+          <label className="block text-black dark:text-white">Brand: <span className="text-red-500">*</span></label>
           <input
             type="text"
             name="brand"
@@ -65,13 +65,13 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, brand: e.target.value })
             }
-            className="border p-2 rounded w-full"
+            className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             required
           />
         </div>
 
-        <div>
-          <label className="block">Name: <span className="text-red-500">*</span></label>
+        <div className="mb-4">
+          <label className="block text-black dark:text-white">Name: <span className="text-red-500">*</span></label>
           <input
             type="text"
             name="name"
@@ -80,13 +80,13 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, name: e.target.value })
             }
-            className="border p-2 rounded w-full"
+            className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             required
           />
         </div>
 
-        <div>
-          <label className="block">Description: <span className="text-red-500">*</span></label>
+        <div className="mb-4">
+          <label className="block text-black dark:text-white">Description: <span className="text-red-500">*</span></label>
           <textarea
             name="description"
             placeholder="Enter a detailed description of the equipment"
@@ -95,28 +95,28 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, description: e.target.value })
             }
-            className="border p-2 rounded w-full"
+            className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             required
           />
         </div>
 
-        <div>
-          <label className="block">YouTube URL:</label>
+        <div className="mb-4">
+          <label className="block text-black dark:text-white">YouTube URL:</label>
           <input
             type="url"
             name="url"
             placeholder="https://www.youtube.com/watch?v=..."
             value={currentEquipment?.url || ""}
             onChange={handleYoutubeUrlChange}
-            className={`border p-2 rounded w-full ${!validateYoutubeUrl(currentEquipment?.url) ? "border-red-500" : ""}`}
+            className={`border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${!validateYoutubeUrl(currentEquipment?.url) ? "border-red-500" : ""}`}
           />
           {!validateYoutubeUrl(currentEquipment?.url) && (
-            <p className="text-red-500 text-sm mt-1">Please enter a valid YouTube URL</p>
+            <p className="text-red-500 dark:text-red-400 text-sm mt-1">Please enter a valid YouTube URL</p>
           )}
         </div>
 
-        <div>
-          <label className="block">Tags:</label>
+        <div className="mb-4">
+          <label className="block text-black dark:text-white">Tags:</label>
           <Select
             isMulti
             name="tags"
@@ -125,14 +125,12 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             onChange={handleTagChange}
             formatOptionLabel={formatOptionLabel}
             placeholder="Select tags"
-            className="react-select-container"
-            classNamePrefix="react-select"
             isDisabled={isUploading}
           />
         </div>
 
-        <div>
-          <label className="block">Why:</label>
+        <div className="mb-4">
+          <label className="block text-black dark:text-white">Why:</label>
           <textarea
             name="why"
             placeholder="Explain why this equipment is important"
@@ -141,12 +139,12 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, why: e.target.value })
             }
-            className="border p-2 rounded w-full"
+            className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
           />
         </div>
 
-        <div>
-          <label className="block">Year:</label>
+        <div className="mb-4">
+          <label className="block text-black dark:text-white">Year:</label>
           <input
             type="number"
             name="year"
@@ -158,11 +156,11 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
                 year: Number(e.target.value),
               })
             }
-            className="border p-2 rounded w-full"
+            className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
           />
         </div>
-        <div>
-          <label className="block">Rating:</label>
+        <div className="mb-4">
+          <label className="block text-black dark:text-white">Rating:</label>
           <StarRating 
             rating={currentEquipment?.rating || 0} 
             onChange={(newRating) => 
@@ -180,14 +178,14 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             <button
               type="button"
               onClick={() => setShowModal(true)}
-              className="bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded"
+              className="bg-red-500 hover:bg-red-400 dark:bg-red-600 dark:hover:bg-red-500 text-white px-4 py-2 rounded transition-colors"
             >
               Delete
             </button>
           )}
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded cursor-pointer"
+            className="bg-blue-500 hover:bg-blue-400 dark:bg-blue-600 dark:hover:bg-blue-500 text-white px-4 py-2 rounded cursor-pointer transition-colors"
           >
             {isUploading ? (uploadProgress || "Saving...") : mode === "edit" ? "Save Changes" : `Add ${type}`}
           </button>

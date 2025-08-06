@@ -60,7 +60,7 @@ const ViewGuitar = () => {
   if (error) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="text-red-500">Error: {error}</div>
+        <div className="text-red-500 dark:text-red-400">Error: {error}</div>
       </div>
     );
   }
@@ -76,44 +76,44 @@ const ViewGuitar = () => {
   ];
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full bg-white">
+    <div className="max-w-screen-xl mx-auto w-full bg-white dark:bg-[#122634]">
       <div className="p-6">
         <div className="mb-4">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold">{equipment.name || "My Stuff!"}</h1>
+          <h1 className="text-3xl font-bold text-black dark:text-white">{equipment.name || "My Stuff!"}</h1>
           {canEdit && (
             <button
               onClick={() => {
                 clearCurrentEquipment();
                 navigate(`/edit/${equipment._id}`);
               }}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+              className="bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
             >
               ✏️Edit
             </button>
           )}
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border rounded-lg p-4 relative flex flex-col">
+          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border dark:border-gray-600 rounded-lg p-4 relative flex flex-col">
             <Gallery equipment={equipment} />
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               <button 
                 onClick={handleLikeToggle}
                 disabled={canEdit}
-                className={`inline-flex items-center ${isLiked ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} px-2 py-1 rounded transition-colors duration-200`}
+                className={`inline-flex items-center ${isLiked ? "bg-purple-600 text-white" : "bg-purple-400 dark:bg-purple-500 text-purple-900 dark:text-purple-100"} px-2 py-1 rounded transition-colors duration-200`}
               >
                 <span className="mr-1 text-lg">👍</span>
                 {likesCount} {likesCount === 1 ? "Like" : "Likes"}
               </button>
             </div>
           </div>
-          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border rounded-lg p-4 overflow-hidden">
+          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border dark:border-gray-600 rounded-lg p-4 overflow-hidden">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <h2 className="text-xl font-semibold mb-2">Details</h2>
-                <div className="space-y-2">
+                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Details</h2>
+                <div className="space-y-2 text-black dark:text-white">
                   <p><span className="font-medium">Brand:</span> {equipment.brand || "Not specified"}</p>
                   <p><span className="font-medium">Type:</span> {equipment.type || "Not specified"}</p>
                   {equipment.shape && (
@@ -137,16 +137,16 @@ const ViewGuitar = () => {
               </div>
 
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2">Description</h2>
-                <div className="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
+                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Description</h2>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white">
                   {equipment.description || "No description provided."}
                 </div>
               </div>
               
               {equipment.why && (
                 <div className="mt-4">
-                  <h2 className="text-xl font-semibold mb-2">Why I Like It</h2>
-                  <div className="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
+                  <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Why I Like It</h2>
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white">
                     {equipment.why}
                   </div>
                 </div>
@@ -154,8 +154,8 @@ const ViewGuitar = () => {
               
               {equipment.recommendation && (
                 <div className="mt-4">
-                  <h2 className="text-xl font-semibold mb-2">Recommendation</h2>
-                  <div className="bg-gray-50 rounded-lg p-4 max-h-40 overflow-y-auto whitespace-pre-wrap break-words">
+                  <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Recommendation</h2>
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-40 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white">
                     {equipment.recommendation}
                   </div>
                 </div>
@@ -164,7 +164,7 @@ const ViewGuitar = () => {
             
             {equipment.tags && equipment.tags.length > 0 && (
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2">Tags</h2>
+                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Tags</h2>
                 <div className="flex flex-wrap gap-2">
                   {equipment.tags.map((tag) => (
                     <Tag 
@@ -179,14 +179,14 @@ const ViewGuitar = () => {
             )}
             
             <div className="mt-4">
-              <h2 className="text-xl font-semibold mb-2">Owner</h2>
+              <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Owner</h2>
               <div className="flex items-center gap-3">
                 <AvatarDisplayOnly 
                   imageUrl={equipment.user?.avatarUrl} 
                   username={equipment.user?.username || "Unknown"}
                   size="small"
                 />
-                <span className="font-medium">{equipment.user?.username || "Unknown"}</span>
+                <span className="font-medium text-black dark:text-white">{equipment.user?.username || "Unknown"}</span>
               </div>
             </div>
           </div>

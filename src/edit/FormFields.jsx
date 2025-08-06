@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { GuitarContext } from "../context/GuitarContext";
-import Select from "react-select";
+import Select from "../components/Select";
 
 function FormFields({ type, isUploading }) {
   const { currentEquipment, setCurrentEquipment } = useContext(GuitarContext);
@@ -43,7 +43,7 @@ function FormFields({ type, isUploading }) {
     <>
       {fieldMapping[type]?.map((field) => (
         <div key={field.key}>
-          <label className="block">{field.label}:</label>
+          <label className="block text-black dark:text-white">{field.label}:</label>
           {field.type === "text" || field.type === "number" ? (
             <input
               type={field.type}
@@ -56,12 +56,12 @@ function FormFields({ type, isUploading }) {
                   [field.key]: field.type === "number" ? Number(e.target.value) : e.target.value,
                 })
               }
-              className="border p-2 rounded w-full"
+              className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             />
           ) : field.type === "radio" ? (
             <div className="flex gap-4">
               {field.options.map((option) => (
-                <label key={option.value} className="flex items-center gap-2">
+                <label key={option.value} className="flex items-center gap-2 text-black dark:text-white">
                   <input
                     type="radio"
                     name={field.key}
@@ -93,7 +93,6 @@ function FormFields({ type, isUploading }) {
                 })
               }
               isClearable
-              className="text-gray-800"
               isDisabled={isUploading}
             />
           ) : null}
