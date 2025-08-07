@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { GuitarContext } from "../context/GuitarContext";
-import Select from "../components/Select";
 
 function FormFields({ type, isUploading }) {
   const { currentEquipment, setCurrentEquipment } = useContext(GuitarContext);
@@ -79,22 +78,25 @@ function FormFields({ type, isUploading }) {
               ))}
             </div>
           ) : field.type === "select" ? (
-            <Select
-              options={field.options}
-              value={
-                currentEquipment?.[field.key]
-                  ? field.options.find((option) => option.value === currentEquipment[field.key])
-                  : null
-              }
-              onChange={(selected) =>
+            <select
+              name={field.key}
+              value={currentEquipment?.[field.key] || ""}
+              onChange={(e) =>
                 setCurrentEquipment({
                   ...currentEquipment,
-                  [field.key]: selected?.value || "",
+                  [field.key]: e.target.value,
                 })
               }
-              isClearable
-              isDisabled={isUploading}
-            />
+              disabled={isUploading}
+              className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white"
+            >
+              <option value="">Select {field.label}</option>
+              {field.options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           ) : null}
         </div>
       ))}
