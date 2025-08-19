@@ -59,15 +59,14 @@ const ProtectedRoute = ({ children }) => {
   if (!isTokenValid) {
     return (
       <div className="p-6">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-          <p className="font-bold">Login Error</p>
+        <div className="bg-blue-50 border border-blue-200 text-blue-800 dark:bg-cyan-900/20 dark:border-cyan-700/50 dark:text-cyan-200 px-4 py-3 rounded mb-6">
+          <p className="font-bold">Login Required</p>
           <p>{authError || "Your credentials are either invalid or expired."}</p>
-          <p className="mt-2">Please login again.</p>
           <button 
             onClick={() => {
               window.location.href = `${BASE_URL}/login`;
             }}
-            className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            className="mt-2 bg-blue-500 hover:bg-blue-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 text-white px-4 py-2 rounded"
           >
             Go to Login
           </button>
