@@ -9,7 +9,7 @@ import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Spinner from "../components/Spinner";
 import useInfiniteScroll from "../utils/useInfiniteScroll";
 import { useEquipmentGridData } from "./useEquipmentGridData";
-import { useImageDimensions } from "./useImageDimensions";
+import { useImageLoading } from "./useImageLoading";
 import TileSkeleton from "./TileSkeleton";
 import { useUrlParams } from "../utils/useUrlParams";
 
@@ -35,7 +35,7 @@ function Grid() {
   const { user } = useContext(UserContext);
   const { tags } = useTagContext();
   const { searchTerm, handleSearch, clearSearch, equipment, totalEquipment, loading, loadMore } = useEquipmentGridData();
-  const { loadingImages } = useImageDimensions(equipment);
+  const { loadingImages } = useImageLoading(equipment);
   const [likedEquipment, setLikedEquipment] = useState({});
 
   useEffect(() => {

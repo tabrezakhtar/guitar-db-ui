@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const useImageDimensions = (equipment) => {
+export const useImageLoading = (equipment) => {
   const [loadingImages, setLoadingImages] = useState(new Set());
 
   useEffect(() => {
