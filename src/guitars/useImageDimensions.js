@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 
 export const useImageDimensions = (equipment) => {
-  const [imageDimensions, setImageDimensions] = useState({});
   const [loadingImages, setLoadingImages] = useState(new Set());
 
   useEffect(() => {
-    const newDimensions = {};
     const newLoadingImages = new Set();
     let isMounted = true;
 
@@ -26,7 +24,6 @@ export const useImageDimensions = (equipment) => {
         const img = new window.Image();
         img.onload = function () {
           if (isMounted) {
-            newDimensions[item._id] = { width: img.naturalWidth, height: img.naturalHeight };
             setLoadingImages(prev => {
               const updated = new Set(prev);
               updated.delete(item._id);
@@ -49,12 +46,10 @@ export const useImageDimensions = (equipment) => {
       });
     });
     
-    Promise.all(promises).then(() => {
-      if (isMounted) setImageDimensions(newDimensions);
-    });
+    Promise.all(promises);
     
     return () => { isMounted = false; };
   }, [equipment]);
 
-  return { imageDimensions, loadingImages };
+  return { loadingImages };
 };

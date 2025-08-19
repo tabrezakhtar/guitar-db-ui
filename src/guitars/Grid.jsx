@@ -35,9 +35,8 @@ function Grid() {
   const { user } = useContext(UserContext);
   const { tags } = useTagContext();
   const { searchTerm, handleSearch, clearSearch, equipment, totalEquipment, loading, loadMore } = useEquipmentGridData();
-  const { imageDimensions, loadingImages } = useImageDimensions(equipment);
+  const { loadingImages } = useImageDimensions(equipment);
   const [likedEquipment, setLikedEquipment] = useState({});
-  const [columnsCount, setColumnsCount] = useState(1);
 
   useEffect(() => {
     const urlSearch = getParam("search");
@@ -63,21 +62,7 @@ function Grid() {
     }
   }, [tags]);
 
-  const updateColumnsCount = useCallback(() => {
-    if (window.innerWidth >= 1024) {
-      setColumnsCount(3);
-    } else if (window.innerWidth >= 768) {
-      setColumnsCount(2);
-    } else {
-      setColumnsCount(1);
-    }
-  }, []);
 
-  useEffect(() => {
-    updateColumnsCount();
-    window.addEventListener("resize", updateColumnsCount);
-    return () => window.removeEventListener("resize", updateColumnsCount);
-  }, [updateColumnsCount]);
 
   const handleSortChange = (event) => {
     const [newSortBy, newSortOrder] = event.target.value.split("|");
@@ -187,26 +172,7 @@ function Grid() {
     onLoadMore: loadMore
   });
 
-  function sortMasonryItems(items, columnsCount, imageDimensions) {
-    const columns = Array.from({ length: columnsCount }, () => []);
-    const columnsHeights = Array.from({ length: columnsCount }, () => 0);
-    items.forEach((item) => {
-      const dims = imageDimensions[item._id] || { width: 1, height: 1 };
-      let aspect = 1;
-      if (dims.width > dims.height * 1.2) {
-        aspect = 16 / 9;
-      } else if (dims.height > dims.width * 1.2) {
-        aspect = 3 / 4;
-      }
-      const estimatedHeight = 1 / aspect;
-      const minCol = columnsHeights.indexOf(Math.min(...columnsHeights));
-      columns[minCol].push(item);
-      columnsHeights[minCol] += estimatedHeight;
-    });
-    return columns;
-  }
 
-  const masonryColumns = sortMasonryItems(equipment, columnsCount, imageDimensions);
 
   return (
     <div ref={containerRef} className="min-h-screen max-w-7xl mx-auto px-4">
@@ -275,87 +241,76 @@ function Grid() {
         </div>
       )}
 
-      <div className="flex gap-4">
-        {masonryColumns.map((column, colIdx) => (
-          <div key={colIdx} className="flex-1 flex flex-col space-y-4">
-            {column.map((item) => {
-              const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
-              const dims = imageDimensions[item._id] || { width: 1, height: 1 };
-              let tileClass = "aspect-[4/5]";
-              if (dims.width > dims.height * 1.2) {
-                tileClass = "aspect-[4/3]";
-              } else if (dims.height > dims.width * 1.2) {
-                tileClass = "aspect-[3/5]";
-              }
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {equipment.map((item) => {
+          const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
 
-              if (imageUrl && loadingImages.has(item._id)) {
-                return <TileSkeleton key={item._id} tileClass={tileClass} />;
-              }
+          if (imageUrl && loadingImages.has(item._id)) {
+            return <TileSkeleton key={item._id} tileClass="aspect-[4/5]" />;
+          }
 
-              return (
-                <div
-                  key={item._id}
-                  className={`break-inside-avoid rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative group ${tileClass}`}
-                  onClick={() => navigate("/view/" + item._id)}
-                >
-                  {imageUrl ? (
-                    <img 
-                      src={imageUrl} 
-                      alt={`Thumbnail: ${item.brand} ${item.name}`} 
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 w-full h-full">
-                      <SkeletonImage />
+          return (
+            <div
+              key={item._id}
+              className="aspect-[4/5] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative group"
+              onClick={() => navigate("/view/" + item._id)}
+            >
+              {imageUrl ? (
+                <img 
+                  src={imageUrl} 
+                  alt={`Thumbnail: ${item.brand} ${item.name}`} 
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                />
+              ) : (
+                <div className="absolute inset-0 w-full h-full">
+                  <SkeletonImage />
+                </div>
+              )}
+              <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-[rgba(31,41,55,0.3)] shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
+                <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
+                <Link to={item.user?._id ? `/profile/${item.user._id}` : "#"} onClick={(e) => e.stopPropagation()} className="pl-2 text-xs text-white drop-shadow-md hover:underline">
+                  <span className="">{item.user ? item.user?.username.slice(0,12) : ""}</span>
+                </Link>
+              </div>
+              <div className="absolute top-2 right-2 bg-[rgba(31,41,55,0.3)] rounded-full p-1 shadow-md flex items-center justify-center">
+                <img 
+                  src={getEquipmentIcon(item.type)} 
+                  alt={item.type} 
+                  className="w-8 h-8"
+                />
+              </div>
+              <div className="absolute inset-0 flex flex-col justify-center items-center p-3 pointer-events-none">
+                <div className="group-hover:[transform:rotateY(180deg)] transition-transform duration-500 [transform-style:preserve-3d]">
+                  <div className="[backface-visibility:hidden] px-3 py-2 rounded bg-[rgba(31,41,55,0.3)]">
+                    <h2 className="text-lg font-semibold text-center text-white drop-shadow-md">{item.brand} {item.name}</h2>
+                  </div>
+                  <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-center items-center">
+                    <div className="rounded bg-[rgba(31,41,55,0.3)] px-3 py-2 max-w-full">
+                      <p className="text-sm text-white text-center drop-shadow-md">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
                     </div>
-                  )}
-                  <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-[rgba(31,41,55,0.3)] shadow-sm flex items-center" onClick={(e) => { handleAvatarClick(e, item.user?._id) }}>
-                    <AvatarDisplayOnly imageUrl={item.user?.avatarUrl} username={item.user?.username} size="xsmall"/>
-                    <Link to={item.user?._id ? `/profile/${item.user._id}` : "#"} onClick={(e) => e.stopPropagation()} className="pl-2 text-xs text-white drop-shadow-md hover:underline">
-                      <span className="">{item.user ? item.user?.username.slice(0,12) : ""}</span>
-                    </Link>
-                  </div>
-                  <div className="absolute top-2 right-2 bg-[rgba(31,41,55,0.3)] rounded-full p-1 shadow-md flex items-center justify-center">
-                    <img 
-                      src={getEquipmentIcon(item.type)} 
-                      alt={item.type} 
-                      className="w-8 h-8"
-                    />
-                  </div>
-                  <div className="absolute inset-0 flex flex-col justify-center items-center p-3 pointer-events-none">
-                    <div className="group-hover:[transform:rotateY(180deg)] transition-transform duration-500 [transform-style:preserve-3d]">
-                      <div className="[backface-visibility:hidden] px-3 py-2 rounded bg-[rgba(31,41,55,0.3)]">
-                        <h2 className="text-lg font-semibold text-center text-white drop-shadow-md">{item.brand} {item.name}</h2>
-                      </div>
-                      <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-center items-center">
-                        <div className="rounded bg-[rgba(31,41,55,0.3)] px-3 py-2 max-w-full">
-                          <p className="text-sm text-white text-center drop-shadow-md">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute bottom-2 left-2 pointer-events-none">
-                    <span className="bg-transparent text-white text-xs px-2 py-1 rounded inline-flex items-center drop-shadow-md pointer-events-auto">
-                      <span className="mr-1">💬</span>
-                      {item.commentCount}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-2 right-2 pointer-events-none">
-                    <button
-                      className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200 drop-shadow-md pointer-events-auto hover:cursor-pointer`}
-                      onClick={(e) => handleLikeClick(e, item)}
-                      disabled={item.user?._id === user?._id}
-                      title={!user ? "Create an account to like!" : ""}
-                    >
-                      <span className="mr-1">👍</span>
-                      {item.likesCount || 0}
-                    </button>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        ))}
+              </div>
+              <div className="absolute bottom-2 left-2 pointer-events-none">
+                <span className="bg-transparent text-white text-xs px-2 py-1 rounded inline-flex items-center drop-shadow-md pointer-events-auto">
+                  <span className="mr-1">💬</span>
+                  {item.commentCount}
+                </span>
+              </div>
+              <div className="absolute bottom-2 right-2 pointer-events-none">
+                <button
+                  className={`${likedEquipment[item._id] ? "bg-purple-600 text-white" : "bg-purple-400 text-purple-900"} text-xs px-2 py-1 rounded inline-flex items-center transition-colors duration-200 drop-shadow-md pointer-events-auto hover:cursor-pointer`}
+                  onClick={(e) => handleLikeClick(e, item)}
+                  disabled={item.user?._id === user?._id}
+                  title={!user ? "Create an account to like!" : ""}
+                >
+                  <span className="mr-1">👍</span>
+                  {item.likesCount || 0}
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
       {loading && (
         <div className="flex justify-center p-4">
