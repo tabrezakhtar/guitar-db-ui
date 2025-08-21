@@ -1,9 +1,11 @@
 import { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
+import { UserContext } from "../context/UserContext";
 import { useTagContext } from "../context/TagContext";
 import Tag from "../tags/Tag";
 import TagSearch from "../tags/TagSearch";
+import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import { useUrlParams } from "../utils/useUrlParams";
 import { useSideMenuHeight } from "../hooks/useSideMenuHeight";
 
@@ -13,6 +15,8 @@ function SideMenu() {
     setEquipmentType,
     equipmentType
   } = useContext(GuitarContext);
+  
+  const { user } = useContext(UserContext);
   
   const { 
     filteredTags, 
@@ -64,6 +68,36 @@ function SideMenu() {
       style={{ height: sideMenuHeight }}
     >
       <div ref={headerSectionRef}>
+        {/* User Profile Section - Only show on small screens */}
+        <div className="md:hidden mb-4 pb-4 border-b border-gray-600">
+          {user ? (
+            <Link 
+              to="/profile" 
+              className="flex items-center justify-center hover:text-gray-300 p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
+            >
+              <AvatarDisplayOnly imageUrl={user.avatarUrl} username={user.username} size="small"/>
+              <span className="pl-3 font-medium">{user.username}</span>
+            </Link>
+          ) : (
+            <a 
+              href={`${import.meta.env.VITE_API_BASE_URL}/register`} 
+              className="flex items-center justify-center hover:text-gray-300 p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
+            >
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-medium">
+                +
+              </div>
+              <span className="pl-3 font-medium">Create Profile</span>
+            </a>
+          )}
+          
+          {/* Navigation Links - Only show on small screens */}
+          <div className="mt-3 space-y-1">
+            <Link to="/" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">Home</Link>
+            <Link to="/contact" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">Contact</Link>
+            <Link to="/about" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">About</Link>
+          </div>
+        </div>
+
         <div className="mb-4">
           <Link to="/add" className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center font-semibold" title="Add a new instrument">
             + Add New Equipment
