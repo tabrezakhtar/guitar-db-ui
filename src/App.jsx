@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./About";
 import Contact from "./Contact";
-import ContentContainer from "./ContentContainer";
+import Grid from "./guitars/Grid";
 import EditGuitar from "./edit/EditGuitar";
 import ViewGuitar from "./view/ViewGuitar";
 import AddGuitar from "./AddGuitar";
@@ -11,6 +11,7 @@ import { UserProvider } from "./context/UserContext";
 import { GuitarProvider } from "./context/GuitarContext";
 import { TagProvider } from "./context/TagContext";
 import Header from "./Header";
+import Layout from "./Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import SaveCredentials from "./SaveCredentials";
 
@@ -25,34 +26,40 @@ function App() {
 
             <div>
               <Routes>
-                <Route path="/" element={<ContentContainer />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
+                <Route path="/" element={<Layout><Grid /></Layout>} />
+                <Route path="/about" element={<Layout><About /></Layout>} />
+                <Route path="/contact" element={<Layout><Contact /></Layout>} />
                 <Route 
                   path="/edit/:id" 
                   element={
-                    <ProtectedRoute>
-                      <EditGuitar />
-                    </ProtectedRoute>
+                    <Layout>
+                      <ProtectedRoute>
+                        <EditGuitar />
+                      </ProtectedRoute>
+                    </Layout>
                   } 
                 />
-                <Route path="/view/:id" element={<ViewGuitar />} />
+                <Route path="/view/:id" element={<Layout><ViewGuitar /></Layout>} />
                 <Route 
                   path="/add" 
                   element={
-                    <ProtectedRoute>
-                      <AddGuitar />
-                    </ProtectedRoute>
+                    <Layout>
+                      <ProtectedRoute>
+                        <AddGuitar />
+                      </ProtectedRoute>
+                    </Layout>
                   } 
                 />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/profile/:userId" element={<Profile />} />
+                <Route path="/profile" element={<Layout><Profile /></Layout>} />
+                <Route path="/profile/:userId" element={<Layout><Profile /></Layout>} />
                 <Route 
                   path="/edit-profile" 
                   element={
-                    <ProtectedRoute>
-                      <EditProfile />
-                    </ProtectedRoute>
+                    <Layout>
+                      <ProtectedRoute>
+                        <EditProfile />
+                      </ProtectedRoute>
+                    </Layout>
                   } 
                 />
                 <Route path="/auth" element={<SaveCredentials />} />

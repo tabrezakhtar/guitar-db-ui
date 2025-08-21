@@ -50,8 +50,8 @@ function Header() {
 
   return (
     <header className="bg-gray-800 text-white p-4 flex">
-      <div className="flex md:justify-between items-center max-w-screen-xl mx-auto w-full">
-        <div className="flex items-center pl-12 md:pl-6 md:pr-0" >
+      <div className="flex justify-center md:justify-between items-center max-w-screen-xl mx-auto w-full">
+        <div className="flex items-center md:pl-6 md:pr-0" >
           <Link to="/" className="text-lg font-bold hover:underline" onClick={() => setEquipmentType("")}>Guitar Explorer</Link>
           <span>🔥</span>
         </div>
