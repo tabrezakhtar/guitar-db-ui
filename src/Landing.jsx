@@ -1,8 +1,18 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useHeader } from "./context/HeaderContext";
 
 function Landing() {
+  const { hideHeader, displayHeader } = useHeader();
+
+  useEffect(() => {
+    hideHeader();
+    return () => {
+      displayHeader();
+    };
+  }, [hideHeader, displayHeader]);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white flex items-center justify-center">
+    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white flex items-center justify-center">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <div className="mb-8">
           <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">

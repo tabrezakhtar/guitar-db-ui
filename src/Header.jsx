@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import { GuitarContext } from "./context/GuitarContext";
+import { useHeader } from "./context/HeaderContext";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
 
 function MenuContent({ user }) {
@@ -43,8 +44,9 @@ function MenuContent({ user }) {
 }
 
 function Header() {
-  const { user, showHeader } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { setEquipmentType } = useContext(GuitarContext);
+  const { showHeader } = useHeader();
   
   if (!showHeader) return null;
 
