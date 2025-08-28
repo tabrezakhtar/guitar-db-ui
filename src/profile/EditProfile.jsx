@@ -142,7 +142,7 @@ const EditProfile = () => {
         // Clear user state and redirect
         updateUserLocal(null);
         setShowDeleteModal(false);
-        navigate("/");
+        navigate("/gallery");
       }
     } catch (err) {
       setError(profileError || err.message || "Failed to delete profile");

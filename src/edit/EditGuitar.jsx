@@ -36,7 +36,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
   useEffect(() => {
     if (mode === "add" && !initialized) {
       if (!user) {
-        navigate("/");
+        navigate("/gallery");
         return;
       }
       
@@ -121,7 +121,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
   const handleDelete = async () => {
     setShowModal(false);
     await deleteEquipment();
-    navigate("/");
+    navigate("/gallery");
   };
 
   if (loading && mode === "edit") {

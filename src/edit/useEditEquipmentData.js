@@ -38,7 +38,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
       // Verify user can edit this equipment
       const canEdit = user && data.item.user && user._id === data.item.user._id;
       if (!canEdit) {
-        navigate("/");
+        navigate("/gallery");
         throw new Error("You don't have permission to edit this equipment");
       }
 

@@ -159,7 +159,7 @@ const Profile = () => {
             <button 
               onClick={() => {
                 logout();
-                navigate("/");
+                navigate("/gallery");
               }} 
               className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 bg-transparent border-none cursor-pointer p-0 flex items-center"
             >
