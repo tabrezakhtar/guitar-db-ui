@@ -11,11 +11,39 @@ function Landing() {
   const [recentEquipment, setRecentEquipment] = useState([]);
   const [popularEquipment, setPopularEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     hideHeader();
+    
+    // Load parallax background script
+    const script = document.createElement("script");
+    script.src = "/src/lib/parallax-bg.js";
+    script.onload = () => {
+      // Initialize parallax background after script loads
+      const parallaxInstance = window.ParallaxBackground.init({
+        zIndex: -1,
+        speeds: [200, 250, 180, 120]
+      });
+    };
+    document.head.appendChild(script);
+    
+    // Trigger animations after a short delay
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+    
     return () => {
       displayHeader();
+      // Clean up parallax background when component unmounts
+      const container = document.querySelector(".parallax-bg-container");
+      const styles = document.getElementById("parallax-bg-styles");
+      if (container) container.remove();
+      if (styles) styles.remove();
+      // Remove script
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
     };
   }, [hideHeader, displayHeader]);
 
@@ -45,11 +73,11 @@ function Landing() {
     fetchLandingData();
   }, []);
 
-  const renderEquipmentSection = (items, title, emoji, linkTo) => {
+  const renderEquipmentSection = (items, title, emoji, linkTo, delay = 0) => {
     if (!items || items.length === 0) return null;
     
     return (
-      <div className="mb-8">
+      <div className={`mb-8 fade-in-bounce delay-${delay} ${isVisible ? 'visible' : ''}`}>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-2xl font-bold text-white flex items-center">
             {emoji} {title}
@@ -74,23 +102,45 @@ function Landing() {
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+      <style jsx>{`
+        .fade-in-bounce {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+          transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .fade-in-bounce.visible {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+        .delay-400 { transition-delay: 0.4s; }
+        .delay-500 { transition-delay: 0.5s; }
+        .delay-600 { transition-delay: 0.6s; }
+        .delay-700 { transition-delay: 0.7s; }
+        .delay-800 { transition-delay: 0.8s; }
+      `}</style>
+      
       <div className="max-w-6xl mx-auto px-6">
         {/* Hero Section */}
         <div className="flex items-center justify-center">
           <div className="text-center">
-            <div className="mb-8">
+            <div className={`mb-8 fade-in-bounce delay-100 ${isVisible ? 'visible' : ''}`}>
               <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                 Guitar Explorer
               </h1>
               <span className="text-4xl">🔥</span>
             </div>
             
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className={`text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in-bounce delay-200 ${isVisible ? 'visible' : ''}`}>
               Discover, showcase, and explore an amazing collection of guitars, amps, pedals, and musical equipment. 
               Join our community of music enthusiasts and gear lovers.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 fade-in-bounce delay-300 ${isVisible ? 'visible' : ''}`}>
               <Link 
                 to="/gallery" 
                 className="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors duration-200 min-w-[200px]"
@@ -105,7 +155,7 @@ function Landing() {
               </Link>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+            <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto fade-in-bounce delay-400 ${isVisible ? 'visible' : ''}`}>
               <div className="text-center">
                 <div className="text-4xl mb-4">🎸</div>
                 <h3 className="text-lg font-semibold mb-2">Guitars & Basses</h3>
@@ -128,7 +178,7 @@ function Landing() {
         {/* Equipment Sections */}
         <div className="py-16">
           {loading ? (
-            <div className="flex justify-center items-center py-16">
+            <div className={`flex justify-center items-center py-16 fade-in-bounce delay-500 ${isVisible ? 'visible' : ''}`}>
               <Spinner />
             </div>
           ) : (
@@ -137,14 +187,16 @@ function Landing() {
                 recentEquipment, 
                 "Recently Added", 
                 "🆕", 
-                "/gallery?sort=date&order=desc"
+                "/gallery?sort=date&order=desc",
+                600
               )}
               
               {renderEquipmentSection(
                 popularEquipment, 
                 "Most Popular", 
                 "⭐", 
-                "/gallery?sort=likesCount&order=desc"
+                "/gallery?sort=likesCount&order=desc",
+                700
               )}
             </>
           )}
