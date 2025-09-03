@@ -101,8 +101,7 @@ function Landing() {
     );
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      <style jsx>{`
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">      <style jsx>{`
         .fade-in-bounce {
           opacity: 0;
           transform: translateY(30px) scale(0.95);
@@ -112,6 +111,15 @@ function Landing() {
         .fade-in-bounce.visible {
           opacity: 1;
           transform: translateY(0) scale(1);
+        }
+        
+        .fade-in {
+          opacity: 0;
+          transition: opacity 0.8s ease-in-out;
+        }
+        
+        .fade-in.visible {
+          opacity: 1;
         }
         
         .delay-100 { transition-delay: 0.1s; }
@@ -125,17 +133,16 @@ function Landing() {
       `}</style>
       
       <div className="max-w-6xl mx-auto px-6">
-        {/* Hero Section */}
-        <div className="flex items-center justify-center">
+        {/* Hero Section */}        <div className="flex items-center justify-center">
           <div className="text-center">
-            <div className={`mb-8 fade-in-bounce delay-100 ${isVisible ? 'visible' : ''}`}>
+            <div className={`mb-8 fade-in ${isVisible ? 'visible' : ''}`}>
               <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                 Guitar Explorer
               </h1>
               <span className="text-4xl">🔥</span>
             </div>
             
-            <p className={`text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in-bounce delay-200 ${isVisible ? 'visible' : ''}`}>
+            <p className={`text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in ${isVisible ? 'visible' : ''}`}>
               Discover, showcase, and explore an amazing collection of guitars, amps, pedals, and musical equipment. 
               Join our community of music enthusiasts and gear lovers.
             </p>
