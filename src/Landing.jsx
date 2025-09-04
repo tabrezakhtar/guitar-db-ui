@@ -138,10 +138,13 @@ function Landing() {
             </div>
             
             <p className={`text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in ${isVisible ? 'visible' : ''}`}>
-              Discover, showcase, and explore an amazing collection of guitars, amps, pedals, and musical equipment. 
-              Join our community of music enthusiasts and gear lovers.
+              Discover gear.  Celebrate stories.  Share your journey.
             </p>
             
+            <p className={`text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in ${isVisible ? 'visible' : ''}`}>
+              Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do.
+            </p>
+
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 fade-in-bounce delay-300 ${isVisible ? 'visible' : ''}`}>
               <Link 
                 to="/gallery" 
@@ -186,16 +189,16 @@ function Landing() {
             <>
               {renderEquipmentSection(
                 recentEquipment, 
-                "Recently Added", 
-                "🆕", 
+                "See what's new", 
+                "", 
                 "/gallery?sort=date&order=desc",
                 600
               )}
               
               {renderEquipmentSection(
                 popularEquipment, 
-                "Most Popular", 
-                "⭐", 
+                "Most popular gear", 
+                "", 
                 "/gallery?sort=likesCount&order=desc",
                 700
               )}
