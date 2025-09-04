@@ -55,21 +55,24 @@ const ProtectedRoute = ({ children }) => {
     }
     return null;
   }
-
   if (!isTokenValid) {
     return (
       <div className="p-6">
-        <div className="bg-blue-50 border border-blue-200 text-blue-800 dark:bg-cyan-900/20 dark:border-cyan-700/50 dark:text-cyan-200 px-4 py-3 rounded mb-6">
-          <p className="font-bold">Login Required</p>
-          <p>{authError || "Your credentials are either invalid or expired."}</p>
-          <button 
-            onClick={() => {
-              window.location.href = `${BASE_URL}/login`;
-            }}
-            className="mt-2 bg-blue-500 hover:bg-blue-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 text-white px-4 py-2 rounded"
-          >
-            Go to Login
-          </button>
+        <div className="flex p-5 bg-[rgba(33,172,232,0.12)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
+          <div className="flex-shrink-0 mr-4">
+            <span className="text-2xl">📨</span>
+          </div>
+          <div>
+            <p className="font-bold mb-1">Login Required</p>
+            <p className="leading-relaxed">{authError || "Your credentials are either invalid or expired."}</p>            <button 
+              onClick={() => {
+                window.location.href = `${BASE_URL}/login`;
+              }}
+              className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center font-semibold mt-4"
+            >
+              Go to Login
+            </button>
+          </div>
         </div>
       </div>
     );
