@@ -16,11 +16,9 @@ function Landing() {
   useEffect(() => {
     hideHeader();
     
-    // Load parallax background script
     const script = document.createElement("script");
     script.src = "/src/lib/parallax-bg.js";
     script.onload = () => {
-      // Initialize parallax background after script loads
       const parallaxInstance = window.ParallaxBackground.init({
         zIndex: -1,
         speeds: [200, 250, 180, 120]
@@ -28,19 +26,16 @@ function Landing() {
     };
     document.head.appendChild(script);
     
-    // Trigger animations after a short delay
     setTimeout(() => {
       setIsVisible(true);
     }, 100);
     
     return () => {
       displayHeader();
-      // Clean up parallax background when component unmounts
       const container = document.querySelector(".parallax-bg-container");
       const styles = document.getElementById("parallax-bg-styles");
       if (container) container.remove();
       if (styles) styles.remove();
-      // Remove script
       if (script.parentNode) {
         script.parentNode.removeChild(script);
       }
@@ -50,14 +45,12 @@ function Landing() {
   useEffect(() => {
     const fetchLandingData = async () => {
       try {
-        // Fetch recent equipment (last 5, sorted by date)
         const recentResponse = await fetch(`${BASE_URL}/api/equipment/list?page=1&limit=5&sortBy=date&sortOrder=desc`);
         if (recentResponse.ok) {
           const recentData = await recentResponse.json();
           setRecentEquipment(recentData.items || []);
         }
 
-        // Fetch popular equipment (sorted by likes count)
         const popularResponse = await fetch(`${BASE_URL}/api/equipment/list?page=1&limit=5&sortBy=likesCount&sortOrder=desc`);
         if (popularResponse.ok) {
           const popularData = await popularResponse.json();
@@ -90,7 +83,7 @@ function Landing() {
           </Link>
         </div>
         <div className="bg-gray-800/50 rounded-lg p-4">
-          <EquipmentCarousel 
+        <EquipmentCarousel 
             items={items.slice(0, 5)} 
             theme="dark"
             centered={true}
@@ -100,8 +93,10 @@ function Landing() {
       </div>
     );
   };
+  
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">      <style jsx>{`
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8">
+      <style jsx>{`
         .fade-in-bounce {
           opacity: 0;
           transform: translateY(30px) scale(0.95);
@@ -133,7 +128,7 @@ function Landing() {
       `}</style>
       
       <div className="max-w-6xl mx-auto px-6">
-        {/* Hero Section */}        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center">
           <div className="text-center">
             <div className={`mb-8 fade-in ${isVisible ? 'visible' : ''}`}>
               <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
@@ -182,7 +177,6 @@ function Landing() {
           </div>
         </div>
 
-        {/* Equipment Sections */}
         <div className="py-16">
           {loading ? (
             <div className={`flex justify-center items-center py-16 fade-in-bounce delay-500 ${isVisible ? 'visible' : ''}`}>
