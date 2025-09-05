@@ -98,17 +98,23 @@ const Profile = () => {
       </div>
     );
   };
-  
     if (profileError || equipmentError) {
     return (
-      <div className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-400 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
-        <p>{profileError || equipmentError}</p>
-        <NavLink
-          to="/"
-          className="inline-block mt-4 text-blue-500 dark:text-blue-400 hover:underline text-sm"
-        >
-          ⬅️ Back to Home
-        </NavLink>
+      <div className="p-6">
+        <div className="flex p-5 bg-[rgba(33,172,232,0.12)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">          <div className="flex-shrink-0 mr-4">
+            <span className="text-2xl">⚠️</span>
+          </div>
+          <div>
+            <p className="font-bold mb-1">Error</p>
+            <p className="leading-relaxed">{profileError || equipmentError}</p>
+            <NavLink
+              to="/"
+              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center font-semibold mt-4"
+            >
+              ⬅️ Back to Home
+            </NavLink>
+          </div>
+        </div>
       </div>
     );
   }
@@ -120,17 +126,24 @@ const Profile = () => {
       </div>
     );
   }
-  
-  if (!profileUser) {
+    if (!profileUser) {
     return (
-      <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-400 dark:border-yellow-600 text-yellow-700 dark:text-yellow-400 px-4 py-3 rounded mx-auto mt-6 max-w-2xl">
-        <p>User profile not found.</p>
-        <NavLink
-          to="/"
-          className="inline-block mt-4 text-blue-500 dark:text-blue-400 hover:underline text-sm"
-        >
-          ⬅️ Back to Home
-        </NavLink>
+      <div className="p-6">
+        <div className="flex p-5 bg-[rgba(33,172,232,0.12)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
+          <div className="flex-shrink-0 mr-4">
+            <span className="text-2xl">🔍</span>
+          </div>
+          <div>
+            <p className="font-bold mb-1">Not Found</p>
+            <p className="leading-relaxed">User profile not found.</p>
+            <NavLink
+              to="/"
+              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center font-semibold mt-4"
+            >
+              ⬅️ Back to Home
+            </NavLink>
+          </div>
+        </div>
       </div>
     );
   }
