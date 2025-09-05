@@ -32,30 +32,28 @@ function App() {
                     <Route path="/" element={<Layout hideMenu><Landing /></Layout>} />
                     <Route path="/gallery" element={<Layout><Grid /></Layout>} />
                     <Route path="/about" element={<Layout><About /></Layout>} />
-                    <Route path="/contact" element={<Layout><Contact /></Layout>} />
-                    <Route
+                    <Route path="/contact" element={<Layout><Contact /></Layout>} />                    <Route
                       path="/edit/:id"
                       element={
-                        <Layout>
+                        <Layout hideMenu>
                           <ProtectedRoute>
                             <EditGuitar />
                           </ProtectedRoute>
                         </Layout>
                       }
                     />
-                    <Route path="/view/:id" element={<Layout><ViewGuitar /></Layout>} />
-                    <Route
+                    <Route path="/view/:id" element={<Layout hideMenu><ViewGuitar /></Layout>} />                    <Route
                       path="/add"
                       element={
-                        <Layout>
+                        <Layout hideMenu>
                           <ProtectedRoute>
                             <AddGuitar />
                           </ProtectedRoute>
                         </Layout>
                       }
                     />
-                    <Route path="/profile" element={<Layout><Profile /></Layout>} />
-                    <Route path="/profile/:userId" element={<Layout><Profile /></Layout>} />
+                    <Route path="/profile" element={<Layout hideMenu><Profile /></Layout>} />
+                    <Route path="/profile/:userId" element={<Layout hideMenu><Profile /></Layout>} />
                     <Route
                       path="/edit-profile"
                       element={
