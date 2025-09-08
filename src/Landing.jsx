@@ -136,12 +136,11 @@ function Landing() {
               </h1>
               <span className="text-4xl">🔥</span>
             </div>
-            
-            <p className={`text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in ${isVisible ? 'visible' : ''}`}>
+              <p className={`text-4xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in font-['Caveat'] ${isVisible ? 'visible' : ''}`}>
               Discover gear.  Celebrate stories.  Share your journey.
             </p>
             
-            <p className={`text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in ${isVisible ? 'visible' : ''}`}>
+            <p className={`text-3xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in font-['Caveat'] ${isVisible ? 'visible' : ''}`}>
               Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do.
             </p>
 
