@@ -131,7 +131,7 @@ function Landing() {
         <div className="flex items-center justify-center">
           <div className="text-center">
             <div className={`mb-8 fade-in ${isVisible ? 'visible' : ''}`}>
-              <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+              <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-['Caveat']">
                 Guitar Explorer
               </h1>
               <span className="text-4xl">🔥</span>
