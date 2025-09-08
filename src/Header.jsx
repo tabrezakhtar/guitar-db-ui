@@ -4,6 +4,7 @@ import { UserContext } from "./context/UserContext";
 import { GuitarContext } from "./context/GuitarContext";
 import { useHeader } from "./context/HeaderContext";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
+import Logo from "./Logo";
 
 function MenuContent({ user }) {
   return (
@@ -54,8 +55,9 @@ function Header() {
     <header className="bg-gray-800 text-white p-4 flex">
       <div className="flex justify-center md:justify-between items-center max-w-screen-xl mx-auto w-full">
         <div className="flex items-center md:pl-6 md:pr-0" >
-          <Link to="/gallery" className="text-lg font-bold hover:underline" onClick={() => setEquipmentType("")}>Guitar Explorer</Link>
-          <span>🔥</span>
+          <Link to="/gallery" className="text-lg font-bold hover:underline hover:decoration-red-500" onClick={() => setEquipmentType("")}>
+            <Logo size="normal" />
+          </Link>
         </div>
         
         <div className="hidden md:block">

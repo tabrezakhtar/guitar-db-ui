@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useHeader } from "./context/HeaderContext";
 import { EquipmentCarousel } from "./profile/EquipmentCard";
 import Spinner from "./components/Spinner";
+import Logo from "./Logo";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -131,10 +132,7 @@ function Landing() {
         <div className="flex items-center justify-center">
           <div className="text-center">
             <div className={`mb-8 fade-in ${isVisible ? 'visible' : ''}`}>
-              <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-['Caveat']">
-                Guitar Explorer
-              </h1>
-              <span className="text-4xl">🔥</span>
+              <Logo size="xlarge" />
             </div>
               <p className={`text-4xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in font-['Caveat'] ${isVisible ? 'visible' : ''}`}>
               Discover gear.  Celebrate stories.  Share your journey.
