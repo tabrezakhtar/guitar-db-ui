@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import About from "./About";
 import Contact from "./Contact";
 import Landing from "./Landing";
 import Grid from "./guitars/Grid";
@@ -31,8 +30,8 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Layout hideMenu><Landing /></Layout>} />
                     <Route path="/gallery" element={<Layout><Grid /></Layout>} />
-                    <Route path="/about" element={<Layout><About /></Layout>} />
-                    <Route path="/contact" element={<Layout><Contact /></Layout>} />                    <Route
+                    <Route path="/contact" element={<Layout><Contact /></Layout>} />
+                    <Route
                       path="/edit/:id"
                       element={
                         <Layout hideMenu>
@@ -42,7 +41,8 @@ function App() {
                         </Layout>
                       }
                     />
-                    <Route path="/view/:id" element={<Layout hideMenu><ViewGuitar /></Layout>} />                    <Route
+                    <Route path="/view/:id" element={<Layout hideMenu><ViewGuitar /></Layout>} />
+                    <Route
                       path="/add"
                       element={
                         <Layout hideMenu>

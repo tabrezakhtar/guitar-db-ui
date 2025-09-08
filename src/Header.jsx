@@ -9,18 +9,6 @@ import Logo from "./Logo";
 function MenuContent({ user }) {
   return (
     <nav className="flex pr-5 items-center">
-      <ul className="flex space-x-4 items-center">
-        <li>
-          <Link to="/" className="hover:underline block py-2">Home</Link>
-        </li>
-        <li>
-          <Link to="/contact" className="hover:underline block py-2">Contact</Link>
-        </li>
-        <li>
-          <Link to="/about" className="hover:underline block py-2">About</Link>
-        </li>
-      </ul>
-      
       {user ? (
         <Link 
           to="/profile" 

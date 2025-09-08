@@ -92,9 +92,8 @@ function SideMenu() {
           
           {/* Navigation Links - Only show on small screens */}
           <div className="mt-3 space-y-1">
-            <Link to="/" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">Home</Link>
-            <Link to="/contact" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">Contact</Link>
-            <Link to="/about" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">About</Link>
+            <a href="/" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">Home</a>
+            <a href="/contact" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">Contact</a>
           </div>
         </div>
 
