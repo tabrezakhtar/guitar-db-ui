@@ -80,7 +80,7 @@ function Landing() {
             to={linkTo} 
             className="text-blue-400 hover:text-blue-300 text-sm font-medium"
           >
-            View All →
+            View All
           </Link>
         </div>
         <div className="bg-gray-800/50 rounded-lg p-4">
