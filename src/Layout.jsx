@@ -47,12 +47,11 @@ function Layout({ hideMenu, children }) {
 
       {/* Side Menu - Slides in from left on mobile, hidden when hideMenu is true */}
       {!hideMenu && (
-        <div
-          className={`
-            md:relative md:translate-x-0 md:block md:w-96 md:h-screen md:sticky md:top-0
-            fixed md:static top-0 left-0 h-full md:h-auto z-40 w-80
+        <div          className={`            md:relative md:translate-x-0 md:block md:w-96 md:sticky md:top-0
+            fixed md:static top-0 left-0 h-screen md:h-auto z-40 w-80
             transform transition-all duration-500 ease-in-out
             ${isSideMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+            overflow-y-auto md:overflow-visible custom-scrollbar
           `}
         >
           <SideMenu />

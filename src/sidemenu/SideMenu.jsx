@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
@@ -7,7 +7,6 @@ import Tag from "../tags/Tag";
 import TagSearch from "../tags/TagSearch";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import { useUrlParams } from "../utils/useUrlParams";
-import { useSideMenuHeight } from "../hooks/useSideMenuHeight";
 
 function SideMenu() {
   const { updateParams } = useUrlParams();
@@ -17,15 +16,15 @@ function SideMenu() {
   } = useContext(GuitarContext);
   
   const { user } = useContext(UserContext);
-  
-  const { 
+    const { 
     filteredTags, 
     selectedTags,
     handleTagSelection,
     clearSelectedTags 
   } = useTagContext();
 
-  const { sideMenuHeight, tagsListHeight, sideMenuRef, headerSectionRef } = useSideMenuHeight();
+  const sideMenuRef = useRef(null);
+  const headerSectionRef = useRef(null);
 
   const handleEquipmentTypeChange = (type) => {
     setEquipmentType(type);
@@ -60,12 +59,9 @@ function SideMenu() {
     { key: "pedal", label: "Pedal", img: "/pedal.png" },
     { key: "accessory", label: "Accessory", img: "/accessory.png" }
   ];
-
-  return (
-    <aside 
+  return (    <aside 
       ref={sideMenuRef}
       className="bg-gray-800 text-white w-full md:w-80 p-6 shadow-lg flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat"
-      style={{ height: sideMenuHeight }}
     >
       <div ref={headerSectionRef}>
         {/* User Profile Section - Only show on small screens */}
@@ -143,15 +139,12 @@ function SideMenu() {
           </div>
           <TagSearch />
         </div>
-      </div>
-      <div className="relative bg-gray-700/50 rounded-lg p-3 mt-2 flex-1">
-        <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-gray-700/50 to-transparent pointer-events-none rounded-t-lg z-10"></div>
+      </div>      <div className="bg-gray-700/50 rounded-lg p-3 mt-2">
         <div 
-          className="flex flex-wrap overflow-y-auto pr-1 pb-8 gap-2 relative z-0 custom-scrollbar" 
-          style={{ 
-            height: tagsListHeight,
+          className="flex flex-wrap pr-1 gap-2 relative z-0 md:h-auto md:overflow-visible max-h-[50vh] md:max-h-none overflow-y-auto custom-scrollbar" 
+          style={{
             scrollbarWidth: 'thin',
-            scrollbarColor: 'rgba(255,255,255,0.3) transparent'
+            scrollbarColor: 'rgba(128,128,128,0.5) transparent'
           }}
         >
           {filteredTags.map((tag) => (
@@ -164,7 +157,6 @@ function SideMenu() {
             />
           ))}
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-gray-700/50 to-transparent pointer-events-none rounded-b-lg z-10"></div>
       </div>
     </aside>
   );
