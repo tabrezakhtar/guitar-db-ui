@@ -4,6 +4,7 @@ import { useHeader } from "./context/HeaderContext";
 import { EquipmentCarousel } from "./profile/EquipmentCard";
 import Spinner from "./components/Spinner";
 import Logo from "./Logo";
+import Footer from "./Footer";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -199,10 +200,11 @@ function Landing() {
                 "/gallery?sort=likesCount&order=desc",
                 700
               )}
-            </>
-          )}
+            </>          )}
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }
