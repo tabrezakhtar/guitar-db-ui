@@ -7,6 +7,7 @@ import Tag from "../tags/Tag";
 import TagSearch from "../tags/TagSearch";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import { useUrlParams } from "../utils/useUrlParams";
+import Footer from "../Footer";
 
 function SideMenu() {
   const { updateParams } = useUrlParams();
@@ -154,9 +155,13 @@ function SideMenu() {
               selected={selectedTags.some(t => t._id === tag._id)}
               onClick={handleTagSelectionWithUrl}
               title={tag.name}
-            />
-          ))}
+            />))
+          }
         </div>
+      </div>
+
+      <div className="mt-6">
+        <Footer compact={true} />
       </div>
     </aside>
   );
