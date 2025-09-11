@@ -22,7 +22,7 @@ function Logo({ size = "normal" }) {
     return (
         <div className={`flex items-center justify-center ${sizeClass.container} font-bold`}>
             <img 
-                src="/favicon-120x120.png" 
+                src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1757542336/favicon-192x192_kkkkll.png" 
                 alt="Riffbook Logo" 
                 className={sizeClass.image}
             />
