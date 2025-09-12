@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Footer({ compact = false }) {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  
   return (
     <footer className={`text-white ${compact ? 'py-3 px-0' : 'py-4 px-6'}`}>
       {compact ? (
@@ -10,18 +12,22 @@ function Footer({ compact = false }) {
           <hr className="border-gray-600 mb-3" />
           <div className="flex flex-col space-y-3">
             <div className="flex flex-wrap gap-3 justify-center text-xs">
-              <Link 
-                to="/privacy-policy" 
+              <a 
+                href={`${API_BASE_URL}/privacy`}
                 className="text-gray-300 hover:text-white hover:underline transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Privacy
-              </Link>
-              <Link 
-                to="/terms" 
+              </a>
+              <a 
+                href={`${API_BASE_URL}/terms`}
                 className="text-gray-300 hover:text-white hover:underline transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Terms
-              </Link>
+              </a>
               <Link 
                 to="/contact" 
                 className="text-gray-300 hover:text-white hover:underline transition-colors"
@@ -42,18 +48,22 @@ function Footer({ compact = false }) {
           </div>
           
           <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
-            <Link 
-              to="/privacy-policy" 
+            <a 
+              href={`${API_BASE_URL}/privacy`}
               className="text-gray-300 hover:text-white hover:underline transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Privacy Policy
-            </Link>
-            <Link 
-              to="/terms" 
+            </a>
+            <a 
+              href={`${API_BASE_URL}/terms`}
               className="text-gray-300 hover:text-white hover:underline transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Terms & Conditions
-            </Link>
+            </a>
             <Link 
               to="/contact" 
               className="text-gray-300 hover:text-white hover:underline transition-colors"
@@ -61,8 +71,7 @@ function Footer({ compact = false }) {
               Contact Us
             </Link>
           </div>
-        </div>
-      )}
+        </div>      )}
     </footer>
   );
 }
