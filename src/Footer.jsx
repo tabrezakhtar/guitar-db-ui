@@ -71,7 +71,8 @@ function Footer({ compact = false }) {
               Contact Us
             </Link>
           </div>
-        </div>      )}
+        </div>
+    )}
     </footer>
   );
 }
