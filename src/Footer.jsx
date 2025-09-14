@@ -28,12 +28,14 @@ function Footer({ compact = false }) {
               >
                 Terms
               </a>
-              <Link 
-                to="/contact" 
+              <a 
+                href={`/contact.html`}
                 className="text-gray-300 hover:text-white hover:underline transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Contact
-              </Link>
+              </a>
             </div>
             <div className="text-center">
               <span className="text-gray-400 text-xs">© {new Date().getFullYear()} Riffbook</span>
@@ -64,12 +66,14 @@ function Footer({ compact = false }) {
             >
               Terms & Conditions
             </a>
-            <Link 
-              to="/contact" 
+            <a 
+              href={`/contact.html`}
               className="text-gray-300 hover:text-white hover:underline transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Contact Us
-            </Link>
+              Contact
+            </a>
           </div>
         </div>
     )}

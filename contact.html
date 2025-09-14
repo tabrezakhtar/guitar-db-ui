@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Riffbook</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: "Roboto Slab", serif;
+      background: linear-gradient(135deg, #1f2937 0%, #374151 50%, #1f2937 100%);
+    }
+    .form-input {
+      background-color: #374151;
+      border: 1px solid #4b5563;
+      color: #f3f4f6;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px #3b82f6;
+    }
+    .form-input::placeholder {
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+  <div class="container mx-auto px-4 py-8 max-w-2xl">
+    <!-- Logo Section -->
+    <div class="text-center mb-8">
+      <div class="flex items-center justify-center space-x-3 text-4xl font-bold mb-4">
+        <img src="/favicon-120x120.png" alt="Riffbook Logo" class="h-12 w-12">
+        <span class="text-yellow-400" style="filter: drop-shadow(2px 2px 0px rgba(255, 119, 0, 0.5));">riffbook</span>
+      </div>
+      <h1 class="text-3xl font-bold text-white mb-2">Contact Us</h1>
+      <p class="text-gray-300 text-lg">We'd love to hear from you! Share your thoughts, questions, or feedback.</p>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="bg-gray-800/50 rounded-lg p-8 shadow-xl backdrop-blur-sm">
+      <form 
+        name="contact" 
+        method="POST" 
+        data-netlify="true" 
+        data-netlify-honeypot="bot-field"
+        action="/thank-you"
+        class="space-y-6"
+      >
+        <!-- Netlify form detection -->
+        <input type="hidden" name="form-name" value="contact" />
+        
+        <!-- Honeypot field for spam protection -->
+        <p class="hidden">
+          <label>
+            Don't fill this out if you're human: <input name="bot-field" />
+          </label>
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="name" class="block text-sm font-semibold text-gray-300 mb-2">
+              Name *
+            </label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              required
+              class="form-input w-full px-4 py-3 rounded-lg transition-colors duration-200"
+              placeholder="Your name"
+            />
+          </div>
+          
+          <div>
+            <label for="email" class="block text-sm font-semibold text-gray-300 mb-2">
+              Email *
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required
+              class="form-input w-full px-4 py-3 rounded-lg transition-colors duration-200"
+              placeholder="your.email@example.com"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="subject" class="block text-sm font-semibold text-gray-300 mb-2">
+            Subject *
+          </label>
+          <input 
+            type="text" 
+            id="subject" 
+            name="subject" 
+            required
+            class="form-input w-full px-4 py-3 rounded-lg transition-colors duration-200"
+            placeholder="What's this about?"
+          />
+        </div>
+
+        <div>
+          <label for="message" class="block text-sm font-semibold text-gray-300 mb-2">
+            Message *
+          </label>
+          <textarea 
+            id="message" 
+            name="message" 
+            rows="6"
+            required
+            class="form-input w-full px-4 py-3 rounded-lg transition-colors duration-200 resize-vertical"
+            placeholder="Tell us about your feedback, questions, or anything else on your mind..."
+          ></textarea>
+        </div>
+
+        <div class="flex justify-center">
+          <button 
+            type="submit"
+            class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
+            🎸 Send Message
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Back to App -->
+    <div class="text-center mt-8">
+      <a 
+        href="/" 
+        class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors duration-200"
+      >
+        ← Back to Riffbook
+      </a>
+    </div>
+  </div>
+</body>
+</html>
