@@ -143,10 +143,10 @@ function Landing() {
               Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do.
             </p>
 
-            <div className={`flex flex-col sm:flex-row gap-8 justify-center items-stretch mb-12 fade-in-bounce delay-300 ${isVisible ? 'visible' : ''}`}>
+            <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-12 fade-in-bounce delay-300 ${isVisible ? 'visible' : ''}`}>
               <Link 
                 to="/gallery" 
-                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-64 h-48 relative overflow-hidden text-lg hover:scale-105 border-2"
+                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
                 style={{
                   backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/guitar_store_bpmexv.jpg)',
                   backgroundSize: 'cover',
@@ -155,13 +155,15 @@ function Landing() {
                 }}
               >
                 <div className="relative z-10 text-center">
-                  <h3 className="text-white text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
-                  <p className="text-white text-sm drop-shadow-lg opacity-90">Browse amazing gear from our community</p>
+                  <div className="bg-[rgba(31,41,55,0.3)] rounded-lg px-4 py-3">
+                    <h3 className="text-white text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
+                    <p className="text-white text-sm drop-shadow-lg opacity-90">Browse amazing gear from our community</p>
+                  </div>
                 </div>
               </Link>
               <Link 
                 to="/add" 
-                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-64 h-48 relative overflow-hidden text-lg hover:scale-105 border-2"
+                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
                 style={{
                   backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/drums_keys_qosi6l.jpg)',
                   backgroundSize: 'cover',
@@ -170,8 +172,10 @@ function Landing() {
                 }}
               >
                 <div className="relative z-10 text-center">
-                  <h3 className="text-white text-xl font-bold drop-shadow-lg mb-1">Add Your Gear</h3>
-                  <p className="text-white text-sm drop-shadow-lg opacity-90">Share your instruments and tell their stories</p>
+                  <div className="bg-[rgba(31,41,55,0.3)] rounded-lg px-4 py-3">
+                    <h3 className="text-white text-xl font-bold drop-shadow-lg mb-1">Add Your Gear</h3>
+                    <p className="text-white text-sm drop-shadow-lg opacity-90">Share your instruments and tell their stories</p>
+                  </div>
                 </div>
               </Link>
             </div>
