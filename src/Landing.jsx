@@ -143,18 +143,36 @@ function Landing() {
               Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do.
             </p>
 
-            <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 fade-in-bounce delay-300 ${isVisible ? 'visible' : ''}`}>
+            <div className={`flex flex-col sm:flex-row gap-8 justify-center items-stretch mb-12 fade-in-bounce delay-300 ${isVisible ? 'visible' : ''}`}>
               <Link 
                 to="/gallery" 
-                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors duration-200 min-w-[200px]"
+                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-64 h-48 relative overflow-hidden text-lg hover:scale-105 border-2"
+                style={{
+                  backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/guitar_store_bpmexv.jpg)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderColor: '#EAAA00'
+                }}
               >
-                🎸 Explore Gallery
+                <div className="relative z-10 text-center">
+                  <h3 className="text-white text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
+                  <p className="text-white text-sm drop-shadow-lg opacity-90">Browse amazing gear from our community</p>
+                </div>
               </Link>
               <Link 
                 to="/add" 
-                className="px-8 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold transition-colors duration-200 min-w-[200px]"
+                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-64 h-48 relative overflow-hidden text-lg hover:scale-105 border-2"
+                style={{
+                  backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/drums_keys_qosi6l.jpg)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderColor: '#EAAA00'
+                }}
               >
-                ➕ Add Your Gear
+                <div className="relative z-10 text-center">
+                  <h3 className="text-white text-xl font-bold drop-shadow-lg mb-1">Add Your Gear</h3>
+                  <p className="text-white text-sm drop-shadow-lg opacity-90">Share your instruments and tell their stories</p>
+                </div>
               </Link>
             </div>
             
