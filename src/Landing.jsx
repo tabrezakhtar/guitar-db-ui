@@ -18,15 +18,30 @@ function Landing() {
   useEffect(() => {
     hideHeader();
     
-    const script = document.createElement("script");
-    script.src = "/src/lib/parallax-bg.js";
-    script.onload = () => {
+    // Check if ParallaxBackground is already loaded
+    if (!window.ParallaxBackground) {
+      const existingScript = document.querySelector('script[src="/src/lib/parallax-bg.js"]');
+      
+      if (!existingScript) {
+        const script = document.createElement("script");
+        script.src = "/src/lib/parallax-bg.js";
+        script.onload = () => {
+          if (window.ParallaxBackground) {
+            const parallaxInstance = window.ParallaxBackground.init({
+              zIndex: -1,
+              speeds: [200, 250, 180, 120]
+            });
+          }
+        };
+        document.head.appendChild(script);
+      }
+    } else {
+      // ParallaxBackground already exists, just initialize it
       const parallaxInstance = window.ParallaxBackground.init({
         zIndex: -1,
         speeds: [200, 250, 180, 120]
       });
-    };
-    document.head.appendChild(script);
+    }
     
     setTimeout(() => {
       setIsVisible(true);
@@ -38,9 +53,6 @@ function Landing() {
       const styles = document.getElementById("parallax-bg-styles");
       if (container) container.remove();
       if (styles) styles.remove();
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
     };
   }, [hideHeader, displayHeader]);
 
