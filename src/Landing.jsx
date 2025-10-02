@@ -18,7 +18,6 @@ function Landing() {
   useEffect(() => {
     hideHeader();
     
-    // Check if ParallaxBackground is already loaded
     if (!window.ParallaxBackground) {
       const existingScript = document.querySelector('script[src="/src/lib/parallax-bg.js"]');
       
@@ -36,7 +35,6 @@ function Landing() {
         document.head.appendChild(script);
       }
     } else {
-      // ParallaxBackground already exists, just initialize it
       const parallaxInstance = window.ParallaxBackground.init({
         zIndex: -1,
         speeds: [200, 250, 180, 120]
