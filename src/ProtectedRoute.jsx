@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import Spinner from "./components/Spinner";
+import { ssrRedirect } from "./utils/urlUtils";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ProtectedRoute = ({ children }) => {
@@ -51,7 +52,7 @@ const ProtectedRoute = ({ children }) => {
     }
     
     if (!hasRedirectedForDeletion) {
-      window.location.href = `${BASE_URL}/login`;
+      ssrRedirect(`${BASE_URL}/login`, "/")
     }
     return null;
   }
@@ -64,9 +65,10 @@ const ProtectedRoute = ({ children }) => {
           </div>
           <div>
             <p className="font-bold mb-1">Login Required</p>
-            <p className="leading-relaxed">{authError || "Your credentials are either invalid or expired."}</p>            <button 
+            <p className="leading-relaxed">{authError || "Your credentials are either invalid or expired."}</p>
+            <button 
               onClick={() => {
-                window.location.href = `${BASE_URL}/login`;
+                ssrRedirect(`${BASE_URL}/login`, "/");
               }}
               className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center font-semibold mt-4"
             >
