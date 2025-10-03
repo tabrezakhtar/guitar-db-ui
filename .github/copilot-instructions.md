@@ -12,3 +12,4 @@
 ## Chat Behaviour
 - do not run the app to check terminal output.
 - keep all responses short and concise.  I do not want a conversational tone.
+- do not use em-dashes anywhere, use hyphens instead.

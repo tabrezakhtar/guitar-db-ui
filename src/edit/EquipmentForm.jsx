@@ -60,7 +60,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           <input
             type="text"
             name="brand"
-            placeholder="Enter the brand name"
+            placeholder="Brand (e.g. Fender, Gibson)"
             value={currentEquipment?.brand || ""}
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, brand: e.target.value })
@@ -75,7 +75,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           <input
             type="text"
             name="name"
-            placeholder="Enter the name of the equipment"
+            placeholder="Model or nickname"
             value={currentEquipment?.name || ""}
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, name: e.target.value })
@@ -89,7 +89,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           <label className="block text-black dark:text-white">Description: <span className="text-red-500">*</span></label>
           <textarea
             name="description"
-            placeholder="Enter a detailed description of the equipment"
+            placeholder="What is it? Condition, any mods or the story behind it"
             value={currentEquipment?.description || ""}
             rows="4"
             onChange={(e) =>
@@ -105,7 +105,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           <input
             type="url"
             name="url"
-            placeholder="https://www.youtube.com/watch?v=..."
+            placeholder="Paste a YouTube link (optional)"
             value={currentEquipment?.url || ""}
             onChange={handleYoutubeUrlChange}
             className={`border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${!validateYoutubeUrl(currentEquipment?.url) ? "border-red-500" : ""}`}
@@ -124,7 +124,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             value={selectedTags}
             onChange={handleTagChange}
             formatOptionLabel={formatOptionLabel}
-            placeholder="Select tags"
+            placeholder="Pick some tags that fit (optional)"
             isDisabled={isUploading}
           />
         </div>
@@ -133,7 +133,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           <label className="block text-black dark:text-white">Why:</label>
           <textarea
             name="why"
-            placeholder="Explain why this equipment is important"
+            placeholder="What makes this special or how does it make you feel? (optional)"
             value={currentEquipment?.why || ""}
             rows="4"
             onChange={(e) =>
@@ -148,7 +148,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           <input
             type="number"
             name="year"
-            placeholder="Enter the year of manufacture"
+            placeholder="Year it was made (optional)"
             value={currentEquipment?.year || ""}
             onChange={(e) =>
               setCurrentEquipment({
