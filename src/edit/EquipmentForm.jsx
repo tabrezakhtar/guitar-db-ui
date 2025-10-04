@@ -133,7 +133,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           <label className="block text-black dark:text-white">Why:</label>
           <textarea
             name="why"
-            placeholder="What makes this special or how does it make you feel? (optional)"
+            placeholder="What makes this special and how does it make you feel? (optional)"
             value={currentEquipment?.why || ""}
             rows="4"
             onChange={(e) =>
