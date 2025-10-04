@@ -138,7 +138,7 @@ const ViewGuitar = () => {
 
               <div className="mt-4">
                 <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Description</h2>
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white">
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Caveat'] text-3xl md:text-4xl">
                   {equipment.description || "No description provided."}
                 </div>
               </div>
@@ -146,7 +146,7 @@ const ViewGuitar = () => {
               {equipment.why && (
                 <div className="mt-4">
                   <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Why I Like It</h2>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Caveat'] text-3xl md:text-4xl">
                     {equipment.why}
                   </div>
                 </div>
