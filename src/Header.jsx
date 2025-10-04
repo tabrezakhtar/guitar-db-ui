@@ -33,8 +33,8 @@ function MenuContent({ user }) {
 }
 
 function Header() {
-  const { user } = useContext(UserContext);
-  const { setEquipmentType } = useContext(GuitarContext);
+  const { user } = useContext(UserContext) || {};
+  const { setEquipmentType } = useContext(GuitarContext) || { setEquipmentType: () => {} };
   const { showHeader } = useHeader();
   
   if (!showHeader) return null;

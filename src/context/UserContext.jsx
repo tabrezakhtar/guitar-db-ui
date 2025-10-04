@@ -163,6 +163,7 @@ const UserProvider = ({ children }) => {
 
   const value = {
     ...state,
+    isGuest: Boolean(state.user?.guest),
     verifyMagicToken,
     logout,
     updateUserLocal,

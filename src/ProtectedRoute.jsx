@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import Spinner from "./components/Spinner";
-import { ssrRedirect } from "./utils/urlUtils";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ProtectedRoute = ({ children }) => {
@@ -56,6 +55,7 @@ const ProtectedRoute = ({ children }) => {
     }
     return null;
   }
+
   if (!isTokenValid) {
     return (
       <div className="p-6">

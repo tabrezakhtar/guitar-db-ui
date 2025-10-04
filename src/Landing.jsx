@@ -78,6 +78,17 @@ function Landing() {
     fetchLandingData();
   }, []);
 
+  useEffect(() => {
+    const handlePageShow = (event) => {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener("pageshow", handlePageShow);
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  });
+
   const renderEquipmentSection = (items, title, emoji, linkTo, delay = 0) => {
     if (!items || items.length === 0) return null;
     
@@ -95,7 +106,7 @@ function Landing() {
           </Link>
         </div>
         <div className="bg-gray-800/50 rounded-lg p-4">
-        <EquipmentCarousel 
+          <EquipmentCarousel 
             items={items.slice(0, 5)} 
             theme="dark"
             centered={true}
@@ -108,7 +119,7 @@ function Landing() {
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8">
-      <style jsx>{`
+      <style>{`
         .fade-in-bounce {
           opacity: 0;
           transform: translateY(30px) scale(0.95);
@@ -145,7 +156,7 @@ function Landing() {
             <div className={`mb-8 fade-in ${isVisible ? 'visible' : ''}`}>
               <Logo size="xlarge" />
             </div>
-              <p className={`text-4xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in font-['Caveat'] ${isVisible ? 'visible' : ''}`}>
+            <p className={`text-4xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in font-['Caveat'] ${isVisible ? 'visible' : ''}`}>
               Discover gear.  Celebrate stories.  Share your journey.
             </p>
             
@@ -232,7 +243,8 @@ function Landing() {
                 "/gallery?sort=likesCount&order=desc",
                 700
               )}
-            </>          )}
+            </>
+          )}
         </div>
       </div>
       
