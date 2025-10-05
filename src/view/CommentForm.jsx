@@ -7,7 +7,7 @@ const CommentForm = ({ equipmentId }) => {
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { addComment } = useContext(GuitarContext);
-  const { user } = useContext(UserContext); 
+  const { user, isGuest } = useContext(UserContext) || {}; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,13 +32,13 @@ const CommentForm = ({ equipmentId }) => {
           rows={3}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Add your comment..."
-          disabled={isSubmitting}
+          placeholder={isGuest ? "Sign up to leave comments..." : "Add your comment..."}
+          disabled={isSubmitting || isGuest}
         />
         <button
           type="submit"
           className="self-end bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-700 disabled:opacity-50 transition-colors"
-          disabled={isSubmitting || !comment.trim()}
+          disabled={isSubmitting || !comment.trim() || isGuest}
         >
           {isSubmitting ? (
             <span className="flex items-center">
