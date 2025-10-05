@@ -12,7 +12,7 @@ import { useEditEquipmentData } from "./useEditEquipmentData";
 function EditGuitar({ mode = "edit", type = "" }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, isGuest } = useContext(UserContext) || {};
   
   const {
     equipment: currentEquipment,
@@ -75,7 +75,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
     try {
       let updatedEquipment = { ...currentEquipment };
       
-      if (filesToUpload && filesToUpload.length > 0) {
+      if (filesToUpload && filesToUpload.length > 0 && !isGuest) {
         for (let i = 0; i < filesToUpload.length; i++) {
           setUploadProgress(`Saving Image (${i + 1} of ${filesToUpload.length})`);
           const result = await cloudinaryUpload(filesToUpload[i], updatedEquipment);

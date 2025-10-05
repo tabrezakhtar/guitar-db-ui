@@ -173,7 +173,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           />
         </div>
 
-        <div className="flex justify-between mt-4">
+        <div className={`flex mt-4 ${mode === "edit" ? "justify-between" : "justify-end"}`}>
           {mode === "edit" && (
             <button
               type="button"
