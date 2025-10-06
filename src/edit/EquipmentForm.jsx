@@ -57,7 +57,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
       <fieldset disabled={isUploading}>
         <FormFields type={type} isUploading={isUploading} />
 
-        <div className="mb-4">
+        <div className="my-4">
           <label className="block text-black dark:text-white">Brand: <span className="text-red-500">*</span></label>
           <input
             type="text"

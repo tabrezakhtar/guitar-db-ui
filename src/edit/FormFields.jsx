@@ -90,7 +90,7 @@ function FormFields({ type, isUploading }) {
               disabled={isUploading}
               className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white"
             >
-              <option value="">Select {field.label}</option>
+              <option value="">Select {field.label} (optional)</option>
               {field.options.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
