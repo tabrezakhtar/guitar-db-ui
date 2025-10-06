@@ -91,7 +91,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             name="description"
             placeholder="What is it? Condition, any mods or the story behind it"
             value={currentEquipment?.description || ""}
-            rows="4"
+            rows="15"
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, description: e.target.value })
             }
@@ -129,7 +129,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           />
         </div>
 
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-black dark:text-white">Why:</label>
           <textarea
             name="why"
@@ -141,7 +141,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             }
             className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
           />
-        </div>
+        </div> */}
 
         <div className="mb-4">
           <label className="block text-black dark:text-white">Year:</label>

@@ -138,20 +138,11 @@ const ViewGuitar = () => {
 
               <div className="mt-4">
                 <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Description</h2>
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Caveat'] text-3xl md:text-4xl">
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-96 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Roboto_Mono'] text-3xl md:text-xl">
                   {equipment.description || "No description provided."}
                 </div>
               </div>
-              
-              {equipment.why && (
-                <div className="mt-4">
-                  <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Why I Like It</h2>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Caveat'] text-3xl md:text-4xl">
-                    {equipment.why}
-                  </div>
-                </div>
-              )}
-              
+
               {equipment.recommendation && (
                 <div className="mt-4">
                   <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Recommendation</h2>
