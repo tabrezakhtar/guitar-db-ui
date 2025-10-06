@@ -30,7 +30,6 @@ function StarRating({ rating = 0, onChange, disabled = false }) {
           onMouseLeave={handleMouseLeave}
           onClick={() => handleClick(index)}
           className={`text-2xl cursor-${disabled ? "default" : "pointer"} transition-colors`}
-          style={{ opacity: disabled ? 0.7 : 1 }}
         >
           {index <= (isHovering ? hoverRating : rating) ? (
             <svg
