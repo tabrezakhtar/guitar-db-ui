@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useTagContext } from "../context/TagContext";
 import FormFields from "./FormFields";
 import StarRating from "../components/StarRating";
@@ -5,6 +6,7 @@ import Tag from "../tags/Tag";
 import Select from "../components/Select";
 
 function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal, currentEquipment, setCurrentEquipment }) {
+  const navigate = useNavigate();
   const { tags } = useTagContext();
 
   const formatOptionLabel = ({ value, label, colour, icon }) => (
@@ -183,12 +185,23 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               Delete
             </button>
           )}
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-400 dark:bg-blue-600 dark:hover:bg-blue-500 text-white px-4 py-2 rounded cursor-pointer transition-colors"
-          >
-            {isUploading ? (uploadProgress || "Saving...") : mode === "edit" ? "Save Changes" : `Add ${type}`}
-          </button>
+          <div className="flex gap-2">
+            {mode === "edit" && currentEquipment?._id && (
+              <button
+                type="button"
+                onClick={() => navigate(`/view/${currentEquipment._id}`)}
+                className="bg-gray-500 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-white px-4 py-2 rounded cursor-pointer transition-colors"
+              >
+                Cancel
+              </button>
+            )}
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-400 dark:bg-blue-600 dark:hover:bg-blue-500 text-white px-4 py-2 rounded cursor-pointer transition-colors"
+            >
+              {isUploading ? (uploadProgress || "Saving...") : mode === "edit" ? "Save Changes" : `Add ${type}`}
+            </button>
+          </div>
         </div>
       </fieldset>
     </form>
