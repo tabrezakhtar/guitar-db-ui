@@ -150,19 +150,19 @@ function Grid() {
   const getEquipmentIcon = (type) => {
     switch(type?.toLowerCase()) {
       case "guitar":
-        return "/guitar.png";
+        return "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857213/vintage-semi1_r7n1vj.png";
       case "amp":
-        return "/amp.png";
+        return "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857214/vintage-bass1_rzpl8q.png";
       case "pedal":
-        return "/pedal.png";
+        return "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857213/acoustic1_o9agae.png";
       case "bass":
-        return "/bass.png";
+        return "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857212/marshall1_e6ddzm.png";
       case "acoustic":
-        return "/acoustic.png";
+        return "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857212/boss-ds1_qcqsiz.png";
       case "accessory":
-        return "/accessory.png";
+        return "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857214/mic_e4e0ec.png";
       default:
-        return "/guitar.png";
+        return "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857213/vintage-semi1_r7n1vj.png";
     }
   };
 
