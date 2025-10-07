@@ -28,42 +28,42 @@ function AddGuitar() {
           onClick={() => setEquipType("guitar")}
           className={`flex flex-col items-center bg-gray-200 dark:bg-gray-700 rounded-md p-4 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors ${equipType === "guitar" ? "outline-3 outline-blue-500 dark:outline-blue-400" : ""}`}
         >
-          <img src="/guitar.png" alt="Guitar" className="w-24 h-24 mb-2" />
+          <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857213/vintage-semi1_r7n1vj.png" alt="Guitar" className="w-24 h-24 mb-2" />
           <span className="text-sm font-medium text-black dark:text-white">Guitar</span>
         </button>
         <button
           onClick={() => setEquipType("bass")}
           className={`flex flex-col items-center bg-gray-200 dark:bg-gray-700 rounded-md p-4 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors ${equipType === "bass" ? "outline-3 outline-blue-500 dark:outline-blue-400" : ""}`}
         >
-          <img src="/bass.png" alt="Bass" className="w-24 h-24 mb-2" />
+          <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857214/vintage-bass1_rzpl8q.png" alt="Bass" className="w-24 h-24 mb-2" />
           <span className="text-sm font-medium text-black dark:text-white">Bass</span>
         </button>
         <button
           onClick={() => setEquipType("acoustic")}
           className={`flex flex-col items-center bg-gray-200 dark:bg-gray-700 rounded-md p-4 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors ${equipType === "acoustic" ? "outline-3 outline-blue-500 dark:outline-blue-400" : ""}`}
         >
-          <img src="/acoustic.png" alt="Acoustic" className="w-24 h-24 mb-2" />
+          <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857213/acoustic1_o9agae.png" alt="Acoustic" className="w-24 h-24 mb-2" />
           <span className="text-sm font-medium text-black dark:text-white">Acoustic</span>
         </button>
         <button
           onClick={() => setEquipType("amp")}
           className={`flex flex-col items-center bg-gray-200 dark:bg-gray-700 rounded-md p-4 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors ${equipType === "amp" ? "outline-3 outline-blue-500 dark:outline-blue-400" : ""}`}
         >
-          <img src="/amp.png" alt="Amp" className="w-24 h-24 mb-2" />
+          <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857212/marshall1_e6ddzm.png" alt="Amp" className="w-24 h-24 mb-2" />
           <span className="text-sm font-medium text-black dark:text-white">Amp</span>
         </button>
         <button
           onClick={() => setEquipType("pedal")}
           className={`flex flex-col items-center bg-gray-200 dark:bg-gray-700 rounded-md p-4 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors ${equipType === "pedal" ? "outline-3 outline-blue-500 dark:outline-blue-400" : ""}`}
         >
-          <img src="/pedal.png" alt="Pedal" className="w-24 h-24 mb-2" />
+          <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857212/boss-ds1_qcqsiz.png" alt="Pedal" className="w-24 h-24 mb-2" />
           <span className="text-sm font-medium text-black dark:text-white">Pedal</span>
         </button>
         <button
           onClick={() => setEquipType("accessory")}
           className={`flex flex-col items-center bg-gray-200 dark:bg-gray-700 rounded-md p-4 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors ${equipType === "accessory" ? "outline-3 outline-blue-500 dark:outline-blue-400" : ""}`}
         >
-          <img src="/accessory.png" alt="Accessory / Parts" className="w-24 h-24 mb-2" />
+          <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857214/mic_e4e0ec.png" alt="Accessories" className="w-24 h-24 mb-2" />
           <span className="text-sm font-medium text-black dark:text-white">Accessory / Parts</span>
         </button>
       </div>

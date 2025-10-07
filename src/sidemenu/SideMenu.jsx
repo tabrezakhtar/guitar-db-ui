@@ -53,12 +53,12 @@ function SideMenu() {
   };
 
   const equipmentTypes = [
-    { key: "guitar", label: "Guitar", img: "/guitar.png" },
-    { key: "bass", label: "Bass", img: "/bass.png" },
-    { key: "acoustic", label: "Acoustic", img: "/acoustic.png" },
-    { key: "amp", label: "Amp", img: "/amp.png" },
-    { key: "pedal", label: "Pedal", img: "/pedal.png" },
-    { key: "accessory", label: "Accessory", img: "/accessory.png" }
+    { key: "guitar", label: "Guitar", img: "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857213/vintage-semi1_r7n1vj.png" },
+    { key: "bass", label: "Bass", img: "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857214/vintage-bass1_rzpl8q.png" },
+    { key: "acoustic", label: "Acoustic", img: "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857213/acoustic1_o9agae.png" },
+    { key: "amp", label: "Amp", img: "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857212/marshall1_e6ddzm.png" },
+    { key: "pedal", label: "Pedal", img: "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857212/boss-ds1_qcqsiz.png" },
+    { key: "accessory", label: "Accessory", img: "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857214/mic_e4e0ec.png" }
   ];
   return (    <aside 
       ref={sideMenuRef}
@@ -114,8 +114,8 @@ function SideMenu() {
                     boxShadow: isSelected ? "0 0 0 2px #fff" : undefined
                   }}
                 >
-                  <img className="w-10 h-10 mb-1" src={typeObj.img} alt={typeObj.label} />
-                  <span className="text-xs">{typeObj.label}</span>
+                  <img className="w-14 h-14 mb-1" src={typeObj.img} alt={typeObj.label} />
+                  {/* <span className="text-xs">{typeObj.label}</span> */}
                 </button>
               );
             })}
@@ -140,7 +140,8 @@ function SideMenu() {
           </div>
           <TagSearch />
         </div>
-      </div>      <div className="bg-gray-700/50 rounded-lg p-3 mt-2">
+      </div>
+      <div className="bg-gray-700/50 rounded-lg p-3 mt-2">
         <div 
           className="flex flex-wrap pr-1 gap-2 relative z-0 md:h-auto md:overflow-visible max-h-[50vh] md:max-h-none overflow-y-auto custom-scrollbar" 
           style={{
