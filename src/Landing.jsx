@@ -202,38 +202,44 @@ function Landing() {
             </div>
             
             <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto fade-in-bounce delay-400 ${isVisible ? 'visible' : ''}`}>
-              <div className="text-center">
-                <div className="mb-4 flex justify-center">
-                  <img 
-                    src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759833181/guitar-outline-sm_vfinxb.png" 
-                    alt="Guitar outline" 
-                    className="w-16 h-16"
-                  />
+              <div className="bg-[#202b3d] rounded-lg p-6">
+                <div className="text-center">
+                  <div className="mb-4 flex justify-center">
+                    <img 
+                      src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759833181/guitar-outline-sm_vfinxb.png" 
+                      alt="Guitar outline" 
+                      className="w-16 h-16"
+                    />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Guitars & Basses</h3>
+                  <p className="text-gray-400 text-sm">Electric, acoustic, and bass guitars from all brands</p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Guitars & Basses</h3>
-                <p className="text-gray-400 text-sm">Electric, acoustic, and bass guitars from all brands</p>
               </div>
-              <div className="text-center">
-                <div className="mb-4 flex justify-center">
-                  <img 
-                    src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759833181/amp-outline-sm_svwske.png" 
-                    alt="Amp outline" 
-                    className="w-16 h-16"
-                  />
+              <div className="bg-[#202b3d] rounded-lg p-6">
+                <div className="text-center">
+                  <div className="mb-4 flex justify-center">
+                    <img 
+                      src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759833181/amp-outline-sm_svwske.png" 
+                      alt="Amp outline" 
+                      className="w-16 h-16"
+                    />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Amps & Effects</h3>
+                  <p className="text-gray-400 text-sm">Amplifiers, pedals, and sound processing equipment</p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Amps & Effects</h3>
-                <p className="text-gray-400 text-sm">Amplifiers, pedals, and sound processing equipment</p>
               </div>
-              <div className="text-center">
-                <div className="mb-4 flex justify-center">
-                  <img 
-                    src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759833180/mic-outline-sm_bbqskx.png" 
-                    alt="Microphone outline" 
-                    className="w-16 h-16"
-                  />
+              <div className="bg-[#202b3d] rounded-lg p-6">
+                <div className="text-center">
+                  <div className="mb-4 flex justify-center">
+                    <img 
+                      src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759833180/mic-outline-sm_bbqskx.png" 
+                      alt="Microphone outline" 
+                      className="w-16 h-16"
+                    />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Accessories</h3>
+                  <p className="text-gray-400 text-sm">Picks, strings, cases, and other musical accessories</p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Accessories</h3>
-                <p className="text-gray-400 text-sm">Picks, strings, cases, and other musical accessories</p>
               </div>
             </div>
           </div>
