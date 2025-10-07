@@ -148,6 +148,14 @@ function Landing() {
         .delay-600 { transition-delay: 0.6s; }
         .delay-700 { transition-delay: 0.7s; }
         .delay-800 { transition-delay: 0.8s; }
+        
+        .gentle-hover img {
+          transition: transform 0.3s ease-in-out;
+        }
+        
+        .gentle-hover:hover img {
+          transform: translateY(-4px);
+        }
       `}</style>
       
       <div className="max-w-6xl mx-auto px-6">
@@ -202,7 +210,7 @@ function Landing() {
             </div>
             
             <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto fade-in-bounce delay-400 ${isVisible ? 'visible' : ''}`}>
-              <div className="bg-[#202b3d] rounded-lg p-6">
+              <div className="bg-[#202b3d] rounded-lg p-6 gentle-hover">
                 <div className="text-center">
                   <div className="mb-4 flex justify-center">
                     <img 
@@ -215,7 +223,7 @@ function Landing() {
                   <p className="text-gray-400 text-sm">Electric, acoustic, and bass guitars from all brands</p>
                 </div>
               </div>
-              <div className="bg-[#202b3d] rounded-lg p-6">
+              <div className="bg-[#202b3d] rounded-lg p-6 gentle-hover">
                 <div className="text-center">
                   <div className="mb-4 flex justify-center">
                     <img 
@@ -228,7 +236,7 @@ function Landing() {
                   <p className="text-gray-400 text-sm">Amplifiers, pedals, and sound processing equipment</p>
                 </div>
               </div>
-              <div className="bg-[#202b3d] rounded-lg p-6">
+              <div className="bg-[#202b3d] rounded-lg p-6 gentle-hover">
                 <div className="text-center">
                   <div className="mb-4 flex justify-center">
                     <img 
