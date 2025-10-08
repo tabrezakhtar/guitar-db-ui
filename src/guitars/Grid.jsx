@@ -242,14 +242,20 @@ function Grid() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {equipment.map((item) => {
-          const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
+        {loading && equipment.length === 0 ? (
+          // Show skeleton tiles during initial loading
+          Array.from({ length: 9 }, (_, index) => (
+            <TileSkeleton key={`skeleton-${index}`} tileClass="aspect-[4/5]" />
+          ))
+        ) : (
+          equipment.map((item) => {
+            const imageUrl = item.images && item.images.length > 0 ? item.images[0] : null;
 
-          if (imageUrl && loadingImages.has(item._id)) {
-            return <TileSkeleton key={item._id} tileClass="aspect-[4/5]" />;
-          }
+            if (imageUrl && loadingImages.has(item._id)) {
+              return <TileSkeleton key={item._id} tileClass="aspect-[4/5]" />;
+            }
 
-          return (
+            return (
             <div
               key={item._id}
               className="aspect-[4/5] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative group"
@@ -310,7 +316,7 @@ function Grid() {
               </div>
             </div>
           );
-        })}
+        }))}
       </div>
       {loading && (
         <div className="flex justify-center p-4">
