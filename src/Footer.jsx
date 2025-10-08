@@ -31,8 +31,6 @@ function Footer({ compact = false }) {
               <a 
                 href={`/contact.html`}
                 className="text-gray-300 hover:text-white hover:underline transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 Contact
               </a>
@@ -69,8 +67,6 @@ function Footer({ compact = false }) {
             <a 
               href={`/contact.html`}
               className="text-gray-300 hover:text-white hover:underline transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               Contact
             </a>
