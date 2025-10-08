@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Contact from "./Contact";
 import Landing from "./Landing";
 import Grid from "./guitars/Grid";
 import EditGuitar from "./edit/EditGuitar";
@@ -30,7 +29,6 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Layout hideMenu><Landing /></Layout>} />
                     <Route path="/gallery" element={<Layout><Grid /></Layout>} />
-                    <Route path="/contact" element={<Layout><Contact /></Layout>} />
                     <Route
                       path="/edit/:id"
                       element={
