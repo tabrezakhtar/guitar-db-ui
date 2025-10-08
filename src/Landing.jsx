@@ -19,11 +19,11 @@ function Landing() {
     hideHeader();
     
     if (!window.ParallaxBackground) {
-      const existingScript = document.querySelector('script[src="/src/lib/parallax-bg.js"]');
+      const existingScript = document.querySelector('script[src="/parallax-bg.js"]');
       
       if (!existingScript) {
         const script = document.createElement("script");
-        script.src = "/src/lib/parallax-bg.js";
+        script.src = "/parallax-bg.js";
         script.onload = () => {
           if (window.ParallaxBackground) {
             const parallaxInstance = window.ParallaxBackground.init({
