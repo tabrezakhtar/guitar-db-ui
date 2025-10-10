@@ -57,16 +57,11 @@ function Landing() {
   useEffect(() => {
     const fetchLandingData = async () => {
       try {
-        const recentResponse = await fetch(`${BASE_URL}/api/equipment/list?page=1&limit=5&sortBy=date&sortOrder=desc`);
-        if (recentResponse.ok) {
-          const recentData = await recentResponse.json();
-          setRecentEquipment(recentData.items || []);
-        }
-
-        const popularResponse = await fetch(`${BASE_URL}/api/equipment/list?page=1&limit=5&sortBy=likesCount&sortOrder=desc`);
-        if (popularResponse.ok) {
-          const popularData = await popularResponse.json();
-          setPopularEquipment(popularData.items || []);
+        const landingResponse = await fetch(`${BASE_URL}/api/pages/landing`);
+        if (landingResponse.ok) {
+          const landingData = await landingResponse.json();
+          setRecentEquipment(landingData.recent || []);
+          setPopularEquipment(landingData.popular || []);
         }
       } catch (error) {
         console.error("Error fetching landing data:", error);

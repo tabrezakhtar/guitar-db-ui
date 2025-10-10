@@ -1,12 +1,10 @@
 // useEquipmentData.js
-import { useContext, useEffect, useState } from "react";
-import { GuitarContext } from "../context/GuitarContext";
+import { useEffect, useState } from "react";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const useEquipmentData = (id, type = "") => {
-  const { setLoading } = useContext(GuitarContext);
-  
+
   const [equipment, setEquipment] = useState(null);
   const [settings, setSettings] = useState({});
   const [loading, setIsLoading] = useState(true);
