@@ -94,7 +94,7 @@ function Landing() {
             {emoji} {title}
           </h3>
         </div>
-        <div className="rounded-lg p-4 md:mx-10">
+        <div className="rounded-lg p-4 flex justify-center">
           <EquipmentCarousel 
             items={items.slice(0, 5)} 
             theme="dark"
