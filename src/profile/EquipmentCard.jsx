@@ -32,7 +32,8 @@ const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) 
   const sizeClasses = {
     small: "w-[120px]",
     medium: "w-[140px]",
-    large: "w-[180px]"
+    large: "w-[180px]",
+    full: "w-full"
   };
   
   const textSizeClasses = {
@@ -60,7 +61,7 @@ const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) 
     return (
       <NavLink 
         to={`/view/${item._id}`}
-        className={`${widthClass} rounded-lg overflow-hidden hover:shadow-lg transition-all flex-shrink-0 ${cardBgClass}`}
+        className={`w-full sm:w-[140px] ${widthClass} rounded-lg overflow-hidden hover:shadow-lg transition-all flex-shrink-0 ${cardBgClass}`}
       >
         {children}
       </NavLink>

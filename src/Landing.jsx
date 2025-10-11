@@ -89,24 +89,26 @@ function Landing() {
     
     return (
       <div className={`mb-8 fade-in-bounce delay-${delay} ${isVisible ? 'visible' : ''}`}>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-2xl font-bold text-white flex items-center">
+        <div className="mb-4">
+          <h3 className="text-2xl font-bold text-white flex items-center justify-center">
             {emoji} {title}
           </h3>
-          <Link 
-            to={linkTo} 
-            className="text-blue-400 hover:text-blue-300 text-sm font-medium"
-          >
-            View All
-          </Link>
         </div>
-        <div className="bg-gray-800/50 rounded-lg p-4">
+        <div className="rounded-lg p-4 md:mx-10">
           <EquipmentCarousel 
             items={items.slice(0, 5)} 
             theme="dark"
             centered={true}
-            cardSize="large"
+            cardSize="full"
           />
+        </div>
+        <div className="mt-4 text-center">
+          <Link 
+            to={linkTo} 
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+          >
+            View All
+          </Link>
         </div>
       </div>
     );
@@ -247,32 +249,32 @@ function Landing() {
             </div>
           </div>
         </div>
-
-        <div className="py-16">
-          {loading ? (
-            <div className={`flex justify-center items-center py-16 fade-in-bounce delay-500 ${isVisible ? 'visible' : ''}`}>
-              <Spinner />
-            </div>
-          ) : (
-            <>
-              {renderEquipmentSection(
-                recentEquipment, 
-                "See what's new", 
-                "", 
-                "/gallery?sort=date&order=desc",
-                600
-              )}
-              
-              {renderEquipmentSection(
-                popularEquipment, 
-                "Most popular gear", 
-                "", 
-                "/gallery?sort=likesCount&order=desc",
-                700
-              )}
-            </>
-          )}
-        </div>
+      </div>
+      
+      <div className="py-16">
+        {loading ? (
+          <div className={`flex justify-center items-center py-16 fade-in-bounce delay-500 ${isVisible ? 'visible' : ''}`}>
+            <Spinner />
+          </div>
+        ) : (
+          <>
+            {renderEquipmentSection(
+              recentEquipment, 
+              "See what's new", 
+              "", 
+              "/gallery?sort=date&order=desc",
+              600
+            )}
+            
+            {renderEquipmentSection(
+              popularEquipment, 
+              "Most popular gear", 
+              "", 
+              "/gallery?sort=likesCount&order=desc",
+              700
+            )}
+          </>
+        )}
       </div>
       
       <Footer />
