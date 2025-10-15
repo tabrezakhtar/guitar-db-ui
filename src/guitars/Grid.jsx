@@ -176,7 +176,7 @@ function Grid() {
 
   return (
     <div ref={containerRef} className="min-h-screen max-w-7xl mx-auto px-4">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-4">
         <div className="flex items-center gap-3">
           <h2 className="text-xl font-bold dark:text-white">{searchTerm.trim() ? equipment.length : totalEquipment || 0} Results</h2>
           {hasFiltersApplied && (
@@ -189,12 +189,12 @@ function Grid() {
             </button>
           )}
         </div>
-        <div className="flex items-center">
+        <div id="search-bar" className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative">
             <input
               type="text"
               placeholder="Search equipment..."
-              className="border border-gray-300 rounded-lg p-2.5 pr-8 text-sm dark:text-white"
+              className="border border-gray-300 rounded-lg p-2.5 pr-8 text-sm dark:text-white w-full"
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
             />
@@ -211,7 +211,7 @@ function Grid() {
           </div>
           <select 
             id="sort" 
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 ml-4"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 sm:ml-4 w-full sm:w-auto"
             onChange={handleSortChange}
             value={`${sortBy}|${sortOrder}`}
           >
