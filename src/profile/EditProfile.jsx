@@ -234,26 +234,28 @@ const EditProfile = () => {
           />
         </div>
         
-        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
-          <button 
-            type="button" 
-            onClick={handleDeleteProfile}
-            className="px-4 py-2 text-white bg-red-500 dark:bg-red-600 rounded-md hover:bg-red-600 dark:hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 order-3 sm:order-1"
-          >
-            Delete Profile
-          </button>
-          <div className="flex flex-col gap-4 sm:flex-row sm:space-x-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
+          <div className="order-2 sm:order-1">
+            <button 
+              type="button" 
+              onClick={handleDeleteProfile}
+              className="px-4 py-2 text-white bg-red-500 dark:bg-red-600 rounded-md hover:bg-red-600 dark:hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 w-full sm:w-auto"
+            >
+              Delete Profile
+            </button>
+          </div>
+          <div className="flex flex-col gap-4 sm:flex-row sm:gap-4 order-1 sm:order-2">
             <button 
               type="button" 
               onClick={() => navigate("/profile")}
-              className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400 order-1 sm:order-1"
+              className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400"
             >
               Cancel
             </button>
             <button 
               type="submit" 
               disabled={loading}
-              className="px-4 py-2 text-white bg-blue-500 dark:bg-blue-600 rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 disabled:opacity-50 order-2 sm:order-2"
+              className="px-4 py-2 text-white bg-blue-500 dark:bg-blue-600 rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 disabled:opacity-50"
             >
               {loading ? "Saving..." : "Save Profile"}
             </button>
