@@ -220,7 +220,17 @@ const Profile = () => {
           )}
         </div>
 
-        <h3 className="text-xl font-bold mb-4 text-black dark:text-white">My Equipment</h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-bold text-black dark:text-white">My Equipment</h3>
+          {isOwnProfile && (
+            <button
+              onClick={() => navigate("/add")}
+              className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center transition-colors cursor-pointer"
+            >
+              ➕ Add Equipment
+            </button>
+          )}
+        </div>
         
         {equipmentLoading ? (
           <div className="flex justify-center p-4">

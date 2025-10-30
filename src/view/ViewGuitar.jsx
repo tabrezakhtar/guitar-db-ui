@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
 import Comments from "./Comments";
@@ -10,15 +10,18 @@ import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Gallery from "./Gallery";
 import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
+import { EquipmentCarousel } from "../profile/EquipmentCard";
 import { useEquipmentData } from "./useEquipmentData";
 
 const ViewGuitar = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { clearCurrentEquipment, setCurrentEquipment, toggleLike } = useContext(GuitarContext);
+  const { clearCurrentEquipment, setCurrentEquipment, toggleLike, fetchUserEquipment } = useContext(GuitarContext);
   const { user } = useContext(UserContext);
   const { equipment, loading, error } = useEquipmentData(id);
   const [isLiked, setIsLiked] = useState(false);
+  const [userOtherEquipment, setUserOtherEquipment] = useState([]);
+  const [loadingOtherEquipment, setLoadingOtherEquipment] = useState(false);
 
   // Set currentEquipment in context when equipment is loaded
   useEffect(() => {
@@ -30,6 +33,29 @@ const ViewGuitar = () => {
       clearCurrentEquipment();
     };
   }, [equipment]); // Only depend on equipment changing
+
+  // Fetch user's other equipment
+  useEffect(() => {
+    const fetchOtherEquipment = async () => {
+      if (!equipment?.user?._id) return;
+      
+      setLoadingOtherEquipment(true);
+      try {
+        const data = await fetchUserEquipment(equipment.user._id);
+        if (data && data.items) {
+          // Filter out the current equipment item
+          const otherEquipment = data.items.filter(item => item._id !== equipment._id);
+          setUserOtherEquipment(otherEquipment);
+        }
+      } catch (error) {
+        console.error("Error fetching user's other equipment:", error);
+      } finally {
+        setLoadingOtherEquipment(false);
+      }
+    };
+
+    fetchOtherEquipment();
+  }, [equipment, fetchUserEquipment]);
 
   const handleLikeToggle = async () => {
     if (!user) {
@@ -172,11 +198,13 @@ const ViewGuitar = () => {
             <div className="mt-4">
               <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Owner</h2>
               <div className="flex items-center gap-3">
-                <AvatarDisplayOnly 
-                  imageUrl={equipment.user?.avatarUrl} 
-                  username={equipment.user?.username || "Unknown"}
-                  size="small"
-                />
+                <NavLink to={`/profile/${equipment.user?._id}`} className="hover:opacity-80 transition-opacity">
+                  <AvatarDisplayOnly 
+                    imageUrl={equipment.user?.avatarUrl} 
+                    username={equipment.user?.username || "Unknown"}
+                    size="small"
+                  />
+                </NavLink>
                 <span className="font-medium text-black dark:text-white">{equipment.user?.username || "Unknown"}</span>
               </div>
             </div>
@@ -186,6 +214,18 @@ const ViewGuitar = () => {
         <div className="mt-6">
           <Comments equipmentId={equipment._id} />
         </div>
+
+        {userOtherEquipment.length > 0 && (
+          <div className="mt-8 border-t border-gray-200 pt-8">
+            <h3 className="text-white text-xl font-semibold text-gray-900 mb-6">
+              More from {equipment?.user?.firstName || "this user"}
+            </h3>
+            <EquipmentCarousel
+              items={userOtherEquipment}
+              cardSize="medium"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
