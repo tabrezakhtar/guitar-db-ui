@@ -9,6 +9,7 @@ import AvatarDisplayOnly from "./AvatarDisplayOnly";
 import { EquipmentCarousel } from "./EquipmentCard";
 import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
+import Modal from "../components/Modal";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -20,11 +21,26 @@ const Profile = () => {
     pedals: []
   });
   const [ userComments, setUserComments ] = useState([]);
+  const [ showLogoutModal, setShowLogoutModal ] = useState(false);
   const { user, logout } = useContext(UserContext);
   const { fetchUserEquipment, error: equipmentError, loading: equipmentLoading } = useContext(GuitarContext);
   const { fetchUserProfile, loading: profileLoading, error: profileError } = useProfileData();
 
   const navigate = useNavigate();
+  
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    logout();
+    navigate("/gallery");
+    setShowLogoutModal(false);
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutModal(false);
+  };
   
   useEffect(() => {
     const fetchData = async () => {
@@ -157,24 +173,21 @@ const Profile = () => {
       <div className="mb-4">
         <Breadcrumbs items={[{ label: "Profile", url: "/profile" }]} />
       </div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
         <h1 className="text-2xl font-bold text-black dark:text-white">User Profile</h1>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           {isOwnProfile && (
             <button
               onClick={() => navigate("/edit-profile")}
-              className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center transition-colors"
+              className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors"
             >
               ✏️ Edit Profile
             </button>
           )}
           {isOwnProfile && (
             <button 
-              onClick={() => {
-                logout();
-                navigate("/gallery");
-              }} 
-              className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 bg-transparent border-none cursor-pointer p-0 flex items-center"
+              onClick={handleLogoutClick}
+              className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 bg-transparent border-none cursor-pointer p-0 flex items-center justify-center"
             >
               Logout
             </button>
@@ -183,17 +196,17 @@ const Profile = () => {
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <div className="flex items-center justify-center mb-6">
-          <div className="relative w-24 h-24 mr-6">
+        <div className="flex flex-col sm:flex-row items-center justify-center mb-6">
+          <div className="relative w-24 h-24 mb-4 sm:mb-0 sm:mr-6">
             <AvatarDisplayOnly
               imageUrl={profileUser.avatarUrl}
               username={username}
               size="medium"
             />
           </div>
-          <div className="ml-6">
+          <div className="text-center sm:text-left sm:ml-6">
             <h2 className="text-2xl font-bold text-black dark:text-white">{username}</h2>
-            <p className="text-gray-600 dark:text-gray-400 flex items-center">
+            <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center sm:justify-start">
               📍 {location || "No location set"}
             </p>
           </div>
@@ -220,12 +233,12 @@ const Profile = () => {
           )}
         </div>
 
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
           <h3 className="text-xl font-bold text-black dark:text-white">My Equipment</h3>
           {isOwnProfile && (
             <button
               onClick={() => navigate("/add")}
-              className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center transition-colors cursor-pointer"
+              className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors cursor-pointer w-full sm:w-auto"
             >
               ➕ Add Equipment
             </button>
@@ -289,6 +302,14 @@ const Profile = () => {
           <p>🗓️ Member since {formatDate(createdAt)}</p>
         </div>
       </div>
+
+      {showLogoutModal && (
+        <Modal
+          message="Are you sure you want to logout?"
+          onConfirm={handleLogoutConfirm}
+          onCancel={handleLogoutCancel}
+        />
+      )}
     </div>
   );
 };

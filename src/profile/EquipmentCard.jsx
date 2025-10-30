@@ -5,7 +5,7 @@ const EquipmentCarousel = ({ items, onClick, theme = "light", centered = false, 
   const containerClass = centered ? "flex gap-4 justify-center flex-wrap" : "flex gap-4 overflow-x-auto pb-4 scroll-smooth equipment-carousel";
   
   return (
-    <div className="w-fit bg-gray-800 p-5 rounded-lg">
+    <div className="w-full bg-gray-800 p-5 rounded-lg overflow-hidden">
       <div 
         className={containerClass}
         style={!centered ? { 
