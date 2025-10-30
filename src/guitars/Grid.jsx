@@ -286,12 +286,12 @@ function Grid() {
                 />
               </div>
               <div className="absolute inset-0 flex flex-col justify-center items-center p-3 pointer-events-none">
-                <div className="group-hover:[transform:rotateY(180deg)] transition-transform duration-500 [transform-style:preserve-3d]">
-                  <div className="[backface-visibility:hidden] px-3 py-2 rounded bg-[rgba(31,41,55,0.3)]">
+                <div className="group-hover:[transform:rotateY(180deg)] transition-transform duration-500 [transform-style:preserve-3d] w-full">
+                  <div className="[backface-visibility:hidden] px-3 py-2 rounded bg-[rgba(31,41,55,0.3)] w-full">
                     <h2 className="text-lg font-semibold text-center text-white drop-shadow-md">{item.brand} {item.name}</h2>
                   </div>
-                  <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-center items-center">
-                    <div className="rounded bg-[rgba(31,41,55,0.3)] px-3 py-2 max-w-full">
+                  <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-center items-center w-full">
+                    <div className="rounded bg-[rgba(31,41,55,0.3)] px-3 py-2 w-full">
                       <p className="text-sm text-white text-center drop-shadow-md">{item.description.length <= 150 ? item.description : `${item.description.slice(0, 150)} ...`}</p>
                     </div>
                   </div>
