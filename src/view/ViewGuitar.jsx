@@ -122,7 +122,7 @@ const ViewGuitar = () => {
           )}
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border dark:border-gray-600 rounded-lg p-4 relative flex flex-col">
+          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border dark:border-gray-600 rounded-lg p-2 sm:p-4 relative flex flex-col overflow-hidden">
             <Gallery equipment={equipment} />
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               <button 

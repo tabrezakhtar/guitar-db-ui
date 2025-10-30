@@ -37,7 +37,7 @@ const CommentForm = ({ equipmentId }) => {
         />
         <button
           type="submit"
-          className="self-end bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="w-full sm:w-auto sm:self-end bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-700 disabled:opacity-50 transition-colors"
           disabled={isSubmitting || !comment.trim() || isGuest}
         >
           {isSubmitting ? (

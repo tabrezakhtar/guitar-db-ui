@@ -108,7 +108,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
       aria-label="Image gallery - Use arrow keys to navigate"
     >
       {/* Main Image Display */}
-      <div className="relative bg-gray-100 rounded-lg overflow-hidden h-96">
+      <div className="relative bg-gray-100 rounded-lg overflow-hidden h-64 sm:h-80 md:h-96">
         <div 
           className="flex transition-transform duration-300 ease-in-out h-full touch-pan-y"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -136,21 +136,21 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
           <>
             <button
               onClick={goToPrevious}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-4 transition-all z-10 cursor-pointer"
+              className="absolute left-1 sm:left-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-2 sm:p-4 transition-all z-10 cursor-pointer"
               style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
               aria-label="Previous image"
             >
-              <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="48" height="48">
+              <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="32" height="32" className="sm:w-12 sm:h-12">
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
             </button>
             <button
               onClick={goToNext}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-4 transition-all z-10 cursor-pointer"
+              className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 bg-transparent text-white hover:text-gray-300 p-2 sm:p-4 transition-all z-10 cursor-pointer"
               style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
               aria-label="Next image"
             >
-              <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="48" height="48">
+              <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="32" height="32" className="sm:w-12 sm:h-12">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </button>
@@ -179,7 +179,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
 
       {/* Thumbnails */}
       {items.length > 1 && (
-        <div ref={thumbnailsRef} className="flex gap-2 mt-4 overflow-x-auto pb-2">
+        <div ref={thumbnailsRef} className="flex gap-2 mt-3 sm:mt-4 overflow-x-auto pb-2 scrollbar-thin">
           {items.map((item, index) => (
             <button
               key={index}
@@ -193,7 +193,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
               <img
                 src={item.thumbnail || item.original}
                 alt={`Thumbnail ${index + 1}`}
-                className="w-20 h-20 object-cover rounded"
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 object-cover rounded"
               />
             </button>
           ))}
