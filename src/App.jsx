@@ -55,7 +55,7 @@ function App() {
                     <Route
                       path="/edit-profile"
                       element={
-                        <Layout>
+                        <Layout hideMenu>
                           <ProtectedRoute>
                             <EditProfile />
                           </ProtectedRoute>
