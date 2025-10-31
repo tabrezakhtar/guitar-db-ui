@@ -75,12 +75,84 @@ const ViewGuitar = () => {
     }
   };
 
-  if (loading || !equipment) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Spinner />
+  const renderSkeleton = () => (
+    <div className="max-w-screen-xl mx-auto w-full bg-white dark:bg-[#122634]">
+      <div className="p-6">
+        <div className="mb-4">
+          <div className="h-4 w-32 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+        </div>
+        <div className="flex items-center justify-between mb-6">
+          <div className="h-8 w-48 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+          <div className="h-10 w-20 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+        </div>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border dark:border-gray-600 rounded-lg p-2 sm:p-4 relative flex flex-col overflow-hidden">
+            <div className="aspect-video bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+            <div className="absolute top-4 right-4">
+              <div className="h-8 w-20 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+            </div>
+          </div>
+          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border dark:border-gray-600 rounded-lg p-4 overflow-hidden">
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <div className="h-6 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-2"></div>
+                <div className="space-y-2">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="flex gap-2">
+                      <div className="h-4 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                      <div className="h-4 w-32 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-4">
+                <div className="h-6 w-24 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-2"></div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 h-32">
+                  <div className="space-y-2">
+                    {[...Array(4)].map((_, i) => (
+                      <div key={i} className="h-4 w-full bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="h-6 w-12 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-2"></div>
+              <div className="flex flex-wrap gap-2">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="h-6 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="h-6 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-2"></div>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full animate-pulse"></div>
+                <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 border dark:border-gray-600 rounded-lg p-4">
+          <div className="h-6 w-20 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-4"></div>
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="flex gap-3">
+                <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full animate-pulse"></div>
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                  <div className="h-16 w-full bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    );
+    </div>
+  );
+
+  if (loading || !equipment) {
+    return renderSkeleton();
   }
   
   if (error) {
