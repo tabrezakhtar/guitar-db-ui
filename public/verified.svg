@@ -1,0 +1,36 @@
+<!-- verified-badge.svg -->
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="64" height="64" viewBox="0 0 64 64"
+     role="img" aria-labelledby="titleDesc">
+  <title id="titleDesc">Verified badge</title>
+
+  <!-- subtle drop shadow -->
+  <defs>
+    <radialGradient id="gradBlue" cx="30%" cy="25%" r="90%">
+      <stop offset="0%" stop-color="#5fa8ff"/>
+      <stop offset="100%" stop-color="#0b67d0"/>
+    </radialGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <!-- outer circle (badge) -->
+  <g filter="url(#shadow)">
+    <circle cx="32" cy="32" r="28" fill="url(#gradBlue)"/>
+    <!-- thin white ring -->
+    <circle cx="32" cy="32" r="22.5" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="3"/>
+  </g>
+
+  <!-- inner white field to boost contrast for the tick -->
+  <circle cx="32" cy="32" r="16.5" fill="#ffffff" opacity="0.95"/>
+
+  <!-- red tick -->
+  <path d="M22.5 32.5 L29.5 38.5 L41.5 25.5"
+        fill="none"
+        stroke="#e03b3b"
+        stroke-width="4.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+</svg>
