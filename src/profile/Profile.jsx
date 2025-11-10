@@ -205,7 +205,16 @@ const Profile = () => {
             />
           </div>
           <div className="text-center sm:text-left sm:ml-6">
-            <h2 className="text-2xl font-bold text-black dark:text-white">{username}</h2>
+            <div className="flex items-center justify-center sm:justify-start gap-1">
+              <h2 className="text-2xl font-bold text-black dark:text-white">{username}</h2>
+              {profileUser.admin && (
+                <img 
+                  src="/verified.svg" 
+                  alt="Verified" 
+                  className="w-5 h-5"
+                />
+              )}
+            </div>
             <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center sm:justify-start">
               📍 {location || "No location set"}
             </p>

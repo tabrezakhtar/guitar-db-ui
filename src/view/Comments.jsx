@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { NavLink } from "react-router-dom";
 import { formatDate, getTimeFromNow } from "../utils/dateUtils";
 import CommentForm from "./CommentForm";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
@@ -37,7 +38,21 @@ const Comments = ({ equipmentId }) => {
               </div>
               <div className="flex-1">
                 <div className="flex justify-between items-start mb-2">
-                  <span className="font-medium text-gray-900 dark:text-gray-100">{comment.user?.username?.substring(0, 32)}</span>
+                  <div className="flex items-center gap-1">
+                    <NavLink 
+                      to={`/profile/${comment.user?._id}`}
+                      className="font-medium text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    >
+                      {comment.user?.username?.substring(0, 32)}
+                    </NavLink>
+                    {comment.user?.admin && (
+                      <img 
+                        src="/verified.svg" 
+                        alt="Verified" 
+                        className="w-4 h-4"
+                      />
+                    )}
+                  </div>
                   <span className="text-xs text-gray-500 dark:text-gray-400" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
                 </div>
                 <p className="text-gray-800 dark:text-gray-200 leading-relaxed">{comment.text}</p>
