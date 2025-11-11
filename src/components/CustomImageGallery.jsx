@@ -140,7 +140,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
               style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
               aria-label="Previous image"
             >
-              <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="32" height="32" className="sm:w-12 sm:h-12">
+              <svg className="image-gallery-svg w-8 h-8 sm:w-12 sm:h-12" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
             </button>
@@ -150,7 +150,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
               style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
               aria-label="Next image"
             >
-              <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="32" height="32" className="sm:w-12 sm:h-12">
+              <svg className="image-gallery-svg w-8 h-8 sm:w-12 sm:h-12" xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </button>

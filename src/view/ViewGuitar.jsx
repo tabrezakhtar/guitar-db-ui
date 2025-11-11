@@ -55,7 +55,7 @@ const ViewGuitar = () => {
     };
 
     fetchOtherEquipment();
-  }, [equipment, fetchUserEquipment]);
+  }, [equipment]);
 
   const handleLikeToggle = async () => {
     if (!user) {
