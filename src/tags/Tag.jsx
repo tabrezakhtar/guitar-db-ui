@@ -38,7 +38,7 @@ function Tag({ tag, selected = false, onClick, readonly = false }) {
             : isLightColor(tagColor) ? "rgba(0,0,0,0.25)" : "rgba(255,255,255,0.25)"
         }}
       ></span>
-      {tag.icon && <span className="mr-1">{tag.icon}</span>}
+      {/* {tag.icon && <span className="mr-1">{tag.icon}</span>} */}
       {tag.name}
     </span>
   );

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
@@ -171,8 +171,6 @@ function Grid() {
     loading,
     onLoadMore: loadMore
   });
-
-
 
   return (
     <div ref={containerRef} className="min-h-screen max-w-7xl mx-auto px-4">
