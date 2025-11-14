@@ -199,8 +199,8 @@ const ViewGuitar = () => {
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               <button 
                 onClick={handleLikeToggle}
-                disabled={canEdit}
-                className={`inline-flex items-center ${isLiked ? "bg-purple-600 text-white" : "bg-purple-400 dark:bg-purple-500 text-purple-900 dark:text-purple-100"} px-2 py-1 rounded transition-colors duration-200`}
+                disabled={canEdit || !user}
+                className={`inline-flex items-center ${isLiked ? "bg-purple-600 text-white" : "bg-purple-400 dark:bg-purple-500 text-purple-900 dark:text-purple-100"} px-2 py-1 rounded transition-colors duration-200 ${!user || canEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
               >
                 <span className="mr-1 text-lg">👍</span>
                 {likesCount} {likesCount === 1 ? "Like" : "Likes"}

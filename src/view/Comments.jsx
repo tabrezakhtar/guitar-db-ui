@@ -4,12 +4,22 @@ import { formatDate, getTimeFromNow } from "../utils/dateUtils";
 import CommentForm from "./CommentForm";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import { GuitarContext } from "../context/GuitarContext";
+import { UserContext } from "../context/UserContext";
 
 const Comments = ({ equipmentId }) => {
   const [expandedComments, setExpandedComments] = useState(false);
-  const { currentEquipment } = useContext(GuitarContext);
+  const { currentEquipment, deleteComment } = useContext(GuitarContext);
+  const { user } = useContext(UserContext);
   
   const comments = currentEquipment?.comments || [];
+  
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await deleteComment(commentId);
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
   
   if (!comments || comments.length === 0) {
     return (
@@ -53,7 +63,17 @@ const Comments = ({ equipmentId }) => {
                       />
                     )}
                   </div>
-                  <span className="text-xs text-gray-500 dark:text-gray-400" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500 dark:text-gray-400" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
+                    {user && user._id === comment.user?._id && (
+                      <button
+                        onClick={() => handleDeleteComment(comment._id)}
+                        className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white text-xs px-2 py-1 rounded transition-colors cursor-pointer"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <p className="text-gray-800 dark:text-gray-200 leading-relaxed">{comment.text}</p>
               </div>

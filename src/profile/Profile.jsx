@@ -23,7 +23,7 @@ const Profile = () => {
   const [ userComments, setUserComments ] = useState([]);
   const [ showLogoutModal, setShowLogoutModal ] = useState(false);
   const { user, logout } = useContext(UserContext);
-  const { fetchUserEquipment, error: equipmentError, loading: equipmentLoading } = useContext(GuitarContext);
+  const { fetchUserEquipment, deleteComment, error: equipmentError, loading: equipmentLoading } = useContext(GuitarContext);
   const { fetchUserProfile, loading: profileLoading, error: profileError } = useProfileData();
 
   const navigate = useNavigate();
@@ -40,6 +40,16 @@ const Profile = () => {
 
   const handleLogoutCancel = () => {
     setShowLogoutModal(false);
+  };
+  
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await deleteComment(commentId);
+      // Remove the deleted comment from local state
+      setUserComments(prev => prev.filter(comment => comment._id !== commentId));
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
   };
   
   useEffect(() => {
@@ -297,7 +307,17 @@ const Profile = () => {
                       >
                         💬 { comment.equipmentId.brand } { comment.equipmentId.name }
                       </NavLink>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{formatDate(comment.date)}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{formatDate(comment.date)}</p>
+                        {isOwnProfile && (
+                          <button
+                            onClick={() => handleDeleteComment(comment._id)}
+                            className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white text-xs px-2 py-1 rounded transition-colors cursor-pointer"
+                          >
+                            Delete
+                          </button>
+                        )}
+                      </div>
                     </div>
                     <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{comment.text.slice(0, 100)}{comment.text.length > 100 ? "..." : ""}</p>
                   </div>

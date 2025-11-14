@@ -121,6 +121,70 @@ function GuitarProvider({ children }) {
     }
   };
 
+  const deleteComment = async (commentId) => {
+    if (!commentId) {
+      console.error("Missing commentId for deleting comment");
+      return null;
+    }
+
+    const isValid = await validateToken(handleAuthError);
+    if (!isValid) {
+      setState(produce(draft => {
+        draft.error = "Your session has expired. Please login again.";
+      }));
+      return null;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${BASE_URL}/api/equipment/deleteComment/${commentId}`, {
+        method: "DELETE",
+        headers
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result && result.errors) {
+        setState(produce(draft => {
+          draft.error = result.errors;
+        }));
+        return {
+          success: false,
+          error: result.errors
+        };
+      }
+
+      setState(produce(draft => {
+        if (draft.currentEquipment && draft.currentEquipment.comments) {
+          draft.currentEquipment.comments = draft.currentEquipment.comments.filter(
+            comment => comment._id !== commentId
+          );
+        }
+        draft.error = null;
+      }));
+
+      return result;
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
+      setState(produce(draft => {
+        draft.error = error.message;
+      }));
+      throw error;
+    }
+  };
+
   const toggleLike = async (equipmentId) => {
     const isValid = await validateToken(handleAuthError);
     if (!isValid) {
@@ -247,6 +311,7 @@ function GuitarProvider({ children }) {
     setFilesToUpload,
     fetchUserEquipment,
     addComment,
+    deleteComment,
     setSortOptions,
     validateToken: (callback) => validateToken(callback || handleAuthError),
     toggleLike,
