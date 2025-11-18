@@ -254,8 +254,7 @@ function Grid() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading && equipment.length === 0
-          ? // Show skeleton tiles during initial loading
-            Array.from({ length: 9 }, (_, index) => (
+          ? Array.from({ length: 9 }, (_, index) => (
               <TileSkeleton
                 key={`skeleton-${index}`}
                 tileClass="aspect-[4/5]"

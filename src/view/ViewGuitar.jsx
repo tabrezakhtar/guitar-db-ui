@@ -8,7 +8,6 @@ import Tag from "../tags/Tag";
 import { formatDate } from "../utils/dateUtils";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Gallery from "./Gallery";
-import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import { EquipmentCarousel } from "../profile/EquipmentCard";
 import { useEquipmentData } from "./useEquipmentData";
@@ -16,14 +15,16 @@ import { useEquipmentData } from "./useEquipmentData";
 const ViewGuitar = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { clearCurrentEquipment, setCurrentEquipment, toggleLike, fetchUserEquipment } = useContext(GuitarContext);
+  const {
+    clearCurrentEquipment,
+    setCurrentEquipment,
+    toggleLike,
+    fetchUserEquipment,
+  } = useContext(GuitarContext);
   const { user } = useContext(UserContext);
   const { equipment, loading, error } = useEquipmentData(id);
   const [isLiked, setIsLiked] = useState(false);
   const [userOtherEquipment, setUserOtherEquipment] = useState([]);
-  const [loadingOtherEquipment, setLoadingOtherEquipment] = useState(false);
-
-  // Set currentEquipment in context when equipment is loaded
   useEffect(() => {
     if (equipment) {
       setCurrentEquipment(equipment);
@@ -32,25 +33,21 @@ const ViewGuitar = () => {
       // Clear current equipment when component unmounts
       clearCurrentEquipment();
     };
-  }, [equipment]); // Only depend on equipment changing
-
-  // Fetch user's other equipment
+  }, [equipment]);
   useEffect(() => {
     const fetchOtherEquipment = async () => {
       if (!equipment?.user?._id) return;
-      
-      setLoadingOtherEquipment(true);
+
       try {
         const data = await fetchUserEquipment(equipment.user._id);
         if (data && data.items) {
-          // Filter out the current equipment item
-          const otherEquipment = data.items.filter(item => item._id !== equipment._id);
+          const otherEquipment = data.items.filter(
+            (item) => item._id !== equipment._id,
+          );
           setUserOtherEquipment(otherEquipment);
         }
       } catch (error) {
         console.error("Error fetching user's other equipment:", error);
-      } finally {
-        setLoadingOtherEquipment(false);
       }
     };
 
@@ -62,11 +59,11 @@ const ViewGuitar = () => {
       navigate("/login");
       return;
     }
-    
+
     if (equipment.user && user._id === equipment.user._id) {
       return;
     }
-    
+
     try {
       await toggleLike(equipment._id);
       setIsLiked(!isLiked);
@@ -110,7 +107,10 @@ const ViewGuitar = () => {
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 h-32">
                   <div className="space-y-2">
                     {[...Array(4)].map((_, i) => (
-                      <div key={i} className="h-4 w-full bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                      <div
+                        key={i}
+                        className="h-4 w-full bg-gray-300 dark:bg-gray-600 rounded animate-pulse"
+                      ></div>
                     ))}
                   </div>
                 </div>
@@ -120,7 +120,10 @@ const ViewGuitar = () => {
               <div className="h-6 w-12 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-2"></div>
               <div className="flex flex-wrap gap-2">
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className="h-6 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                  <div
+                    key={i}
+                    className="h-6 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"
+                  ></div>
                 ))}
               </div>
             </div>
@@ -154,7 +157,7 @@ const ViewGuitar = () => {
   if (loading || !equipment) {
     return renderSkeleton();
   }
-  
+
   if (error) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -165,11 +168,15 @@ const ViewGuitar = () => {
 
   const likesCount = equipment.likesCount || 0;
   const canEdit = user && equipment.user && user._id === equipment.user._id;
-  
+
   const breadcrumbItems = [
     {
-      label: equipment.type ? "Viewing " + equipment.type.charAt(0).toUpperCase() + equipment.type.slice(1) : "Equipment",
-      url: "/"
+      label: equipment.type
+        ? "Viewing " +
+          equipment.type.charAt(0).toUpperCase() +
+          equipment.type.slice(1)
+        : "Equipment",
+      url: "/",
     },
   ];
 
@@ -180,7 +187,9 @@ const ViewGuitar = () => {
           <Breadcrumbs items={breadcrumbItems} />
         </div>
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-black dark:text-white">{equipment.name || "My Stuff!"}</h1>
+          <h1 className="text-3xl font-bold text-black dark:text-white">
+            {equipment.name || "My Stuff!"}
+          </h1>
           {canEdit && (
             <button
               onClick={() => {
@@ -197,7 +206,7 @@ const ViewGuitar = () => {
           <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border dark:border-gray-600 rounded-lg p-2 sm:p-4 relative flex flex-col overflow-hidden">
             <Gallery equipment={equipment} />
             <div className="absolute top-4 right-4 flex flex-col gap-2">
-              <button 
+              <button
                 onClick={handleLikeToggle}
                 disabled={canEdit || !user}
                 className={`inline-flex items-center ${isLiked ? "bg-purple-600 text-white" : "bg-purple-400 dark:bg-purple-500 text-purple-900 dark:text-purple-100"} px-2 py-1 rounded transition-colors duration-200 ${!user || canEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
@@ -210,32 +219,60 @@ const ViewGuitar = () => {
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border dark:border-gray-600 rounded-lg p-4 overflow-hidden">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Details</h2>
+                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                  Details
+                </h2>
                 <div className="space-y-2 text-black dark:text-white">
-                  <p><span className="font-medium">Brand:</span> {equipment.brand || "Not specified"}</p>
-                  <p><span className="font-medium">Type:</span> {equipment.type || "Not specified"}</p>
+                  <p>
+                    <span className="font-medium">Brand:</span>{" "}
+                    {equipment.brand || "Not specified"}
+                  </p>
+                  <p>
+                    <span className="font-medium">Type:</span>{" "}
+                    {equipment.type || "Not specified"}
+                  </p>
                   {equipment.shape && (
-                    <p><span className="font-medium">Shape:</span> {equipment.shape}</p>
+                    <p>
+                      <span className="font-medium">Shape:</span>{" "}
+                      {equipment.shape}
+                    </p>
                   )}
                   {equipment.year && (
-                    <p><span className="font-medium">Year:</span> {equipment.year}</p>
+                    <p>
+                      <span className="font-medium">Year:</span>{" "}
+                      {equipment.year}
+                    </p>
                   )}
                   {equipment.ampType && (
-                    <p><span className="font-medium">Amp Type:</span> {equipment.ampType}</p>
+                    <p>
+                      <span className="font-medium">Amp Type:</span>{" "}
+                      {equipment.ampType}
+                    </p>
                   )}
                   {equipment.effectType && (
-                    <p><span className="font-medium">Effect Type:</span> {equipment.effectType}</p>
+                    <p>
+                      <span className="font-medium">Effect Type:</span>{" "}
+                      {equipment.effectType}
+                    </p>
                   )}
-                  <p><span className="font-medium">Added:</span> {formatDate(equipment.date)}</p>
+                  <p>
+                    <span className="font-medium">Added:</span>{" "}
+                    {formatDate(equipment.date)}
+                  </p>
                   <div className="flex items-center">
                     <span className="font-medium mr-2">Rating:</span>
-                    <StarRating rating={equipment.rating || 0} disabled={true} />
+                    <StarRating
+                      rating={equipment.rating || 0}
+                      disabled={true}
+                    />
                   </div>
                 </div>
               </div>
 
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Description</h2>
+                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                  Description
+                </h2>
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-96 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Roboto_Mono'] text-xl">
                   {equipment.description || "No description provided."}
                 </div>
@@ -243,22 +280,26 @@ const ViewGuitar = () => {
 
               {equipment.recommendation && (
                 <div className="mt-4">
-                  <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Recommendation</h2>
+                  <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                    Recommendation
+                  </h2>
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-40 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white">
                     {equipment.recommendation}
                   </div>
                 </div>
               )}
             </div>
-            
+
             {equipment.tags && equipment.tags.length > 0 && (
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Tags</h2>
+                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                  Tags
+                </h2>
                 <div className="flex flex-wrap gap-2">
                   {equipment.tags.map((tag) => (
-                    <Tag 
-                      key={tag._id} 
-                      tag={tag} 
+                    <Tag
+                      key={tag._id}
+                      tag={tag}
                       selected={true}
                       readonly={true}
                     />
@@ -266,23 +307,30 @@ const ViewGuitar = () => {
                 </div>
               </div>
             )}
-            
+
             <div className="mt-4">
-              <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">Owner</h2>
+              <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                Owner
+              </h2>
               <div className="flex items-center gap-3">
-                <NavLink to={`/profile/${equipment.user?._id}`} className="hover:opacity-80 transition-opacity">
-                  <AvatarDisplayOnly 
-                    imageUrl={equipment.user?.avatarUrl} 
+                <NavLink
+                  to={`/profile/${equipment.user?._id}`}
+                  className="hover:opacity-80 transition-opacity"
+                >
+                  <AvatarDisplayOnly
+                    imageUrl={equipment.user?.avatarUrl}
                     username={equipment.user?.username || "Unknown"}
                     size="small"
                   />
                 </NavLink>
-                <span className="font-medium text-black dark:text-white">{equipment.user?.username || "Unknown"}</span>
+                <span className="font-medium text-black dark:text-white">
+                  {equipment.user?.username || "Unknown"}
+                </span>
               </div>
             </div>
           </div>
         </div>
-        
+
         <div className="mt-6">
           <Comments equipmentId={equipment._id} />
         </div>
@@ -292,15 +340,12 @@ const ViewGuitar = () => {
             <h3 className="text-white text-xl font-semibold text-gray-900 mb-6">
               More from {equipment?.user?.firstName || "this user"}
             </h3>
-            <EquipmentCarousel
-              items={userOtherEquipment}
-              cardSize="medium"
-            />
+            <EquipmentCarousel items={userOtherEquipment} cardSize="medium" />
           </div>
         )}
       </div>
     </div>
   );
-}
+};
 
 export default ViewGuitar;
