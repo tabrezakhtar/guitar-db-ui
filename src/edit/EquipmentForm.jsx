@@ -22,7 +22,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
       colour: option.colour,
       icon: option.icon
     })) : [];
-    
+
     setCurrentEquipment({ ...currentEquipment, tags: selectedTags });
   };
 
@@ -44,7 +44,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
     icon: tag.icon
   }));
 
-  const selectedTags = currentEquipment?.tags ? 
+  const selectedTags = currentEquipment?.tags ?
     currentEquipment.tags.map(tag => ({
       value: tag._id,
       label: tag.name,
@@ -58,7 +58,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         <FormFields type={type} isUploading={isUploading} />
 
         <div className="my-4">
-          <label className="block text-black dark:text-white">Brand: <span className="text-red-500">*</span></label>
+          <label className="block text-black dark:text-white">Brand:</label>
           <input
             type="text"
             name="brand"
@@ -68,7 +68,6 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               setCurrentEquipment({ ...currentEquipment, brand: e.target.value })
             }
             className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-            required
           />
         </div>
 
@@ -163,9 +162,9 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         </div>
         <div className="mb-4">
           <label className="block text-black dark:text-white">Rating:</label>
-          <StarRating 
-            rating={currentEquipment?.rating || 0} 
-            onChange={(newRating) => 
+          <StarRating
+            rating={currentEquipment?.rating || 0}
+            onChange={(newRating) =>
               setCurrentEquipment({
                 ...currentEquipment,
                 rating: newRating
