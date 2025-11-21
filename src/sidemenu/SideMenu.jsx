@@ -74,6 +74,13 @@ function SideMenu() {
             >
               <AvatarDisplayOnly imageUrl={user.avatarUrl} username={user.username} size="small"/>
               <span className="pl-3 font-medium">{user.username}</span>
+              {user.admin && (
+                <img 
+                  src="/verified.svg" 
+                  alt="Verified" 
+                  className="w-4 h-4 ml-1"
+                />
+              )}
             </Link>
           ) : (
             <a 

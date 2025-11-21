@@ -323,9 +323,18 @@ const ViewGuitar = () => {
                     size="small"
                   />
                 </NavLink>
-                <span className="font-medium text-black dark:text-white">
-                  {equipment.user?.username || "Unknown"}
-                </span>
+                <div className="flex items-center gap-1">
+                  <span className="font-medium text-black dark:text-white">
+                    {equipment.user?.username || "Unknown"}
+                  </span>
+                  {equipment.user?.admin && (
+                    <img 
+                      src="/verified.svg" 
+                      alt="Verified" 
+                      className="w-4 h-4"
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>

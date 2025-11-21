@@ -16,6 +16,13 @@ function MenuContent({ user }) {
         >
           <AvatarDisplayOnly imageUrl={user.avatarUrl} username={user.username} size="small"/>
           <span className="pl-2">{user.username}</span>
+          {user.admin && (
+            <img 
+              src="/verified.svg" 
+              alt="Verified" 
+              className="w-4 h-4 ml-1"
+            />
+          )}
         </Link>
       ) : (
         <a 

@@ -299,11 +299,18 @@ function Grid() {
                     <Link
                       to={item.user?._id ? `/profile/${item.user._id}` : "#"}
                       onClick={(e) => e.stopPropagation()}
-                      className="pl-2 text-xs text-white drop-shadow-md hover:underline"
+                      className="pl-2 text-xs text-white drop-shadow-md hover:underline flex items-center gap-1"
                     >
                       <span className="">
                         {item.user ? item.user?.username.slice(0, 12) : ""}
                       </span>
+                      {item.user?.admin && (
+                        <img 
+                          src="/verified.svg" 
+                          alt="Verified" 
+                          className="w-4 h-4"
+                        />
+                      )}
                     </Link>
                   </div>
                   <div className="absolute top-2 right-2 bg-[rgba(31,41,55,0.3)] rounded-full p-1 shadow-md flex items-center justify-center">
