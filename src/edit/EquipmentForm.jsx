@@ -54,7 +54,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
 
   return (
     <form className={`space-y-4 ${isUploading ? "opacity-50" : ""}`} onSubmit={saveEquipment}>
-      <fieldset disabled={isUploading}>
+      <fieldset>
         <FormFields type={type} isUploading={isUploading} />
 
         <div className="my-4">
@@ -67,6 +67,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, brand: e.target.value })
             }
+            disabled={isUploading}
             className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
           />
         </div>
@@ -81,6 +82,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, name: e.target.value })
             }
+            disabled={isUploading}
             className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             required
           />
@@ -96,6 +98,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, description: e.target.value })
             }
+            disabled={isUploading}
             className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             required
           />
@@ -109,6 +112,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             placeholder="Paste a YouTube link (optional)"
             value={currentEquipment?.url || ""}
             onChange={handleYoutubeUrlChange}
+            disabled={isUploading}
             className={`border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${!validateYoutubeUrl(currentEquipment?.url) ? "border-red-500" : ""}`}
           />
           {!validateYoutubeUrl(currentEquipment?.url) && (
@@ -157,6 +161,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
                 year: Number(e.target.value),
               })
             }
+            disabled={isUploading}
             className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
           />
         </div>
@@ -179,7 +184,8 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             <button
               type="button"
               onClick={() => setShowModal(true)}
-              className="bg-red-500 hover:bg-red-400 dark:bg-red-600 dark:hover:bg-red-500 text-white px-4 py-2 rounded transition-colors"
+              disabled={isUploading}
+              className="bg-red-500 hover:bg-red-400 dark:bg-red-600 dark:hover:bg-red-500 text-white px-4 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Delete
             </button>
@@ -189,14 +195,16 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               <button
                 type="button"
                 onClick={() => navigate(`/view/${currentEquipment._id}`)}
-                className="bg-gray-500 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-white px-4 py-2 rounded cursor-pointer transition-colors"
+                disabled={isUploading}
+                className="bg-gray-500 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-white px-4 py-2 rounded cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
             )}
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-400 dark:bg-blue-600 dark:hover:bg-blue-500 text-white px-4 py-2 rounded cursor-pointer transition-colors"
+              disabled={isUploading}
+              className="bg-blue-500 hover:bg-blue-400 dark:bg-blue-600 dark:hover:bg-blue-500 text-white px-4 py-2 rounded cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isUploading ? (uploadProgress || "Saving...") : mode === "edit" ? "Save Changes" : `Add ${type}`}
             </button>

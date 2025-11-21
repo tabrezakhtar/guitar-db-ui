@@ -21,9 +21,11 @@ export default function EditImages({ disabled, currentEquipment, setCurrentEquip
         setCurrentEquipment={setCurrentEquipment}
         setFilesToUpload={setFilesToUpload}
       />
-      <span className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm text-blue-800 dark:text-blue-200 rounded-lg bg-blue-50 dark:bg-blue-900/30 font-medium w-full">
-        ℹ️ Drag the images to reorder
-      </span>
+      {currentEquipment?.images && currentEquipment.images.length > 1 && (
+        <span className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm text-blue-800 dark:text-blue-200 rounded-lg bg-blue-50 dark:bg-blue-900/30 font-medium w-full">
+          ℹ️ Drag the images to reorder
+        </span>
+      )}
       {currentEquipment?.images ? (
         <DragSortable 
           list={currentEquipment.images} 
