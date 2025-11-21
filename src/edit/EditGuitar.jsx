@@ -130,13 +130,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
     navigate("/gallery");
   };
 
-  if (loading && mode === "edit") {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Spinner />
-      </div>  
-    );
-  }
+
 
   const breadcrumbItems = [
     {
