@@ -305,9 +305,9 @@ function Grid() {
                         {item.user ? item.user?.username.slice(0, 12) : ""}
                       </span>
                       {item.user?.admin && (
-                        <img 
-                          src="/verified.svg" 
-                          alt="Verified" 
+                        <img
+                          src="/verified.svg"
+                          alt="Verified"
                           className="w-4 h-4"
                         />
                       )}
@@ -324,7 +324,7 @@ function Grid() {
                     <div className="group-hover:[transform:rotateY(180deg)] transition-transform duration-500 [transform-style:preserve-3d] w-full">
                       <div className="[backface-visibility:hidden] px-3 py-2 rounded bg-[rgba(31,41,55,0.3)] w-full">
                         <h2 className="text-lg font-semibold text-center text-white drop-shadow-md">
-                          {item.brand} {item.name}
+                          {item.name}
                         </h2>
                       </div>
                       <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-center items-center w-full">
