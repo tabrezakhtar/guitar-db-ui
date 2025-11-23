@@ -323,6 +323,9 @@ function Grid() {
                   <div className="absolute inset-0 flex flex-col justify-center items-center p-3 pointer-events-none">
                     <div className="group-hover:[transform:rotateY(180deg)] transition-transform duration-500 [transform-style:preserve-3d] w-full">
                       <div className="[backface-visibility:hidden] px-3 py-2 rounded bg-[rgba(31,41,55,0.3)] w-full">
+                        <h4 className="text-[8px] font-semibold text-center text-white drop-shadow-md uppercase">
+                          {item.brand}
+                        </h4>
                         <h2 className="text-lg font-semibold text-center text-white drop-shadow-md">
                           {item.name}
                         </h2>
