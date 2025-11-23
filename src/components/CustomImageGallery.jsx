@@ -179,7 +179,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
 
       {/* Thumbnails */}
       {items.length > 1 && (
-        <div ref={thumbnailsRef} className="flex gap-2 mt-3 sm:mt-4 overflow-x-auto pb-2 scrollbar-thin">
+        <div ref={thumbnailsRef} className="flex flex-wrap gap-2 mt-3 sm:mt-4 pb-2">
           {items.map((item, index) => (
             <button
               key={index}
