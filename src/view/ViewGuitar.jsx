@@ -315,26 +315,26 @@ const ViewGuitar = () => {
               <div className="flex items-center gap-3">
                 <NavLink
                   to={`/profile/${equipment.user?._id}`}
-                  className="hover:opacity-80 transition-opacity"
+                  className="flex items-center gap-3 hover:opacity-80 transition-opacity"
                 >
                   <AvatarDisplayOnly
                     imageUrl={equipment.user?.avatarUrl}
                     username={equipment.user?.username || "Unknown"}
                     size="small"
                   />
+                  <div className="flex items-center gap-1">
+                    <span className="font-medium text-black dark:text-white">
+                      {equipment.user?.username || "Unknown"}
+                    </span>
+                    {equipment.user?.admin && (
+                      <img 
+                        src="/verified.svg" 
+                        alt="Verified" 
+                        className="w-4 h-4"
+                      />
+                    )}
+                  </div>
                 </NavLink>
-                <div className="flex items-center gap-1">
-                  <span className="font-medium text-black dark:text-white">
-                    {equipment.user?.username || "Unknown"}
-                  </span>
-                  {equipment.user?.admin && (
-                    <img 
-                      src="/verified.svg" 
-                      alt="Verified" 
-                      className="w-4 h-4"
-                    />
-                  )}
-                </div>
               </div>
             </div>
           </div>
