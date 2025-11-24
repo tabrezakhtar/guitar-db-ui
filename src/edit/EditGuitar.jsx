@@ -31,6 +31,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
   const [uploadProgress, setUploadProgress] = useState(null);
   const [saved, setSaved] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showSavingModal, setShowSavingModal] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
@@ -71,6 +72,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
     }
 
     setIsUploading(true);
+    setShowSavingModal(true);
     setUploadProgress(null);
     try {
       let updatedEquipment = { ...currentEquipment };
@@ -82,23 +84,34 @@ function EditGuitar({ mode = "edit", type = "" }) {
           images: []
         };
       } else if (filesToUpload && filesToUpload.length > 0) {
+        const uploadedUrls = [];
+        
         for (let i = 0; i < filesToUpload.length; i++) {
-          setUploadProgress(`Saving Image (${i + 1} of ${filesToUpload.length})`);
+          setUploadProgress(`Uploading image ${i + 1} of ${filesToUpload.length}...`);
           const result = await cloudinaryUpload(filesToUpload[i], updatedEquipment);
           console.log("uploaded", result);
-          
-          // Update the local equipment object with the new image URL
-          if (updatedEquipment.images) {
-            updatedEquipment = {
-              ...updatedEquipment,
-              images: updatedEquipment.images.map((image) =>
-                image === filesToUpload[i].url ? result : image
-              )
-            };
-          }
+          uploadedUrls.push(result);
         }
+        
+        // Replace the blob URLs with the uploaded URLs
+        // Keep existing Cloudinary URLs and replace blob URLs with new ones
+        const updatedImages = (updatedEquipment.images || []).map(image => {
+          // If it's a blob URL, find the corresponding uploaded URL
+          if (typeof image === "string" && image.startsWith('blob:')) {
+            const fileIndex = filesToUpload.findIndex(file => file.url === image);
+            return fileIndex !== -1 ? uploadedUrls[fileIndex] : image;
+          }
+          // If it's already a Cloudinary URL, keep it
+          return image;
+        });
+        
+        updatedEquipment = {
+          ...updatedEquipment,
+          images: updatedImages
+        };
       }
-      setUploadProgress(null);
+      
+      setUploadProgress("Saving equipment data...");
 
       if (!updatedEquipment.user?._id && user?._id) {
         updatedEquipment = {
@@ -111,6 +124,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
         // Pass the updated equipment data to addEquipment
         const result = await addEquipment(type, updatedEquipment);
         setSaved(true);
+        setShowSavingModal(false);
         navigate(`/edit/${result._id}`);
         return;
       } else {
@@ -119,8 +133,12 @@ function EditGuitar({ mode = "edit", type = "" }) {
 
       setSaved(true);
       setTimeout(() => setSaved(false), 10000);
+    } catch (error) {
+      console.error("Error saving equipment:", error);
     } finally {
       setIsUploading(false);
+      setShowSavingModal(false);
+      setUploadProgress(null);
     }
   }
 
@@ -160,6 +178,26 @@ function EditGuitar({ mode = "edit", type = "" }) {
             message="Are you sure you want to delete this equipment?"
             onConfirm={handleDelete}
             onCancel={() => setShowModal(false)}
+          />
+        )}
+
+        {showSavingModal && (
+          <Modal
+            title="Saving Equipment"
+            message={
+              <div className="text-center">
+                <div className="mb-4">
+                  <div className="animate-spin inline-block w-8 h-8 border-4 border-current border-t-transparent text-blue-600 rounded-full" role="status" aria-label="loading">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300">
+                  {uploadProgress || "Preparing to save..."}
+                </p>
+              </div>
+            }
+            showCancel={false}
+            showConfirm={false}
           />
         )}
 
