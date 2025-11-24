@@ -83,6 +83,10 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
     setIsFullscreen(!isFullscreen);
   };
 
+  const handleDoubleClick = () => {
+    setIsFullscreen(true);
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === "ArrowLeft") {
       goToPrevious();
@@ -115,6 +119,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
+          onDoubleClick={handleDoubleClick}
         >
           {items.map((item, index) => (
             <div key={index} className="w-full h-full flex-shrink-0">
