@@ -5,10 +5,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
-  const [isHovering, setIsHovering] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const thumbnailsRef = useRef(null);
-  const imageContainerRef = useRef(null);
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
@@ -96,28 +93,6 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
     }
   };
 
-  const handleMouseEnter = () => {
-    setIsHovering(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovering(false);
-    setMousePosition({ x: 50, y: 50 });
-  };
-
-  const handleMouseMove = (e) => {
-    if (!imageContainerRef.current) return;
-
-    const rect = imageContainerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    
-    setMousePosition({
-      x: Math.max(0, Math.min(100, x)),
-      y: Math.max(0, Math.min(100, y))
-    });
-  };
-
   if (!items || items.length === 0) {
     return null;
   }
@@ -133,13 +108,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
       aria-label="Image gallery - Use arrow keys to navigate"
     >
       {/* Main Image Display */}
-      <div 
-        ref={imageContainerRef}
-        className="relative bg-black rounded-lg overflow-hidden h-64 sm:h-80 md:h-96 cursor-crosshair"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onMouseMove={handleMouseMove}
-      >
+      <div className="relative bg-gray-100 rounded-lg overflow-hidden h-64 sm:h-80 md:h-96">
         <div 
           className="flex transition-transform duration-300 ease-in-out h-full touch-pan-y"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -148,27 +117,14 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
           onTouchEnd={onTouchEnd}
         >
           {items.map((item, index) => (
-            <div key={index} className="w-full h-full flex-shrink-0 relative overflow-hidden">
+            <div key={index} className="w-full h-full flex-shrink-0">
               {item.renderItem ? (
                 item.renderItem()
               ) : (
                 <img
                   src={item.original}
                   alt={`Image ${index + 1}`}
-                  className={`transition-all duration-200 ease-out ${
-                    isHovering && index === currentIndex 
-                      ? 'scale-[2.5] cursor-crosshair object-contain' 
-                      : 'w-full h-full object-cover'
-                  }`}
-                  style={
-                    isHovering && index === currentIndex
-                      ? {
-                          transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
-                          width: '100%',
-                          height: '100%'
-                        }
-                      : {}
-                  }
+                  className="w-full h-full object-cover"
                 />
               )}
             </div>
@@ -176,7 +132,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
         </div>
 
         {/* Navigation Arrows */}
-        {items.length > 1 && !isHovering && (
+        {items.length > 1 && (
           <>
             <button
               onClick={goToPrevious}
@@ -202,30 +158,21 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
         )}
 
         {/* Fullscreen Button */}
-        {!isHovering && (
-          <button
-            onClick={toggleFullscreen}
-            className="absolute top-2 left-2 bg-transparent text-white hover:text-gray-300 p-3 transition-all z-10"
-            style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
-            aria-label="Fullscreen"
-          >
-            <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="28" height="28">
-              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-            </svg>
-          </button>
-        )}
+        <button
+          onClick={toggleFullscreen}
+          className="absolute top-2 left-2 bg-transparent text-white hover:text-gray-300 p-3 transition-all z-10"
+          style={{ filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))' }}
+          aria-label="Fullscreen"
+        >
+          <svg className="image-gallery-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" width="28" height="28">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+          </svg>
+        </button>
 
         {/* Image Counter */}
-        {items.length > 1 && !isHovering && (
+        {items.length > 1 && (
           <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm z-10">
             {currentIndex + 1} / {items.length}
-          </div>
-        )}
-
-        {/* Hover Instructions */}
-        {isHovering && (
-          <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white px-3 py-2 rounded text-sm z-10">
-            Move mouse to pan around
           </div>
         )}
       </div>
