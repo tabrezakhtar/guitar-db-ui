@@ -88,7 +88,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
           headers["Authorization"] = `Bearer ${token}`;
         }
 
-        fetch(`${BASE_URL}/api/equipment/update/${dataToSend._id}`, {
+        fetch(`${BASE_URL}/api/equipment/update/${dataToSend._id}?type=${dataToSend.type}`, {
           method: "PUT",
           headers,
           body: JSON.stringify(dataToSend),
@@ -148,6 +148,10 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     }
 
     const dataToSend = equipmentData || equipment;
+
+    if (dataToSend) {
+      dataToSend.type = type;
+    }
 
     return new Promise((resolve, reject) => {
       if (!type || !dataToSend) {

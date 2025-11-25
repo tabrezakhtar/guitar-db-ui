@@ -65,6 +65,29 @@ function EditGuitar({ mode = "edit", type = "" }) {
     }
   }, [mode, initialized, user, type, navigate, setCurrentEquipment]);
 
+  // Ensure type-specific fields exist for editing mode
+  useEffect(() => {
+    if (mode === "edit" && currentEquipment) {
+      let needsUpdate = false;
+      let updatedEquipment = { ...currentEquipment };
+
+      if (currentEquipment.type === "guitar" && !currentEquipment.hasOwnProperty('shape')) {
+        updatedEquipment.shape = currentEquipment.shape || "";
+        needsUpdate = true;
+      } else if (currentEquipment.type === "amp" && !currentEquipment.hasOwnProperty('ampType')) {
+        updatedEquipment.ampType = currentEquipment.ampType || "";
+        needsUpdate = true;
+      } else if (currentEquipment.type === "pedal" && !currentEquipment.hasOwnProperty('effectType')) {
+        updatedEquipment.effectType = currentEquipment.effectType || "";
+        needsUpdate = true;
+      }
+
+      if (needsUpdate) {
+        setCurrentEquipment(updatedEquipment);
+      }
+    }
+  }, [mode, currentEquipment, setCurrentEquipment]);
+
   async function saveEquipment(e) {
     e.preventDefault();
     if (isUploading) {
@@ -214,7 +237,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
 
           <div className="md:col-span-3">
             <EquipmentForm 
-              type={type}
+              type={currentEquipment?.type || type}
               isUploading={isUploading}
               uploadProgress={uploadProgress}
               mode={mode}

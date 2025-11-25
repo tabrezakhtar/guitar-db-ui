@@ -1,8 +1,12 @@
 import { useContext } from "react";
 import { GuitarContext } from "../context/GuitarContext";
 
-function FormFields({ type, isUploading }) {
-  const { currentEquipment, setCurrentEquipment } = useContext(GuitarContext);
+function FormFields({ type, isUploading, currentEquipment, setCurrentEquipment }) {
+  // Fall back to context if props are not provided (for backward compatibility)
+  const { currentEquipment: contextEquipment, setCurrentEquipment: contextSetEquipment } = useContext(GuitarContext);
+  
+  const equipment = currentEquipment || contextEquipment;
+  const setEquipment = setCurrentEquipment || contextSetEquipment;
 
   const fieldMapping = {
     guitar: [
@@ -48,13 +52,14 @@ function FormFields({ type, isUploading }) {
               type={field.type}
               name={field.key}
               placeholder={field.placeholder}
-              value={currentEquipment?.[field.key] || ""}
+              value={equipment?.[field.key] || ""}
               onChange={(e) =>
-                setCurrentEquipment({
-                  ...currentEquipment,
+                setEquipment({
+                  ...equipment,
                   [field.key]: field.type === "number" ? Number(e.target.value) : e.target.value,
                 })
               }
+              disabled={isUploading}
               className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             />
           ) : field.type === "radio" ? (
@@ -65,13 +70,14 @@ function FormFields({ type, isUploading }) {
                     type="radio"
                     name={field.key}
                     value={option.value}
-                    checked={currentEquipment?.[field.key] === option.value}
+                    checked={equipment?.[field.key] === option.value}
                     onChange={(e) =>
-                      setCurrentEquipment({
-                        ...currentEquipment,
+                      setEquipment({
+                        ...equipment,
                         [field.key]: e.target.value,
                       })
                     }
+                    disabled={isUploading}
                   />
                   {option.label}
                 </label>
@@ -80,10 +86,10 @@ function FormFields({ type, isUploading }) {
           ) : field.type === "select" ? (
             <select
               name={field.key}
-              value={currentEquipment?.[field.key] || ""}
+              value={equipment?.[field.key] || ""}
               onChange={(e) =>
-                setCurrentEquipment({
-                  ...currentEquipment,
+                setEquipment({
+                  ...equipment,
                   [field.key]: e.target.value,
                 })
               }

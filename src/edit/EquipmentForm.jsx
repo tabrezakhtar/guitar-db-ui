@@ -55,7 +55,12 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
   return (
     <form className={`space-y-4 ${isUploading ? "opacity-50" : ""}`} onSubmit={saveEquipment}>
       <fieldset>
-        <FormFields type={type} isUploading={isUploading} />
+        <FormFields 
+          type={type} 
+          isUploading={isUploading} 
+          currentEquipment={currentEquipment}
+          setCurrentEquipment={setCurrentEquipment}
+        />
 
         <div className="my-4">
           <label className="block text-black dark:text-white">Brand:</label>
