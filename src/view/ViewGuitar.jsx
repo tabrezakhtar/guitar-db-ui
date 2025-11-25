@@ -237,7 +237,7 @@ const ViewGuitar = () => {
                       {equipment.shape}
                     </p>
                   )}
-                  {equipment.year && (
+                  {equipment.year > 0 && (
                     <p>
                       <span className="font-medium">Year:</span>{" "}
                       {equipment.year}
