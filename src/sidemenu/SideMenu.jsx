@@ -18,11 +18,13 @@ function SideMenu() {
   
   const { user } = useContext(UserContext);
     const { 
-    filteredTags: allFilteredTags, 
+    tags,
     selectedTags,
     handleTagSelection,
     clearSelectedTags,
-    refetchTags
+    refetchTags,
+    tagSearchTerm,
+    searchTags
   } = useTagContext();
 
   // Refetch tags when SideMenu mounts to get updated counts
@@ -31,8 +33,16 @@ function SideMenu() {
   }, [refetchTags]);
 
   // Filter and sort tags specifically for the side menu
-  const sideMenuTags = allFilteredTags
-    .filter(tag => tag.count > 0)
+  // Apply search filtering first, then count filtering and sorting
+  const sideMenuTags = tags
+    .filter(tag => {
+      // Apply search filter
+      const matchesSearch = !tagSearchTerm || 
+        tag.name.toLowerCase().includes(tagSearchTerm.toLowerCase());
+      // Apply count filter
+      const hasCount = tag.count > 0;
+      return matchesSearch && hasCount;
+    })
     .sort((a, b) => (b.count || 0) - (a.count || 0));
 
   const sideMenuRef = useRef(null);
