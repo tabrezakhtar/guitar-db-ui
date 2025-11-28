@@ -18,11 +18,16 @@ function SideMenu() {
   
   const { user } = useContext(UserContext);
     const { 
-    filteredTags, 
+    filteredTags: allFilteredTags, 
     selectedTags,
     handleTagSelection,
     clearSelectedTags 
   } = useTagContext();
+
+  // Filter and sort tags specifically for the side menu
+  const sideMenuTags = allFilteredTags
+    .filter(tag => tag.count > 0)
+    .sort((a, b) => (b.count || 0) - (a.count || 0));
 
   const sideMenuRef = useRef(null);
   const headerSectionRef = useRef(null);
@@ -156,13 +161,14 @@ function SideMenu() {
             scrollbarColor: 'rgba(128,128,128,0.5) transparent'
           }}
         >
-          {filteredTags.map((tag) => (
+          {sideMenuTags.map((tag) => (
             <Tag 
               key={tag._id} 
               tag={tag} 
               selected={selectedTags.some(t => t._id === tag._id)}
               onClick={handleTagSelectionWithUrl}
               title={tag.name}
+              showCount={true}
             />))
           }
         </div>

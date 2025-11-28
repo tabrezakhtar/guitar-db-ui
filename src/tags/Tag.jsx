@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function Tag({ tag, selected = false, onClick, readonly = false }) {
+function Tag({ tag, selected = false, onClick, readonly = false, showCount = false }) {
   const [isHovered, setIsHovered] = useState(false);
   
   const tagColor = tag.colour || "#6b7280";
@@ -40,6 +40,11 @@ function Tag({ tag, selected = false, onClick, readonly = false }) {
       ></span>
       {/* {tag.icon && <span className="mr-1">{tag.icon}</span>} */}
       {tag.name}
+      {showCount && tag.count > 0 && (
+        <span className="ml-2 text-xs opacity-75">
+          ({tag.count})
+        </span>
+      )}
     </span>
   );
 }
@@ -73,11 +78,13 @@ Tag.propTypes = {
   tag: PropTypes.shape({
     name: PropTypes.string.isRequired,
     icon: PropTypes.string,
-    colour: PropTypes.string
+    colour: PropTypes.string,
+    count: PropTypes.number
   }).isRequired,
   selected: PropTypes.bool,
   onClick: PropTypes.func,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  showCount: PropTypes.bool
 };
 
 export default Tag;
