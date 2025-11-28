@@ -24,22 +24,16 @@ function SideMenu() {
     clearSelectedTags,
     refetchTags,
     tagSearchTerm,
-    searchTags
   } = useTagContext();
 
-  // Refetch tags when SideMenu mounts to get updated counts
   useEffect(() => {
     refetchTags();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Filter and sort tags specifically for the side menu
-  // Apply search filtering first, then count filtering and sorting
   const sideMenuTags = tags
     .filter(tag => {
-      // Apply search filter
       const matchesSearch = !tagSearchTerm || 
         tag.name.toLowerCase().includes(tagSearchTerm.toLowerCase());
-      // Apply count filter
       const hasCount = tag.count > 0;
       return matchesSearch && hasCount;
     })
@@ -86,7 +80,6 @@ function SideMenu() {
       className="bg-gray-800 text-white w-full md:w-80 p-6 shadow-lg flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat"
     >
       <div ref={headerSectionRef}>
-        {/* User Profile Section - Only show on small screens */}
         <div className="md:hidden mb-4 pb-4 border-b border-gray-600">
           {user ? (
             <Link 
@@ -115,7 +108,6 @@ function SideMenu() {
             </a>
           )}
           
-          {/* Navigation Links - Only show on small screens */}
           <div className="mt-3 space-y-1">
             <a href="/" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">Home</a>
             <a href="/contact" className="block hover:underline py-2 px-2 rounded hover:bg-gray-700/50 transition-colors">Contact</a>
@@ -143,7 +135,6 @@ function SideMenu() {
                   }}
                 >
                   <img className="w-14 h-14 mb-1" src={typeObj.img} alt={typeObj.label} />
-                  {/* <span className="text-xs">{typeObj.label}</span> */}
                 </button>
               );
             })}
