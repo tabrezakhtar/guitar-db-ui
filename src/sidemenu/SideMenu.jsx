@@ -185,6 +185,7 @@ function SideMenu() {
               onClick={handleTagSelectionWithUrl}
               title={tag.name}
               showCount={true}
+              size="small"
             />))
           }
         </div>

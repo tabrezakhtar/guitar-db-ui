@@ -1,11 +1,16 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function Tag({ tag, selected = false, onClick, readonly = false, showCount = false }) {
+function Tag({ tag, selected = false, onClick, readonly = false, showCount = false, size = "default" }) {
   const [isHovered, setIsHovered] = useState(false);
   
   const tagColor = tag.colour || "#6b7280";
   const textColor = isLightColor(tagColor) ? "#000000" : "#ffffff";
+  
+  const sizeClasses = {
+    small: "px-2 py-1 text-xs",
+    default: "px-3 py-1.5 text-xs"
+  };
   
   const handleClick = () => {
     if (onClick && !readonly) {
@@ -15,7 +20,7 @@ function Tag({ tag, selected = false, onClick, readonly = false, showCount = fal
   
   return (
     <span 
-      className={`inline-flex items-center ml-2 px-3 py-1.5 rounded-sm m-1 transition-transform duration-100 ${!readonly ? "hover:scale-105" : ""} relative text-xs ${readonly ? "" : "cursor-pointer"} ${selected ? "ring-2 ring-offset-1" : ""}`}
+      className={`inline-flex items-center ml-2 ${sizeClasses[size]} rounded-sm m-1 transition-transform duration-100 ${!readonly ? "hover:scale-105" : ""} relative ${readonly ? "" : "cursor-pointer"} ${selected ? "ring-2 ring-offset-1" : ""}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
@@ -84,7 +89,8 @@ Tag.propTypes = {
   selected: PropTypes.bool,
   onClick: PropTypes.func,
   readonly: PropTypes.bool,
-  showCount: PropTypes.bool
+  showCount: PropTypes.bool,
+  size: PropTypes.oneOf(["small", "default"])
 };
 
 export default Tag;
