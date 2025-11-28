@@ -30,7 +30,7 @@ function SideMenu() {
   // Refetch tags when SideMenu mounts to get updated counts
   useEffect(() => {
     refetchTags();
-  }, [refetchTags]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter and sort tags specifically for the side menu
   // Apply search filtering first, then count filtering and sorting

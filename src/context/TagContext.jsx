@@ -44,9 +44,9 @@ export const TagProvider = ({ children }) => {
     }
   };
 
-  const refetchTags = () => {
+  const refetchTags = useCallback(() => {
     fetchTags(true);
-  };
+  }, []);
 
   useEffect(() => {
     fetchTags();
