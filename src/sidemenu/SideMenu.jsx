@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
