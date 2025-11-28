@@ -28,7 +28,7 @@ function SideMenu() {
 
   useEffect(() => {
     refetchTags();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const sideMenuTags = tags
     .filter(tag => {
