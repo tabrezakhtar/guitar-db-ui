@@ -1,4 +1,4 @@
-import { useEffect, useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
@@ -21,8 +21,14 @@ function SideMenu() {
     filteredTags: allFilteredTags, 
     selectedTags,
     handleTagSelection,
-    clearSelectedTags 
+    clearSelectedTags,
+    refetchTags
   } = useTagContext();
+
+  // Refetch tags when SideMenu mounts to get updated counts
+  useEffect(() => {
+    refetchTags();
+  }, [refetchTags]);
 
   // Filter and sort tags specifically for the side menu
   const sideMenuTags = allFilteredTags

@@ -19,8 +19,8 @@ export const TagProvider = ({ children }) => {
   const [tagSearchTerm, setTagSearchTerm] = useState("");
   const [filteredTags, setFilteredTags] = useState([]);
 
-  const fetchTags = async () => {
-    if (tags.length > 0 || loading) {
+  const fetchTags = async (force = false) => {
+    if ((tags.length > 0 || loading) && !force) {
       return;
     }
     
@@ -44,9 +44,13 @@ export const TagProvider = ({ children }) => {
     }
   };
 
+  const refetchTags = () => {
+    fetchTags(true);
+  };
+
   useEffect(() => {
     fetchTags();
-  }, []); // Only run once on mount
+  }, []);
 
   const handleTagSelection = (tag) => {
     setSelectedTags(produce(draft => {
@@ -106,6 +110,7 @@ export const TagProvider = ({ children }) => {
     loading,
     error,
     fetchTags,
+    refetchTags,
     setTags,
     handleTagSelection,
     clearSelectedTags,
