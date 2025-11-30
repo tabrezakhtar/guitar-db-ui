@@ -62,7 +62,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           setCurrentEquipment={setCurrentEquipment}
         />
 
-        <div className="my-4">
+        <div className="mb-4">
           <label className="block text-black dark:text-white">Brand:</label>
           <input
             type="text"

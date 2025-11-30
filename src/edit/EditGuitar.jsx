@@ -67,18 +67,25 @@ function EditGuitar({ mode = "edit", type = "" }) {
 
   // Ensure type-specific fields exist for editing mode
   useEffect(() => {
-    if (mode === "edit" && currentEquipment) {
+    if (currentEquipment) {
       let needsUpdate = false;
       let updatedEquipment = { ...currentEquipment };
+      
+      const currentType = type || currentEquipment.type;
+      
+      if (currentEquipment.type !== currentType) {
+        updatedEquipment.type = currentType;
+        needsUpdate = true;
+      }
 
-      if (currentEquipment.type === "guitar" && !currentEquipment.hasOwnProperty('shape')) {
-        updatedEquipment.shape = currentEquipment.shape || "";
+      if (currentType === "guitar" && !currentEquipment.hasOwnProperty('shape')) {
+        updatedEquipment.shape = "";
         needsUpdate = true;
-      } else if (currentEquipment.type === "amp" && !currentEquipment.hasOwnProperty('ampType')) {
-        updatedEquipment.ampType = currentEquipment.ampType || "";
+      } else if (currentType === "amp" && !currentEquipment.hasOwnProperty('ampType')) {
+        updatedEquipment.ampType = "";
         needsUpdate = true;
-      } else if (currentEquipment.type === "pedal" && !currentEquipment.hasOwnProperty('effectType')) {
-        updatedEquipment.effectType = currentEquipment.effectType || "";
+      } else if (currentType === "pedal" && !currentEquipment.hasOwnProperty('effectType')) {
+        updatedEquipment.effectType = "";
         needsUpdate = true;
       }
 
@@ -86,7 +93,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
         setCurrentEquipment(updatedEquipment);
       }
     }
-  }, [mode, currentEquipment, setCurrentEquipment]);
+  }, [mode, currentEquipment?.type, type, currentEquipment, setCurrentEquipment]);
 
   async function saveEquipment(e) {
     e.preventDefault();

@@ -45,7 +45,7 @@ function FormFields({ type, isUploading, currentEquipment, setCurrentEquipment }
   return (
     <>
       {fieldMapping[type]?.map((field) => (
-        <div key={field.key}>
+        <div key={field.key} className="mb-4">
           <label className="block text-black dark:text-white">{field.label}:</label>
           {field.type === "text" || field.type === "number" ? (
             <input
