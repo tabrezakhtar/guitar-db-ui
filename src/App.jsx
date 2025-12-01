@@ -14,11 +14,13 @@ import Header from "./Header";
 import Layout from "./Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import SaveCredentials from "./SaveCredentials";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <div className="flex flex-col h-screen">
       <Router>
+        <ScrollToTop />
         <UserProvider>
           <GuitarProvider>
             <TagProvider>
