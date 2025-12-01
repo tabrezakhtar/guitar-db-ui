@@ -20,7 +20,7 @@ function FormFields({ type, isUploading, currentEquipment, setCurrentEquipment }
           { value: "Single Cut", label: "Single Cut" },
           { value: "T Style", label: "T Style" },
           { value: "Offset", label: "Offset" },
-          { value: "Semi-Hollow", label: "Semi-Hollow" },
+          { value: "Semi-hollow", label: "Semi-hollow" },
           { value: "Modern", label: "Modern" },
           { value: "Headless", label: "Headless" },
           { value: "V Style", label: "V Style" },
