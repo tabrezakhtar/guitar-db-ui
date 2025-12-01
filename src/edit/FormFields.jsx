@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { GuitarContext } from "../context/GuitarContext";
 
 function FormFields({ type, isUploading, currentEquipment, setCurrentEquipment }) {
-  // Fall back to context if props are not provided (for backward compatibility)
   const { currentEquipment: contextEquipment, setCurrentEquipment: contextSetEquipment } = useContext(GuitarContext);
   
   const equipment = currentEquipment || contextEquipment;
