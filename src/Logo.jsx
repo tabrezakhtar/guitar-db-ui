@@ -23,7 +23,7 @@ function Logo({ size = "normal" }) {
         <div className={`flex items-center justify-center ${sizeClass.container} font-bold`}>
             <img 
                 src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1757542336/favicon-192x192_kkkkll.png" 
-                alt="Rifftales Logo" 
+                alt="rifftales Logo" 
                 className={sizeClass.image}
             />
             <span className="text-[#EAAA00] drop-shadow-[2px_2px_0px_#000000]">rifftales</span>

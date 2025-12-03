@@ -36,7 +36,7 @@ function Footer({ compact = false }) {
               </a>
             </div>
             <div className="text-center">
-              <span className="text-gray-400 text-xs">© {new Date().getFullYear()} Rifftales</span>
+              <span className="text-gray-400 text-xs">© {new Date().getFullYear()} rifftales</span>
             </div>
           </div>
         </>
@@ -44,7 +44,7 @@ function Footer({ compact = false }) {
         // Full version for main layout
         <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-center md:justify-between items-center text-sm">
           <div className="mb-4 md:mb-0">
-            <span className="text-gray-400">© {new Date().getFullYear()} Rifftales. All rights reserved.</span>
+            <span className="text-gray-400">© {new Date().getFullYear()} rifftales. All rights reserved.</span>
           </div>
           
           <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
