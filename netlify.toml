@@ -6,8 +6,8 @@
     Access-Control-Allow-Origin = "*"
 
 [[redirects]]
-  from = "https://www.rifftales.net/*"
-  to = "https://rifftales.net/:splat"
+  from = "https://rifftales.net/*"
+  to = "https://www.rifftales.net/:splat"
   status = 301
   force = true
 
