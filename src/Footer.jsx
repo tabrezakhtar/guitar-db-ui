@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 
 function Footer({ compact = false }) {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  const FRONTEND_URL = import.meta.env.FRONTEND_URL;
-  
+
   return (
     <footer className={`text-white ${compact ? 'py-3 px-0' : 'py-4 px-6'}`}>
       {compact ? (
@@ -14,7 +13,7 @@ function Footer({ compact = false }) {
           <div className="flex flex-col space-y-3">
             <div className="flex flex-wrap gap-3 justify-center text-xs">
               <a 
-                href={`${FRONTEND_URL}/privacy`}
+                href={`/privacy.html`}
                 className="text-gray-300 hover:text-white hover:underline transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -22,7 +21,7 @@ function Footer({ compact = false }) {
                 Privacy
               </a>
               <a 
-                href={`${FRONTEND_URL}/terms`}
+                href={`/terms.html`}
                 className="text-gray-300 hover:text-white hover:underline transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"

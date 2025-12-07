@@ -12,14 +12,17 @@ export default defineConfig({
     {
       name: 'copy-static-files',
       async writeBundle() {
-        // Ensure the contact.html file exists
-        try {
-          const contactFile = await fs.readFile('contact.html', 'utf-8')
-          await fs.mkdir('dist', { recursive: true })
-          await fs.writeFile('dist/contact.html', contactFile)
-          console.log('Successfully copied contact.html to build output')
-        } catch (error) {
-          console.error('Error copying contact.html:', error)
+        const filesToCopy = ['contact.html', 'terms.html', 'privacy.html'];
+        
+        for (const file of filesToCopy) {
+          try {
+            const fileContent = await fs.readFile(file, 'utf-8');
+            await fs.mkdir('dist', { recursive: true });
+            await fs.writeFile(`dist/${file}`, fileContent);
+            console.log(`Successfully copied ${file} to build output`);
+          } catch (error) {
+            console.error(`Error copying ${file}:`, error);
+          }
         }
       }
     }
