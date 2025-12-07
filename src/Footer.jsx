@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 function Footer({ compact = false }) {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const FRONTEND_URL = import.meta.env.FRONTEND_URL || '';
   
   return (
     <footer className={`text-white ${compact ? 'py-3 px-0' : 'py-4 px-6'}`}>
