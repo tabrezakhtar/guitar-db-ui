@@ -13,7 +13,7 @@ function Footer({ compact = false }) {
           <div className="flex flex-col space-y-3">
             <div className="flex flex-wrap gap-3 justify-center text-xs">
               <a 
-                href={`${API_BASE_URL}/privacy`}
+                href={`${FRONTEND_URL}/privacy`}
                 className="text-gray-300 hover:text-white hover:underline transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -21,7 +21,7 @@ function Footer({ compact = false }) {
                 Privacy
               </a>
               <a 
-                href={`${API_BASE_URL}/terms`}
+                href={`${FRONTEND_URL}/terms`}
                 className="text-gray-300 hover:text-white hover:underline transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
