@@ -49,7 +49,7 @@ function Footer({ compact = false }) {
           
           <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
             <a 
-              href={`/privacy`}
+              href={`/privacy.html`}
               className="text-gray-300 hover:text-white hover:underline transition-colors"
               target="_blank"
               rel="noopener noreferrer"
@@ -57,7 +57,7 @@ function Footer({ compact = false }) {
               Privacy Policy
             </a>
             <a 
-              href={`/terms`}
+              href={`/terms.html`}
               className="text-gray-300 hover:text-white hover:underline transition-colors"
               target="_blank"
               rel="noopener noreferrer"
