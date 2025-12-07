@@ -49,7 +49,7 @@ function Footer({ compact = false }) {
           
           <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
             <a 
-              href={`${API_BASE_URL}/privacy`}
+              href={`/privacy`}
               className="text-gray-300 hover:text-white hover:underline transition-colors"
               target="_blank"
               rel="noopener noreferrer"
@@ -57,7 +57,7 @@ function Footer({ compact = false }) {
               Privacy Policy
             </a>
             <a 
-              href={`${API_BASE_URL}/terms`}
+              href={`/terms`}
               className="text-gray-300 hover:text-white hover:underline transition-colors"
               target="_blank"
               rel="noopener noreferrer"
