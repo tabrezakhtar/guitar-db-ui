@@ -13,8 +13,9 @@
         e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=e.getElementsByTagName("script")[0];e.parentNode.insertBefore(k,e)}})(document,window.mixpanel||[])
 
         mixpanel.init('f89b727fd01b428181e2329fd149ae63', {
-          autocapture: true,
-          record_sessions_percent: 100,
+          disable_persistence: true,
+          autotrack: false,
+          persistence: 'cookie'
         })
 
         const userAgent = navigator.userAgent;
