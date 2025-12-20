@@ -6,6 +6,7 @@ import ViewGuitar from "./view/ViewGuitar";
 import AddGuitar from "./AddGuitar";
 import Profile from "./profile/Profile";
 import EditProfile from "./profile/EditProfile";
+import PostPage from "./PostPage";
 import { UserProvider } from "./context/UserContext";
 import { GuitarProvider } from "./context/GuitarContext";
 import { TagProvider } from "./context/TagContext";
@@ -43,6 +44,7 @@ function App() {
                       }
                     />
                     <Route path="/view/:id" element={<Layout hideMenu><ViewGuitar /></Layout>} />
+                    <Route path="/posts/:slug" element={<Layout hideMenu><PostPage /></Layout>} />
                     <Route
                       path="/add"
                       element={
