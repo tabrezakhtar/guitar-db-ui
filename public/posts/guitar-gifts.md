@@ -49,4 +49,4 @@ A bulk pack of individual high E strings quietly solves this problem. Having spa
 [https://www.amazon.co.uk/Single-Electric-Guitar-String-20-Pack/dp/B074QM5HS1](https://www.amazon.co.uk/Single-Electric-Guitar-String-20-Pack/dp/B074QM5HS1)
 
 
-Each of these gifts addresses a different part of the guitarist’s experience, from learning and storage to practice, recording and the small but familiar annoyances that come with playing. Thoughtful choices like these tend to be used often and appreciated over time.
+These are gifts I would genuinely appreciate myself, covering different parts of playing guitar - from learning and practice to storage, recording, and the small everyday annoyances that come with it.
