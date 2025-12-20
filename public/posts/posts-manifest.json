@@ -5,6 +5,13 @@
     "description": "My recommendations for fun and genuinely useful gifts for guitarists - things they'll actually enjoy using rather than leaving in a drawer.",
     "location": "guitar-gifts.md",
     "date": "2025-12-01",
-    "thumbnail": "https://res.cloudinary.com/dx8d5hlk1/image/upload/w_400,h_250,c_fill/v1766188145/guitar-gift_f7nxk4.png"
+    "thumbnail": "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1766242448/guitar-gift_obgkqt.jpg"
+  }, {
+    "slug": "free-daws-windows",
+    "title": "Free DAWs for Windows",
+    "description": "Free Windows Digital Audio Workstations (DAWs) that are actually good - no bloatware, no trial versions, just fully functional software you can use to make music right away.",
+    "location": "free-daws.md",
+    "date": "2025-11-20",
+    "thumbnail": "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1766242448/daw_dlxhek.jpg"
   }
 ]
