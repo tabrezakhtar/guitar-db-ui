@@ -1,4 +1,22 @@
 [[redirects]]
+  from = "/api/*"
+  to = "https://guitar-db-production.up.railway.app/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/login"
+  to = "https://guitar-db-production.up.railway.app/login"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/register"
+  to = "https://guitar-db-production.up.railway.app/register"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
