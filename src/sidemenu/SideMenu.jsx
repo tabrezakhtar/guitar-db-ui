@@ -98,7 +98,7 @@ function SideMenu() {
             </Link>
           ) : (
             <a 
-              href={`${import.meta.env.VITE_API_BASE_URL}/register`} 
+              href={`/register`} 
               className="flex items-center justify-center hover:text-gray-300 p-2 rounded-lg hover:bg-gray-700/50 transition-colors"
             >
               <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-medium">

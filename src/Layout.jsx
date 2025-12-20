@@ -72,7 +72,7 @@ function Layout({ hideMenu, children }) {
           <div className="w-full bg-yellow-100 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100 border-b border-yellow-300 dark:border-yellow-700 rounded-md mb-4">
             <div className="max-w-screen-xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
               <span>👋 You are browsing as a guest - some features are limited. Sign up for the full experience.</span>
-              <button onClick={() => ssrRedirect(`${BASE_URL}/register`)} className="bg-orange-400 hover:bg-orange-600 text-white px-3 py-1 rounded cursor-pointer">
+              <button onClick={() => ssrRedirect(`/register`)} className="bg-orange-400 hover:bg-orange-600 text-white px-3 py-1 rounded cursor-pointer">
                 <span className="[text-shadow:1px_1px_0_gray]">Register</span>
               </button>
             </div>
