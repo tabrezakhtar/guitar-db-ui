@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import postsManifest from "../public/posts/posts-manifest.json";
 import { formatDate } from "./utils/dateUtils";
 
