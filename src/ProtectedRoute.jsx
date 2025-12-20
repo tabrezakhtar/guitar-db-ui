@@ -52,7 +52,7 @@ const ProtectedRoute = ({ children }) => {
     }
     
     if (!hasRedirectedForDeletion) {
-      ssrRedirect(`/login`, "/")
+      ssrRedirect(`${BASE_URL}/login`, "/")
     }
     return null;
   }
@@ -69,7 +69,7 @@ const ProtectedRoute = ({ children }) => {
             <p className="leading-relaxed">{authError || "Your credentials are either invalid or expired."}</p>
             <button 
               onClick={() => {
-                ssrRedirect(`/login`, "/");
+                ssrRedirect(`${BASE_URL}/login`, "/");
               }}
               className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center font-semibold mt-4"
             >
