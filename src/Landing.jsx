@@ -16,6 +16,24 @@ function Landing() {
   const [popularEquipment, setPopularEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    let timeoutId;
+    
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsMobile(window.innerWidth < 768);
+      }, 300);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     hideHeader();
@@ -96,12 +114,12 @@ function Landing() {
             {emoji} {title}
           </h3>
         </div>
-        <div className="rounded-lg p-4 flex justify-center">
+        <div className="rounded-lg p-4">
           <EquipmentCarousel 
             items={items.slice(0, 5)} 
             theme="dark"
-            centered={true}
-            cardSize="full"
+            cardSize="medium"
+            centered={!isMobile}
           />
         </div>
         <div className="mt-4 text-center">
