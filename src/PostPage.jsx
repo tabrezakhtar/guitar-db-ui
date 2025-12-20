@@ -49,6 +49,10 @@ function PostPage() {
   if (loading) return <div className="p-8">Loading...</div>;
   if (!post) return null;
 
+  const currentIndex = postsManifest.findIndex(p => p.slug === slug);
+  const previousPost = currentIndex > 0 ? postsManifest[currentIndex - 1] : null;
+  const nextPost = currentIndex >= 0 && currentIndex < postsManifest.length - 1 ? postsManifest[currentIndex + 1] : null;
+
   return (
     <div className="max-w-2xl mx-auto p-8">
       <Link to="/" className="text-blue-400 hover:text-blue-300 mb-6 inline-block">
@@ -81,6 +85,24 @@ function PostPage() {
         >
           {post.content}
         </ReactMarkdown>
+        <div className="flex justify-between items-center mt-10 pt-6 border-t border-gray-700">
+          {previousPost ? (
+            <Link
+              to={`/posts/${previousPost.slug}`}
+              className="text-blue-400 hover:text-blue-300 text-sm"
+            >
+              ← Previous: {previousPost.title}
+            </Link>
+          ) : <span />}
+          {nextPost && (
+            <Link
+              to={`/posts/${nextPost.slug}`}
+              className="text-blue-400 hover:text-blue-300 text-sm ml-auto text-right"
+            >
+              Next: {nextPost.title} →
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
