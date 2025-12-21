@@ -10,7 +10,7 @@ Learning guitar is often an exercise in repetition and reference.  A well-design
 
 Because it works as wall art as well as a learning aid, it suits practice rooms, bedrooms or home studios equally well.  It is a gift that quietly supports progress rather than demanding attention.
 
-[https://www.etsy.com/uk/listing/1330398550/the-guitar-chords-chart-learn-to-play](https://www.etsy.com/uk/listing/1330398550/the-guitar-chords-chart-learn-to-play)
+<a href="https://www.etsy.com/uk/listing/1330398550/the-guitar-chords-chart-learn-to-play" rel="noreferrer" target="_blank">https://www.etsy.com/uk/listing/1330398550/the-guitar-chords-chart-learn-to-play</a>
 
 
 ### 2. String Swing CC01K Guitar Wall Hanger (Black Walnut)
@@ -19,7 +19,7 @@ Storing a guitar properly is about more than tidiness.  A secure wall hanger kee
 
 The black walnut mounting plate gives it a subtle, furniture-like appearance, and the non-symmetrical design supports electric, acoustic and bass headstocks so they hang straight.  It is a practical addition to any space where guitars are used regularly.
 
-[https://www.thomann.co.uk/string_swing_cc01k_guitar_wall_hanger_bw.htm](https://www.thomann.co.uk/string_swing_cc01k_guitar_wall_hanger_bw.htm)
+<a href="https://www.thomann.co.uk/string_swing_cc01k_guitar_wall_hanger_bw.htm" rel="noreferrer" target="_blank">https://www.thomann.co.uk/string_swing_cc01k_guitar_wall_hanger_bw.htm</a>
 
 
 ### 3. Gruvgear FretWrap String Dampener
@@ -28,7 +28,7 @@ Unwanted string noise is something many guitarists wrestle with, especially duri
 
 This small accessory slips over the neck near the nut and can be adjusted for pressure or moved onto the headstock when not needed.  It requires no tools and no modification to the instrument, making it a low-risk but genuinely useful gift for players who record at home or perform regularly.
 
-[https://www.thomann.co.uk/gruvgear_fretwrap_sm_stone_white.htm](https://www.thomann.co.uk/gruvgear_fretwrap_sm_stone_white.htm)
+<a href="https://www.thomann.co.uk/gruvgear_fretwrap_sm_stone_white.htm" rel="noreferrer" target="_blank">https://www.thomann.co.uk/gruvgear_fretwrap_sm_stone_white.htm</a>
 
 
 ### 4. Fender Mustang Micro Plus Headphone Amplifier
@@ -37,7 +37,7 @@ Practising quietly is a reality for many guitarists, whether due to shared livin
 
 The Mustang Micro Plus connects directly to the guitar, offers a wide range of amp models and effects, and supports Bluetooth audio for playing along with tracks.  It can also be used as a USB audio device, which adds flexibility for recording or practice.  It is the sort of tool that quickly becomes part of a daily routine.
 
-[https://uk.fender.com/products/mustang-micro-plus](https://uk.fender.com/products/mustang-micro-plus)
+<a href="https://uk.fender.com/products/mustang-micro-plus" rel="noreferrer" target="_blank">https://uk.fender.com/products/mustang-micro-plus</a>
 
 
 ### 5. Spare High E Strings (.009 Gauge, 20-Pack)
@@ -46,7 +46,7 @@ Few moments feel quite as deflating to a guitarist as breaking the high E string
 
 A bulk pack of individual high E strings quietly solves this problem.  Having spares to hand removes frustration and keeps practice moving.  It may not be glamorous, but it is one of those gifts that proves its worth the first time a string snaps.
 
-[https://www.amazon.co.uk/Single-Electric-Guitar-String-20-Pack/dp/B074QM5HS1](https://www.amazon.co.uk/Single-Electric-Guitar-String-20-Pack/dp/B074QM5HS1)
+<a href="https://www.amazon.co.uk/Single-Electric-Guitar-String-20-Pack/dp/B074QM5HS1" rel="noreferrer" target="_blank">https://www.amazon.co.uk/Single-Electric-Guitar-String-20-Pack/dp/B074QM5HS1</a>
 
 ## Conclusion
 

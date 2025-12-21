@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import postsManifest from "../public/posts/posts-manifest.json";
 import { formatDate } from "./utils/dateUtils";
 
@@ -69,6 +70,7 @@ function PostPage() {
       <p className="text-gray-400 mb-8">{formatDate(post.date)}</p>
       <div className="text-white">
         <ReactMarkdown
+          rehypePlugins={[rehypeRaw]}
           components={{
             h1: ({node, ...props}) => <h1 className="text-3xl font-bold mt-6 mb-4" {...props} />,
             h2: ({node, ...props}) => <h2 className="text-2xl font-bold mt-5 mb-3" {...props} />,
