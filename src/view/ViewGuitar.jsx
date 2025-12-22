@@ -218,37 +218,6 @@ const ViewGuitar = () => {
           </div>
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border dark:border-gray-600 rounded-lg p-4 overflow-hidden">
             <div className="grid grid-cols-1 gap-4">
-              <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
-                Owner
-              </h2>
-
-              <div className="mt-4">
-                <div className="flex items-center gap-3">
-                  <NavLink
-                    to={`/profile/${equipment.user?._id}`}
-                    className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-                  >
-                    <AvatarDisplayOnly
-                      imageUrl={equipment.user?.avatarUrl}
-                      username={equipment.user?.username || "Unknown"}
-                      size="small"
-                    />
-                    <div className="flex items-center gap-1">
-                      <span className="font-medium text-black dark:text-white">
-                        {equipment.user?.username || "Unknown"}
-                      </span>
-                      {equipment.user?.admin && (
-                        <img
-                          src="/verified.svg"
-                          alt="Verified"
-                          className="w-4 h-4"
-                        />
-                      )}
-                    </div>
-                  </NavLink>
-                </div>
-              </div>
-
               <div>
                 <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
                   Details
@@ -306,6 +275,36 @@ const ViewGuitar = () => {
                 </h2>
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-96 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Roboto_Mono'] text-xl">
                   {equipment.description || "No description provided."}
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                  Owner
+                </h2>
+                <div className="flex items-center gap-3">
+                  <NavLink
+                    to={`/profile/${equipment.user?._id}`}
+                    className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+                  >
+                    <AvatarDisplayOnly
+                      imageUrl={equipment.user?.avatarUrl}
+                      username={equipment.user?.username || "Unknown"}
+                      size="small"
+                    />
+                    <div className="flex items-center gap-1">
+                      <span className="font-medium text-black dark:text-white">
+                        {equipment.user?.username || "Unknown"}
+                      </span>
+                      {equipment.user?.admin && (
+                        <img 
+                          src="/verified.svg" 
+                          alt="Verified" 
+                          className="w-4 h-4"
+                        />
+                      )}
+                    </div>
+                  </NavLink>
                 </div>
               </div>
 
