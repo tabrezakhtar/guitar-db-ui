@@ -237,7 +237,7 @@ function Landing() {
                     />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Guitars</h3>
-                  <p className="text-gray-400 text-sm">Electric guitars from all brands</p>
+                  <p className="text-gray-400 text-sm">Electric guitars from all brands.</p>
                 </div>
               </Link>
               <Link to="/gallery?type=amp" className="bg-[#202b3d] rounded-lg p-6 gentle-hover">
@@ -250,7 +250,7 @@ function Landing() {
                     />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Amps</h3>
-                  <p className="text-gray-400 text-sm">Amplifiers, whether vintage or modern, analogue or digital</p>
+                  <p className="text-gray-400 text-sm">Amplifiers, whether vintage or modern, analogue or digital.</p>
                 </div>
               </Link>
               <Link to="/gallery?type=accessory" className="bg-[#202b3d] rounded-lg p-6 gentle-hover">
@@ -263,7 +263,7 @@ function Landing() {
                     />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Accessories</h3>
-                  <p className="text-gray-400 text-sm">Picks, strings, cases, and other musical accessories</p>
+                  <p className="text-gray-400 text-sm">Picks, strings, cases, and other musical accessories.</p>
                 </div>
               </Link>
             </div>
