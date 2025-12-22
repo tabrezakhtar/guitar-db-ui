@@ -67,7 +67,7 @@ function Layout({ hideMenu, children }) {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 bg-white dark:bg-[#122634] overflow-y-auto">
+      <main className="flex-1 bg-white dark:bg-[#122634] p-0 md:p-4 overflow-y-auto">
         {isGuest && showHeader && (
           <div className="w-full bg-yellow-100 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100 border-b border-yellow-300 dark:border-yellow-700 rounded-md mb-4">
             <div className="max-w-screen-xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
