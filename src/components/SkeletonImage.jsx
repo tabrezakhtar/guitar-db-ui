@@ -5,7 +5,7 @@ const SkeletonImage = () => (
       backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/e_grayscale/v1759859487/icon-huge_a5nmje.jpg)'
     }}
   >
-    <span className="text-gray-500 bg-white/80 px-2 py-1 rounded">No Image</span>
+    <span className="text-gray-400 bg-gray-800/80 px-2 py-1 rounded">No Image</span>
   </div>
 );
 

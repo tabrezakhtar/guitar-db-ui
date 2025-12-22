@@ -36,7 +36,7 @@ const SaveCredentials = () => {
     }
   }, [location, navigate]);
   return (
-    <div className="flex flex-col gap-4 p-6 bg-white rounded shadow-md max-w-sm mx-auto mt-10">      
+    <div className="flex flex-col gap-4 p-6 bg-gray-800 rounded shadow-md max-w-sm mx-auto mt-10">      
       {saved && (
         <div className="text-center py-4">
           <div className="flex items-center justify-center gap-2 mb-2">
@@ -44,7 +44,7 @@ const SaveCredentials = () => {
             <h1 className="text-2xl font-bold">Account Verified!</h1>
           </div>
           <p className="text-gray-700 mb-1">Redirecting to Guitar DB...</p>
-          <p className="text-gray-900 font-medium mb-4">
+          <p className="text-white font-medium mb-4">
             Welcome, {JSON.parse(localStorage.getItem("user"))?.username || "User"}!
           </p>
           

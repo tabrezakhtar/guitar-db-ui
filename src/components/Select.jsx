@@ -55,13 +55,11 @@ function Select({ className = "", ...props }) {
     })
   };
 
-  const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-
   return (
     <ReactSelect
       className={`react-select-container ${className}`}
       classNamePrefix="react-select"
-      styles={isDarkMode ? darkModeStyles : undefined}
+      styles={darkModeStyles}
       {...props}
     />
   );

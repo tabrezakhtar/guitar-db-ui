@@ -23,10 +23,10 @@ const Comments = ({ equipmentId }) => {
   
   if (!comments || comments.length === 0) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-        <h3 className="text-xl font-semibold mb-4 text-black dark:text-white">Comments</h3>
+      <div className="bg-gray-800 rounded-lg shadow p-4">
+        <h3 className="text-xl font-semibold mb-4 text-white">Comments</h3>
         <CommentForm equipmentId={equipmentId} />
-        <p className="text-gray-500 dark:text-gray-400 text-center my-6">No comments yet. Be the first to comment!</p>
+        <p className="text-gray-400 text-center my-6">No comments yet. Be the first to comment!</p>
       </div>
     );
   }
@@ -34,14 +34,14 @@ const Comments = ({ equipmentId }) => {
   const displayedComments = expandedComments ? comments : comments.slice(0, 5);
   
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-      <h3 className="text-xl font-semibold mb-4 text-black dark:text-white">Comments</h3>
+    <div className="bg-gray-800 rounded-lg shadow p-4">
+      <h3 className="text-xl font-semibold mb-4 text-white">Comments</h3>
       
       <CommentForm equipmentId={equipmentId} />
       
       <div className="space-y-4 mt-6">
         {displayedComments.map((comment, index) => (
-          <div key={comment._id || `comment-${index}`} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600 shadow-sm">
+          <div key={comment._id || `comment-${index}`} className="bg-gray-700 rounded-lg p-4 border border-gray-600 shadow-sm">
             <div className="flex">
               <div className="mr-3 self-center">
                 <AvatarDisplayOnly imageUrl={comment.user?.avatarUrl} username={comment.user?.username} size="xsmall" />
@@ -51,7 +51,7 @@ const Comments = ({ equipmentId }) => {
                   <div className="flex items-center gap-1">
                     <NavLink 
                       to={`/profile/${comment.user?._id}`}
-                      className="font-medium text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      className="font-medium text-gray-100 hover:text-blue-400 transition-colors"
                     >
                       {comment.user?.username?.substring(0, 32)}
                     </NavLink>
@@ -64,18 +64,18 @@ const Comments = ({ equipmentId }) => {
                     )}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500 dark:text-gray-400" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
+                    <span className="text-xs text-gray-400" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
                     {user && user._id === comment.user?._id && (
                       <button
                         onClick={() => handleDeleteComment(comment._id)}
-                        className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white text-xs px-2 py-1 rounded transition-colors cursor-pointer"
+                        className="bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded transition-colors cursor-pointer"
                       >
                         Delete
                       </button>
                     )}
                   </div>
                 </div>
-                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">{comment.text}</p>
+                <p className="text-gray-200 leading-relaxed">{comment.text}</p>
               </div>
             </div>
           </div>
@@ -84,7 +84,7 @@ const Comments = ({ equipmentId }) => {
       
       {comments.length > 5 && (
         <button 
-          className="mt-3 text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm"
+          className="mt-3 text-blue-400 hover:text-blue-300 text-sm"
           onClick={() => setExpandedComments(!expandedComments)}
         >
           {expandedComments ? "Show Less" : `Show All (${comments.length}) Comments`} 

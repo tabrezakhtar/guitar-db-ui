@@ -113,8 +113,8 @@ const Profile = () => {
     if (!items || items.length === 0) return null;
     
     return (
-      <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
-        <h3 className="text-lg font-semibold mb-2 flex items-center text-black dark:text-white">
+      <div className="mb-6 bg-gray-700 p-4 rounded-md">
+        <h3 className="text-lg font-semibold mb-2 flex items-center text-white">
           {emoji} {title} ({items.length})
         </h3>
         <EquipmentCarousel 
@@ -179,17 +179,17 @@ const Profile = () => {
   const isOwnProfile = !userId || (user && profileUser && user._id === profileUser._id);
   
   return (
-    <div className="max-w-screen-xl mx-auto w-full p-6 bg-white dark:bg-[#122634]">
+    <div className="max-w-screen-xl mx-auto w-full p-6 bg-[#122634]">
       <div className="mb-4">
         <Breadcrumbs items={[{ label: "Profile", url: "/profile" }]} />
       </div>
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold text-black dark:text-white">User Profile</h1>
+        <h1 className="text-2xl font-bold text-white">User Profile</h1>
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           {isOwnProfile && (
             <button
               onClick={() => navigate("/edit-profile")}
-              className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors"
             >
               ✏️ Edit Profile
             </button>
@@ -197,7 +197,7 @@ const Profile = () => {
           {isOwnProfile && (
             <button 
               onClick={handleLogoutClick}
-              className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 bg-transparent border-none cursor-pointer p-0 flex items-center justify-center"
+              className="text-blue-400 hover:text-blue-300 bg-transparent border-none cursor-pointer p-0 flex items-center justify-center"
             >
               Logout
             </button>
@@ -205,7 +205,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+      <div className="bg-gray-800 rounded-lg shadow-lg p-6">
         <div className="flex flex-col sm:flex-row items-center justify-center mb-6">
           <div className="relative w-24 h-24 mb-4 sm:mb-0 sm:mr-6">
             <AvatarDisplayOnly
@@ -216,7 +216,7 @@ const Profile = () => {
           </div>
           <div className="text-center sm:text-left sm:ml-6">
             <div className="flex items-center justify-center sm:justify-start gap-1">
-              <h2 className="text-2xl font-bold text-black dark:text-white">{username}</h2>
+              <h2 className="text-2xl font-bold text-white">{username}</h2>
               {profileUser.admin && (
                 <img 
                   src="/verified.svg" 
@@ -225,39 +225,39 @@ const Profile = () => {
                 />
               )}
             </div>
-            <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center sm:justify-start">
+            <p className="text-gray-400 flex items-center justify-center sm:justify-start">
               📍 {location || "No location set"}
             </p>
           </div>
         </div>
         
-        <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
-          <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">About</h3>
-          <p className="text-gray-700 dark:text-gray-300">{bio || "No bio available"}</p>
+        <div className="mb-6 bg-gray-700 p-4 rounded-md">
+          <h3 className="text-lg font-semibold mb-2 text-white">About</h3>
+          <p className="text-gray-300">{bio || "No bio available"}</p>
         </div>
         
-        <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
-          <h3 className="text-lg font-semibold mb-2 text-black dark:text-white">Website</h3>
+        <div className="mb-6 bg-gray-700 p-4 rounded-md">
+          <h3 className="text-lg font-semibold mb-2 text-white">Website</h3>
           {website ? (
             <a 
               href={website.startsWith("http") ? website : `https://${website}`} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-500 dark:text-blue-400 hover:underline flex items-center"
+              className="text-blue-400 hover:underline flex items-center"
             >
               🌐 {website}
             </a>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400">No website added</p>
+            <p className="text-gray-400">No website added</p>
           )}
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
-          <h3 className="text-xl font-bold text-black dark:text-white">My Equipment</h3>
+          <h3 className="text-xl font-bold text-white">My Equipment</h3>
           {isOwnProfile && (
             <button
               onClick={() => navigate("/add")}
-              className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors cursor-pointer w-full sm:w-auto"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors cursor-pointer w-full sm:w-auto"
             >
               ➕ Add Equipment
             </button>
@@ -275,7 +275,7 @@ const Profile = () => {
             {renderEquipmentSection(userEquipment.pedals, "Effects & Pedals", "🎛️")}
             
             {!userEquipment.guitars.length && !userEquipment.amps.length && !userEquipment.pedals.length && (
-              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md text-gray-600 dark:text-gray-400">
+              <div className="bg-gray-700 p-4 rounded-md text-gray-400">
                 <p className="text-center">No equipment added yet.</p>
               </div>
             )}
@@ -284,8 +284,8 @@ const Profile = () => {
 
         {likedEquipment && likedEquipment.length > 0 && (
           <>
-            <h3 className="text-xl font-bold mb-4 mt-6 text-black dark:text-white">My Liked Equipment</h3>
-            <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
+            <h3 className="text-xl font-bold mb-4 mt-6 text-white">My Liked Equipment</h3>
+            <div className="mb-6 bg-gray-700 p-4 rounded-md">
               <EquipmentCarousel 
                 items={likedEquipment} 
               />
@@ -295,31 +295,31 @@ const Profile = () => {
 
         {userComments && userComments.length > 0 && (
           <>
-            <h3 className="text-xl font-bold mb-4 mt-6 text-black dark:text-white">My Recent Comments</h3>
-            <div className="mb-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
+            <h3 className="text-xl font-bold mb-4 mt-6 text-white">My Recent Comments</h3>
+            <div className="mb-6 bg-gray-700 p-4 rounded-md">
               <div className="space-y-4">
                 {userComments.map(comment => (
-                  <div key={comment._id} className="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+                  <div key={comment._id} className="bg-gray-800 p-3 rounded-md shadow-sm">
                     <div className="flex justify-between items-start mb-2">
                       <NavLink 
                         to={`/view/${comment.equipmentId._id}`}
-                        className="text-blue-500 dark:text-blue-400 hover:underline text-sm"
+                        className="text-blue-400 hover:underline text-sm"
                       >
                         💬 { comment.equipmentId.brand } { comment.equipmentId.name }
                       </NavLink>
                       <div className="flex items-center gap-2">
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{formatDate(comment.date)}</p>
+                        <p className="text-xs text-gray-400">{formatDate(comment.date)}</p>
                         {isOwnProfile && (
                           <button
                             onClick={() => handleDeleteComment(comment._id)}
-                            className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white text-xs px-2 py-1 rounded transition-colors cursor-pointer"
+                            className="bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded transition-colors cursor-pointer"
                           >
                             Delete
                           </button>
                         )}
                       </div>
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">{comment.text.slice(0, 100)}{comment.text.length > 100 ? "..." : ""}</p>
+                    <p className="text-gray-300 whitespace-pre-wrap break-words">{comment.text.slice(0, 100)}{comment.text.length > 100 ? "..." : ""}</p>
                   </div>
                 ))}
               </div>
@@ -327,7 +327,7 @@ const Profile = () => {
           </>
         )}
         
-        <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md text-gray-600 dark:text-gray-400 text-sm mt-6">
+        <div className="bg-gray-700 p-4 rounded-md text-gray-400 text-sm mt-6">
           <p>🗓️ Member since {formatDate(createdAt)}</p>
         </div>
       </div>

@@ -152,25 +152,25 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px] bg-white dark:bg-[#122634] min-h-screen">
+    <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px] bg-[#122634] min-h-screen">
       <div className="mb-4">
         <Breadcrumbs items={[{ label: "Edit Profile", url: "/edit-profile" }]} />
       </div>
-      <h1 className="text-2xl font-bold mb-6 text-black dark:text-white">Edit Profile</h1>
+      <h1 className="text-2xl font-bold mb-6 text-white">Edit Profile</h1>
       
       {success && (
-        <div className="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-400 px-4 py-3 rounded mb-6">
+        <div className="bg-green-900/30 border border-green-600 text-green-400 px-4 py-3 rounded mb-6">
           Profile updated successfully!
         </div>
       )}
       
       {error && (
-        <div className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-6">
+        <div className="bg-red-900/30 border border-red-600 text-red-400 px-4 py-3 rounded mb-6">
           {error}
         </div>
       )}
       
-      <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+      <form onSubmit={handleSubmit} className="bg-gray-800 rounded-lg shadow-lg p-6">
         <div className="mb-6">
           <div className="flex justify-center">
             <Avatar
@@ -180,13 +180,13 @@ const EditProfile = () => {
               onAvatarUpdated={handleAvatarChange}
             />
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 text-center mt-2">
+          <p className="text-sm text-gray-400 text-center mt-2">
             Click on the avatar to change your profile picture
           </p>
         </div>
         
         <div className="mb-4">
-          <label htmlFor="username" className="block text-gray-700 dark:text-gray-300 mb-2">Username: <span className="text-red-500 dark:text-red-400">*</span></label>
+          <label htmlFor="username" className="block text-gray-300 mb-2">Username: <span className="text-red-400">*</span></label>
           <input
             type="text"
             id="username"
@@ -194,43 +194,43 @@ const EditProfile = () => {
             value={profile.username}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-black dark:text-white"
+            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="location" className="block text-gray-700 dark:text-gray-300 mb-2">Location:</label>
+          <label htmlFor="location" className="block text-gray-300 mb-2">Location:</label>
           <input
             type="text"
             id="location"
             name="location"
             value={profile.location}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-black dark:text-white"
+            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
           />
         </div>
         
         <div className="mb-4">
-          <label htmlFor="website" className="block text-gray-700 dark:text-gray-300 mb-2">Website:</label>
+          <label htmlFor="website" className="block text-gray-300 mb-2">Website:</label>
           <input
             type="text"
             id="website"
             name="website"
             value={profile.website}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-black dark:text-white"
+            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
           />
         </div>
         
         <div className="mb-4">
-          <label htmlFor="bio" className="block text-gray-700 dark:text-gray-300 mb-2">Bio:</label>
+          <label htmlFor="bio" className="block text-gray-300 mb-2">Bio:</label>
           <textarea
             id="bio"
             name="bio"
             value={profile.bio}
             onChange={handleChange}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-black dark:text-white"
+            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
           />
         </div>
         
@@ -239,7 +239,7 @@ const EditProfile = () => {
             <button 
               type="button" 
               onClick={handleDeleteProfile}
-              className="px-4 py-2 text-white bg-red-500 dark:bg-red-600 rounded-md hover:bg-red-600 dark:hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 w-full sm:w-auto"
+              className="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-full sm:w-auto"
             >
               Delete Profile
             </button>
@@ -248,14 +248,14 @@ const EditProfile = () => {
             <button 
               type="button" 
               onClick={() => navigate("/profile")}
-              className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400"
+              className="px-4 py-2 text-gray-300 bg-gray-600 rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
               Cancel
             </button>
             <button 
               type="submit" 
               disabled={loading}
-              className="px-4 py-2 text-white bg-blue-500 dark:bg-blue-600 rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 disabled:opacity-50"
+              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
             >
               {loading ? "Saving..." : "Save Profile"}
             </button>
@@ -268,32 +268,32 @@ const EditProfile = () => {
           message={
             deleteLoading ? (
               <div className="text-center max-w-md mx-auto">
-                <div className="text-red-600 dark:text-red-400 text-6xl mb-6">🗑️</div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                <div className="text-red-400 text-6xl mb-6">🗑️</div>
+                <h3 className="text-xl font-bold text-white mb-4">
                   Deleting Your Profile...
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg">
+                <p className="text-gray-300 mb-6 text-lg">
                   Please wait while we permanently delete your profile, images, and all equipment data.
                 </p>
                 <div className="flex flex-col items-center space-y-4">
                   <div className="relative">
-                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-200 dark:border-red-300 border-t-red-600 dark:border-t-red-400"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-300 border-t-red-400"></div>
                   </div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+                  <p className="text-sm text-gray-400 animate-pulse">
                     This may take a few moments...
                   </p>
                 </div>
               </div>
             ) : (
               <div className="text-center max-w-md mx-auto">
-                <div className="text-red-600 dark:text-red-400 text-6xl mb-4">⚠️</div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                <div className="text-red-400 text-6xl mb-4">⚠️</div>
+                <h3 className="text-lg font-semibold text-white mb-4">
                   Are you sure you want to delete your profile?
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-2">
+                <p className="text-gray-300 mb-2">
                   This action will permanently delete your profile, all your uploaded images, and all your equipment data.
                 </p>
-                <p className="text-red-600 dark:text-red-400 font-semibold">
+                <p className="text-red-400 font-semibold">
                   This cannot be undone.
                 </p>
               </div>

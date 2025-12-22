@@ -46,7 +46,7 @@ function FormFields({ type, isUploading, currentEquipment, setCurrentEquipment }
     <>
       {fieldMapping[type]?.map((field) => (
         <div key={field.key} className="mb-4">
-          <label className="block text-black dark:text-white">{field.label}:</label>
+          <label className="block text-white">{field.label}:</label>
           {field.type === "text" || field.type === "number" ? (
             <input
               type={field.type}
@@ -60,12 +60,12 @@ function FormFields({ type, isUploading, currentEquipment, setCurrentEquipment }
                 })
               }
               disabled={isUploading}
-              className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+              className="border border-gray-600 p-2 rounded w-full bg-gray-700 text-white placeholder-gray-400"
             />
           ) : field.type === "radio" ? (
             <div className="flex gap-4">
               {field.options.map((option) => (
-                <label key={option.value} className="flex items-center gap-2 text-black dark:text-white">
+                <label key={option.value} className="flex items-center gap-2 text-white">
                   <input
                     type="radio"
                     name={field.key}
@@ -94,7 +94,7 @@ function FormFields({ type, isUploading, currentEquipment, setCurrentEquipment }
                 })
               }
               disabled={isUploading}
-              className="border dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-black dark:text-white"
+              className="border border-gray-600 p-2 rounded w-full bg-gray-700 text-white"
             >
               <option value="">Select {field.label} (optional)</option>
               {field.options.map((option) => (

@@ -28,7 +28,7 @@ const CommentForm = ({ equipmentId }) => {
     <form onSubmit={handleSubmit} className="mt-4">
       <div className="flex flex-col">
         <textarea
-          className="w-full p-2 border dark:border-gray-600 rounded-lg mb-2 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+          className="w-full p-2 border border-gray-600 rounded-lg mb-2 focus:border-blue-400 focus:outline-none bg-gray-700 text-white placeholder-gray-400"
           rows={3}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
@@ -37,7 +37,7 @@ const CommentForm = ({ equipmentId }) => {
         />
         <button
           type="submit"
-          className="w-full sm:w-auto sm:self-end bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="w-full sm:w-auto sm:self-end bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 transition-colors"
           disabled={isSubmitting || !comment.trim() || isGuest}
         >
           {isSubmitting ? (

@@ -20,21 +20,21 @@ function Layout({ hideMenu, children }) {
       {!hideMenu && (
         <button
           onClick={toggleSideMenu}
-          className="md:hidden fixed top-2 left-2 z-50 bg-white p-2 rounded-md shadow-lg"
+          className="md:hidden fixed top-2 left-2 z-50 bg-gray-800 p-2 rounded-md shadow-lg"
         >
           <div className="w-6 h-6 flex flex-col justify-center items-center space-y-1">
             <span
-              className={`block h-0.5 w-6 bg-black transform transition-all duration-300 ease-in-out ${
+              className={`block h-0.5 w-6 bg-white transform transition-all duration-300 ease-in-out ${
                 isSideMenuOpen ? "rotate-45 translate-y-1.5" : ""
               }`}
             />
             <span
-              className={`block h-0.5 w-6 bg-black transform transition-all duration-300 ease-in-out ${
+              className={`block h-0.5 w-6 bg-white transform transition-all duration-300 ease-in-out ${
                 isSideMenuOpen ? "opacity-0" : ""
               }`}
             />
             <span
-              className={`block h-0.5 w-6 bg-black transform transition-all duration-300 ease-in-out ${
+              className={`block h-0.5 w-6 bg-white transform transition-all duration-300 ease-in-out ${
                 isSideMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
               }`}
             />
@@ -67,9 +67,9 @@ function Layout({ hideMenu, children }) {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 bg-white dark:bg-[#122634] p-0 md:p-4 overflow-y-auto">
+      <main className="flex-1 bg-[#122634] p-0 md:p-4 overflow-y-auto">
         {isGuest && showHeader && (
-          <div className="w-full bg-yellow-100 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100 border-b border-yellow-300 dark:border-yellow-700 rounded-md mb-4">
+          <div className="w-full bg-yellow-900 text-yellow-100 border-b border-yellow-700 rounded-md mb-4">
             <div className="max-w-screen-xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
               <span>👋 You are browsing as a guest - some features are limited. Sign up for the full experience.</span>
               <button onClick={() => ssrRedirect(`${BASE_URL}/register`)} className="bg-orange-400 hover:bg-orange-600 text-white px-3 py-1 rounded cursor-pointer">

@@ -71,7 +71,7 @@ export default function FileDropZone({ currentEquipment, setCurrentEquipment, se
           )
         }
       </div>
-      <div className="mb-4 text-xs text-gray-500 dark:text-gray-400">
+      <div className="mb-4 text-xs text-gray-400">
         📷 Maximum 8 images ({currentImageCount}/{maxImages})
       </div>
     </div>

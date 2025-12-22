@@ -73,43 +73,43 @@ const ViewGuitar = () => {
   };
 
   const renderSkeleton = () => (
-    <div className="max-w-screen-xl mx-auto w-full bg-white dark:bg-[#122634]">
+    <div className="max-w-screen-xl mx-auto w-full bg-[#122634]">
       <div className="p-6">
         <div className="mb-4">
-          <div className="h-4 w-32 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+          <div className="h-4 w-32 bg-gray-600 rounded animate-pulse"></div>
         </div>
         <div className="flex items-center justify-between mb-6">
-          <div className="h-8 w-48 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
-          <div className="h-10 w-20 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+          <div className="h-8 w-48 bg-gray-600 rounded animate-pulse"></div>
+          <div className="h-10 w-20 bg-gray-600 rounded animate-pulse"></div>
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border dark:border-gray-600 rounded-lg p-2 sm:p-4 relative flex flex-col overflow-hidden">
-            <div className="aspect-video bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border border-gray-600 rounded-lg p-2 sm:p-4 relative flex flex-col overflow-hidden">
+            <div className="aspect-video bg-gray-600 rounded animate-pulse"></div>
             <div className="absolute top-4 right-4">
-              <div className="h-8 w-20 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+              <div className="h-8 w-20 bg-gray-600 rounded animate-pulse"></div>
             </div>
           </div>
-          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border dark:border-gray-600 rounded-lg p-4 overflow-hidden">
+          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border border-gray-600 rounded-lg p-4 overflow-hidden">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <div className="h-6 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-2"></div>
+                <div className="h-6 w-16 bg-gray-600 rounded animate-pulse mb-2"></div>
                 <div className="space-y-2">
                   {[...Array(6)].map((_, i) => (
                     <div key={i} className="flex gap-2">
-                      <div className="h-4 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
-                      <div className="h-4 w-32 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                      <div className="h-4 w-16 bg-gray-600 rounded animate-pulse"></div>
+                      <div className="h-4 w-32 bg-gray-600 rounded animate-pulse"></div>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="mt-4">
-                <div className="h-6 w-24 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-2"></div>
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 h-32">
+                <div className="h-6 w-24 bg-gray-600 rounded animate-pulse mb-2"></div>
+                <div className="bg-gray-700 rounded-lg p-4 h-32">
                   <div className="space-y-2">
                     {[...Array(4)].map((_, i) => (
                       <div
                         key={i}
-                        className="h-4 w-full bg-gray-300 dark:bg-gray-600 rounded animate-pulse"
+                        className="h-4 w-full bg-gray-600 rounded animate-pulse"
                       ></div>
                     ))}
                   </div>
@@ -117,34 +117,34 @@ const ViewGuitar = () => {
               </div>
             </div>
             <div className="mt-4">
-              <div className="h-6 w-12 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-2"></div>
+              <div className="h-6 w-12 bg-gray-600 rounded animate-pulse mb-2"></div>
               <div className="flex flex-wrap gap-2">
                 {[...Array(3)].map((_, i) => (
                   <div
                     key={i}
-                    className="h-6 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"
+                    className="h-6 w-16 bg-gray-600 rounded animate-pulse"
                   ></div>
                 ))}
               </div>
             </div>
             <div className="mt-4">
-              <div className="h-6 w-16 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-2"></div>
+              <div className="h-6 w-16 bg-gray-600 rounded animate-pulse mb-2"></div>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full animate-pulse"></div>
-                <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                <div className="w-8 h-8 bg-gray-600 rounded-full animate-pulse"></div>
+                <div className="h-4 w-24 bg-gray-600 rounded animate-pulse"></div>
               </div>
             </div>
           </div>
         </div>
-        <div className="mt-6 border dark:border-gray-600 rounded-lg p-4">
-          <div className="h-6 w-20 bg-gray-300 dark:bg-gray-600 rounded animate-pulse mb-4"></div>
+        <div className="mt-6 border border-gray-600 rounded-lg p-4">
+          <div className="h-6 w-20 bg-gray-600 rounded animate-pulse mb-4"></div>
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="flex gap-3">
-                <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full animate-pulse"></div>
+                <div className="w-8 h-8 bg-gray-600 rounded-full animate-pulse"></div>
                 <div className="flex-1 space-y-2">
-                  <div className="h-4 w-24 bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
-                  <div className="h-16 w-full bg-gray-300 dark:bg-gray-600 rounded animate-pulse"></div>
+                  <div className="h-4 w-24 bg-gray-600 rounded animate-pulse"></div>
+                  <div className="h-16 w-full bg-gray-600 rounded animate-pulse"></div>
                 </div>
               </div>
             ))}
@@ -161,7 +161,7 @@ const ViewGuitar = () => {
   if (error) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="text-red-500 dark:text-red-400">Error: {error}</div>
+        <div className="text-red-400">Error: {error}</div>
       </div>
     );
   }
@@ -181,13 +181,13 @@ const ViewGuitar = () => {
   ];
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full bg-white dark:bg-[#122634]">
+    <div className="max-w-screen-xl mx-auto w-full bg-[#122634]">
       <div className="p-6">
         <div className="mb-4">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-black dark:text-white">
+          <h1 className="text-3xl font-bold text-white">
             {equipment.name || "My Stuff!"}
           </h1>
           {canEdit && (
@@ -196,33 +196,33 @@ const ViewGuitar = () => {
                 clearCurrentEquipment();
                 navigate(`/edit/${equipment._id}`);
               }}
-              className="bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
             >
               ✏️Edit
             </button>
           )}
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border dark:border-gray-600 rounded-lg p-2 sm:p-4 relative flex flex-col overflow-hidden">
+          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border border-gray-600 rounded-lg p-2 sm:p-4 relative flex flex-col overflow-hidden">
             <Gallery equipment={equipment} />
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               <button
                 onClick={handleLikeToggle}
                 disabled={canEdit || !user}
-                className={`inline-flex items-center ${isLiked ? "bg-purple-600 text-white" : "bg-purple-400 dark:bg-purple-500 text-purple-900 dark:text-purple-100"} px-2 py-1 rounded transition-colors duration-200 ${!user || canEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                className={`inline-flex items-center ${isLiked ? "bg-purple-600 text-white" : "bg-purple-500 text-purple-100"} px-2 py-1 rounded transition-colors duration-200 ${!user || canEdit ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
               >
                 <span className="mr-1 text-lg">👍</span>
                 {likesCount} {likesCount === 1 ? "Like" : "Likes"}
               </button>
             </div>
           </div>
-          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border dark:border-gray-600 rounded-lg p-4 overflow-hidden">
+          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border border-gray-600 rounded-lg p-4 overflow-hidden">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                <h2 className="text-xl font-semibold mb-2 text-white">
                   Details
                 </h2>
-                <div className="space-y-2 text-black dark:text-white">
+                <div className="space-y-2 text-white">
                   <p>
                     <span className="font-medium">Brand:</span>{" "}
                     {equipment.brand || "Not specified"}
@@ -270,16 +270,16 @@ const ViewGuitar = () => {
               </div>
 
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                <h2 className="text-xl font-semibold mb-2 text-white">
                   Description
                 </h2>
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-96 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Roboto_Mono'] text-xl">
+                <div className="bg-gray-700 rounded-lg p-4 max-h-96 overflow-y-auto whitespace-pre-wrap break-words text-white font-['Roboto_Mono'] text-xl">
                   {equipment.description || "No description provided."}
                 </div>
               </div>
 
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                <h2 className="text-xl font-semibold mb-2 text-white">
                   Owner
                 </h2>
                 <div className="flex items-center gap-3">
@@ -293,7 +293,7 @@ const ViewGuitar = () => {
                       size="small"
                     />
                     <div className="flex items-center gap-1">
-                      <span className="font-medium text-black dark:text-white">
+                      <span className="font-medium text-white">
                         {equipment.user?.username || "Unknown"}
                       </span>
                       {equipment.user?.admin && (
@@ -310,10 +310,10 @@ const ViewGuitar = () => {
 
               {equipment.recommendation && (
                 <div className="mt-4">
-                  <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                  <h2 className="text-xl font-semibold mb-2 text-white">
                     Recommendation
                   </h2>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 max-h-40 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white">
+                  <div className="bg-gray-700 rounded-lg p-4 max-h-40 overflow-y-auto whitespace-pre-wrap break-words text-white">
                     {equipment.recommendation}
                   </div>
                 </div>
@@ -322,7 +322,7 @@ const ViewGuitar = () => {
 
             {equipment.tags && equipment.tags.length > 0 && (
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                <h2 className="text-xl font-semibold mb-2 text-white">
                   Tags
                 </h2>
                 <div className="flex flex-wrap gap-2">

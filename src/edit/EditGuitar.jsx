@@ -192,7 +192,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
   ];
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full bg-white dark:bg-[#122634]">
+    <div className="max-w-screen-xl mx-auto w-full bg-[#122634]">
       <div className="p-6">
         {saved && <SuccessMessage />}
 
@@ -221,7 +221,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
                     <span className="sr-only">Loading...</span>
                   </div>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-gray-300">
                   {uploadProgress || "Preparing to save..."}
                 </p>
               </div>

@@ -22,7 +22,7 @@ export default function EditImages({ disabled, currentEquipment, setCurrentEquip
         setFilesToUpload={setFilesToUpload}
       />
       {currentEquipment?.images && currentEquipment.images.length > 1 && (
-        <span className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm text-blue-800 dark:text-blue-200 rounded-lg bg-blue-50 dark:bg-blue-900/30 font-medium w-full">
+        <span className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm text-blue-200 rounded-lg bg-blue-900/30 font-medium w-full">
           ℹ️ Drag the images to reorder
         </span>
       )}
@@ -32,11 +32,11 @@ export default function EditImages({ disabled, currentEquipment, setCurrentEquip
           setList={handleSort}
           className="grid grid-cols-2 gap-2"
           dragClass="opacity-50"
-          ghostClass="bg-blue-300 dark:bg-blue-600"
+          ghostClass="bg-blue-600"
           disabled={disabled}
         >
           {currentEquipment.images.map((image, index) => (
-            <div key={index} className={`border dark:border-gray-600 rounded-lg p-2 ${!disabled ? "cursor-move" : ""}`}>
+            <div key={index} className={`border border-gray-600 rounded-lg p-2 ${!disabled ? "cursor-move" : ""}`}>
               <Thumbnail
                 index={index}
                 url={image}
