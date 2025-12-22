@@ -133,12 +133,20 @@ const Profile = () => {
           <div>
             <p className="font-bold mb-1">Error</p>
             <p className="leading-relaxed">{profileError || equipmentError}</p>
-            <NavLink
-              to="/"
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center font-semibold mt-4"
-            >
-              ⬅️ Back to Home
-            </NavLink>
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+              <NavLink
+                to="/"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center font-semibold cursor-pointer"
+              >
+                ⬅️ Back to Home
+              </NavLink>
+              <button
+                onClick={handleLogoutConfirm}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center justify-center font-semibold cursor-pointer"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -162,12 +170,20 @@ const Profile = () => {
           <div>
             <p className="font-bold mb-1">Not Found</p>
             <p className="leading-relaxed">User profile not found.</p>
-            <NavLink
-              to="/"
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center font-semibold mt-4"
-            >
-              ⬅️ Back to Home
-            </NavLink>
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+              <NavLink
+                to="/"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center font-semibold cursor-pointer"
+              >
+                ⬅️ Back to Home
+              </NavLink>
+              <button
+                onClick={handleLogoutConfirm}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center justify-center font-semibold cursor-pointer"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>
