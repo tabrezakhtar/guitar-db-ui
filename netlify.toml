@@ -4,12 +4,6 @@
   status = 200
   force = true
 
-[redirects]]
-  from = "/public/*"
-  to = "https://guitar-db-production.up.railway.app/public/:splat"
-  status = 200
-  force = true
-
 [[redirects]]
   from = "/login"
   to = "https://guitar-db-production.up.railway.app/login"
