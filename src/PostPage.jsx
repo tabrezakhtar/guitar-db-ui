@@ -29,7 +29,7 @@ function PostPage() {
         if (frontmatterMatch) {
           const frontmatterText = frontmatterMatch[1];
           content = frontmatterMatch[2];
-          
+
           frontmatterText.split("\n").forEach(line => {
             const [key, ...valueParts] = line.split(":");
             if (key && valueParts.length > 0) {
@@ -57,12 +57,12 @@ function PostPage() {
   return (
     <div className="max-w-2xl mx-auto p-8">
       <Link to="/" className="text-blue-400 hover:text-blue-300 mb-6 inline-block">
-        ← Back to Home
+        ‹ Back to Home
       </Link>
       {post.thumbnail && (
-        <img 
-          src={post.thumbnail} 
-          alt={post.title} 
+        <img
+          src={post.thumbnail}
+          alt={post.title}
           className="w-full h-80 object-cover rounded-lg mb-8"
         />
       )}
@@ -93,7 +93,7 @@ function PostPage() {
               to={`/posts/${previousPost.slug}`}
               className="text-blue-400 hover:text-blue-300 text-sm"
             >
-              ← Previous: {previousPost.title}
+              ‹ Previous: {previousPost.title}
             </Link>
           ) : <span />}
           {nextPost && (
@@ -101,7 +101,7 @@ function PostPage() {
               to={`/posts/${nextPost.slug}`}
               className="text-blue-400 hover:text-blue-300 text-sm ml-auto text-right"
             >
-              Next: {nextPost.title} →
+              Next: {nextPost.title} ›
             </Link>
           )}
         </div>
