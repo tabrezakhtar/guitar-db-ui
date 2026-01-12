@@ -173,6 +173,18 @@ function Landing() {
         .gentle-hover:hover img {
           transform: translateY(-4px);
         }
+        
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+        }
+        
+        .pulse-once {
+          animation: pulse 0.6s ease-in-out;
+          animation-delay: 1.1s;
+          animation-fill-mode: forwards;
+        }
       `}</style>
       
       <div className="max-w-6xl mx-auto px-6">
@@ -192,7 +204,7 @@ function Landing() {
             <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-12 fade-in-bounce delay-300 ${isVisible ? 'visible' : ''}`}>
               <Link 
                 to="/gallery" 
-                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
+                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2 pulse-once"
                 style={{
                   backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/guitar_store_bpmexv.jpg)',
                   backgroundSize: 'cover',
