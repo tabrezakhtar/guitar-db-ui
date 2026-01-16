@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
 import PropTypes from "prop-types";
-import { validateToken } from "../utils/tokenUtils";
 import { produce } from "immer";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -24,12 +23,6 @@ const GuitarContext = createContext(null);
 
 function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
-
-  const handleAuthError = (errorMsg) => {
-    setState(produce(draft => {
-      draft.error = "Authentication error: " + errorMsg;
-    }));
-  };
 
   const setLoading = (loading) => setState(produce(draft => {
     draft.loading = loading;
@@ -55,29 +48,12 @@ function GuitarProvider({ children }) {
       return null;
     }
 
-    const isValid = await validateToken(handleAuthError);
-    if (!isValid) {
-      setState(produce(draft => {
-        draft.error = "Your session has expired. Please login again.";
-      }));
-      return null;
-    }
-
     const payload = {
       equipmentId,
       text: text.trim()
     };
 
     try {
-      const token = localStorage.getItem("token");
-      const headers = {
-        "Content-Type": "application/json"
-      };
-
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
       const response = await fetch(`${BASE_URL}/api/equipment/addComment`, {
         method: "POST",
         headers,
@@ -127,24 +103,7 @@ function GuitarProvider({ children }) {
       return null;
     }
 
-    const isValid = await validateToken(handleAuthError);
-    if (!isValid) {
-      setState(produce(draft => {
-        draft.error = "Your session has expired. Please login again.";
-      }));
-      return null;
-    }
-
     try {
-      const token = localStorage.getItem("token");
-      const headers = {
-        "Content-Type": "application/json"
-      };
-
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
       const response = await fetch(`${BASE_URL}/api/equipment/deleteComment/${commentId}`, {
         method: "DELETE",
         headers
@@ -186,26 +145,11 @@ function GuitarProvider({ children }) {
   };
 
   const toggleLike = async (equipmentId) => {
-    const isValid = await validateToken(handleAuthError);
-    if (!isValid) {
-      setState(produce(draft => {
-        draft.error = "Your session has expired. Please login again.";
-      }));
-      return null;
-    }
-
     setState(produce(draft => {
       draft.error = null;
     }));
 
     try {
-      const token = localStorage.getItem("token");
-      const headers = {};
-
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
       const response = await fetch(`${BASE_URL}/api/equipment/toggleLike/${equipmentId}`, {
         method: "POST",
         headers
@@ -313,7 +257,6 @@ function GuitarProvider({ children }) {
     addComment,
     deleteComment,
     setSortOptions,
-    validateToken: (callback) => validateToken(callback || handleAuthError),
     toggleLike,
     setEquipmentType
   };
