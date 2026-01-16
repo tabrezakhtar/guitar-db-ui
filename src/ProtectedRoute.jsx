@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { UserContext } from "./context/UserContext";
 import { ssrRedirect } from "./utils/urlUtils";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+// TODO: check the user using an endpoint
 const ProtectedRoute = ({ children }) => {
   const [hasRedirectedForDeletion, setHasRedirectedForDeletion] = useState(false);
   const { user, profileDeleted, clearProfileDeleted } = useContext(UserContext);

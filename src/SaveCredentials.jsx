@@ -19,7 +19,8 @@ const SaveCredentials = () => {
     try {
       const user = JSON.parse(decodeURIComponent(userStr));
       localStorage.setItem("user", JSON.stringify(user));
-      
+      localStorage.setItem("cookieConsent", "accepted");
+
       setSaved(true);
 
       const timeout = setTimeout(() => {
