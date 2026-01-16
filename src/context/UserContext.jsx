@@ -73,75 +73,6 @@ const UserProvider = ({ children }) => {
     }));
   };
 
-  const verifyMagicToken = async (token) => {
-    setState(produce(draft => {
-      draft.loading = true;
-      draft.error = null;
-    }));
-    
-    try {
-      if (!token) {
-        setState(produce(draft => {
-          draft.loading = false;
-          draft.error = "No token found in URL";
-        }));
-        return { success: false, error: "No token found in URL" };
-      }
-
-      const response = await fetch(`${BASE_URL}/api/auth/verifyMagicLink`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token }),
-      });
-
-      const data = await response.json();
-
-      if (data && data.errors) {
-        setState(produce(draft => {
-          draft.loading = false;
-          draft.error = data.errors;
-        }));
-        return { 
-          success: false, 
-          error: data.errors 
-        };
-      }
-
-      if (!response.ok) {
-        setState(produce(draft => {
-          draft.loading = false;
-          draft.error = data.message || "Authentication failed";
-        }));
-        return { 
-          success: false, 
-          error: data.message || "Authentication failed" 
-        };
-      }
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      
-      setState(produce(draft => {
-        draft.user = data.user;
-        draft.loading = false;
-      }));
-
-      return { success: true };
-    } catch (err) {
-      console.error("Magic link verification error:", err);
-      setState(produce(draft => {
-        draft.loading = false;
-        draft.error = "An unexpected error occurred";
-      }));
-      return { 
-        success: false, 
-        error: "An unexpected error occurred" 
-      };
-    }
-  };
-
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -164,7 +95,6 @@ const UserProvider = ({ children }) => {
   const value = {
     ...state,
     isGuest: Boolean(state.user?.guest),
-    verifyMagicToken,
     logout,
     updateUserLocal,
     clearProfileDeleted,
