@@ -9,22 +9,19 @@ const SaveCredentials = () => {
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
-    const token = query.get("token");
     const userStr = query.get("user");
-    
-    if (!token || !userStr) {
+
+    if (!userStr) {
       setError("Missing authentication data in URL");
       return;
     }
-    
+
     try {
       const user = JSON.parse(decodeURIComponent(userStr));
-      
-      localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       
       setSaved(true);
-      
+
       const timeout = setTimeout(() => {
         navigate("/gallery");
       }, 2000);
