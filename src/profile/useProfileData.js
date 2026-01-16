@@ -11,7 +11,9 @@ export const useProfileData = () => {
     setError(null);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/users/profile?userId=${userId}`);
+      const response = await fetch(`${BASE_URL}/api/users/profile?userId=${userId}`, {
+        credentials: "include",
+      });
 
       const data = await response.json();
       
@@ -49,6 +51,7 @@ export const useProfileData = () => {
         method: "PUT",
         headers,
         body: JSON.stringify(updatedUser),
+        credentials: "include",
       });
       
       const data = await response.json();
@@ -85,7 +88,8 @@ export const useProfileData = () => {
       const response = await fetch(`${BASE_URL}/api/users/deleteAvatar`, {
         method: "DELETE",
         headers,
-        body: JSON.stringify({ avatarUrl: currentUser?.avatarUrl, userId: currentUser?._id })
+        body: JSON.stringify({ avatarUrl: currentUser?.avatarUrl, userId: currentUser?._id }),
+        credentials: "include",
       });
       
       const data = await response.json();
@@ -118,7 +122,8 @@ export const useProfileData = () => {
       const response = await fetch(`${BASE_URL}/api/users/deleteProfile`, {
         method: "DELETE",
         headers,
-        body: JSON.stringify({ userId: currentUser?._id })
+        body: JSON.stringify({ userId: currentUser?._id }),
+        credentials: "include",
       });
       
       const data = await response.json();

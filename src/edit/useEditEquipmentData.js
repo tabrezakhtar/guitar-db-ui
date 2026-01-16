@@ -22,7 +22,9 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     setError(null);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/equipment/byid?id=${equipmentId}`);
+      const response = await fetch(`${BASE_URL}/api/equipment/byid?id=${equipmentId}`, {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -79,6 +81,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
           method: "PUT",
           headers,
           body: JSON.stringify(dataToSend),
+          credentials: "include",
         })
           .then(response => {
             if (!response.ok) {
@@ -147,6 +150,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
           method: "POST",
           headers,
           body: JSON.stringify(dataToSend),
+          credentials: "include",
         })
           .then(response => {
             if (!response.ok) {
@@ -200,7 +204,8 @@ export const useEditEquipmentData = (id, mode = "edit") => {
 
       const response = await fetch(`${BASE_URL}/api/equipment/remove/${equipment._id}`, {
         method: "DELETE",
-        headers
+        headers,
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -298,6 +303,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
         method: "DELETE",
         headers,
         body: JSON.stringify({ imageUrl }),
+        credentials: "include",
       });
 
       if (!response.ok) {

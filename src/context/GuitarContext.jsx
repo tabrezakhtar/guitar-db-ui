@@ -58,6 +58,7 @@ function GuitarProvider({ children }) {
         method: "POST",
         headers,
         body: JSON.stringify(payload),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -106,7 +107,8 @@ function GuitarProvider({ children }) {
     try {
       const response = await fetch(`${BASE_URL}/api/equipment/deleteComment/${commentId}`, {
         method: "DELETE",
-        headers
+        headers,
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -152,7 +154,8 @@ function GuitarProvider({ children }) {
     try {
       const response = await fetch(`${BASE_URL}/api/equipment/toggleLike/${equipmentId}`, {
         method: "POST",
-        headers
+        headers,
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -215,7 +218,9 @@ function GuitarProvider({ children }) {
     }));
 
     try {
-      const response = await fetch(`${BASE_URL}/api/equipment/user/${userId}`);
+      const response = await fetch(`${BASE_URL}/api/equipment/user/${userId}`, {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
