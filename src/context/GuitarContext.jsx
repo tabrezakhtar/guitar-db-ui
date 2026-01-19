@@ -21,6 +21,10 @@ export const initialState = {
 
 const GuitarContext = createContext(null);
 
+const headers = { 
+  "Content-Type": "application/json"
+};
+
 function GuitarProvider({ children }) {
   const [state, setState] = useState(initialState);
 
