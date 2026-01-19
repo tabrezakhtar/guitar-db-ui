@@ -33,8 +33,8 @@ const Profile = () => {
     setShowLogoutModal(true);
   };
 
-  const handleLogoutConfirm = () => {
-    logout();
+  const handleLogoutConfirm = async () => {
+    await logout();
     navigate("/gallery");
     setShowLogoutModal(false);
   };

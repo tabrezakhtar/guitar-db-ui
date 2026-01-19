@@ -34,11 +34,6 @@ const UserProvider = ({ children }) => {
     }
   }, []);
 
-  const logout = () => {
-    localStorage.removeItem("user");
-    setState(initialState);
-  };
-
   const updateUserLocal = (newData) => {
     setState(produce(draft => {
       Object.assign(draft.user, newData);
@@ -52,12 +47,27 @@ const UserProvider = ({ children }) => {
     }));
   };
 
+  const logout = async () => {
+    try {
+      await fetch(`${BASE_URL}/api/users/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+    localStorage.removeItem("user");
+    setState(produce(draft => {
+      draft.user = null;
+    }));
+  };
+
   const value = {
     ...state,
     isGuest: Boolean(state.user?.guest),
-    logout,
     updateUserLocal,
     clearProfileDeleted,
+    logout,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

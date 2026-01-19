@@ -153,6 +153,6 @@ export const useProfileData = () => {
     fetchUserProfile,
     updateUserProfile,
     deleteAvatar,
-    deleteProfile
+    deleteProfile,
   };
 };
