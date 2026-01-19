@@ -23,6 +23,7 @@ const Profile = () => {
   });
   const [ userComments, setUserComments ] = useState([]);
   const [ showLogoutModal, setShowLogoutModal ] = useState(false);
+  const [ expandedComments, setExpandedComments ] = useState(false);
   const { user, logout } = useContext(UserContext);
   const { fetchUserEquipment, deleteComment, error: equipmentError, loading: equipmentLoading } = useContext(GuitarContext);
   const { fetchUserProfile, loading: profileLoading, error: profileError } = useProfileData();
@@ -312,7 +313,7 @@ const Profile = () => {
             <h3 className="text-xl font-bold mb-4 mt-6 text-white">My Recent Comments</h3>
             <div className="mb-6 bg-gray-700 p-4 rounded-md">
               <div className="space-y-4">
-                {userComments.map(comment => (
+                {(expandedComments ? userComments : userComments.slice(0, 5)).map(comment => (
                   <div key={comment._id} className="bg-gray-800 p-3 rounded-md shadow-sm">
                     <div className="flex justify-between items-start mb-2">
                       <NavLink 
@@ -337,6 +338,14 @@ const Profile = () => {
                   </div>
                 ))}
               </div>
+              {userComments.length > 5 && (
+                <button 
+                  className="mt-3 text-blue-400 hover:text-blue-300 text-sm"
+                  onClick={() => setExpandedComments(!expandedComments)}
+                >
+                  {expandedComments ? "Show Less" : `Show All (${userComments.length}) Comments`} 
+                </button>
+              )}
             </div>
           </>
         )}
