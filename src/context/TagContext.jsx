@@ -32,6 +32,7 @@ export const TagProvider = ({ children }) => {
       const response = await fetch(`${BASE_URL}/api/equipment/tags`, {
         credentials: "include",
       });
+
       if (response.ok) {
         const data = await response.json();
         const tagsData = data.tags || [];

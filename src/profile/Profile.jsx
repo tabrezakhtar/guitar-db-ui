@@ -10,6 +10,7 @@ import { EquipmentCarousel } from "./EquipmentCard";
 import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Modal from "../components/Modal";
+import ProfileSkeleton from "./ProfileSkeleton";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -154,13 +155,10 @@ const Profile = () => {
   }
 
   if (profileLoading || equipmentLoading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Spinner />
-      </div>
-    );
+    return <ProfileSkeleton />;
   }
-    if (!profileUser) {
+
+  if (!profileUser) {
     return (
       <div className="p-6">
         <div className="flex p-5 bg-[rgba(33,172,232,0.12)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
