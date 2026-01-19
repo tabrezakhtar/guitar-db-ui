@@ -15,16 +15,18 @@ const ProtectedRoute = ({ children }) => {
           credentials: "include",
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          if (data.exists === true) {
-            setIsAuthenticated(true);
-          } else {
-            ssrRedirect(`${BASE_URL}/login`, "/");
-          }
+        if (!response.ok) {
+          ssrRedirect(`${BASE_URL}/login`, "/");
+          return;
+        }
+
+        const data = await response.json();
+        if (data.exists === true) {
+          setIsAuthenticated(true);
         } else {
           ssrRedirect(`${BASE_URL}/login`, "/");
         }
+
       } catch (error) {
         console.error("Error checking user status:", error);
         ssrRedirect(`${BASE_URL}/login`, "/");

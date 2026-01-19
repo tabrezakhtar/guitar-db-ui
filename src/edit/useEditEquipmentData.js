@@ -15,6 +15,10 @@ export const useEditEquipmentData = (id, mode = "edit") => {
   const [error, setError] = useState(null);
   const [filesToUpload, setFilesToUploadState] = useState([]);
 
+  const headers = { 
+    "Content-Type": "application/json"
+  };
+
   const fetchEquipment = async (equipmentId) => {
     if (!equipmentId) return;
     
@@ -72,10 +76,6 @@ export const useEditEquipmentData = (id, mode = "edit") => {
       try {
         setError(null);
         setIsLoading(true);
-
-        const headers = {
-          "Content-Type": "application/json"
-        };
 
         fetch(`${BASE_URL}/api/equipment/update/${dataToSend._id}?type=${dataToSend.type}`, {
           method: "PUT",
@@ -200,8 +200,6 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     setIsLoading(true);
 
     try {
-      const headers = {};
-
       const response = await fetch(`${BASE_URL}/api/equipment/remove/${equipment._id}`, {
         method: "DELETE",
         headers,

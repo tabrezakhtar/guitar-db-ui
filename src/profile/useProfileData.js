@@ -2,6 +2,10 @@ import { useState } from "react";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+const headers = { 
+  "Content-Type": "application/json"
+};
+
 export const useProfileData = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -41,10 +45,6 @@ export const useProfileData = () => {
     setError(null);
 
     try {
-      const headers = { 
-        "Content-Type": "application/json"
-      };
-
       const updatedUser = { ...currentUser, ...userData };
 
       const response = await fetch(`${BASE_URL}/api/users/updateProfile`, {
@@ -81,10 +81,6 @@ export const useProfileData = () => {
     setError(null);
 
     try {
-      const headers = { 
-        "Content-Type": "application/json"
-      };
-
       const response = await fetch(`${BASE_URL}/api/users/deleteAvatar`, {
         method: "DELETE",
         headers,
