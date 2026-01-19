@@ -52,7 +52,9 @@ export const TagProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    fetchTags();
+    if (location.pathname !== "/") {
+      fetchTags();
+    }
   }, []);
 
   const handleTagSelection = (tag) => {
