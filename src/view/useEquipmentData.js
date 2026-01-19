@@ -17,7 +17,9 @@ export const useEquipmentData = (id, type = "") => {
     setError(null);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/equipment/byid?id=${equipmentId}&type=${equipmentType}`);
+      const response = await fetch(`${BASE_URL}/api/equipment/byid?id=${equipmentId}&type=${equipmentType}`, {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

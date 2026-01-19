@@ -25,6 +25,7 @@ const ViewGuitar = () => {
   const { equipment, loading, error } = useEquipmentData(id);
   const [isLiked, setIsLiked] = useState(false);
   const [userOtherEquipment, setUserOtherEquipment] = useState([]);
+
   useEffect(() => {
     if (equipment) {
       setCurrentEquipment(equipment);
@@ -34,6 +35,7 @@ const ViewGuitar = () => {
       clearCurrentEquipment();
     };
   }, [equipment]);
+
   useEffect(() => {
     const fetchOtherEquipment = async () => {
       if (!equipment?.user?._id) return;

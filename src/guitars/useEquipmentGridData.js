@@ -50,7 +50,9 @@ export const useEquipmentGridData = () => {
     try {
       const url = `${BASE_URL}/api/equipment/searchByText?q=${encodeURIComponent(searchTerm)}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
       
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -88,7 +90,9 @@ export const useEquipmentGridData = () => {
         url += `&tags=${encodeURIComponent(tagsParam)}`;
       }
 
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
