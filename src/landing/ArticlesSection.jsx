@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import postsManifest from "../../public/posts/posts-manifest.json";
 import { formatDate } from "../utils/dateUtils";
 
 function ArticlesSection({ isVisible }) {
   return (
-    <div className={`mb-12 fade-in-bounce delay-800 ${isVisible ? 'visible' : ''}`}>
+    <motion.div
+      className="mb-12"
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
+      transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1], delay: 0.8 }}
+    >
       <div className="mb-6">
         <h3 className="text-2xl font-bold text-white flex items-center justify-center">
           Articles
@@ -43,7 +49,7 @@ function ArticlesSection({ isVisible }) {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

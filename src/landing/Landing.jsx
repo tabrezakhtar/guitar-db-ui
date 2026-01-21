@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useHeader } from "../context/HeaderContext";
 import Logo from "../Logo";
 import Footer from "../Footer";
@@ -106,75 +107,50 @@ function Landing() {
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8">
-      <style>{`
-        .fade-in-bounce {
-          opacity: 0;
-          transform: translateY(30px) scale(0.95);
-          transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        .fade-in-bounce.visible {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-        
-        .fade-in {
-          opacity: 0;
-          transition: opacity 0.8s ease-in-out;
-        }
-        
-        .fade-in.visible {
-          opacity: 1;
-        }
-        
-        .delay-100 { transition-delay: 0.1s; }
-        .delay-200 { transition-delay: 0.2s; }
-        .delay-300 { transition-delay: 0.3s; }
-        .delay-400 { transition-delay: 0.4s; }
-        .delay-500 { transition-delay: 0.5s; }
-        .delay-600 { transition-delay: 0.6s; }
-        .delay-700 { transition-delay: 0.7s; }
-        .delay-800 { transition-delay: 0.8s; }
-        
-        .gentle-hover img {
-          transition: transform 0.3s ease-in-out;
-        }
-        
-        .gentle-hover:hover img {
-          transform: translateY(-4px);
-        }
-        
-        @keyframes pulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.1); }
-          100% { transform: scale(1); }
-        }
-        
-        .pulse-once {
-          animation: pulse 0.6s ease-in-out;
-          animation-delay: 1.1s;
-          animation-fill-mode: forwards;
-        }
-      `}</style>
       
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-center">
           <div className="text-center">
-            <div className={`mb-8 fade-in ${isVisible ? 'visible' : ''}`}>
+            <motion.div
+              className="mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isVisible ? 1 : 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            >
               <Logo size="xlarge" />
-            </div>
-            <p className={`text-4xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in font-['Caveat'] ${isVisible ? 'visible' : ''}`}>
+            </motion.div>
+            <motion.p
+              className="text-4xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isVisible ? 1 : 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            >
               Discover gear.  Celebrate stories.  Share your journey.
-            </p>
+            </motion.p>
             
-            <p className={`text-3xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed fade-in font-['Caveat'] ${isVisible ? 'visible' : ''}`}>
+            <motion.p
+              className="text-3xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isVisible ? 1 : 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            >
               Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do.
-            </p>
+            </motion.p>
 
-            <div className={`flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-12 fade-in-bounce delay-300 ${isVisible ? 'visible' : ''}`}>
-              <Link 
-                to="/gallery" 
-                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2 pulse-once"
+            <motion.div
+              className="flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-12"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
+              transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1], delay: 0.3 }}
+            >
+              <motion.div
+                initial={{ scale: 1 }}
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 0.6, ease: "easeInOut", delay: 1.1 }}
+              >
+                <Link 
+                  to="/gallery" 
+                  className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
                 style={{
                   backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/guitar_store_bpmexv.jpg)',
                   backgroundSize: 'cover',
@@ -188,7 +164,8 @@ function Landing() {
                     <p className="text-white text-sm drop-shadow-lg opacity-90">Browse amazing gear from our community</p>
                   </div>
                 </div>
-              </Link>
+                </Link>
+              </motion.div>
               <Link 
                 to="/add" 
                 className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
@@ -206,7 +183,7 @@ function Landing() {
                   </div>
                 </div>
               </Link>
-            </div>
+            </motion.div>
             
             <EquipmentTypeGrid isVisible={isVisible} />
           </div>

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { EquipmentCarousel } from "../profile/EquipmentCard";
 import Spinner from "../components/Spinner";
 
@@ -7,7 +8,12 @@ function EquipmentSections({ recentEquipment, popularEquipment, loading, isVisib
     if (!items || items.length === 0) return null;
     
     return (
-      <div className={`mb-8 fade-in-bounce delay-${delay} ${isVisible ? 'visible' : ''}`}>
+      <motion.div
+        className="mb-8"
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
+        transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1], delay: delay / 1000 }}
+      >
         <div className="mb-4">
           <h3 className="text-2xl font-bold text-white flex items-center justify-center">
             {emoji} {title}
@@ -29,16 +35,21 @@ function EquipmentSections({ recentEquipment, popularEquipment, loading, isVisib
             View All
           </Link>
         </div>
-      </div>
+      </motion.div>
     );
   };
 
   return (
     <div className="py-16">
       {loading ? (
-        <div className={`flex justify-center items-center py-16 fade-in-bounce delay-500 ${isVisible ? 'visible' : ''}`}>
+        <motion.div
+          className="flex justify-center items-center py-16"
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
+          transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1], delay: 0.5 }}
+        >
           <Spinner />
-        </div>
+        </motion.div>
       ) : (
         <>
           {renderEquipmentSection(
