@@ -7,6 +7,7 @@ import Footer from "../Footer";
 import EquipmentSections from "./EquipmentSections";
 import ArticlesSection from "./ArticlesSection";
 import EquipmentTypeGrid from "./EquipmentTypeGrid";
+import HandwrittenText from "./HandwrittenText";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -119,23 +120,21 @@ function Landing() {
             >
               <Logo size="xlarge" />
             </motion.div>
-            <motion.p
+            <HandwrittenText
+              text="Discover gear.  Celebrate stories.  Share your journey."
               className="text-4xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isVisible ? 1 : 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            >
-              Discover gear.  Celebrate stories.  Share your journey.
-            </motion.p>
+              delay={500}
+              speed={30}
+              isVisible={isVisible}
+            />
             
-            <motion.p
+            <HandwrittenText
+              text="Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do."
               className="text-3xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isVisible ? 1 : 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            >
-              Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do.
-            </motion.p>
+              delay={500}
+              speed={20}
+              isVisible={isVisible}
+            />
 
             <motion.div
               className="flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-12"
