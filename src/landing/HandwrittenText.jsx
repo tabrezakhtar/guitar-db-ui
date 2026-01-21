@@ -60,14 +60,19 @@ function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) 
       initial="hidden"
       animate={isVisible ? "visible" : "hidden"}
     >
-      {text.split("").map((char, index) => (
-        <motion.span
-          key={`${char}-${index}`}
-          variants={child}
-          style={{ display: "inline-block", whiteSpace: char === " " ? "pre" : "normal" }}
-        >
-          {char}
-        </motion.span>
+      {text.split(" ").map((word, wordIndex) => (
+        <span key={`word-${wordIndex}`} style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+          {word.split("").map((char, charIndex) => (
+            <motion.span
+              key={`${wordIndex}-${charIndex}`}
+              variants={child}
+              style={{ display: "inline-block" }}
+            >
+              {char}
+            </motion.span>
+          ))}
+          {wordIndex < text.split(" ").length - 1 && <span style={{ display: "inline-block", width: "0.25em" }}> </span>}
+        </span>
       ))}
     </motion.p>
   );
