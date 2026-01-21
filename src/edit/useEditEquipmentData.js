@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import { validateToken } from "../utils/tokenUtils";
 import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -16,6 +15,10 @@ export const useEditEquipmentData = (id, mode = "edit") => {
   const [error, setError] = useState(null);
   const [filesToUpload, setFilesToUploadState] = useState([]);
 
+  const headers = { 
+    "Content-Type": "application/json"
+  };
+
   const fetchEquipment = async (equipmentId) => {
     if (!equipmentId) return;
     
@@ -23,7 +26,9 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     setError(null);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/equipment/byid?id=${equipmentId}`);
+      const response = await fetch(`${BASE_URL}/api/equipment/byid?id=${equipmentId}`, {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -60,13 +65,6 @@ export const useEditEquipmentData = (id, mode = "edit") => {
   };
 
   const updateEquipment = async (equipmentData = null) => {
-    const isValid = await validateToken(handleAuthError);
-    if (!isValid) {
-      setError("Your session has expired. Please login again.");
-      setIsLoading(false);
-      return null;
-    }
-
     const dataToSend = equipmentData || equipment;
 
     return new Promise((resolve, reject) => {
@@ -79,19 +77,11 @@ export const useEditEquipmentData = (id, mode = "edit") => {
         setError(null);
         setIsLoading(true);
 
-        const token = localStorage.getItem("token");
-        const headers = {
-          "Content-Type": "application/json"
-        };
-
-        if (token) {
-          headers["Authorization"] = `Bearer ${token}`;
-        }
-
         fetch(`${BASE_URL}/api/equipment/update/${dataToSend._id}?type=${dataToSend.type}`, {
           method: "PUT",
           headers,
           body: JSON.stringify(dataToSend),
+          credentials: "include",
         })
           .then(response => {
             if (!response.ok) {
@@ -140,13 +130,6 @@ export const useEditEquipmentData = (id, mode = "edit") => {
   };
 
   const addEquipment = async (type, equipmentData = null) => {
-    const isValid = await validateToken(handleAuthError);
-    if (!isValid) {
-      setError("Your session has expired. Please login again.");
-      setIsLoading(false);
-      return null;
-    }
-
     const dataToSend = equipmentData || equipment;
 
     if (dataToSend) {
@@ -163,19 +146,11 @@ export const useEditEquipmentData = (id, mode = "edit") => {
         setError(null);
         setIsLoading(true);
 
-        const token = localStorage.getItem("token");
-        const headers = {
-          "Content-Type": "application/json"
-        };
-
-        if (token) {
-          headers["Authorization"] = `Bearer ${token}`;
-        }
-
         fetch(`${BASE_URL}/api/equipment/add?type=${type}`, {
           method: "POST",
           headers,
           body: JSON.stringify(dataToSend),
+          credentials: "include",
         })
           .then(response => {
             if (!response.ok) {
@@ -216,13 +191,6 @@ export const useEditEquipmentData = (id, mode = "edit") => {
   };
 
   const deleteEquipment = async () => {
-    const isValid = await validateToken(handleAuthError);
-    if (!isValid) {
-      setError("Your session has expired. Please login again.");
-      setIsLoading(false);
-      return null;
-    }
-
     if (!equipment?._id) {
       console.error("No equipment selected for deletion");
       return;
@@ -232,16 +200,10 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
-      const headers = {};
-
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
       const response = await fetch(`${BASE_URL}/api/equipment/remove/${equipment._id}`, {
         method: "DELETE",
-        headers
+        headers,
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -311,12 +273,6 @@ export const useEditEquipmentData = (id, mode = "edit") => {
   };
 
   const deleteImage = async (imageUrl) => {
-    const isValid = await validateToken(handleAuthError);
-    if (!isValid) {
-      setError("Your session has expired. Please login again.");
-      return null;
-    }
-
     if (!equipment) {
       console.error("No equipment selected for deletion");
       return;
@@ -341,19 +297,11 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     setError(null);
 
     try {
-      const token = localStorage.getItem("token");
-      const headers = {
-        "Content-Type": "application/json"
-      };
-
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
       const response = await fetch(`${BASE_URL}/api/equipment/deleteImage/${equipment._id}`, {
         method: "DELETE",
         headers,
         body: JSON.stringify({ imageUrl }),
+        credentials: "include",
       });
 
       if (!response.ok) {

@@ -10,6 +10,7 @@ import { EquipmentCarousel } from "./EquipmentCard";
 import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Modal from "../components/Modal";
+import ProfileSkeleton from "./ProfileSkeleton";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -22,6 +23,7 @@ const Profile = () => {
   });
   const [ userComments, setUserComments ] = useState([]);
   const [ showLogoutModal, setShowLogoutModal ] = useState(false);
+  const [ expandedComments, setExpandedComments ] = useState(false);
   const { user, logout } = useContext(UserContext);
   const { fetchUserEquipment, deleteComment, error: equipmentError, loading: equipmentLoading } = useContext(GuitarContext);
   const { fetchUserProfile, loading: profileLoading, error: profileError } = useProfileData();
@@ -32,8 +34,8 @@ const Profile = () => {
     setShowLogoutModal(true);
   };
 
-  const handleLogoutConfirm = () => {
-    logout();
+  const handleLogoutConfirm = async () => {
+    await logout();
     navigate("/gallery");
     setShowLogoutModal(false);
   };
@@ -154,13 +156,10 @@ const Profile = () => {
   }
 
   if (profileLoading || equipmentLoading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Spinner />
-      </div>
-    );
+    return <ProfileSkeleton />;
   }
-    if (!profileUser) {
+
+  if (!profileUser) {
     return (
       <div className="p-6">
         <div className="flex p-5 bg-[rgba(33,172,232,0.12)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
@@ -314,7 +313,7 @@ const Profile = () => {
             <h3 className="text-xl font-bold mb-4 mt-6 text-white">My Recent Comments</h3>
             <div className="mb-6 bg-gray-700 p-4 rounded-md">
               <div className="space-y-4">
-                {userComments.map(comment => (
+                {(expandedComments ? userComments : userComments.slice(0, 5)).map(comment => (
                   <div key={comment._id} className="bg-gray-800 p-3 rounded-md shadow-sm">
                     <div className="flex justify-between items-start mb-2">
                       <NavLink 
@@ -339,6 +338,14 @@ const Profile = () => {
                   </div>
                 ))}
               </div>
+              {userComments.length > 5 && (
+                <button 
+                  className="mt-3 text-blue-400 hover:text-blue-300 text-sm"
+                  onClick={() => setExpandedComments(!expandedComments)}
+                >
+                  {expandedComments ? "Show Less" : `Show All (${userComments.length}) Comments`} 
+                </button>
+              )}
             </div>
           </>
         )}

@@ -1,38 +1,24 @@
 import { useState } from "react";
-import { validateToken } from "../utils/tokenUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const headers = { 
+  "Content-Type": "application/json"
+};
 
 export const useProfileData = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleAuthError = (errorMsg) => {
-    setError(errorMsg || "Authentication failed");
-  };
-
-  const handleTokenValidation = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      return false;
-    }
-
-    const isValid = await validateToken(handleAuthError);
-    return isValid;
-  };
-
   const fetchUserProfile = async (userId) => {
     setLoading(true);
     setError(null);
-    
+
     try {
-      const token = localStorage.getItem("token");
-      const headers = token ? { "Authorization": `Bearer ${token}` } : {};
-      
       const response = await fetch(`${BASE_URL}/api/users/profile?userId=${userId}`, {
-        headers
+        credentials: "include",
       });
-      
+
       const data = await response.json();
       
       if (data && data.errors) {
@@ -55,31 +41,17 @@ export const useProfileData = () => {
   };
 
   const updateUserProfile = async (userData, currentUser) => {
-    const isValid = await handleTokenValidation();
-    if (!isValid) {
-      setError("Your session has expired. Please login again.");
-      return null;
-    }
-
     setLoading(true);
     setError(null);
-    
+
     try {
-      const token = localStorage.getItem("token");
-      const headers = { 
-        "Content-Type": "application/json"
-      };
-      
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
- 
       const updatedUser = { ...currentUser, ...userData };
 
       const response = await fetch(`${BASE_URL}/api/users/updateProfile`, {
         method: "PUT",
         headers,
         body: JSON.stringify(updatedUser),
+        credentials: "include",
       });
       
       const data = await response.json();
@@ -105,29 +77,15 @@ export const useProfileData = () => {
   };
 
   const deleteAvatar = async (currentUser) => {
-    const isValid = await handleTokenValidation();
-    if (!isValid) {
-      setError("Your session has expired. Please login again.");
-      return null;
-    }
-
     setLoading(true);
     setError(null);
-    
+
     try {
-      const token = localStorage.getItem("token");
-      const headers = { 
-        "Content-Type": "application/json"
-      };
-      
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-      
       const response = await fetch(`${BASE_URL}/api/users/deleteAvatar`, {
         method: "DELETE",
         headers,
-        body: JSON.stringify({ avatarUrl: currentUser?.avatarUrl, userId: currentUser?._id })
+        body: JSON.stringify({ avatarUrl: currentUser?.avatarUrl, userId: currentUser?._id }),
+        credentials: "include",
       });
       
       const data = await response.json();
@@ -153,29 +111,15 @@ export const useProfileData = () => {
   };
 
   const deleteProfile = async (currentUser) => {
-    const isValid = await handleTokenValidation();
-    if (!isValid) {
-      setError("Your session has expired. Please login again.");
-      return null;
-    }
-
     setLoading(true);
     setError(null);
-    
+
     try {
-      const token = localStorage.getItem("token");
-      const headers = { 
-        "Content-Type": "application/json"
-      };
-      
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-      
       const response = await fetch(`${BASE_URL}/api/users/deleteProfile`, {
         method: "DELETE",
         headers,
-        body: JSON.stringify({ userId: currentUser?._id })
+        body: JSON.stringify({ userId: currentUser?._id }),
+        credentials: "include",
       });
       
       const data = await response.json();
@@ -189,10 +133,7 @@ export const useProfileData = () => {
         setError(data.message || "Failed to delete profile");
         return null;
       }
-      
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      
+
       return data;
     } catch (error) {
       setError(error.message || "Failed to delete profile");
@@ -208,6 +149,6 @@ export const useProfileData = () => {
     fetchUserProfile,
     updateUserProfile,
     deleteAvatar,
-    deleteProfile
+    deleteProfile,
   };
 };

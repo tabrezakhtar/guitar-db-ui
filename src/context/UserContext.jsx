@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { validateToken } from "../utils/tokenUtils";
 import { produce } from "immer";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -10,8 +9,6 @@ const initialState = {
   loading: false,
   error: null,
   showHeader: true,
-  isTokenValid: false,
-  isValidatingToken: false,
   profileDeleted: false
 };
 
@@ -22,8 +19,7 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-    
+
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
@@ -31,122 +27,12 @@ const UserProvider = ({ children }) => {
           draft.user = parsedUser;
         }));
         
-        if (token) {
-          handleTokenValidation();
-        }
       } catch (error) {
         console.error("Failed to parse user from localStorage:", error);
         localStorage.removeItem("user");
       }
     }
   }, []);
-  
-  const handleTokenValidation = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setState(produce(draft => {
-        draft.isTokenValid = false;
-      }));
-      return false;
-    }
-
-    setState(produce(draft => {
-      draft.isValidatingToken = true;
-    }));
-    
-    const isValid = await validateToken(handleAuthError);
-    
-    setState(produce(draft => {
-      draft.isTokenValid = isValid;
-      draft.isValidatingToken = false;
-    }));
-    
-    return isValid;
-  };
-  
-  const handleAuthError = (errorMsg) => {
-    console.error("Auth error:", errorMsg);
-    setState(produce(draft => {
-      draft.isTokenValid = false;
-      draft.isValidatingToken = false;
-      draft.error = errorMsg || "Authentication failed";
-    }));
-  };
-
-  const verifyMagicToken = async (token) => {
-    setState(produce(draft => {
-      draft.loading = true;
-      draft.error = null;
-    }));
-    
-    try {
-      if (!token) {
-        setState(produce(draft => {
-          draft.loading = false;
-          draft.error = "No token found in URL";
-        }));
-        return { success: false, error: "No token found in URL" };
-      }
-
-      const response = await fetch(`${BASE_URL}/api/auth/verifyMagicLink`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token }),
-      });
-
-      const data = await response.json();
-
-      if (data && data.errors) {
-        setState(produce(draft => {
-          draft.loading = false;
-          draft.error = data.errors;
-        }));
-        return { 
-          success: false, 
-          error: data.errors 
-        };
-      }
-
-      if (!response.ok) {
-        setState(produce(draft => {
-          draft.loading = false;
-          draft.error = data.message || "Authentication failed";
-        }));
-        return { 
-          success: false, 
-          error: data.message || "Authentication failed" 
-        };
-      }
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      
-      setState(produce(draft => {
-        draft.user = data.user;
-        draft.loading = false;
-      }));
-
-      return { success: true };
-    } catch (err) {
-      console.error("Magic link verification error:", err);
-      setState(produce(draft => {
-        draft.loading = false;
-        draft.error = "An unexpected error occurred";
-      }));
-      return { 
-        success: false, 
-        error: "An unexpected error occurred" 
-      };
-    }
-  };
-
-  const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setState(initialState);
-  };
 
   const updateUserLocal = (newData) => {
     setState(produce(draft => {
@@ -161,14 +47,27 @@ const UserProvider = ({ children }) => {
     }));
   };
 
+  const logout = async () => {
+    try {
+      await fetch(`${BASE_URL}/api/users/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+    localStorage.removeItem("user");
+    setState(produce(draft => {
+      draft.user = null;
+    }));
+  };
+
   const value = {
     ...state,
     isGuest: Boolean(state.user?.guest),
-    verifyMagicToken,
-    logout,
     updateUserLocal,
     clearProfileDeleted,
-    validateToken: handleTokenValidation
+    logout,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

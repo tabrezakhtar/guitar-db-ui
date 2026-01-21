@@ -29,7 +29,10 @@ export const TagProvider = ({ children }) => {
     
     try {
       const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-      const response = await fetch(`${BASE_URL}/api/equipment/tags`);
+      const response = await fetch(`${BASE_URL}/api/equipment/tags`, {
+        credentials: "include",
+      });
+
       if (response.ok) {
         const data = await response.json();
         const tagsData = data.tags || [];
@@ -49,7 +52,9 @@ export const TagProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    fetchTags();
+    if (location.pathname !== "/") {
+      fetchTags();
+    }
   }, []);
 
   const handleTagSelection = (tag) => {
