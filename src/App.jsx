@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Landing from "./Landing";
+import Landing from "./landing/Landing";
 import Grid from "./guitars/Grid";
 import EditGuitar from "./edit/EditGuitar";
 import ViewGuitar from "./view/ViewGuitar";
