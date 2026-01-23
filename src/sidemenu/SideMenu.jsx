@@ -59,7 +59,8 @@ function SideMenu() {
       newSelectedTagNames = [...selectedTags.map(t => t.name), tag.name];
     }
     
-    updateParams({ tags: newSelectedTagNames });
+    setEquipmentType("");
+    updateParams({ tags: newSelectedTagNames, type: "" });
   };
 
   const handleClearTags = () => {
