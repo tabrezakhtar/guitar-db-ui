@@ -38,36 +38,34 @@ function Landing() {
 
   useEffect(() => {
     hideHeader();
-    
-    if (!window.ParallaxBackground) {
-      const existingScript = document.querySelector('script[src="/parallax-bg.js"]');
-      
-      if (!existingScript) {
-        const script = document.createElement("script");
-        script.src = "/parallax-bg.js";
-        script.onload = () => {
-          if (window.ParallaxBackground) {
-            const parallaxInstance = window.ParallaxBackground.init({
-              zIndex: -1,
-              speeds: [200, 250, 180, 120],
-              animate: window.innerWidth >= 768
-            });
-          }
-        };
-        document.head.appendChild(script);
+    if (window.innerWidth >= 768) {
+      if (!window.ParallaxBackground) {
+        const existingScript = document.querySelector('script[src="/parallax-bg.js"]');
+        if (!existingScript) {
+          const script = document.createElement("script");
+          script.src = "/parallax-bg.js";
+          script.onload = () => {
+            if (window.ParallaxBackground) {
+              window.ParallaxBackground.init({
+                zIndex: -1,
+                speeds: [200, 250, 180, 120],
+                animate: true
+              });
+            }
+          };
+          document.head.appendChild(script);
+        }
+      } else {
+        window.ParallaxBackground.init({
+          zIndex: -1,
+          speeds: [200, 250, 180, 120],
+          animate: true
+        });
       }
-    } else {
-      const parallaxInstance = window.ParallaxBackground.init({
-        zIndex: -1,
-        speeds: [200, 250, 180, 120],
-        animate: window.innerWidth >= 768
-      });
     }
-    
     setTimeout(() => {
       setIsVisible(true);
     }, 100);
-    
     return () => {
       displayHeader();
       const container = document.querySelector(".parallax-bg-container");
