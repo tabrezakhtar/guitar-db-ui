@@ -49,7 +49,8 @@ function Landing() {
           if (window.ParallaxBackground) {
             const parallaxInstance = window.ParallaxBackground.init({
               zIndex: -1,
-              speeds: [200, 250, 180, 120]
+              speeds: [200, 250, 180, 120],
+              animate: window.innerWidth >= 768
             });
           }
         };
@@ -58,7 +59,8 @@ function Landing() {
     } else {
       const parallaxInstance = window.ParallaxBackground.init({
         zIndex: -1,
-        speeds: [200, 250, 180, 120]
+        speeds: [200, 250, 180, 120],
+        animate: window.innerWidth >= 768
       });
     }
     
