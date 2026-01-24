@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useHeader } from "../context/HeaderContext";
 import Logo from "../Logo";
 import Footer from "../Footer";
@@ -12,6 +12,7 @@ import HandwrittenText from "./HandwrittenText";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Landing() {
+  const shouldReduceMotion = useReducedMotion();
   const { hideHeader, displayHeader } = useHeader();
   const [recentEquipment, setRecentEquipment] = useState([]);
   const [popularEquipment, setPopularEquipment] = useState([]);
@@ -114,9 +115,9 @@ function Landing() {
           <div className="text-center">
             <motion.div
               className="mb-8"
-              initial={{ opacity: 0 }}
+              initial={shouldReduceMotion ? false : { opacity: 0 }}
               animate={{ opacity: isVisible ? 1 : 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: "easeInOut" }}
             >
               <Logo size="xlarge" />
             </motion.div>
@@ -138,14 +139,14 @@ function Landing() {
 
             <motion.div
               className="flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-12"
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 30, scale: 0.95 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
-              transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1], delay: 0.3 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : 0.3 }}
             >
               <motion.div
                 initial={{ scale: 1 }}
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 0.6, ease: "easeInOut", delay: 1.1 }}
+                animate={{ scale: shouldReduceMotion ? 1 : [1, 1.1, 1] }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: "easeInOut", delay: shouldReduceMotion ? 0 : 1.1 }}
               >
                 <Link 
                   to="/gallery" 

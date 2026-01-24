@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 function EquipmentTypeGrid({ isVisible }) {
+  const shouldReduceMotion = useReducedMotion();
   return (
     <motion.div
       className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto"
-      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 30, scale: 0.95 }}
       animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
-      transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1], delay: 0.4 }}
+      transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : 0.4 }}
     >
       <Link to="/gallery?type=guitar" className="bg-[#202b3d] rounded-lg p-6">
         <div className="text-center">
@@ -16,8 +17,8 @@ function EquipmentTypeGrid({ isVisible }) {
               src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759833181/guitar-outline-sm_vfinxb.png"
               alt="Guitar outline"
               className="w-16 h-16"
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              whileHover={{ y: shouldReduceMotion ? 0 : -4 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: "easeInOut" }}
             />
           </div>
           <h3 className="text-lg font-semibold mb-2">Guitars</h3>
@@ -31,8 +32,8 @@ function EquipmentTypeGrid({ isVisible }) {
               src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759833181/amp-outline-sm_svwske.png"
               alt="Amp outline"
               className="w-16 h-16"
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              whileHover={{ y: shouldReduceMotion ? 0 : -4 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: "easeInOut" }}
             />
           </div>
           <h3 className="text-lg font-semibold mb-2">Amps</h3>
@@ -46,8 +47,8 @@ function EquipmentTypeGrid({ isVisible }) {
               src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759833180/mic-outline-sm_bbqskx.png"
               alt="Microphone outline"
               className="w-16 h-16"
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              whileHover={{ y: shouldReduceMotion ? 0 : -4 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: "easeInOut" }}
             />
           </div>
           <h3 className="text-lg font-semibold mb-2">Accessories</h3>

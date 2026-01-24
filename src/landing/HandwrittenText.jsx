@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) {
+  const shouldReduceMotion = useReducedMotion();
   const [displayedText, setDisplayedText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -30,14 +31,14 @@ function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) 
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: speed / 1000,
-        delayChildren: delay / 1000
+        staggerChildren: shouldReduceMotion ? 0 : speed / 1000,
+        delayChildren: shouldReduceMotion ? 0 : delay / 1000
       }
     }
   };
 
   const child = {
-    hidden: { 
+    hidden: shouldReduceMotion ? { opacity: 0 } : { 
       opacity: 0, 
       y: 10,
       x: -2 
@@ -47,7 +48,7 @@ function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) 
       y: 0,
       x: 0,
       transition: {
-        duration: 0.3,
+        duration: shouldReduceMotion ? 0 : 0.3,
         ease: [0.25, 0.46, 0.45, 0.94]
       }
     }
