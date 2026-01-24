@@ -124,6 +124,7 @@ export const useEquipmentGridData = () => {
 
   useEffect(() => {
     if (searchTerm.trim()) return;
+    setEquipment([]);
     fetchEquipmentList(1);
   }, [sortBy, sortOrder, selectedTags, equipmentType, searchTerm]);
 
