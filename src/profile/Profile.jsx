@@ -64,11 +64,13 @@ const Profile = () => {
           setLikedEquipment(userData.likedEquipment || []);
         }
       } else {
-        const userData = await fetchUserProfile(user._id);
-        if (userData) {
-          setUserComments(userData.comments || []);
-          setLikedEquipment(userData.likedEquipment || []);
-          setProfileUser(user);
+        if (user) {
+          const userData = await fetchUserProfile(user._id);
+          if (userData) {
+            setUserComments(userData.comments || []);
+            setLikedEquipment(userData.likedEquipment || []);
+            setProfileUser(userData.user);
+          }
         }
       }
     };
@@ -243,6 +245,12 @@ const Profile = () => {
             <p className="text-gray-400 flex items-center justify-center sm:justify-start">
               📍 {location || "No location set"}
             </p>
+            <div className="flex justify-center sm:justify-start gap-2 mt-2">
+              <span className="font-bold text-white">{profileUser.following?.length}</span>
+              <span className="text-gray-400">Following</span>
+              <span className="font-bold text-white">{profileUser.followers?.length}</span>
+              <span className="text-gray-400">Followers</span>
+            </div>
           </div>
         </div>
         
