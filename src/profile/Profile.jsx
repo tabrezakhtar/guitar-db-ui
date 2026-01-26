@@ -98,7 +98,7 @@ const Profile = () => {
       }
     };
     fetchData();
-  }, [user]);
+  }, [user, userId]);
 
   useEffect(() => {
     const fetchEquipment = async () => {
