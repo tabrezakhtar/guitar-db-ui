@@ -134,7 +134,7 @@ const Profile = () => {
     };
     
     fetchEquipment();
-  }, [profileUser, userId]);
+  }, [profileUser?._id, userId]);
   
   const renderEquipmentSection = (items, title, emoji) => {
     if (!items || items.length === 0) return null;

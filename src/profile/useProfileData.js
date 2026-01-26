@@ -144,7 +144,7 @@ export const useProfileData = () => {
   };
 
   const followUser = async (targetUserId) => {
-    setLoading(true);
+    // setLoading(true);
     setError(null);
 
     try {
@@ -177,7 +177,7 @@ export const useProfileData = () => {
   };
 
   const unfollowUser = async (targetUserId) => {
-    setLoading(true);
+    // setLoading(true);
     setError(null);
 
     try {
