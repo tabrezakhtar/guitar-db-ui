@@ -26,7 +26,7 @@ const Profile = () => {
   const [ expandedComments, setExpandedComments ] = useState(false);
   const { user, logout } = useContext(UserContext);
   const { fetchUserEquipment, deleteComment, error: equipmentError, loading: equipmentLoading } = useContext(GuitarContext);
-  const { fetchUserProfile, loading: profileLoading, error: profileError } = useProfileData();
+  const { fetchUserProfile, loading: profileLoading, error: profileError, followUser, unfollowUser } = useProfileData();
 
   const navigate = useNavigate();
   
@@ -47,10 +47,33 @@ const Profile = () => {
   const handleDeleteComment = async (commentId) => {
     try {
       await deleteComment(commentId);
-      // Remove the deleted comment from local state
       setUserComments(prev => prev.filter(comment => comment._id !== commentId));
     } catch (error) {
       console.error("Error deleting comment:", error);
+    }
+  };
+
+  const handleFollowToggle = async () => {
+    if (!user || !profileUser) return;
+    
+    const isFollowing = profileUser.followers?.some(follower => follower._id === user._id);
+    
+    if (isFollowing) {
+      const result = await unfollowUser(profileUser._id);
+      if (result) {
+        setProfileUser(prev => ({
+          ...prev,
+          followers: prev.followers.filter(follower => follower._id !== user._id)
+        }));
+      }
+    } else {
+      const result = await followUser(profileUser._id);
+      if (result) {
+        setProfileUser(prev => ({
+          ...prev,
+          followers: [...(prev.followers || []), { _id: user._id, username: user.username }]
+        }));
+      }
     }
   };
   
@@ -224,12 +247,14 @@ const Profile = () => {
 
       <div className="bg-gray-800 rounded-lg shadow-lg p-6">
         <div className="flex flex-col sm:flex-row items-center justify-center mb-6">
-          <div className="relative w-24 h-24 mb-4 sm:mb-0 sm:mr-6">
-            <AvatarDisplayOnly
-              imageUrl={profileUser.avatarUrl}
-              username={username}
-              size="medium"
-            />
+          <div className="flex flex-col items-center">
+            <div className="relative w-24 h-24 mb-4">
+              <AvatarDisplayOnly
+                imageUrl={profileUser.avatarUrl}
+                username={username}
+                size="medium"
+              />
+            </div>
           </div>
           <div className="text-center sm:text-left sm:ml-6">
             <div className="flex items-center justify-center sm:justify-start gap-1">
@@ -251,6 +276,18 @@ const Profile = () => {
               <span className="font-bold text-white">{profileUser.followers?.length}</span>
               <span className="text-gray-400">Followers</span>
             </div>
+            {user && !isOwnProfile && (
+              <button
+                onClick={handleFollowToggle}
+                className={`cursor-pointer gap-2 mt-2 px-4 py-2 rounded text-white transition-colors ${
+                  profileUser.followers?.some(follower => follower._id === user._id)
+                    ? "bg-red-600 hover:bg-red-700"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
+              >
+                {profileUser.followers?.some(follower => follower._id === user._id) ? "Unfollow" : "Follow"}
+              </button>
+            )}
           </div>
         </div>
         

@@ -143,6 +143,72 @@ export const useProfileData = () => {
     }
   };
 
+  const followUser = async (targetUserId) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/users/follow`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ targetUserId }),
+        credentials: "include",
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setError(data.errors);
+        return null;
+      }
+      
+      if (!response.ok) {
+        setError(data.message || "Failed to follow user");
+        return null;
+      }
+      
+      return data;
+    } catch (error) {
+      setError(error.message || "Failed to follow user");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const unfollowUser = async (targetUserId) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/users/unfollow`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ targetUserId }),
+        credentials: "include",
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.errors) {
+        setError(data.errors);
+        return null;
+      }
+      
+      if (!response.ok) {
+        setError(data.message || "Failed to unfollow user");
+        return null;
+      }
+      
+      return data;
+    } catch (error) {
+      setError(error.message || "Failed to unfollow user");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     loading,
     error,
@@ -150,5 +216,7 @@ export const useProfileData = () => {
     updateUserProfile,
     deleteAvatar,
     deleteProfile,
+    followUser,
+    unfollowUser,
   };
 };
