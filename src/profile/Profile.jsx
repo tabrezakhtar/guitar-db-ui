@@ -147,6 +147,7 @@ const Profile = () => {
         <EquipmentCarousel 
           items={items} 
           onClick={(id) => navigate(`/view/${id}`)}
+          theme="dark"
         />
       </div>
     );
@@ -347,7 +348,8 @@ const Profile = () => {
             <h3 className="text-xl font-bold mb-4 mt-6 text-white">My Liked Equipment</h3>
             <div className="mb-6 bg-gray-700 p-4 rounded-md">
               <EquipmentCarousel 
-                items={likedEquipment} 
+                items={likedEquipment}
+                theme="dark"
               />
             </div>
           </>
