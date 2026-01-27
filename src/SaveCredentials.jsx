@@ -34,7 +34,7 @@ const SaveCredentials = () => {
       console.error("Error parsing user data:", err);
       setError("Invalid user data format");
     }
-  }, [location, navigate, setUser]);
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 p-6 bg-gray-800 rounded shadow-md max-w-sm mx-auto mt-10">      
