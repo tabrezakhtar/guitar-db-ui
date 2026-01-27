@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const initialState = {
   user: null,
-  loading: false,
+  loading: true,
   error: null,
   showHeader: true,
   profileDeleted: false
@@ -18,26 +18,44 @@ const UserProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-
-    if (savedUser) {
+    const fetchUser = async () => {
       try {
-        const parsedUser = JSON.parse(savedUser);
+        const res = await fetch(`${BASE_URL}/api/users/me`, {
+          credentials: "include",
+        });
+
+        if (!res.ok) {
+          throw new Error("Not authenticated");
+        }
+
+        const user = await res.json();
+
         setState(produce(draft => {
-          draft.user = parsedUser;
+          draft.user = user;
         }));
-        
-      } catch (error) {
-        console.error("Failed to parse user from localStorage:", error);
-        localStorage.removeItem("user");
+      } catch {
+        setState(produce(draft => {
+          draft.user = null;
+        }));
+      } finally {
+        setState(produce(draft => {
+          draft.loading = false;
+        }));
       }
-    }
+    };
+
+    fetchUser();
   }, []);
 
   const updateUserLocal = (newData) => {
     setState(produce(draft => {
       Object.assign(draft.user, newData);
-      localStorage.setItem("user", JSON.stringify(draft.user));
+    }));
+  };
+
+  const setUser = (user) => {
+    setState(produce(draft => {
+      draft.user = user;
     }));
   };
 
@@ -56,7 +74,6 @@ const UserProvider = ({ children }) => {
     } catch (error) {
       console.error("Logout error:", error);
     }
-    localStorage.removeItem("user");
     setState(produce(draft => {
       draft.user = null;
     }));
@@ -66,6 +83,7 @@ const UserProvider = ({ children }) => {
     ...state,
     isGuest: Boolean(state.user?.guest),
     updateUserLocal,
+    setUser,
     clearProfileDeleted,
     logout,
   };

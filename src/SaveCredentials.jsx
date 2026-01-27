@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "./context/UserContext";
 
 const SaveCredentials = () => {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
@@ -18,7 +20,7 @@ const SaveCredentials = () => {
 
     try {
       const user = JSON.parse(decodeURIComponent(userStr));
-      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
       localStorage.setItem("cookieConsent", "accepted");
 
       setSaved(true);
@@ -32,7 +34,7 @@ const SaveCredentials = () => {
       console.error("Error parsing user data:", err);
       setError("Invalid user data format");
     }
-  }, [location, navigate]);
+  }, [location, navigate, setUser]);
 
   return (
     <div className="flex flex-col gap-4 p-6 bg-gray-800 rounded shadow-md max-w-sm mx-auto mt-10">      
@@ -43,9 +45,6 @@ const SaveCredentials = () => {
             <h1 className="text-2xl font-bold text-white">Account Verified!</h1>
           </div>
           <p className="text-gray-600 mb-1">Redirecting to rifftales...</p>
-          <p className="text-white font-medium mb-4">
-            Welcome, {JSON.parse(localStorage.getItem("user"))?.username || "User"}!
-          </p>
           
           <div className="flex items-center justify-center gap-2 text-gray-600">
             <span className="h-4 w-4 border-2 border-t-blue-500 border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></span>
