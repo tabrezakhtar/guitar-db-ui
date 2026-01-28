@@ -4,7 +4,7 @@ import { useHeader } from "./context/HeaderContext";
 import { UserContext } from "./context/UserContext";
 import { ssrRedirect } from "./utils/urlUtils";
 
-function Layout({ hideMenu, children }) {
+function Layout({ hideSideMenu, hideGuestWarning, children }) {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { showHeader } = useHeader();
   const { isGuest } = useContext(UserContext) || {};
@@ -17,7 +17,7 @@ function Layout({ hideMenu, children }) {
   return (
     <div className="flex-1 flex flex-col md:flex-row max-w-screen-xl mx-auto w-full relative">
       {/* Hamburger Menu Button - Only visible on small screens and when menu is not hidden */}
-      {!hideMenu && (
+      {!hideSideMenu && (
         <button
           onClick={toggleSideMenu}
           className="md:hidden fixed top-2 left-2 z-50 bg-gray-800 p-2 rounded-md shadow-lg"
@@ -43,7 +43,7 @@ function Layout({ hideMenu, children }) {
       )}
 
       {/* Overlay for mobile - Only visible when menu is open and not hidden */}
-      {!hideMenu && isSideMenuOpen && (
+      {!hideSideMenu && isSideMenuOpen && (
         <div
           className="md:hidden fixed inset-0 z-30"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
@@ -51,8 +51,8 @@ function Layout({ hideMenu, children }) {
         />
       )}
 
-      {/* Side Menu - Slides in from left on mobile, hidden when hideMenu is true */}
-      {!hideMenu && (
+      {/* Side Menu - Slides in from left on mobile, hidden when hideSideMenu is true */}
+      {!hideSideMenu && (
         <div
           className={`
             md:relative md:translate-x-0 md:block md:w-96 md:sticky md:top-0
@@ -68,7 +68,7 @@ function Layout({ hideMenu, children }) {
 
       {/* Main Content */}
       <main className="flex-1 bg-[#122634] p-0 md:p-4 overflow-y-auto">
-        {isGuest && showHeader && (
+        {isGuest && showHeader && !hideGuestWarning && (
           <div className="w-full bg-yellow-900 text-yellow-100 border-b border-yellow-700 rounded-md mb-4">
             <div className="max-w-screen-xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
               <span>👋 You are browsing as a guest - some features are limited. Sign up for the full experience.</span>

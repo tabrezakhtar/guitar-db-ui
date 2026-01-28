@@ -31,36 +31,36 @@ function App() {
 
                 <div>
                   <Routes>
-                    <Route path="/" element={<Layout hideMenu><Landing /></Layout>} />
+                    <Route path="/" element={<Layout hideSideMenu><Landing /></Layout>} />
                     <Route path="/gallery" element={<Layout><Grid /></Layout>} />
                     <Route
                       path="/edit/:id"
                       element={
-                        <Layout hideMenu>
+                        <Layout hideSideMenu>
                           <ProtectedRoute>
                             <EditGuitar />
                           </ProtectedRoute>
                         </Layout>
                       }
                     />
-                    <Route path="/view/:id" element={<Layout hideMenu><ViewGuitar /></Layout>} />
-                    <Route path="/posts/:slug" element={<Layout hideMenu><PostPage /></Layout>} />
+                    <Route path="/view/:id" element={<Layout hideSideMenu><ViewGuitar /></Layout>} />
+                    <Route path="/posts/:slug" element={<Layout hideSideMenu hideGuestWarning><PostPage /></Layout>} />
                     <Route
                       path="/add"
                       element={
-                        <Layout hideMenu>
+                        <Layout hideSideMenu>
                           <ProtectedRoute>
                             <AddGuitar />
                           </ProtectedRoute>
                         </Layout>
                       }
                     />
-                    <Route path="/profile" element={<Layout hideMenu><Profile /></Layout>} />
-                    <Route path="/profile/:userId" element={<Layout hideMenu><Profile /></Layout>} />
+                    <Route path="/profile" element={<Layout hideSideMenu><Profile /></Layout>} />
+                    <Route path="/profile/:userId" element={<Layout hideSideMenu><Profile /></Layout>} />
                     <Route
                       path="/edit-profile"
                       element={
-                        <Layout hideMenu>
+                        <Layout hideSideMenu>
                           <ProtectedRoute>
                             <EditProfile />
                           </ProtectedRoute>
