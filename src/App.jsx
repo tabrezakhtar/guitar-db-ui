@@ -31,7 +31,7 @@ function App() {
 
                 <div>
                   <Routes>
-                    <Route path="/" element={<Layout hideSideMenu><Landing /></Layout>} />
+                    <Route path="/" element={<Layout hideSideMenu hideGuestWarning><Landing /></Layout>} />
                     <Route path="/gallery" element={<Layout><Grid /></Layout>} />
                     <Route
                       path="/edit/:id"
