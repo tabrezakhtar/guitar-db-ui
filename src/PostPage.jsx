@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import postsManifest from "../public/posts/posts-manifest.json";
 import { formatDate } from "./utils/dateUtils";
+import Spinner from "./components/Spinner";
 
 function PostPage() {
   const { slug } = useParams();
@@ -47,7 +48,7 @@ function PostPage() {
       });
   }, [slug, navigate]);
 
-  if (loading) return <div className="p-8">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center min-h-screen p-8"><Spinner width={12} height={12} /></div>;
   if (!post) return null;
 
   const currentIndex = postsManifest.findIndex(p => p.slug === slug);
