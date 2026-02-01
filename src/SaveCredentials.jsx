@@ -26,7 +26,7 @@ const SaveCredentials = () => {
       setSaved(true);
 
       const timeout = setTimeout(() => {
-        navigate("/gallery");
+        navigate("/profile");
       }, 1000);
 
       return () => clearTimeout(timeout);
