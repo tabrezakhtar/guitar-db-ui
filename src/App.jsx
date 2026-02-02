@@ -16,7 +16,6 @@ import Layout from "./Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import SaveCredentials from "./SaveCredentials";
 import ScrollToTop from "./components/ScrollToTop";
-import Test from "./Test";
 // import CookieAlert from "./components/CookieAlert";
 
 function App() {
@@ -69,7 +68,6 @@ function App() {
                       }
                     />
                     <Route path="/auth" element={<SaveCredentials />} />
-                     <Route path="/test" element={<Test />} />
                   </Routes>
                   {/* <CookieAlert /> */}
                 </div>
