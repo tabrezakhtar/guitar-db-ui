@@ -4,7 +4,7 @@ const Test = () => {
     useEffect(() => {
         const fetchIp = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/ip`);
+                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/ip`);
                 const data = await res.json();
                 console.log(data);
             } catch (err) {
