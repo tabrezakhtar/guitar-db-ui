@@ -19,7 +19,8 @@ const Following = () => {  const { user } = useContext(UserContext);
   useEffect(() => {
     const fetchFollowing = async () => {
       const targetUserId = userId || user?._id;
-      if (!targetUserId) return;      setLoading(true);
+      if (!targetUserId) return;
+      setLoading(true);
       try {
         const endpoint = userId
           ? `${API_BASE_URL}/api/users/following?userId=${userId}`
@@ -41,7 +42,8 @@ const Following = () => {  const { user } = useContext(UserContext);
       } finally {
         setLoading(false);
       }
-    };    fetchFollowing();
+    };
+    fetchFollowing();
   }, [userId, user, API_BASE_URL]);
 
   const handleFollowToggle = async (targetUserId, isFollowing) => {

@@ -21,7 +21,8 @@ const Followers = () => {
   useEffect(() => {
     const fetchFollowers = async () => {
       const targetUserId = userId || user?._id;
-      if (!targetUserId) return;      setLoading(true);
+      if (!targetUserId) return;
+      setLoading(true);
       try {
         const endpoint = userId
           ? `${API_BASE_URL}/api/users/followers?userId=${userId}`
@@ -114,7 +115,8 @@ const Followers = () => {
     <div className="max-w-screen-xl mx-auto w-full p-6 bg-[#122634]">
       <div className="mb-4">
         <Breadcrumbs items={[{ label: "Followers", url: "/followers" }]} />
-      </div>      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+      </div>
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
         <h1 className="text-2xl font-bold text-white">{profileUsername}'s Followers</h1>
       </div>
 
@@ -150,7 +152,8 @@ const Followers = () => {
                         className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors cursor-pointer inline-flex items-center"
                       >
                         View Profile
-                      </Link>                      {user && (!userId || userId === user._id) && follower._id !== user._id && (
+                      </Link>
+                      {user && (!userId || userId === user._id) && follower._id !== user._id && (
                         <button
                           onClick={() => {
                             const isFollowing = followingIds.includes(follower._id);
