@@ -41,7 +41,7 @@ function EquipmentSections({ recentEquipment, popularEquipment, loading, isVisib
   };
 
   return (
-    <div className="py-16">
+    <div className="">
       {loading ? (
         <motion.div
           className="flex justify-center items-center py-16"
