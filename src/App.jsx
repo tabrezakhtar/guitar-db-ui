@@ -16,6 +16,8 @@ import Layout from "./Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import SaveCredentials from "./SaveCredentials";
 import ScrollToTop from "./components/ScrollToTop";
+import Followers from "./follow/Followers";
+import Following from "./follow/Following";
 // import CookieAlert from "./components/CookieAlert";
 
 function App() {
@@ -68,6 +70,10 @@ function App() {
                       }
                     />
                     <Route path="/auth" element={<SaveCredentials />} />
+                    <Route path="/followers" element={<Layout hideSideMenu><Followers /></Layout>} />
+                    <Route path="/followers/:userId" element={<Layout hideSideMenu><Followers /></Layout>} />
+                    <Route path="/following" element={<Layout hideSideMenu><Following /></Layout>} />
+                    <Route path="/following/:userId" element={<Layout hideSideMenu><Following /></Layout>} />
                   </Routes>
                   {/* <CookieAlert /> */}
                 </div>

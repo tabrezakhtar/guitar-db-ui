@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { GuitarContext } from "../context/GuitarContext";
 import { useProfileData } from "./useProfileData";
@@ -271,11 +271,15 @@ const Profile = () => {
             <p className="text-gray-400 flex items-center justify-center sm:justify-start">
               📍 {location || "No location set"}
             </p>
-            <div className="flex justify-center sm:justify-start gap-2 mt-2">
-              <span className="font-bold text-white">{profileUser.following?.length}</span>
-              <span className="text-gray-400">Following</span>
-              <span className="font-bold text-white">{profileUser.followers?.length}</span>
-              <span className="text-gray-400">Followers</span>
+            <div className="flex justify-center sm:justify-start gap-4 mt-2">
+              <Link to={`/following/${userId || user?._id}`} className="flex gap-2 text-blue-500 hover:text-blue-400 transition-colors cursor-pointer underline">
+                <span className="font-bold">{profileUser.following?.length} Following</span>
+                {/* <span>Following</span> */}
+              </Link>
+              <Link to={`/followers/${userId || user?._id}`} className="flex gap-2 text-blue-500 hover:text-blue-400 transition-colors cursor-pointer underline">
+                <span className="font-bold">{profileUser.followers?.length} Followers</span>
+                {/* <span>Followers</span> */}
+              </Link>
             </div>
             {user && !isOwnProfile && (
               <button
