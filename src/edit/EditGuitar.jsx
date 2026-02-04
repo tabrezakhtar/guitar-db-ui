@@ -155,7 +155,8 @@ function EditGuitar({ mode = "edit", type = "" }) {
         const result = await addEquipment(type, updatedEquipment);
         setSaved(true);
         setShowSavingModal(false);
-        navigate(`/edit/${result._id}`);
+        // navigate(`/edit/${result._id}`);
+        navigate("/gallery");
         return;
       } else {
         await updateEquipment(updatedEquipment);

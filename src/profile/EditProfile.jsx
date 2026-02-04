@@ -136,13 +136,12 @@ const EditProfile = () => {
     setError(null);
     
     try {
-      const result = await deleteProfile(user);
-      
+      const result = await deleteProfile(user);      
       if (result) {
         // Clear user state and redirect
         updateUserLocal(null);
         setShowDeleteModal(false);
-        navigate("/gallery");
+        window.location.href = "/gallery";
       }
     } catch (err) {
       setError(profileError || err.message || "Failed to delete profile");
@@ -233,13 +232,12 @@ const EditProfile = () => {
             className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
           />
         </div>
-        
-        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
           <div className="order-2 sm:order-1">
             <button 
               type="button" 
               onClick={handleDeleteProfile}
-              className="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-full sm:w-auto"
+              className="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-full sm:w-auto cursor-pointer"
             >
               Delete Profile
             </button>
@@ -248,14 +246,14 @@ const EditProfile = () => {
             <button 
               type="button" 
               onClick={() => navigate("/profile")}
-              className="px-4 py-2 text-gray-300 bg-gray-600 rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="px-4 py-2 text-gray-300 bg-gray-600 rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer"
             >
               Cancel
             </button>
             <button 
               type="submit" 
               disabled={loading}
-              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
+              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 cursor-pointer"
             >
               {loading ? "Saving..." : "Save Profile"}
             </button>

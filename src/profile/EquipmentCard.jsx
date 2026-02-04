@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import Thumbnail from "../components/Thumbnail";
 import { getCloudinaryThumbnail } from "../utils/cloudinaryUtils";
+import SkeletonImage from "../components/SkeletonImage";
 
 const EquipmentCarousel = ({ items, onClick, theme = "light", centered = false, cardSize = "medium" }) => {
   const containerClass = centered ? "flex gap-4 justify-center flex-wrap" : "flex gap-4 overflow-x-auto pb-4 scroll-smooth equipment-carousel";
@@ -67,19 +68,13 @@ const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) 
         {children}
       </NavLink>
     );
-  };
-
-  return (
+  };  return (
     <CardWrapper>
       {item.images && item.images.length > 0 ? (
         <Thumbnail url={getCloudinaryThumbnail(item.images[0], 200)} alt={`${item.brand} ${item.name}`} />
       ) : (
-        <div className="w-full aspect-square bg-gray-200 flex items-center justify-center">
-          <img 
-            src={`/${(item.__t || item.type)?.toLowerCase()}.png`}
-            alt={item.__t || item.type}
-            className="w-12 h-12 opacity-50"
-          />
+        <div className="w-full aspect-square">
+          <SkeletonImage />
         </div>
       )}
       <div className={paddingClass}>
