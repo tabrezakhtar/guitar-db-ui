@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import { GuitarContext } from "./context/GuitarContext";
 import { useHeader } from "./context/HeaderContext";
@@ -40,11 +40,12 @@ function MenuContent({ user }) {
 }
 
 function Header() {
+  const location = useLocation();
   const { user } = useContext(UserContext) || {};
   const { setEquipmentType } = useContext(GuitarContext) || { setEquipmentType: () => {} };
   const { showHeader } = useHeader();
   
-  if (!showHeader) return null;
+  if (location.pathname === "/" || !showHeader) return null;
 
   return (
     <header className="bg-gray-800 text-white p-4 flex">
