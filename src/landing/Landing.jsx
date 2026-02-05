@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { useHeader } from "../context/HeaderContext";
+import { UserContext } from "../context/UserContext";
 import Logo from "../Logo";
 import Footer from "../Footer";
 import EquipmentSections from "./EquipmentSections";
@@ -14,11 +15,22 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Landing() {
   const shouldReduceMotion = useReducedMotion();
   const { hideHeader, displayHeader } = useHeader();
+  const { hasVisitedLanding, setHasVisitedLanding } = useContext(UserContext);
   const [recentEquipment, setRecentEquipment] = useState([]);
   const [popularEquipment, setPopularEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    if (!hasVisitedLanding) {
+      const animationDuration = 8000;
+      const timer = setTimeout(() => {
+        setHasVisitedLanding();
+      }, animationDuration);
+      return () => clearTimeout(timer);
+    }
+  }, [hasVisitedLanding, setHasVisitedLanding]);
 
   useEffect(() => {
     let timeoutId;
@@ -106,7 +118,6 @@ function Landing() {
     return () => window.removeEventListener("pageshow", handlePageShow);
   });
 
-  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8">
       
@@ -124,16 +135,16 @@ function Landing() {
             <HandwrittenText
               text="Discover gear.  Celebrate stories.  Share your journey."
               className="text-4xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
-              delay={500}
-              speed={30}
+              delay={hasVisitedLanding ? 0 : 500}
+              speed={hasVisitedLanding ? 0 : 30}
               isVisible={isVisible}
             />
             
             <HandwrittenText
               text="Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do."
               className="text-3xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
-              delay={500}
-              speed={20}
+              delay={hasVisitedLanding ? 0 : 500}
+              speed={hasVisitedLanding ? 0 : 20}
               isVisible={isVisible}
             />
 

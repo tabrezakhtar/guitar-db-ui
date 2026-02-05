@@ -9,7 +9,8 @@ const initialState = {
   loading: true,
   error: null,
   showHeader: true,
-  profileDeleted: false
+  profileDeleted: false,
+  hasVisitedLanding: false
 };
 
 const UserContext = createContext(null);
@@ -79,6 +80,12 @@ const UserProvider = ({ children }) => {
     }));
   };
 
+  const setHasVisitedLanding = () => {
+    setState(produce(draft => {
+      draft.hasVisitedLanding = true;
+    }));
+  };
+
   const value = {
     ...state,
     isGuest: Boolean(state.user?.guest),
@@ -86,6 +93,7 @@ const UserProvider = ({ children }) => {
     setUser,
     clearProfileDeleted,
     logout,
+    setHasVisitedLanding,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
