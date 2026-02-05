@@ -13,6 +13,11 @@ function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) 
       return;
     }
 
+    if (speed === 0) {
+      setDisplayedText(text);
+      return;
+    }
+
     const startDelay = setTimeout(() => {
       if (currentIndex < text.length) {
         const charDelay = setTimeout(() => {
@@ -31,14 +36,14 @@ function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) 
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: shouldReduceMotion ? 0 : speed / 1000,
-        delayChildren: shouldReduceMotion ? 0 : delay / 1000
+        staggerChildren: shouldReduceMotion || speed === 0 ? 0 : speed / 1000,
+        delayChildren: shouldReduceMotion || speed === 0 ? 0 : delay / 1000
       }
     }
   };
 
   const child = {
-    hidden: shouldReduceMotion ? { opacity: 0 } : { 
+    hidden: shouldReduceMotion || speed === 0 ? { opacity: 0 } : { 
       opacity: 0, 
       y: 10,
       x: -2 
@@ -48,7 +53,7 @@ function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) 
       y: 0,
       x: 0,
       transition: {
-        duration: shouldReduceMotion ? 0 : 0.3,
+        duration: shouldReduceMotion || speed === 0 ? 0 : 0.3,
         ease: [0.25, 0.46, 0.45, 0.94]
       }
     }
