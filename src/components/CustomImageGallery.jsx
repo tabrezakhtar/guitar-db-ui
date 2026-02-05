@@ -5,6 +5,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+  const [touchStartY, setTouchStartY] = useState(null);
   const thumbnailsRef = useRef(null);
 
   const goToPrevious = () => {
@@ -36,29 +37,27 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
     scrollToThumbnail(currentIndex);
   }, [currentIndex]);
 
-  useEffect(() => {
-    const handleTouchMove = (e) => {
-      if (touchStart !== null) {
-        e.preventDefault();
-      }
-    };
-
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-    return () => {
-      document.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, [touchStart]);
-
   const minSwipeDistance = 50;
 
   const onTouchStart = (e) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
+    setTouchStartY(e.targetTouches[0].clientY);
   };
 
   const onTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    const currentX = e.targetTouches[0].clientX;
+    const currentY = e.targetTouches[0].clientY;
+    setTouchEnd(currentX);
+    
+    if (touchStart !== null && touchStartY !== null) {
+      const deltaX = Math.abs(touchStart - currentX);
+      const deltaY = Math.abs(touchStartY - currentY);
+      
+      if (deltaX > deltaY && deltaX > 10) {
+        e.preventDefault();
+      }
+    }
   };
 
   const onTouchEnd = (e) => {
@@ -77,6 +76,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
 
     setTouchStart(null);
     setTouchEnd(null);
+    setTouchStartY(null);
   };
 
   const toggleFullscreen = () => {
