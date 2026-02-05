@@ -9,15 +9,40 @@ const EquipmentCarousel = ({ items, onClick, theme = "light", centered = false, 
   const ref = useRef();
   const { events } = useDraggable(ref);
   
-  const containerClass = centered ? "flex gap-4 justify-center flex-wrap" : "flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-400";
+  const containerClass = centered ? "flex gap-4 justify-center flex-wrap" : "flex gap-4 overflow-x-auto pb-4";
+  
+  const scrollContainerStyle = !centered ? {
+    cursor: "grab",
+    userSelect: "none",
+    scrollbarWidth: "thin",
+    scrollbarColor: "#4B5563 #1F2937"
+  } : {};
   
   return (
     <div className="bg-gray-800 p-5 rounded-lg overflow-hidden">
+      <style>
+        {`
+          .equipment-scroll-container::-webkit-scrollbar {
+            height: 8px;
+          }
+          .equipment-scroll-container::-webkit-scrollbar-track {
+            background: #1F2937;
+            border-radius: 4px;
+          }
+          .equipment-scroll-container::-webkit-scrollbar-thumb {
+            background: #4B5563;
+            border-radius: 4px;
+          }
+          .equipment-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #6B7280;
+          }
+        `}
+      </style>
       <div 
         ref={ref}
         {...(!centered ? events : {})}
-        className={containerClass}
-        style={!centered ? { cursor: "grab", userSelect: "none" } : {}}
+        className={`${containerClass} ${!centered ? "equipment-scroll-container" : ""}`}
+        style={scrollContainerStyle}
       >
         {items.map(item => (
           <EquipmentCard key={item._id} item={item} onClick={onClick} theme={theme} cardSize={cardSize} />
