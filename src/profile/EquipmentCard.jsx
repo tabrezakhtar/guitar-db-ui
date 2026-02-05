@@ -1,19 +1,23 @@
+import { useRef } from "react";
 import { NavLink } from "react-router-dom";
+import { useDraggable } from "react-use-draggable-scroll";
 import Thumbnail from "../components/Thumbnail";
 import { getCloudinaryThumbnail } from "../utils/cloudinaryUtils";
 import SkeletonImage from "../components/SkeletonImage";
 
 const EquipmentCarousel = ({ items, onClick, theme = "light", centered = false, cardSize = "medium" }) => {
-  const containerClass = centered ? "flex gap-4 justify-center flex-wrap" : "flex gap-4 overflow-x-auto pb-4 scroll-smooth equipment-carousel";
+  const ref = useRef();
+  const { events } = useDraggable(ref);
+  
+  const containerClass = centered ? "flex gap-4 justify-center flex-wrap" : "flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500 hover:scrollbar-thumb-gray-400";
   
   return (
     <div className="bg-gray-800 p-5 rounded-lg overflow-hidden">
       <div 
+        ref={ref}
+        {...(!centered ? events : {})}
         className={containerClass}
-        style={!centered ? { 
-          scrollbarWidth: "auto",
-          scrollbarColor: "#cbd5e0 #f7fafc"
-        } : {}}
+        style={!centered ? { cursor: "grab", userSelect: "none" } : {}}
       >
         {items.map(item => (
           <EquipmentCard key={item._id} item={item} onClick={onClick} theme={theme} cardSize={cardSize} />
@@ -54,6 +58,7 @@ const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) 
         <div 
           className={`${widthClass} rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all flex-shrink-0 ${cardBgClass}`}
           onClick={() => onClick(item._id)}
+          onDragStart={(e) => e.preventDefault()}
         >
           {children}
         </div>
@@ -64,6 +69,7 @@ const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) 
       <NavLink 
         to={`/view/${item._id}`}
         className={`w-full sm:w-[140px] ${widthClass} rounded-lg overflow-hidden hover:shadow-lg transition-all flex-shrink-0 ${cardBgClass}`}
+        onDragStart={(e) => e.preventDefault()}
       >
         {children}
       </NavLink>
@@ -71,7 +77,7 @@ const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) 
   };  return (
     <CardWrapper>
       {item.images && item.images.length > 0 ? (
-        <Thumbnail url={getCloudinaryThumbnail(item.images[0], 200)} alt={`${item.brand} ${item.name}`} />
+        <Thumbnail url={getCloudinaryThumbnail(item.images[0], 200)} alt={`${item.brand} ${item.name}`} draggable={false} />
       ) : (
         <div className="w-full aspect-square">
           <SkeletonImage />
