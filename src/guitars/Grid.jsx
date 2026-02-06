@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
 import { useTagContext } from "../context/TagContext";
@@ -274,17 +275,31 @@ function Grid() {
                   className="aspect-[4/5] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative group"
                   onClick={() => navigate("/view/" + item._id)}
                 >
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt={`Thumbnail: ${item.brand} ${item.name}`}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 w-full h-full">
-                      <SkeletonImage />
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {imageUrl ? (
+                      <motion.img
+                        key="image"
+                        src={imageUrl}
+                        alt={`Thumbnail: ${item.brand} ${item.name}`}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                      />
+                    ) : (
+                      <motion.div
+                        key="skeleton"
+                        className="absolute inset-0 w-full h-full"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <SkeletonImage />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   <div
                     className="absolute top-2 left-2 px-2 py-1 rounded-md bg-[rgba(31,41,55,0.3)] shadow-sm flex items-center"
                     onClick={(e) => {
