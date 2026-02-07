@@ -83,6 +83,12 @@ class ParallaxBackground {
         height: 100%;
         display: block;
         border-radius: 15px;
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out;
+      }
+      
+      .parallax-bg-row img.loaded {
+        opacity: 1;
       }
       
       .parallax-bg-scrolling-inner {
@@ -170,6 +176,15 @@ class ParallaxBackground {
         img.src = imageUrl;
         img.alt = `Parallax Image ${index + 1}`;
         img.loading = "lazy";
+        
+        img.addEventListener("load", () => {
+          img.classList.add("loaded");
+        });
+        
+        if (img.complete) {
+          img.classList.add("loaded");
+        }
+        
         scrollingInner.appendChild(img);
       });
 
