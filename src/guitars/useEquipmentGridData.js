@@ -26,6 +26,7 @@ export const useEquipmentGridData = () => {
   const [totalEquipment, setTotalEquipment] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setIsLoading] = useState(false);
+  const [equipmentError, setEquipmentError] = useState(null);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -79,9 +80,9 @@ export const useEquipmentGridData = () => {
 
   const fetchEquipmentList = async (currentPage) => {
     setIsLoading(true);
-    
+    setEquipmentError(null)
+
     try {
-      // Read type from URL querystring if present, else use equipmentType
       const urlType = getQueryStringParam("type") || equipmentType;
       let url = `${BASE_URL}/api/equipment/list?page=${currentPage}&limit=20&type=${urlType}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
 
@@ -113,6 +114,7 @@ export const useEquipmentGridData = () => {
     } catch (error) {
       console.error("Failed to fetch equipment list:", error);
       setIsLoading(false);
+      setEquipmentError(true);
       throw error;
     }
   };
@@ -151,6 +153,7 @@ export const useEquipmentGridData = () => {
     totalEquipment: currentTotal,
     error: currentError,
     loading,
-    page
+    page,
+    equipmentError
   };
 };

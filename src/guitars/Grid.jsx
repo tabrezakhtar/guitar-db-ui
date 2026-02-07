@@ -43,6 +43,8 @@ function Grid() {
     totalEquipment,
     loading,
     loadMore,
+    equipmentError,
+    fetchEquipmentList,
   } = useEquipmentGridData();
   const { loadingImages } = useImageLoading(equipment);
   const [likedEquipment, setLikedEquipment] = useState({});
@@ -146,6 +148,14 @@ function Grid() {
       }
     } catch (error) {
       console.error("Error toggling like:", error);
+    }
+  };
+
+  const handleRefreshEquipment = async () => {
+    try {
+      await fetchEquipmentList(1);
+    } catch (error) {
+      console.error("Failed to refresh equipment:", error);
     }
   };
 
@@ -377,6 +387,19 @@ function Grid() {
               );
             })}
       </div>
+      {equipmentError && (
+        <div className="flex flex-col items-center p-8">
+          <p className="text-white mb-4">Sorry, the equipment failed to load</p>
+          <button
+            onClick={handleRefreshEquipment}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center gap-2"
+            title="Refresh equipment data"
+          >
+            <span className="text-xl">↻</span>
+            Refresh Equipment
+          </button>
+        </div>
+      )}
       {loading && (
         <div className="flex justify-center p-4">
           <Spinner />
