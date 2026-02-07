@@ -272,7 +272,7 @@ function Grid() {
               return (
                 <div
                   key={item._id}
-                  className="aspect-[4/5] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative group"
+                  className="aspect-[4/5] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative group bg-gray-300"
                   onClick={() => navigate("/view/" + item._id)}
                 >
                   <AnimatePresence>

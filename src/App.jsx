@@ -9,9 +9,9 @@ import Layout from "./Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import Spinner from "./components/Spinner";
+import Grid from "./guitars/Grid";
 
 const Landing = lazy(() => import("./landing/Landing"));
-const Grid = lazy(() => import("./guitars/Grid"));
 const EditGuitar = lazy(() => import("./edit/EditGuitar"));
 const ViewGuitar = lazy(() => import("./view/ViewGuitar"));
 const AddGuitar = lazy(() => import("./AddGuitar"));
