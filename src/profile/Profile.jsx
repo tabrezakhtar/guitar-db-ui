@@ -11,8 +11,7 @@ import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Modal from "../components/Modal";
 import ProfileSkeleton from "./ProfileSkeleton";
-import YouTubeGrid from "./YouTubeGrid";
-
+import YouTubeGrid from "./YouTubeGrid";import Share from "./Share";
 const Profile = () => {
   const { userId } = useParams();
   const [ profileUser, setProfileUser ] = useState(null);
@@ -251,6 +250,7 @@ const Profile = () => {
               ✏️ Edit Profile
             </button>
           )}
+          <Share userId={profileUser._id} username={profileUser.username} />
           {isOwnProfile && (
             <button 
               onClick={handleLogoutClick}
