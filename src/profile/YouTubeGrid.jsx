@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import { formatDate } from "../utils/dateUtils";
 
-export default function YoutubeGrid({ userId, handle, avatar, channelId, maxResults = 12 }) {
+export default function YouTubeGrid({ userId, handle, avatar, channelId, maxResults = 12 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [videos, setVideos] = useState([]);

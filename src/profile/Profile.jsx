@@ -11,7 +11,7 @@ import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Modal from "../components/Modal";
 import ProfileSkeleton from "./ProfileSkeleton";
-import YoutubeGrid from "./YoutubeGrid";
+import YouTubeGrid from "./YouTubeGrid";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -333,7 +333,7 @@ const Profile = () => {
           )}
         </div>
         { (profileUser.youtubeChannelHandle || profileUser.youtubeChannelId) && (
-          <YoutubeGrid
+          <YouTubeGrid
             userId={profileUser._id}
             handle={profileUser.youtubeChannelHandle}
             avatar={profileUser.youtubeChannelAvatar || profileUser.avatarUrl}
