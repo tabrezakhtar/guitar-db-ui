@@ -341,14 +341,14 @@ const Profile = () => {
             maxResults={12}
           />
         )}
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <button
             onClick={testyoutube}
             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors"
           >
             ▶️ Test YouTube
           </button>
-        </div> */}
+        </div>
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
           <h3 className="text-xl font-bold text-white">My Equipment</h3>
           {isOwnProfile && (
