@@ -11,6 +11,7 @@ import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Modal from "../components/Modal";
 import ProfileSkeleton from "./ProfileSkeleton";
+import YoutubeGrid from "./YoutubeGrid";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -32,6 +33,21 @@ const Profile = () => {
   
   const handleLogoutClick = () => {
     setShowLogoutModal(true);
+  };
+
+  const testyoutube = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/youtube/channel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ url: "https://www.youtube.com/@andertons" })
+      });
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleLogoutConfirm = async () => {
@@ -230,7 +246,7 @@ const Profile = () => {
           {isOwnProfile && (
             <button
               onClick={() => navigate("/edit-profile")}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors cursor-pointer"
             >
               ✏️ Edit Profile
             </button>
@@ -316,7 +332,23 @@ const Profile = () => {
             <p className="text-gray-400">No website added</p>
           )}
         </div>
-
+        { (profileUser.youtubeChannelHandle || profileUser.youtubeChannelId) && (
+          <YoutubeGrid
+            userId={profileUser._id}
+            handle={profileUser.youtubeChannelHandle}
+            avatar={profileUser.youtubeChannelAvatar || profileUser.avatarUrl}
+            channelId={profileUser.youtubeChannelId}
+            maxResults={12}
+          />
+        )}
+        {/* <div className="mb-6">
+          <button
+            onClick={testyoutube}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors"
+          >
+            ▶️ Test YouTube
+          </button>
+        </div> */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
           <h3 className="text-xl font-bold text-white">My Equipment</h3>
           {isOwnProfile && (
