@@ -199,7 +199,7 @@ function Landing() {
         isMobile={isMobile}
       />
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

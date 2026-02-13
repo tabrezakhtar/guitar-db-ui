@@ -38,7 +38,7 @@ function App() {
                   <Suspense fallback={<div className="flex justify-center items-center h-screen"><Spinner /></div>}>
                     <Routes>
                       <Route path="/" element={<Layout hideSideMenu hideGuestWarning><Landing /></Layout>} />
-                      <Route path="/gallery" element={<Layout><Grid /></Layout>} />
+                      <Route path="/gallery" element={<Layout hideFooter><Grid /></Layout>} />
                       <Route
                         path="/edit/:id"
                         element={

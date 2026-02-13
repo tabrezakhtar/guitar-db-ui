@@ -37,14 +37,34 @@ function Footer({ compact = false }) {
             </div>
             <div className="text-center">
               <span className="text-gray-400 text-xs">© {new Date().getFullYear()} rifftales</span>
+              <div className="text-gray-400 text-xs mt-1">
+                <a
+                  href="https://www.melodyapps.co.uk"
+                  className="hover:text-white hover:underline transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Made with ❤️ by Melody Apps
+                </a>
+              </div>
             </div>
           </div>
         </>
       ) : (
         // Full version for main layout
         <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-center md:justify-between items-center text-sm">
-          <div className="mb-4 md:mb-0">
+          <div className="mb-4 md:mb-0 text-center md:text-left">
             <span className="text-gray-400">© {new Date().getFullYear()} rifftales. All rights reserved.</span>
+            <div className="text-gray-400 text-xs mt-1">
+              <a
+                href="https://www.melodyapps.co.uk"
+                className="hover:text-white hover:underline transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Made with ❤️ by Melody Apps
+              </a>
+            </div>
           </div>
           
           <div className="flex flex-wrap gap-4 md:gap-6 justify-center">

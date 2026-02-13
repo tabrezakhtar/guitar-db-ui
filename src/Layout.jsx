@@ -1,10 +1,11 @@
 import { useState, useContext } from "react";
 import SideMenu from "./sidemenu/SideMenu";
+import Footer from "./Footer";
 import { useHeader } from "./context/HeaderContext";
 import { UserContext } from "./context/UserContext";
 import { ssrRedirect } from "./utils/urlUtils";
 
-function Layout({ hideSideMenu, hideGuestWarning, children }) {
+function Layout({ hideSideMenu, hideGuestWarning, hideFooter, children }) {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { showHeader } = useHeader();
   const { isGuest } = useContext(UserContext) || {};
@@ -79,6 +80,7 @@ function Layout({ hideSideMenu, hideGuestWarning, children }) {
           </div>
         )}
         {children}
+        {!hideFooter && <Footer />}
       </main>
     </div>
   );
