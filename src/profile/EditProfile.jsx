@@ -16,11 +16,14 @@ const EditProfile = () => {
     bio: "",
     avatarUrl: "",
     location: "",
-    website: ""
+    website: "",
+    youtubeChannelUrl: ""
   });
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarDeleted, setAvatarDeleted] = useState(false);
   const [originalAvatarUrl, setOriginalAvatarUrl] = useState("");
+  const [youtubeInput, setYoutubeInput] = useState("");
+  const [youtubeError, setYoutubeError] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -34,9 +37,11 @@ const EditProfile = () => {
         bio: user.bio || "",
         avatarUrl: user.avatarUrl || "",
         location: user.location || "",
-        website: user.website || ""
+        website: user.website || "",
+        youtubeChannelUrl: user.youtubeChannelUrl || ""
       });
       setOriginalAvatarUrl(user.avatarUrl || "");
+      setYoutubeInput(user.youtubeChannelUrl || "");
     }
   }, [user]);
 
@@ -82,6 +87,46 @@ const EditProfile = () => {
       [name]: value
     }));
   };
+
+  function extractChannelIdOrHandleLocal(input) {
+    if (!input) return null;
+    const value = String(input).trim();
+    if (value.includes("youtube.com") || value.includes("youtu.be")) {
+      if (value.includes("/@")) {
+        const handle = value.split("/@")[1].split("/")[0].split("?")[0];
+        return { type: "handle", value: handle.replace(/^@/, "") };
+      }
+      if (value.includes("/channel/")) {
+        const channelId = value.split("/channel/")[1].split("/")[0].split("?")[0];
+        return { type: "id", value: channelId };
+      }
+      return null;
+    }
+    const cleaned = value.replace(/^@/, "");
+    if (/^UC[A-Za-z0-9_-]{22}$/.test(cleaned)) {
+      return { type: "id", value: cleaned };
+    }
+    if (/^[A-Za-z0-9_.-]{2,}$/.test(cleaned)) {
+      return { type: "handle", value: cleaned };
+    }
+    return null;
+  }
+
+  const handleYoutubeKeyUp = (e) => {
+    const value = e.target.value || "";
+    if (value.trim() === "") {
+      setYoutubeError("");
+      handleChange({ target: { name: "youtubeChannelUrl", value: "" } });
+      return;
+    }
+    const parsed = extractChannelIdOrHandleLocal(value);
+    if (parsed) {
+      setYoutubeError("");
+      handleChange({ target: { name: "youtubeChannelUrl", value } });
+    } else {
+      setYoutubeError("Invalid YouTube URL or handle");
+    }
+  }; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -219,6 +264,29 @@ const EditProfile = () => {
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
           />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="youtube" className="block text-gray-300 mb-2">YouTube:</label>
+          <div className={`flex items-center gap-3 px-3 py-2 rounded-md bg-gray-700 ${youtubeError ? "border border-red-600" : "border border-gray-600"}`}>
+            <img src="/icons/youtube_icon.png" alt="YouTube" className="w-6 h-6 flex-shrink-0" />
+            <input
+              type="text"
+              id="youtube"
+              name="youtubeChannelUrl"
+              placeholder="Paste in your YouTube URL or @handle"
+              value={youtubeInput}
+              onChange={(ev) => setYoutubeInput(ev.target.value)}
+              onKeyUp={handleYoutubeKeyUp}
+              aria-invalid={youtubeError ? "true" : "false"}
+              className="w-full bg-transparent text-white focus:outline-none"
+            />
+          </div>
+          {youtubeError && (
+            <p className="mt-1 text-sm text-red-400">
+              {youtubeError}
+            </p>
+          )}
         </div>
         
         <div className="mb-4">
