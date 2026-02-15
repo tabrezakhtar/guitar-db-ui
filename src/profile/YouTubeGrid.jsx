@@ -45,7 +45,7 @@ export default function YouTubeGrid({ userId, handle, avatar, channelId, maxResu
       <h3 className="text-lg font-semibold mb-3 text-white">Latest YouTube Videos</h3>
       <div className="flex items-center gap-3 mb-4">
         <img
-          src={avatar || ""}
+          src={avatar ? `${import.meta.env.VITE_API_BASE_URL}/api/youtube/image-proxy?url=${encodeURIComponent(avatar)}` : ""}
           alt={handle ? `@${handle} channel avatar` : "youtube avatar"}
           className="w-12 h-12 rounded-full"
         />
