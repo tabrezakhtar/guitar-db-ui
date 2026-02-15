@@ -316,7 +316,7 @@ const EditProfile = () => {
               onClick={() => navigate("/profile")}
               className="px-4 py-2 text-gray-300 bg-gray-600 rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer"
             >
-              Cancel
+              Close
             </button>
             <button 
               type="submit" 
