@@ -65,8 +65,7 @@ export const useProfileData = () => {
         setError(data.message || "Failed to update user profile");
         return null;
       }
-      
-      localStorage.setItem("user", JSON.stringify(data.user));
+
       return data;
     } catch (error) {
       setError(error.message || "Failed to update user profile");
@@ -100,7 +99,7 @@ export const useProfileData = () => {
         return null;
       }
       
-      localStorage.setItem("user", JSON.stringify(data.user));
+      // localStorage.setItem("user", JSON.stringify(data.user));
       return data;
     } catch (error) {
       setError(error.message || "Failed to delete avatar");
