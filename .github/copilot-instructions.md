@@ -7,6 +7,7 @@
 - prefer using the context api for any components that use state, instead of passing in callback functions.
 - when writing css, prefer to use tailwind.
 - do not use inline style tags
+- dont use the VITE_API_BASE_URL inline.  import it at the top
 ## Folder Structure
 - keep the folder structure flat unless explicity told to do otherwise.
 ## Chat Behaviour

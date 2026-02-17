@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { useHeader } from "../context/HeaderContext";
 import Logo from "../Logo";
-import Footer from "../Footer";
 import EquipmentSections from "./EquipmentSections";
 import ArticlesSection from "./ArticlesSection";
 import EquipmentTypeGrid from "./EquipmentTypeGrid";
 import HandwrittenText from "./HandwrittenText";
+import RecentUsers from "../components/RecentUsers";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -185,10 +185,14 @@ function Landing() {
             </motion.div>
             
             <EquipmentTypeGrid isVisible={isVisible} />
+
+            <div className="max-w-3xl mt-8">
+              <RecentUsers />
+            </div>
           </div>
         </div>
       </div>
-      
+
       <ArticlesSection isVisible={isVisible} />
 
       <EquipmentSections 
