@@ -118,8 +118,8 @@ function RecentUsers() {
         />
       )}
       
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg font-semibold text-white">New members</h3>
+      <div className="flex items-center justify-center mb-3">
+        <h3 className="text-lg font-semibold text-white text-center">New members</h3>
       </div>
       <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
         {users.map((u, index) => (
