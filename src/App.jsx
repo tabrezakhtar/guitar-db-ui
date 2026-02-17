@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Suspense, lazy } from "react";
 import { UserProvider } from "./context/UserContext";
 import { GuitarProvider } from "./context/GuitarContext";
 import { TagProvider } from "./context/TagContext";
@@ -10,17 +9,16 @@ import ProtectedRoute from "./ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import Spinner from "./components/Spinner";
 import Grid from "./guitars/Grid";
-
-const Landing = lazy(() => import("./landing/Landing"));
-const EditGuitar = lazy(() => import("./edit/EditGuitar"));
-const ViewGuitar = lazy(() => import("./view/ViewGuitar"));
-const AddGuitar = lazy(() => import("./AddGuitar"));
-const Profile = lazy(() => import("./profile/Profile"));
-const EditProfile = lazy(() => import("./profile/EditProfile"));
-const PostPage = lazy(() => import("./PostPage"));
-const Followers = lazy(() => import("./follow/Followers"));
-const Following = lazy(() => import("./follow/Following"));
-const SaveCredentials = lazy(() => import("./SaveCredentials"));
+import Landing from "./landing/Landing";
+import EditGuitar from "./edit/EditGuitar";
+import ViewGuitar from "./view/ViewGuitar";
+import AddGuitar from "./AddGuitar";
+import Profile from "./profile/Profile";
+import EditProfile from "./profile/EditProfile";
+import PostPage from "./PostPage";
+import Followers from "./follow/Followers";
+import Following from "./follow/Following";
+import SaveCredentials from "./SaveCredentials";
 // import CookieAlert from "./components/CookieAlert";
 
 function App() {
@@ -35,9 +33,8 @@ function App() {
                 <Header />
 
                 <div>
-                  <Suspense fallback={<div className="flex justify-center items-center h-screen"><Spinner /></div>}>
-                    <Routes>
-                      <Route path="/" element={<Layout hideSideMenu hideGuestWarning><Landing /></Layout>} />
+                  <Routes>
+                    <Route path="/" element={<Layout hideSideMenu hideGuestWarning><Landing /></Layout>} />
                       <Route path="/gallery" element={<Layout hideFooter><Grid /></Layout>} />
                       <Route
                         path="/edit/:id"
@@ -79,8 +76,7 @@ function App() {
                       <Route path="/following" element={<Layout hideSideMenu><Following /></Layout>} />
                       <Route path="/following/:userId" element={<Layout hideSideMenu><Following /></Layout>} />
                     </Routes>
-                  </Suspense>
-                </div>
+                  </div>
               </HeaderProvider>
             </TagProvider>
           </GuitarProvider>
