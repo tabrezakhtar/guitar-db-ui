@@ -109,6 +109,12 @@ function RecentUsers() {
     setHoveredUser(null);
   };
 
+  const sortedUsers = [...users].sort((a, b) => {
+    const ta = a && a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const tb = b && b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return tb - ta;
+  });
+
   return (
     <div>
       {hoveredUser && isMobile && (
@@ -122,7 +128,7 @@ function RecentUsers() {
         <h3 className="text-2xl font-bold text-white text-center">New members</h3>
       </div>
       <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-        {users.map((u, index) => (
+        {sortedUsers.map((u, index) => (
           <motion.div 
             key={u.id}
             className="relative"
