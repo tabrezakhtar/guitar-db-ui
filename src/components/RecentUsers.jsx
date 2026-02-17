@@ -59,7 +59,7 @@ function RecentUsers() {
     return (
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-white">New members</h3>
+          <h3 className="text-2xl font-bold text-white">New members</h3>
           <Link to="/profile" className="text-sm text-blue-400 hover:underline">See all</Link>
         </div>
         <div className="bg-gray-800 p-4 rounded-md text-gray-400 text-center">No recent members</div>
@@ -119,7 +119,7 @@ function RecentUsers() {
       )}
       
       <div className="flex items-center justify-center mb-3">
-        <h3 className="text-lg font-semibold text-white text-center">New members</h3>
+        <h3 className="text-2xl font-bold text-white text-center">New members</h3>
       </div>
       <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
         {users.map((u, index) => (

@@ -15,7 +15,7 @@ function EquipmentSections({ recentEquipment, popularEquipment, loading, isVisib
         animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
         transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : delay / 1000 }}
       >
-        <div className="mb-4">
+        <div>
           <h3 className="text-2xl font-bold text-white flex items-center justify-center">
             {emoji} {title}
           </h3>
