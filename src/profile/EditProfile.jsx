@@ -91,24 +91,30 @@ const EditProfile = () => {
   function extractChannelIdOrHandleLocal(input) {
     if (!input) return null;
     const value = String(input).trim();
-    if (value.includes("youtube.com") || value.includes("youtu.be")) {
-      if (value.includes("/@")) {
-        const handle = value.split("/@")[1].split("/")[0].split("?")[0];
-        return { type: "handle", value: handle.replace(/^@/, "") };
-      }
-      if (value.includes("/channel/")) {
-        const channelId = value.split("/channel/")[1].split("/")[0].split("?")[0];
-        return { type: "id", value: channelId };
-      }
+
+    const isChannelId = (str) => /^UC[A-Za-z0-9_-]{22}$/.test(str);
+    const isHandle = (str) => /^[A-Za-z0-9][A-Za-z0-9._-]{1,28}[A-Za-z0-9]$/.test(str) && !/\.{2,}/.test(str);
+
+    if (/^https?:\/\/(www\.)?youtube\.com/.test(value)) {
+      const handleMatch = value.match(/youtube\.com\/@([A-Za-z0-9][A-Za-z0-9._-]{1,28}[A-Za-z0-9])(?:[/?#]|$)/);
+      if (handleMatch) return { type: "handle", value: handleMatch[1] };
+
+      const channelMatch = value.match(/youtube\.com\/channel\/(UC[A-Za-z0-9_-]{22})(?:[/?#]|$)/);
+      if (channelMatch) return { type: "id", value: channelMatch[1] };
+
+      const customMatch = value.match(/youtube\.com\/c\/([A-Za-z0-9][A-Za-z0-9._-]{1,28}[A-Za-z0-9])(?:[/?#]|$)/);
+      if (customMatch) return { type: "handle", value: customMatch[1] };
+
+      const userMatch = value.match(/youtube\.com\/user\/([A-Za-z0-9][A-Za-z0-9._-]{1,28}[A-Za-z0-9])(?:[/?#]|$)/);
+      if (userMatch) return { type: "handle", value: userMatch[1] };
+
       return null;
     }
+
     const cleaned = value.replace(/^@/, "");
-    if (/^UC[A-Za-z0-9_-]{22}$/.test(cleaned)) {
-      return { type: "id", value: cleaned };
-    }
-    if (/^[A-Za-z0-9_.-]{2,}$/.test(cleaned)) {
-      return { type: "handle", value: cleaned };
-    }
+    if (isChannelId(cleaned)) return { type: "id", value: cleaned };
+    if (isHandle(cleaned)) return { type: "handle", value: cleaned };
+
     return null;
   }
 
