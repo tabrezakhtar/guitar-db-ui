@@ -63,6 +63,36 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         />
 
         <div className="mb-4">
+          <label className="block text-white mb-2">Visibility:</label>
+          <div className="flex gap-6">
+            <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+              <input
+                type="radio"
+                name="visibility"
+                value={0}
+                checked={(currentEquipment?.visibility ?? 0) === 0}
+                onChange={() => setCurrentEquipment({ ...currentEquipment, visibility: 0 })}
+                disabled={isUploading}
+                className="accent-blue-500"
+              />
+              Public
+            </label>
+            <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+              <input
+                type="radio"
+                name="visibility"
+                value={1}
+                checked={(currentEquipment?.visibility ?? 0) === 1}
+                onChange={() => setCurrentEquipment({ ...currentEquipment, visibility: 1 })}
+                disabled={isUploading}
+                className="accent-blue-500"
+              />
+              Private
+            </label>
+          </div>
+        </div>
+        
+        <div className="mb-4">
           <label className="block text-white">Brand:</label>
           <input
             type="text"

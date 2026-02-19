@@ -156,16 +156,33 @@ const ViewGuitar = () => {
     </div>
   );
 
-  if (loading || !equipment) {
-    return renderSkeleton();
-  }
-
   if (error) {
+    const isPrivate = error === "This item is private";
     return (
-      <div className="flex justify-center items-center h-full">
-        <div className="text-red-400">Error: {error}</div>
+      <div className="max-w-screen-xl mx-auto w-full bg-[#122634] min-h-screen p-6">
+        <div className="flex flex-col items-center justify-center mt-20 text-center">
+          <div className="text-6xl mb-4">{isPrivate ? "🔒" : "⚠️"}</div>
+          <h2 className="text-2xl font-bold text-white mb-2">
+            {isPrivate ? "This item is private" : "Something went wrong"}
+          </h2>
+          <p className="text-gray-400 mb-6">
+            {isPrivate
+              ? "The owner has set this item to private."
+              : error}
+          </p>
+          <button
+            onClick={() => navigate(-1)}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded cursor-pointer"
+          >
+            ⬅️ Go Back
+          </button>
+        </div>
       </div>
     );
+  }
+
+  if (loading || !equipment) {
+    return renderSkeleton();
   }
 
   const likesCount = equipment.likesCount || 0;

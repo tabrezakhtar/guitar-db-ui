@@ -22,7 +22,10 @@ export const useEquipmentData = (id, type = "") => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errData = await response.json().catch(() => ({}));
+        const err = new Error(errData.errors || errData.message || `HTTP error! status: ${response.status}`);
+        err.status = response.status;
+        throw err;
       }
 
       const data = await response.json();

@@ -49,6 +49,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
         type,
         why: "",
         userId: user._id,
+        visibility: 0,
       };
 
       if (type === "guitar") {
