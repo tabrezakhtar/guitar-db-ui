@@ -22,7 +22,7 @@ export default function EditImages({ disabled, currentEquipment, setCurrentEquip
         setFilesToUpload={setFilesToUpload}
       />
       {currentEquipment?.images && currentEquipment.images.length > 1 && (
-        <span className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm text-blue-200 rounded-lg bg-blue-900/30 font-medium w-full">
+        <span className="inline-flex items-center gap-2 px-4 py-2 mb-4 text-sm text-[var(--color-text-muted)] rounded-lg bg-[var(--color-card-bg)] dark:bg-[var(--color-card-dark)] border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] font-medium w-full">
           ℹ️ Drag the images to reorder
         </span>
       )}

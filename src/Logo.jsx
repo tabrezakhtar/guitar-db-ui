@@ -20,7 +20,7 @@ function Logo({ size = "normal" }) {
     const sizeClass = sizes[size] || sizes.normal;
     
     return (
-        <div className={`flex items-center justify-center ${sizeClass.container} font-bold`}>
+        <div className={`inline-flex items-center ${sizeClass.container} font-bold bg-[var(--color-logo-bg)] rounded-lg px-4 py-2`}>
             <img 
                 src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1757542336/favicon-192x192_kkkkll.png" 
                 alt="rifftales Logo" 

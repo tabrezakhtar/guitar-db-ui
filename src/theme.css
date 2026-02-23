@@ -17,6 +17,7 @@
   --color-logo-text:         #EAAA00;        /* pewter logo */
   --color-logo-shadow:       rgba(0, 0, 0, 0);
   --color-logo-shadow-dark:  #1a1a1a;
+  --color-logo-bg:           rgba(0, 0, 0, 0.05);          /* 90% transparent */
 
   /* Interactive / UI elements — pewter theme */
   --color-toggle-bg:         #e5e7eb;        /* light gray */
@@ -75,6 +76,7 @@
   --color-logo-text: #EAAA00;
   --color-logo-shadow: rgba(0, 0, 0, 0.2);
   --color-logo-shadow-dark: #000000;
+  --color-logo-bg: rgba(255, 255, 255, 0.05);
   --color-card-bg: rgba(33,172,232,0.12);
   --color-overlay-dark: rgba(31,41,55,0.3);
   --color-card-dark: #202b3d;

@@ -160,7 +160,7 @@ function Landing() {
                 <div className="relative z-10 text-center">
                   <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
                     <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
-                    <p className="text-[var(--color-text)] text-sm drop-shadow-lg opacity-90">Browse amazing gear from our community</p>
+                    <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Browse amazing gear from our community</p>
                   </div>
                 </div>
                 </Link>
@@ -178,7 +178,7 @@ function Landing() {
                 <div className="relative z-10 text-center">
                   <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
                     <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Add Your Gear</h3>
-                    <p className="text-[var(--color-text)] text-sm drop-shadow-lg opacity-90">Share your instruments and tell their stories</p>
+                    <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Share your instruments and tell their stories</p>
                   </div>
                 </div>
               </Link>

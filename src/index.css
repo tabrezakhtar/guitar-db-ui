@@ -75,11 +75,13 @@
 
 .react-select-container .react-select__control {
   border-radius: 0.25rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-skeleton-line);
+  background-color: var(--color-panel-bg);
+  color: var(--color-text-header);
 }
 
 .react-select-container .react-select__control:hover {
-  border-color: #9ca3af;
+  border-color: var(--color-text-muted);
 }
 
 .react-select-container .react-select__control--is-focused {
@@ -89,6 +91,8 @@
 
 .react-select-container .react-select__menu {
   z-index: 100;
+  background-color: var(--color-panel-bg);
+  border: 1px solid var(--color-skeleton-line);
 }
 
 .react-select-container .react-select__menu-list {
@@ -102,6 +106,7 @@
   white-space: nowrap;
   flex-shrink: 0;
   padding: 0;
+  color: var(--color-text-header);
 }
 
 .react-select-container .react-select__option--is-selected {
@@ -127,8 +132,12 @@
   padding: 0;
 }
 
+.react-select-container .react-select__multi-value__label {
+  color: var(--color-text-header);
+}
+
 .react-select-container .react-select__multi-value__remove {
-  color: #6b7280;
+  color: var(--color-text-muted);
   padding: 0;
   border-radius: 50%;
   width: 20px;
@@ -142,6 +151,15 @@
 .react-select-container .react-select__multi-value__remove:hover {
   background-color: rgba(220, 38, 38, 0.1);
   color: #dc2626;
+}
+
+.react-select-container .react-select__input-container,
+.react-select-container .react-select__single-value {
+  color: var(--color-text-header);
+}
+
+.react-select-container .react-select__placeholder {
+  color: var(--color-text-muted);
 }
 
 /* Custom scrollbar styles */
