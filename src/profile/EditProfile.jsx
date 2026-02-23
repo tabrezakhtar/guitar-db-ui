@@ -220,7 +220,7 @@ const EditProfile = () => {
         </div>
       )}
       
-      <form onSubmit={handleSubmit} className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg shadow-lg p-6">
+      <form onSubmit={handleSubmit} className="bg-[var(--color-main-bg)] rounded-lg shadow-lg p-6">
         <div className="mb-6">
           <div className="flex justify-center">
             <Avatar

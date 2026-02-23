@@ -1,37 +1,55 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-body-bg: #e8dcc0;
-  --color-main-bg: #f8f4e3;
-  --color-text: #ffffff;
-  --color-text-header: #000000;
-  --color-text-muted: #4b5563;
-  --color-text-muted-dark: #9ca3af;
-  --color-logo-text: #eaa000;
-  --color-logo-shadow: rgba(0, 0, 0, 0);
-  --color-logo-shadow-dark: #000000;
-  --color-toggle-bg: #e5e7eb;
-  --color-burger-bg: #3b82f6;
-  --color-overlay: rgba(3, 2, 2, 0.5);
-  --color-guest-bg: #fef3c7;
-  --color-guest-border: #f59e0b;
-  --color-guest-text: #92400e;
-  --color-index-bg: #3b82f6;
-  --color-delete-bg: #ef4444;
-  --color-delete-hover: #991b1b;
-  --color-error-bg: #fee2e2;
-  --color-error-border: #f87171;
-  --color-success-bg: #d1fae5;
-  --color-card-bg: rgba(59,130,246,0.1);
-  --color-overlay-dark: rgba(0,0,0,0.2);
-  --color-card-dark: #ffffff;
-  --color-card-dark-hover: #f3f4f6;
-  --color-panel-bg: #f3f4f6;
-  --color-grid-bg: #e1e2e6;  /* slightly darker than panel-bg for light mode */
-  --color-skeleton-bg: #e5e7eb;
-  --color-skeleton-bg-dark: #374151;
-  --color-skeleton-line: #d1d5db;
-  --color-skeleton-line-dark: #4b5563;
+  /* Main backgrounds — classy off-white / warm light neutral */
+  --color-body-bg:     #f8f6f2;     /* very soft off-white with subtle warmth */
+  --color-main-bg:     #fdfcfb;     /* almost-white but elegant */
+  --color-panel-bg:    #f5f3ef;     /* slightly deeper off-white for panels */
+  --color-grid-bg:     #ece9e4;     /* subtle grid differentiation */
+
+  /* Text — dark pewter / deep gray for classy contrast */
+  --color-text:              #efefef;        /* near-black for body text */
+  --color-text-header:       #1a1a1a;        /* darker for headings */
+  --color-text-muted:        #6b7280;        /* pewter-ish muted (gray-500) */
+  --color-text-muted-dark:   #4b5563;        /* darker muted */
+
+  /* Logo / brand — using pewter + subtle gold tone if desired, or pure pewter */
+  --color-logo-text:         #EAAA00;        /* pewter logo */
+  --color-logo-shadow:       rgba(0, 0, 0, 0);
+  --color-logo-shadow-dark:  #1a1a1a;
+
+  /* Interactive / UI elements — pewter theme */
+  --color-toggle-bg:         #e5e7eb;        /* light gray */
+  --color-burger-bg:         #8e9294;        /* pewter for icons */
+
+  /* Overlays */
+  --color-overlay:           rgba(30, 30, 35, 0.55);     /* darker subtle overlay */
+  --color-overlay-dark:      rgba(0, 0, 0, 0.25);
+
+  /* Status / special backgrounds — desaturated classy versions */
+  --color-guest-bg:          #f5f5f4;
+  --color-guest-border:      #8e9294;
+  --color-guest-text:        #4b5563;
+
+  --color-index-bg:          #8e9294;        /* pewter */
+  --color-delete-bg:         #a3a3a3;        /* neutral pewter-red-ish */
+  --color-delete-hover:      #787878;
+
+  --color-error-bg:          #fef2f2;
+  --color-error-border:      #991b1b;        /* kept some red for visibility */
+
+  --color-success-bg:        #f0fdf4;
+  --color-success-border:    #166534;        /* darker green if needed */
+
+  /* Cards & skeletons */
+  --color-card-bg:           rgba(142, 146, 148, 0.08);   /* very subtle pewter tint */
+  --color-card-dark:         #ffffff;
+  --color-card-dark-hover:   #f8f8f8;
+
+  --color-skeleton-bg:       #e5e7eb;
+  --color-skeleton-bg-dark:  #4b5563;
+  --color-skeleton-line:     #d1d5db;
+  --color-skeleton-line-dark:#6b7280;
 }
 
 
