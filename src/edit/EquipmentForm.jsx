@@ -65,7 +65,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         <div className="mb-4">
           <label className="block text-[var(--color-text-header)] mb-2">Visibility:</label>
           <div className="flex gap-6">
-            <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+            <label className="flex items-center gap-2 text-[var(--color-text-muted)] cursor-pointer">
               <input
                 type="radio"
                 name="visibility"
@@ -77,7 +77,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               />
               Public
             </label>
-            <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+            <label className="flex items-center gap-2 text-[var(--color-text-muted)] cursor-pointer">
               <input
                 type="radio"
                 name="visibility"

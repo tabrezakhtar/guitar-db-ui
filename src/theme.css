@@ -8,10 +8,11 @@
   --color-text-muted: #4b5563;
   --color-text-muted-dark: #9ca3af;
   --color-logo-text: #eaa000;
-  --color-logo-shadow: rgba(0, 0, 0, 0.1);
+  --color-logo-shadow: rgba(0, 0, 0, 0);
   --color-logo-shadow-dark: #000000;
   --color-toggle-bg: #e5e7eb;
-  --color-overlay: rgba(0,0,0,0.5);
+  --color-burger-bg: #3b82f6;
+  --color-overlay: rgba(3, 2, 2, 0.5);
   --color-guest-bg: #fef3c7;
   --color-guest-border: #f59e0b;
   --color-guest-text: #92400e;
@@ -38,6 +39,7 @@
   --color-body-bg: #0a202c;
   --color-main-bg: #122634;
   --color-toggle-bg: #1f2937;
+  --color-burger-bg: #1f2937;
   --color-overlay: rgba(0,0,0,0.5);
   --color-guest-bg: #7c2d12;
   --color-guest-border: #b45309;

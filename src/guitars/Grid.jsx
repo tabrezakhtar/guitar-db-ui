@@ -216,7 +216,7 @@ function Grid() {
             <input
               type="text"
               placeholder="Search equipment..."
-              className="border border-gray-300 rounded-lg p-2.5 pr-8 text-sm text-white w-full"
+              className="border border-gray-300 rounded-lg p-2.5 pr-8 text-sm text-[var(--color-text-header)] w-full"
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
             />

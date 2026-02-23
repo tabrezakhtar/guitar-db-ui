@@ -21,7 +21,7 @@ function Layout({ hideSideMenu, hideGuestWarning, hideFooter, children }) {
       {!hideSideMenu && (
         <button
           onClick={toggleSideMenu}
-          className="md:hidden fixed top-2 left-2 z-50 bg-[var(--color-toggle-bg)] p-2 rounded-md shadow-lg"
+          className="md:hidden fixed top-2 left-2 z-50 bg-[var(--color-burger-bg)] p-2 rounded-md shadow-lg"
         >
           <div className="w-6 h-6 flex flex-col justify-center items-center space-y-1">
             <span

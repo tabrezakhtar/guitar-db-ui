@@ -22,49 +22,49 @@ function AddGuitar() {
       <div className="mb-4 px-6 sm:px-0">
         <Breadcrumbs items={breadcrumbItems} />
       </div>
-      <h1 className="text-2xl font-bold mb-4 text-white px-6 sm:px-0">Add New {toSentenceCase(equipType)}</h1>
+      <h1 className="text-2xl font-bold mb-4 text-[var(--color-text-muted)] px-6 sm:px-0">Add New {toSentenceCase(equipType)}</h1>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-x-0 sm:gap-y-6 mb-6 sm:justify-items-center">
         <button
           onClick={() => setEquipType("guitar")}
-          className={`flex flex-col items-center bg-gray-700 rounded-md p-4 hover:bg-gray-600 cursor-pointer transition-colors sm:w-40 ${equipType === "guitar" ? "outline-3 outline-blue-400" : ""}`}
+          className={`flex flex-col items-center bg-[var(--color-panel-bg)] rounded-md p-4 hover:bg-[var(--color-card-bg)] cursor-pointer transition-colors sm:w-40 ${equipType === "guitar" ? "outline-3 outline-blue-400" : ""}`}
         >
           <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857213/vintage-semi1_r7n1vj.png" alt="Guitar" className="w-24 h-24 mb-2 object-contain" />
-          <span className="text-sm font-medium text-white text-center whitespace-normal">Guitar</span>
+          <span className="text-sm font-medium text-[var(--color-text-muted)] text-center whitespace-normal">Guitar</span>
         </button>
         <button
           onClick={() => setEquipType("bass")}
-          className={`flex flex-col items-center bg-gray-700 rounded-md p-4 hover:bg-gray-600 cursor-pointer transition-colors sm:w-40 ${equipType === "bass" ? "outline-3 outline-blue-400" : ""}`}
+          className={`flex flex-col items-center bg-[var(--color-panel-bg)] rounded-md p-4 hover:bg-[var(--color-card-bg)] cursor-pointer transition-colors sm:w-40 ${equipType === "bass" ? "outline-3 outline-blue-400" : ""}`}
         >
           <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857214/vintage-bass1_rzpl8q.png" alt="Bass" className="w-24 h-24 mb-2 object-contain" />
-          <span className="text-sm font-medium text-white text-center whitespace-normal">Bass</span>
+          <span className="text-sm font-medium text-[var(--color-text-muted)] text-center whitespace-normal">Bass</span>
         </button>
         <button
           onClick={() => setEquipType("acoustic")}
-          className={`flex flex-col items-center bg-gray-700 rounded-md p-4 hover:bg-gray-600 cursor-pointer transition-colors sm:w-40 ${equipType === "acoustic" ? "outline-3 outline-blue-400" : ""}`}
+          className={`flex flex-col items-center bg-[var(--color-panel-bg)] rounded-md p-4 hover:bg-[var(--color-card-bg)] cursor-pointer transition-colors sm:w-40 ${equipType === "acoustic" ? "outline-3 outline-blue-400" : ""}`}
         >
           <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857213/acoustic1_o9agae.png" alt="Acoustic" className="w-24 h-24 mb-2 object-contain" />
-          <span className="text-sm font-medium text-white text-center whitespace-normal">Acoustic</span>
+          <span className="text-sm font-medium text-[var(--color-text-muted)] text-center whitespace-normal">Acoustic</span>
         </button>
         <button
           onClick={() => setEquipType("amp")}
-          className={`flex flex-col items-center bg-gray-700 rounded-md p-4 hover:bg-gray-600 cursor-pointer transition-colors sm:w-40 ${equipType === "amp" ? "outline-3 outline-blue-400" : ""}`}
+          className={`flex flex-col items-center bg-[var(--color-panel-bg)] rounded-md p-4 hover:bg-[var(--color-card-bg)] cursor-pointer transition-colors sm:w-40 ${equipType === "amp" ? "outline-3 outline-blue-400" : ""}`}
         >
           <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857212/marshall1_e6ddzm.png" alt="Amp" className="w-24 h-24 mb-2 object-contain" />
-          <span className="text-sm font-medium text-white text-center whitespace-normal">Amp</span>
+          <span className="text-sm font-medium text-[var(--color-text-muted)] text-center whitespace-normal">Amp</span>
         </button>
         <button
           onClick={() => setEquipType("pedal")}
-          className={`flex flex-col items-center bg-gray-700 rounded-md p-4 hover:bg-gray-600 cursor-pointer transition-colors sm:w-40 ${equipType === "pedal" ? "outline-3 outline-blue-400" : ""}`}
+          className={`flex flex-col items-center bg-[var(--color-panel-bg)] rounded-md p-4 hover:bg-[var(--color-card-bg)] cursor-pointer transition-colors sm:w-40 ${equipType === "pedal" ? "outline-3 outline-blue-400" : ""}`}
         >
           <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857212/boss-ds1_qcqsiz.png" alt="Pedal" className="w-24 h-24 mb-2 object-contain" />
-          <span className="text-sm font-medium text-white text-center whitespace-normal">Pedal</span>
+          <span className="text-sm font-medium text-[var(--color-text-muted)] text-center whitespace-normal">Pedal</span>
         </button>
         <button
           onClick={() => setEquipType("accessory")}
-          className={`flex flex-col items-center bg-gray-700 rounded-md p-4 hover:bg-gray-600 cursor-pointer transition-colors sm:w-40 ${equipType === "accessory" ? "outline-3 outline-blue-400" : ""}`}
+          className={`flex flex-col items-center bg-[var(--color-panel-bg)] rounded-md p-4 hover:bg-[var(--color-card-bg)] cursor-pointer transition-colors sm:w-40 ${equipType === "accessory" ? "outline-3 outline-blue-400" : ""}`}
         >
           <img src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857214/mic_e4e0ec.png" alt="Accessories" className="w-24 h-24 mb-2 object-contain" />
-          <span className="text-sm font-medium text-white text-center whitespace-normal">Accessory / Parts</span>
+          <span className="text-sm font-medium text-[var(--color-text-muted)] text-center whitespace-normal">Accessory / Parts</span>
         </button>
       </div>
 

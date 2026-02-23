@@ -206,7 +206,7 @@ const EditProfile = () => {
       <div className="mb-4">
         <Breadcrumbs items={[{ label: "Edit Profile", url: "/edit-profile" }]} />
       </div>
-      <h1 className="text-2xl font-bold mb-6 text-white">Edit Profile</h1>
+      <h1 className="text-2xl font-bold mb-6 text-[var(--color-text-header)]">Edit Profile</h1>
       
       {success && (
         <div className="bg-green-900/30 border border-green-600 text-green-400 px-4 py-3 rounded mb-6">
@@ -230,13 +230,13 @@ const EditProfile = () => {
               onAvatarUpdated={handleAvatarChange}
             />
           </div>
-          <p className="text-sm text-gray-400 text-center mt-2">
+          <p className="text-sm text-[var(--color-text-muted)] text-center mt-2">
             Click on the avatar to change your profile picture
           </p>
         </div>
         
         <div className="mb-4">
-          <label htmlFor="username" className="block text-gray-300 mb-2">Username: <span className="text-red-400">*</span></label>
+          <label htmlFor="username" className="block text-[var(--color-text-muted-dark)] mb-2">Username: <span className="text-red-400">*</span></label>
           <input
             type="text"
             id="username"
@@ -244,37 +244,37 @@ const EditProfile = () => {
             value={profile.username}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
+            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] text-[var(--color-text-header)]"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="location" className="block text-gray-300 mb-2">Location:</label>
+          <label htmlFor="location" className="block text-[var(--color-text-muted-dark)] mb-2">Location:</label>
           <input
             type="text"
             id="location"
             name="location"
             value={profile.location}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
+            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] text-[var(--color-text-header)]"
           />
         </div>
         
         <div className="mb-4">
-          <label htmlFor="website" className="block text-gray-300 mb-2">Website:</label>
+          <label htmlFor="website" className="block text-[var(--color-text-muted-dark)] mb-2">Website:</label>
           <input
             type="text"
             id="website"
             name="website"
             value={profile.website}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
+            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] text-[var(--color-text-header)]"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="youtube" className="block text-gray-300 mb-2">YouTube:</label>
-          <div className={`flex items-center gap-3 px-3 py-2 rounded-md bg-gray-700 ${youtubeError ? "border border-red-600" : "border border-gray-600"}`}>
+          <label htmlFor="youtube" className="block text-[var(--color-text-muted-dark)] mb-2">YouTube:</label>
+          <div className={`flex items-center gap-3 px-3 py-2 rounded-md bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] ${youtubeError ? "border border-red-600" : "border border-gray-600"}`}>
             <img src="/icons/youtube_icon.png" alt="YouTube" className="w-6 h-6 flex-shrink-0" />
             <input
               type="text"
@@ -285,7 +285,7 @@ const EditProfile = () => {
               onChange={(ev) => setYoutubeInput(ev.target.value)}
               onKeyUp={handleYoutubeKeyUp}
               aria-invalid={youtubeError ? "true" : "false"}
-              className="w-full bg-transparent text-white focus:outline-none"
+              className="w-full bg-transparent text-[var(--color-text-header)] focus:outline-none"
             />
           </div>
           {youtubeError && (
@@ -296,14 +296,14 @@ const EditProfile = () => {
         </div>
         
         <div className="mb-4">
-          <label htmlFor="bio" className="block text-gray-300 mb-2">Bio:</label>
+          <label htmlFor="bio" className="block text-[var(--color-text-muted-dark)] mb-2">Bio:</label>
           <textarea
             id="bio"
             name="bio"
             value={profile.bio}
             onChange={handleChange}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
+            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] text-[var(--color-text-header)]"
           />
         </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
@@ -311,7 +311,7 @@ const EditProfile = () => {
             <button 
               type="button" 
               onClick={handleDeleteProfile}
-              className="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-full sm:w-auto cursor-pointer"
+              className="px-4 py-2 text-[var(--color-text)] bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-full sm:w-auto cursor-pointer"
             >
               Delete Profile
             </button>
@@ -320,14 +320,14 @@ const EditProfile = () => {
             <button 
               type="button" 
               onClick={() => navigate("/profile")}
-              className="px-4 py-2 text-gray-300 bg-gray-600 rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer"
+              className="px-4 py-2 text-[var(--color-text)] bg-gray-600 rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer"
             >
               Close
             </button>
             <button 
               type="submit" 
               disabled={loading}
-              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 cursor-pointer"
+              className="px-4 py-2 text-[var(--color-text)] bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 cursor-pointer"
             >
               {loading ? "Saving..." : "Save Profile"}
             </button>
@@ -344,14 +344,14 @@ const EditProfile = () => {
                 <h3 className="text-xl font-bold text-[var(--color-text-header)] mb-4">
                   Deleting Your Profile...
                 </h3>
-                <p className="text-gray-300 mb-6 text-lg">
+                <p className="text-[var(--color-text-muted-dark)] mb-6 text-lg">
                   Please wait while we permanently delete your profile, images, and all equipment data.
                 </p>
                 <div className="flex flex-col items-center space-y-4">
                   <div className="relative">
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-300 border-t-red-400"></div>
                   </div>
-                  <p className="text-sm text-gray-400 animate-pulse">
+                  <p className="text-sm text-[var(--color-text-muted)] animate-pulse">
                     This may take a few moments...
                   </p>
                 </div>
@@ -359,10 +359,10 @@ const EditProfile = () => {
             ) : (
               <div className="text-center max-w-md mx-auto">
                 <div className="text-red-400 text-6xl mb-4">⚠️</div>
-                <h3 className="text-lg font-semibold text-white mb-4">
+                <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">
                   Are you sure you want to delete your profile?
                 </h3>
-                <p className="text-gray-300 mb-2">
+                <p className="text-[var(--color-text-muted-dark)] mb-2">
                   This action will permanently delete your profile, all your uploaded images, and all your equipment data.
                 </p>
                 <p className="text-red-400 font-semibold">
