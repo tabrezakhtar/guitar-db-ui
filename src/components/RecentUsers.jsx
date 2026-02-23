@@ -59,10 +59,10 @@ function RecentUsers() {
     return (
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-2xl font-bold text-white">New members</h3>
+          <h3 className="text-2xl font-bold text-[var(--color-text-header)]">New members</h3>
           <Link to="/profile" className="text-sm text-blue-400 hover:underline">See all</Link>
         </div>
-        <div className="bg-gray-800 p-4 rounded-md text-gray-400 text-center">No recent members</div>
+        <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] text-center">No recent members</div>
       </div>
     );
   }
@@ -125,7 +125,7 @@ function RecentUsers() {
       )}
       
       <div className="flex items-center justify-center mb-3">
-        <h3 className="text-2xl font-bold text-white text-center">New members</h3>
+        <h3 className="text-2xl font-bold text-[var(--color-text-header)] text-center">New members</h3>
       </div>
       <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
         {sortedUsers.map((u, index) => (
@@ -145,7 +145,7 @@ function RecentUsers() {
           >
             <Link 
               to={`/profile/${u.id}`} 
-              className="flex flex-col items-center gap-2 p-2 rounded-md hover:bg-gray-800 transition-colors cursor-pointer"
+              className="group flex flex-col items-center gap-2 p-2 rounded-md hover:bg-gray-800 transition-colors cursor-pointer"
               onClick={(e) => {
                 if (isMobile && hoveredUser) {
                   e.preventDefault();
@@ -153,7 +153,7 @@ function RecentUsers() {
               }}
             >
               <AvatarDisplayOnly imageUrl={u.avatarUrl} username={u.username} size="small" />
-              <div className="text-white text-xs sm:text-sm font-medium truncate w-full text-center">{u.username}</div>
+              <div className="text-[var(--color-text-header)] group-hover:text-white dark:group-hover:text-black text-xs sm:text-sm font-medium truncate w-full text-center">{u.username}</div>
             </Link>
           </motion.div>
         ))}
@@ -173,13 +173,13 @@ function RecentUsers() {
             transform: isMobile ? 'translateX(-50%)' : 'translateX(-50%)',
           }}
         >
-          <div className="bg-white rounded-2xl shadow-2xl p-6 w-80 max-w-[90vw] pointer-events-auto">
+          <div className="bg-[var(--color-card-dark)] dark:bg-[var(--color-card-dark)] rounded-2xl shadow-2xl p-6 w-80 max-w-[90vw] pointer-events-auto">
             <div className="flex flex-col items-center">
               <div className="mb-4">
                 <AvatarDisplayOnly imageUrl={hoveredUser.avatarUrl} username={hoveredUser.username} size="large" />
               </div>
-              <h4 className="text-gray-900 font-bold text-lg mb-2">@{hoveredUser.username}</h4>
-              <p className="text-gray-600 text-sm text-center leading-relaxed line-clamp-4">
+              <h4 className="text-[var(--color-text)] font-bold text-lg mb-2">@{hoveredUser.username}</h4>
+              <p className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] text-sm text-center leading-relaxed line-clamp-4">
                 {(hoveredUser.bio && hoveredUser.bio.length > 100) ? `${hoveredUser.bio.slice(0, 100)}...` : (hoveredUser.bio || "No bio available")}
               </p>
               {isMobile && (
