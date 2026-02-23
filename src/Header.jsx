@@ -12,7 +12,7 @@ function MenuContent({ user }) {
       {user ? (
         <Link 
           to="/profile" 
-          className="ml-6 flex items-center hover:text-[var(--color-text-muted)] dark:hover:text-[var(--color-text-muted-dark)]"
+          className="ml-6 flex items-center text-[var(--color-text-header)] dark:text-[var(--color-text-dark)]"
         >
           <AvatarDisplayOnly imageUrl={user.avatarUrl} username={user.username} size="small"/>
           <span className="pl-2">{user.username}</span>
@@ -27,7 +27,7 @@ function MenuContent({ user }) {
       ) : (
         <a 
           href={`${import.meta.env.VITE_API_BASE_URL}/register`} 
-          className="ml-6 flex items-center hover:text-[var(--color-text-muted)] dark:hover:text-[var(--color-text-muted-dark)]"
+          className="ml-6 flex items-center text-[var(--color-text-header)] dark:text-[var(--color-text-dark)]"
         >
           <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-medium mr-2">
             +

@@ -153,7 +153,7 @@ function RecentUsers() {
               }}
             >
               <AvatarDisplayOnly imageUrl={u.avatarUrl} username={u.username} size="small" />
-              <div className="text-[var(--color-text-header)] group-hover:text-white dark:group-hover:text-black text-xs sm:text-sm font-medium truncate w-full text-center">{u.username}</div>
+              <div className="text-[var(--color-text-header)] group-hover:text-white dark:group-hover:text-white text-xs sm:text-sm font-medium truncate w-full text-center">{u.username}</div>
             </Link>
           </motion.div>
         ))}

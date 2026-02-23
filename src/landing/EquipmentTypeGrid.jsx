@@ -21,8 +21,8 @@ function EquipmentTypeGrid({ isVisible }) {
               transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: "easeInOut" }}
             />
           </div>
-          <h3 className="text-lg font-semibold mb-2">Guitars</h3>
-          <p className="text-gray-400 text-sm">Electric guitars from all brands.</p>
+          <h3 className="text-lg font-semibold mb-2 text-[var(--color-text-header)]">Guitars</h3>
+          <p className="text-[var(--color-text-muted)] text-sm">Electric guitars from all brands.</p>
         </div>
       </Link>
       <Link to="/gallery?type=amp" className="bg-[var(--color-card-dark)] rounded-lg p-6">
@@ -36,8 +36,8 @@ function EquipmentTypeGrid({ isVisible }) {
               transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: "easeInOut" }}
             />
           </div>
-          <h3 className="text-lg font-semibold mb-2">Amps</h3>
-          <p className="text-gray-400 text-sm">Amplifiers, whether vintage or modern, analogue or digital.</p>
+          <h3 className="text-lg font-semibold mb-2 text-[var(--color-text-header)]">Amps</h3>
+          <p className="text-[var(--color-text-muted)] text-sm">Amplifiers, whether vintage or modern, analogue or digital.</p>
         </div>
       </Link>
       <Link to="/gallery?type=accessory" className="bg-[var(--color-card-dark)] rounded-lg p-6">
@@ -51,8 +51,8 @@ function EquipmentTypeGrid({ isVisible }) {
               transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: "easeInOut" }}
             />
           </div>
-          <h3 className="text-lg font-semibold mb-2">Accessories</h3>
-          <p className="text-gray-400 text-sm">Picks, strings, cases, and other musical accessories.</p>
+          <h3 className="text-lg font-semibold mb-2 text-[var(--color-text-header)]">Accessories</h3>
+          <p className="text-[var(--color-text-muted)] text-sm">Picks, strings, cases, and other musical accessories.</p>
         </div>
       </Link>
     </motion.div>
