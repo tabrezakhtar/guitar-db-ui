@@ -26,7 +26,7 @@ function Logo({ size = "normal" }) {
                 alt="rifftales Logo" 
                 className={sizeClass.image}
             />
-            <span className="text-[#EAAA00] drop-shadow-[2px_2px_0px_#000000]">rifftales</span>
+            <span className="text-[var(--color-logo-text)] drop-shadow-[2px_2px_0px_var(--color-logo-shadow)] dark:drop-shadow-[2px_2px_0px_var(--color-logo-shadow-dark)]">rifftales</span>
         </div>
     );
 }

@@ -18,7 +18,7 @@ function AddGuitar() {
   ];
 
   return (
-    <div className="max-w-screen-md mx-auto py-6 px-0 sm:px-6 bg-[#122634]">
+    <div className="max-w-screen-md mx-auto py-6 px-0 sm:px-6 bg-[var(--color-main-bg)]">
       <div className="mb-4 px-6 sm:px-0">
         <Breadcrumbs items={breadcrumbItems} />
       </div>

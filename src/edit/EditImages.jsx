@@ -1,6 +1,6 @@
 import DragSortable from "../components/DragSortable";
 import Thumbnail from "../components/Thumbnail";
-import FileDropZone from "../FileDropZone";
+import FileDropZone from "../components/FileDropZone";
 
 export default function EditImages({ disabled, currentEquipment, setCurrentEquipment, setFilesToUpload, deleteImage }) {
 

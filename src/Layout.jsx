@@ -21,7 +21,7 @@ function Layout({ hideSideMenu, hideGuestWarning, hideFooter, children }) {
       {!hideSideMenu && (
         <button
           onClick={toggleSideMenu}
-          className="md:hidden fixed top-2 left-2 z-50 bg-gray-800 p-2 rounded-md shadow-lg"
+          className="md:hidden fixed top-2 left-2 z-50 bg-[var(--color-toggle-bg)] p-2 rounded-md shadow-lg"
         >
           <div className="w-6 h-6 flex flex-col justify-center items-center space-y-1">
             <span
@@ -47,7 +47,7 @@ function Layout({ hideSideMenu, hideGuestWarning, hideFooter, children }) {
       {!hideSideMenu && isSideMenuOpen && (
         <div
           className="md:hidden fixed inset-0 z-30"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+          style={{ backgroundColor: "var(--color-overlay)" }}
           onClick={toggleSideMenu}
         />
       )}
@@ -68,9 +68,9 @@ function Layout({ hideSideMenu, hideGuestWarning, hideFooter, children }) {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 bg-[#122634] p-0 md:p-4 overflow-y-auto">
+      <main className="flex-1 bg-[var(--color-main-bg)] p-0 md:p-4 overflow-y-auto">
         {isGuest && showHeader && !hideGuestWarning && (
-          <div className="w-full bg-yellow-900 text-yellow-100 border-b border-yellow-700 rounded-md mb-4">
+          <div className="w-full bg-[var(--color-guest-bg)] text-[var(--color-guest-text)] border-b border-[var(--color-guest-border)] rounded-md mb-4">
             <div className="max-w-screen-xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
               <span>👋 You are browsing as a guest - some features are limited. Sign up for the full experience.</span>
               <button onClick={() => ssrRedirect(`${BASE_URL}/register`)} className="bg-orange-400 hover:bg-orange-600 text-white px-3 py-1 rounded cursor-pointer">

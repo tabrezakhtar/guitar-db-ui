@@ -76,9 +76,10 @@ function SideMenu() {
     { key: "pedal", label: "Pedal", img: "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857212/boss-ds1_qcqsiz.png" },
     { key: "accessory", label: "Accessory", img: "https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759857214/mic_e4e0ec.png" }
   ];
-  return (    <aside 
+  return (
+  <aside 
       ref={sideMenuRef}
-      className="bg-gray-800 text-white w-full md:w-80 p-6 shadow-lg flex flex-col gap-6 bg-[url('/guitar-bg.svg')] bg-contain bg-top bg-no-repeat"
+      className="bg-[var(--color-toggle-bg)] text-white w-full md:w-80 p-6 shadow-lg flex flex-col gap-6 bg-contain bg-top bg-no-repeat bg-[url('/guitar-bg-light.svg')] dark:bg-[url('/guitar-bg-dark.svg')]"
     >
       <div ref={headerSectionRef}>
         <div className="md:hidden mb-4 pb-4 border-b border-gray-600">

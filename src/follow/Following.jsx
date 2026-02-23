@@ -62,7 +62,7 @@ const Following = () => {  const { user } = useContext(UserContext);
   if (!userId && !user) {
     return (
       <div className="p-6">
-        <div className="flex p-5 bg-[rgba(33,172,232,0.12)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
+        <div className="flex p-5 bg-[var(--color-card-bg)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
           <div className="flex-shrink-0 mr-4">
             <span className="text-2xl">🔒</span>
           </div>
@@ -86,7 +86,7 @@ const Following = () => {  const { user } = useContext(UserContext);
   if (error) {
     return (
       <div className="p-6">
-        <div className="flex p-5 bg-[rgba(33,172,232,0.12)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
+        <div className="flex p-5 bg-[var(--color-card-bg)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
           <div className="flex-shrink-0 mr-4">
             <span className="text-2xl">⚠️</span>
           </div>
@@ -108,7 +108,7 @@ const Following = () => {  const { user } = useContext(UserContext);
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full p-6 bg-[#122634]">
+    <div className="max-w-screen-xl mx-auto w-full p-6 bg-[var(--color-main-bg)]">
       <div className="mb-4">
         <Breadcrumbs items={[{ label: "Following", url: "/following" }]} />
       </div>
@@ -116,7 +116,7 @@ const Following = () => {  const { user } = useContext(UserContext);
         <h1 className="text-2xl font-bold text-white">{profileUsername} Follows</h1>
       </div>
 
-      <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+      <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg shadow-lg p-6">
         {loading ? (
           <div className="flex justify-center p-4">
             <Spinner />

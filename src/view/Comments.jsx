@@ -23,10 +23,10 @@ const Comments = ({ equipmentId }) => {
   
   if (!comments || comments.length === 0) {
     return (
-      <div className="bg-gray-800 rounded-lg shadow p-4">
-        <h3 className="text-xl font-semibold mb-4 text-white">Comments</h3>
+      <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg shadow p-4">
+        <h3 className="text-xl font-semibold mb-4 text-[var(--color-text-dark)]">Comments</h3>
         <CommentForm equipmentId={equipmentId} />
-        <p className="text-gray-400 text-center my-6">No comments yet. Be the first to comment!</p>
+        <p className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] text-center my-6">No comments yet. Be the first to comment!</p>
       </div>
     );
   }
@@ -34,14 +34,14 @@ const Comments = ({ equipmentId }) => {
   const displayedComments = expandedComments ? comments : comments.slice(0, 5);
   
   return (
-    <div className="bg-gray-800 rounded-lg shadow p-4">
-      <h3 className="text-xl font-semibold mb-4 text-white">Comments</h3>
+    <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg shadow p-4">
+        <h3 className="text-xl font-semibold mb-4 text-[var(--color-text-dark)]">Comments</h3>
       
       <CommentForm equipmentId={equipmentId} />
       
       <div className="space-y-4 mt-6">
         {displayedComments.map((comment, index) => (
-          <div key={comment._id || `comment-${index}`} className="bg-gray-700 rounded-lg p-4 border border-gray-600 shadow-sm">
+          <div key={comment._id || `comment-${index}`} className="bg-[var(--color-card-bg)] dark:bg-[var(--color-card-dark)] rounded-lg p-4 border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] shadow-sm">
             <div className="flex">
               <div className="mr-3 self-center">
                 <AvatarDisplayOnly imageUrl={comment.user?.avatarUrl} username={comment.user?.username} size="xsmall" />
@@ -51,7 +51,7 @@ const Comments = ({ equipmentId }) => {
                   <div className="flex items-center gap-1">
                     <NavLink 
                       to={`/profile/${comment.user?._id}`}
-                      className="font-medium text-gray-100 hover:text-blue-400 transition-colors"
+                      className="font-medium text-[var(--color-text)] dark:text-[var(--color-text-dark)] hover:text-blue-400 transition-colors"
                     >
                       {comment.user?.username?.substring(0, 32)}
                     </NavLink>
@@ -64,7 +64,7 @@ const Comments = ({ equipmentId }) => {
                     )}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-400" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
+                    <span className="text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
                     {user && user._id === comment.user?._id && (
                       <button
                         onClick={() => handleDeleteComment(comment._id)}
@@ -75,7 +75,7 @@ const Comments = ({ equipmentId }) => {
                     )}
                   </div>
                 </div>
-                <p className="text-gray-200 leading-relaxed">{comment.text}</p>
+                <p className="text-[var(--color-text)] dark:text-[var(--color-text-dark)] leading-relaxed">{comment.text}</p>
               </div>
             </div>
           </div>

@@ -12,7 +12,7 @@ function ArticlesSection({ isVisible }) {
       transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1], delay: 0.8 }}
     >
       <div className="mb-6">
-        <h3 className="text-2xl font-bold text-white flex items-center justify-center">
+        <h3 className="text-2xl font-bold text-[var(--color-text-dark)] flex items-center justify-center">
           Articles
         </h3>
       </div>
@@ -22,7 +22,7 @@ function ArticlesSection({ isVisible }) {
             <Link
               key={post.slug}
               to={`/posts/${post.slug}`}
-              className="bg-[#202b3d] rounded-lg overflow-hidden hover:bg-[#2a3a4d] transition-colors group flex-1 min-w-xs max-w-sm flex flex-col"
+              className="bg-[var(--color-card-dark)] rounded-lg overflow-hidden hover:bg-[var(--color-card-dark-hover)] transition-colors group flex-1 min-w-xs max-w-sm flex flex-col"
             >
               {post.thumbnail && (
                 <img 
@@ -32,7 +32,7 @@ function ArticlesSection({ isVisible }) {
                 />
               )}
               <div className="p-6 flex flex-col flex-1">
-                <h4 className="text-lg font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                <h4 className="text-lg font-semibold text-[var(--color-text-dark)] mb-2 group-hover:text-blue-400 transition-colors">
                   {post.title}
                 </h4>
                 <p className="text-gray-300 text-xs mb-3">

@@ -202,7 +202,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px] bg-[#122634] min-h-screen">
+    <div className="max-w-screen-md w-full mx-auto p-6 md:min-w-[768px] bg-[var(--color-main-bg)] min-h-screen">
       <div className="mb-4">
         <Breadcrumbs items={[{ label: "Edit Profile", url: "/edit-profile" }]} />
       </div>
@@ -220,7 +220,7 @@ const EditProfile = () => {
         </div>
       )}
       
-      <form onSubmit={handleSubmit} className="bg-gray-800 rounded-lg shadow-lg p-6">
+      <form onSubmit={handleSubmit} className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg shadow-lg p-6">
         <div className="mb-6">
           <div className="flex justify-center">
             <Avatar

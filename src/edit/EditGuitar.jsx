@@ -194,7 +194,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
   ];
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full bg-[#122634]">
+    <div className="max-w-screen-xl mx-auto w-full bg-[var(--color-main-bg)]">
       <div className="p-6">
         {saved && <SuccessMessage />}
 

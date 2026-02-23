@@ -75,43 +75,43 @@ const ViewGuitar = () => {
   };
 
   const renderSkeleton = () => (
-    <div className="max-w-screen-xl mx-auto w-full bg-[#122634]">
+    <div className="max-w-screen-xl mx-auto w-full bg-[var(--color-main-bg)]">
       <div className="p-6">
         <div className="mb-4">
-          <div className="h-4 w-32 bg-gray-600 rounded animate-pulse"></div>
+          <div className="h-4 w-32 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
         </div>
         <div className="flex items-center justify-between mb-6">
-          <div className="h-8 w-48 bg-gray-600 rounded animate-pulse"></div>
-          <div className="h-10 w-20 bg-gray-600 rounded animate-pulse"></div>
+          <div className="h-8 w-48 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
+          <div className="h-10 w-20 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border border-gray-600 rounded-lg p-2 sm:p-4 relative flex flex-col overflow-hidden">
-            <div className="aspect-video bg-gray-600 rounded animate-pulse"></div>
+          <div className="sm:col-span-2 md:col-span-1 lg:col-span-2 border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] rounded-lg p-2 sm:p-4 relative flex flex-col overflow-hidden">
+            <div className="aspect-video bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
             <div className="absolute top-4 right-4">
-              <div className="h-8 w-20 bg-gray-600 rounded animate-pulse"></div>
+              <div className="h-8 w-20 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
             </div>
           </div>
-          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border border-gray-600 rounded-lg p-4 overflow-hidden">
+          <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] rounded-lg p-4 overflow-hidden">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <div className="h-6 w-16 bg-gray-600 rounded animate-pulse mb-2"></div>
+                <div className="h-6 w-16 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse mb-2"></div>
                 <div className="space-y-2">
                   {[...Array(6)].map((_, i) => (
                     <div key={i} className="flex gap-2">
-                      <div className="h-4 w-16 bg-gray-600 rounded animate-pulse"></div>
-                      <div className="h-4 w-32 bg-gray-600 rounded animate-pulse"></div>
+                      <div className="h-4 w-16 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
+                      <div className="h-4 w-32 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="mt-4">
-                <div className="h-6 w-24 bg-gray-600 rounded animate-pulse mb-2"></div>
-                <div className="bg-gray-700 rounded-lg p-4 h-32">
+                <div className="h-6 w-24 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse mb-2"></div>
+                <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg p-4 h-32">
                   <div className="space-y-2">
                     {[...Array(4)].map((_, i) => (
                       <div
                         key={i}
-                        className="h-4 w-full bg-gray-600 rounded animate-pulse"
+                        className="h-4 w-full bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"
                       ></div>
                     ))}
                   </div>
@@ -119,34 +119,34 @@ const ViewGuitar = () => {
               </div>
             </div>
             <div className="mt-4">
-              <div className="h-6 w-12 bg-gray-600 rounded animate-pulse mb-2"></div>
+              <div className="h-6 w-12 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse mb-2"></div>
               <div className="flex flex-wrap gap-2">
                 {[...Array(3)].map((_, i) => (
                   <div
                     key={i}
-                    className="h-6 w-16 bg-gray-600 rounded animate-pulse"
+                    className="h-6 w-16 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"
                   ></div>
                 ))}
               </div>
             </div>
             <div className="mt-4">
-              <div className="h-6 w-16 bg-gray-600 rounded animate-pulse mb-2"></div>
+              <div className="h-6 w-16 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse mb-2"></div>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gray-600 rounded-full animate-pulse"></div>
-                <div className="h-4 w-24 bg-gray-600 rounded animate-pulse"></div>
+                <div className="w-8 h-8 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded-full animate-pulse"></div>
+                <div className="h-4 w-24 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
               </div>
             </div>
           </div>
         </div>
-        <div className="mt-6 border border-gray-600 rounded-lg p-4">
-          <div className="h-6 w-20 bg-gray-600 rounded animate-pulse mb-4"></div>
+        <div className="mt-6 border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] rounded-lg p-4">
+          <div className="h-6 w-20 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse mb-4"></div>
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="flex gap-3">
-                <div className="w-8 h-8 bg-gray-600 rounded-full animate-pulse"></div>
+                <div className="w-8 h-8 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded-full animate-pulse"></div>
                 <div className="flex-1 space-y-2">
-                  <div className="h-4 w-24 bg-gray-600 rounded animate-pulse"></div>
-                  <div className="h-16 w-full bg-gray-600 rounded animate-pulse"></div>
+                  <div className="h-4 w-24 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
+                  <div className="h-16 w-full bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded animate-pulse"></div>
                 </div>
               </div>
             ))}
@@ -159,7 +159,7 @@ const ViewGuitar = () => {
   if (error) {
     const isPrivate = error === "This item is private";
     return (
-      <div className="max-w-screen-xl mx-auto w-full bg-[#122634] min-h-screen p-6">
+      <div className="max-w-screen-xl mx-auto w-full bg-[var(--color-main-bg)] min-h-screen p-6">
         <div className="flex flex-col items-center justify-center mt-20 text-center">
           <div className="text-6xl mb-4">{isPrivate ? "🔒" : "⚠️"}</div>
           <h2 className="text-2xl font-bold text-white mb-2">
@@ -200,7 +200,7 @@ const ViewGuitar = () => {
   ];
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full bg-[#122634]">
+    <div className="max-w-screen-xl mx-auto w-full bg-[var(--color-main-bg)]">
       <div className="p-6">
         <div className="mb-4">
           <Breadcrumbs items={breadcrumbItems} />
@@ -292,7 +292,7 @@ const ViewGuitar = () => {
                 <h2 className="text-xl font-semibold mb-2 text-white">
                   Description
                 </h2>
-                <div className="bg-gray-700 rounded-lg p-4 max-h-96 overflow-y-auto whitespace-pre-wrap break-words text-white font-['Roboto_Mono'] text-xl">
+                <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg p-4 max-h-96 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Roboto_Mono'] text-xl">
                   {equipment.description || "No description provided."}
                 </div>
               </div>

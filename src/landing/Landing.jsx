@@ -107,7 +107,7 @@ function Landing() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-200 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-[var(--color-text)] dark:text-[var(--color-text-dark)] p-8">
       
       <div className="max-w-6xl mx-auto px-6 mb-8">
         <div className="flex items-center justify-center">
@@ -158,9 +158,9 @@ function Landing() {
                 }}
               >
                 <div className="relative z-10 text-center">
-                  <div className="bg-[rgba(31,41,55,0.3)] rounded-lg px-4 py-3">
-                    <h3 className="text-white text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
-                    <p className="text-white text-sm drop-shadow-lg opacity-90">Browse amazing gear from our community</p>
+                  <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
+                    <h3 className="text-[var(--color-text-dark)] text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
+                    <p className="text-[var(--color-text-dark)] text-sm drop-shadow-lg opacity-90">Browse amazing gear from our community</p>
                   </div>
                 </div>
                 </Link>
@@ -176,9 +176,9 @@ function Landing() {
                 }}
               >
                 <div className="relative z-10 text-center">
-                  <div className="bg-[rgba(31,41,55,0.3)] rounded-lg px-4 py-3">
-                    <h3 className="text-white text-xl font-bold drop-shadow-lg mb-1">Add Your Gear</h3>
-                    <p className="text-white text-sm drop-shadow-lg opacity-90">Share your instruments and tell their stories</p>
+                  <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
+                    <h3 className="text-[var(--color-text-dark)] text-xl font-bold drop-shadow-lg mb-1">Add Your Gear</h3>
+                    <p className="text-[var(--color-text-dark)] text-sm drop-shadow-lg opacity-90">Share your instruments and tell their stories</p>
                   </div>
                 </div>
               </Link>

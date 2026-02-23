@@ -41,8 +41,8 @@ export default function YouTubeGrid({ userId, handle, avatar, channelId, maxResu
   if (!handle && !channelId) return null;
 
   return (
-    <div className="mb-6 bg-gray-700 p-4 rounded-md">
-      <h3 className="text-lg font-semibold mb-3 text-white">Latest YouTube Videos</h3>
+    <div className="mb-6 bg-[var(--color-grid-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
+      <h3 className="text-lg font-semibold mb-3 text-black dark:text-white">Latest YouTube Videos</h3>
       <div className="flex items-center gap-3 mb-4">
         <img
           src={avatar ? `${import.meta.env.VITE_API_BASE_URL}/api/youtube/image-proxy?url=${encodeURIComponent(avatar)}` : ""}
@@ -62,11 +62,11 @@ export default function YouTubeGrid({ userId, handle, avatar, channelId, maxResu
       {loading && (
         <div role="status" aria-busy="true" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
           {Array.from({ length: Math.min(Number(maxResults) || 12, 12) }).map((_, i) => (
-            <div key={i} className="bg-gray-800 rounded overflow-hidden animate-pulse" aria-hidden="true">
-              <div className="w-full bg-gray-600 aspect-video"></div>
+            <div key={i} className="bg-[var(--color-skeleton-bg)] dark:bg-[var(--color-skeleton-bg-dark)] rounded overflow-hidden animate-pulse" aria-hidden="true">
+              <div className="w-full bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] aspect-video"></div>
               <div className="p-2">
-                <div className="h-3 bg-gray-600 rounded mb-2 w-3/4"></div>
-                <div className="h-2 bg-gray-600 rounded w-1/3"></div>
+                <div className="h-3 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded mb-2 w-3/4"></div>
+                <div className="h-2 bg-[var(--color-skeleton-line)] dark:bg-[var(--color-skeleton-line-dark)] rounded w-1/3"></div>
               </div>
             </div>
           ))}
@@ -85,7 +85,7 @@ export default function YouTubeGrid({ userId, handle, avatar, channelId, maxResu
               key={video.videoId}
               type="button"
               aria-label={video.title}
-              className="group bg-gray-800 rounded overflow-hidden text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="group bg-[var(--color-card-bg)] dark:bg-[var(--color-card-dark)] rounded overflow-hidden text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={(e) => {
                 if (e.metaKey || e.ctrlKey) {
                   window.open(video.url, "_blank");
@@ -96,8 +96,8 @@ export default function YouTubeGrid({ userId, handle, avatar, channelId, maxResu
             >
               <img src={video.thumbnail} alt={video.title} className="w-full h-28 sm:h-32 md:h-36 lg:h-40 xl:h-44 object-cover group-hover:opacity-90" />
               <div className="p-2">
-                <div className="text-sm md:text-xs text-white font-semibold leading-tight max-h-10 overflow-hidden">{video.title}</div>
-                <div className="text-xs text-gray-400 mt-1">{formatDate(video.publishedAt)}</div>
+                <div className="text-sm md:text-xs text-black dark:text-white font-semibold leading-tight max-h-10 overflow-hidden">{video.title}</div>
+                <div className="text-xs text-gray-700 dark:text-gray-400 mt-1">{formatDate(video.publishedAt)}</div>
               </div>
             </button>
           ))}
@@ -105,7 +105,7 @@ export default function YouTubeGrid({ userId, handle, avatar, channelId, maxResu
       )}
 
       {!loading && !error && (!videos || videos.length === 0) && (
-        <p className="text-sm text-gray-400">No recent videos available</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">No recent videos available</p>
       )}
 
       {activeVideo && (

@@ -1,0 +1,69 @@
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-body-bg: #e8dcc0;
+  --color-main-bg: #f8f4e3;
+  --color-text: #000000;
+  --color-text-dark: #ffffff;
+  --color-text-muted: #4b5563;
+  --color-text-muted-dark: #9ca3af;
+  --color-logo-text: #eaa000;
+  --color-logo-shadow: rgba(0, 0, 0, 0.1);
+  --color-logo-shadow-dark: #000000;
+  --color-toggle-bg: #e5e7eb;
+  --color-overlay: rgba(0,0,0,0.5);
+  --color-guest-bg: #fef3c7;
+  --color-guest-border: #f59e0b;
+  --color-guest-text: #92400e;
+  --color-index-bg: #3b82f6;
+  --color-delete-bg: #ef4444;
+  --color-delete-hover: #991b1b;
+  --color-error-bg: #fee2e2;
+  --color-error-border: #f87171;
+  --color-success-bg: #d1fae5;
+  --color-card-bg: rgba(59,130,246,0.1);
+  --color-overlay-dark: rgba(0,0,0,0.2);
+  --color-card-dark: #ffffff;
+  --color-card-dark-hover: #f3f4f6;
+  --color-panel-bg: #f3f4f6;
+  --color-grid-bg: #e1e2e6;  /* slightly darker than panel-bg for light mode */
+  --color-skeleton-bg: #e5e7eb;
+  --color-skeleton-bg-dark: #374151;
+  --color-skeleton-line: #d1d5db;
+  --color-skeleton-line-dark: #4b5563;
+}
+
+
+.dark {
+  --color-body-bg: #0a202c;
+  --color-main-bg: #122634;
+  --color-toggle-bg: #1f2937;
+  --color-overlay: rgba(0,0,0,0.5);
+  --color-guest-bg: #7c2d12;
+  --color-guest-border: #b45309;
+  --color-guest-text: #fefce8;
+  --color-index-bg: #3b82f6;
+  --color-delete-bg: #ef4444;
+  --color-delete-hover: #991b1b;
+  --color-error-bg: #fee2e2;
+  --color-error-border: #f87171;
+  --color-success-bg: #d1fae5;
+  --color-text: #000000;
+  --color-text-dark: #ffffff;
+  --color-text-muted: #4b5563;
+  --color-text-muted-dark: #9ca3af;
+  --color-logo-text: #EAAA00;
+  --color-logo-shadow: rgba(0, 0, 0, 0.2);
+  --color-logo-shadow-dark: #000000;
+  --color-card-bg: rgba(33,172,232,0.12);
+  --color-overlay-dark: rgba(31,41,55,0.3);
+  --color-card-dark: #202b3d;
+  --color-card-dark-hover: #2a3a4d;
+  --color-panel-bg: #374151;
+  --color-grid-bg: rgba(33,172,232,0.12); /* same as card-bg in dark */
+}
+
+
+body {
+  background-color: var(--color-body-bg);
+}

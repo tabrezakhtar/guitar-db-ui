@@ -155,14 +155,13 @@ const Profile = () => {
     if (!items || items.length === 0) return null;
     
     return (
-      <div className="mb-6 bg-gray-700 p-4 rounded-md">
+      <div className="mb-6 bg-[var(--color-grid-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
         <h3 className="text-lg font-semibold mb-2 flex items-center text-white">
           {emoji} {title} ({items.length})
         </h3>
         <EquipmentCarousel 
           items={items} 
           onClick={(id) => navigate(`/view/${id}`)}
-          theme="dark"
         />
       </div>
     );
@@ -170,7 +169,7 @@ const Profile = () => {
     if (profileError || equipmentError) {
     return (
       <div className="p-6">
-        <div className="flex p-5 bg-[rgba(33,172,232,0.12)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">          <div className="flex-shrink-0 mr-4">
+        <div className="flex p-5 bg-[var(--color-card-bg)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">          <div className="flex-shrink-0 mr-4">
             <span className="text-2xl">⚠️</span>
           </div>
           <div>
@@ -203,7 +202,7 @@ const Profile = () => {
   if (!profileUser) {
     return (
       <div className="p-6">
-        <div className="flex p-5 bg-[rgba(33,172,232,0.12)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
+        <div className="flex p-5 bg-[var(--color-card-bg)] rounded-[15px] mb-6 w-full text-[#f7f9f9] font-['Nunito',sans-serif] text-[20px] font-normal">
           <div className="flex-shrink-0 mr-4">
             <span className="text-2xl">🔍</span>
           </div>
@@ -235,7 +234,7 @@ const Profile = () => {
   const isOwnProfile = !userId || (user && profileUser && user._id === profileUser._id);
   
   return (
-    <div className="max-w-screen-xl mx-auto w-full p-6 bg-[#122634]">
+    <div className="max-w-screen-xl mx-auto w-full p-6 bg-[var(--color-main-bg)]">
       <div className="mb-4">
         <Breadcrumbs items={[{ label: "Profile", url: "/profile" }]} />
       </div>
@@ -262,7 +261,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+      <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg shadow-lg p-6">
         <div className="flex flex-col sm:flex-row items-center justify-center mb-6">
           <div className="flex flex-col items-center">
             <div className="relative w-24 h-24 mb-4">
@@ -312,12 +311,12 @@ const Profile = () => {
           </div>
         </div>
         
-        <div className="mb-6 bg-gray-700 p-4 rounded-md">
+        <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
           <h3 className="text-lg font-semibold mb-2 text-white">About</h3>
           <p className="text-gray-300">{bio || "No bio available"}</p>
         </div>
         
-        <div className="mb-6 bg-gray-700 p-4 rounded-md">
+        <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
           <h3 className="text-lg font-semibold mb-2 text-white">Website</h3>
           {website ? (
             <a 
@@ -372,7 +371,7 @@ const Profile = () => {
             {renderEquipmentSection(userEquipment.pedals, "Effects & Pedals", "🎛️")}
             
             {!userEquipment.guitars.length && !userEquipment.amps.length && !userEquipment.pedals.length && (
-              <div className="bg-gray-700 p-4 rounded-md text-gray-400">
+              <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md text-gray-400">
                 <p className="text-center">No equipment added yet.</p>
               </div>
             )}
@@ -382,10 +381,9 @@ const Profile = () => {
         {likedEquipment && likedEquipment.length > 0 && (
           <>
             <h3 className="text-xl font-bold mb-4 mt-6 text-white">My Liked Equipment</h3>
-            <div className="mb-6 bg-gray-700 p-4 rounded-md">
+            <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
               <EquipmentCarousel 
                 items={likedEquipment}
-                theme="dark"
               />
             </div>
           </>
@@ -394,10 +392,10 @@ const Profile = () => {
         {userComments && userComments.length > 0 && (
           <>
             <h3 className="text-xl font-bold mb-4 mt-6 text-white">My Recent Comments</h3>
-            <div className="mb-6 bg-gray-700 p-4 rounded-md">
+            <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
               <div className="space-y-4">
                 {(expandedComments ? userComments : userComments.slice(0, 5)).map(comment => (
-                  <div key={comment._id} className="bg-gray-800 p-3 rounded-md shadow-sm">
+                  <div key={comment._id} className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-3 rounded-md shadow-sm">
                     <div className="flex justify-between items-start mb-2">
                       <NavLink 
                         to={`/view/${comment.equipmentId._id}`}
@@ -433,7 +431,7 @@ const Profile = () => {
           </>
         )}
         
-        <div className="bg-gray-700 p-4 rounded-md text-gray-400 text-sm mt-6">
+        <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md text-gray-400 text-sm mt-6">
           <p>🗓️ Member since {formatDate(createdAt)}</p>
         </div>
       </div>

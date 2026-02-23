@@ -16,14 +16,13 @@ function EquipmentSections({ recentEquipment, popularEquipment, loading, isVisib
         transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : delay / 1000 }}
       >
         <div>
-          <h3 className="text-2xl font-bold text-white flex items-center justify-center">
+          <h3 className="text-2xl font-bold text-[var(--color-text-dark)] flex items-center justify-center">
             {emoji} {title}
           </h3>
         </div>
         <div className="rounded-lg p-4 flex justify-center">
           <EquipmentCarousel 
             items={items.slice(0, 5)} 
-            theme="dark"
             cardSize="medium"
             centered={!isMobile}
           />
@@ -31,7 +30,7 @@ function EquipmentSections({ recentEquipment, popularEquipment, loading, isVisib
         <div className="mt-4 text-center">
           <Link 
             to={linkTo} 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+            className="bg-blue-600 hover:bg-blue-700 text-[var(--color-text-dark)] px-6 py-2 rounded-lg font-medium transition-colors"
           >
             View All
           </Link>

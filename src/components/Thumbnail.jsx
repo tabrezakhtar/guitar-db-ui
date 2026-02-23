@@ -20,7 +20,7 @@ const Thumbnail = ({ index, url, alt, showDelete, deleteImage }) => {
   return (
     <div className="relative w-full aspect-square">
       {typeof index === "number" && !isNaN(index) && 
-        <span className="absolute inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-500 text-white text-sm font-medium">
+        <span className="absolute inline-flex items-center justify-center w-6 h-6 rounded-full bg-[var(--color-index-bg)] text-white text-sm font-medium">
           {index + 1}
         </span>
       }
@@ -32,7 +32,7 @@ const Thumbnail = ({ index, url, alt, showDelete, deleteImage }) => {
       {showDelete && !isDeleting && (
         <span
           onClick={() => setShowModal(true)}
-          className="absolute bottom-0 right-0 bg-red-500 text-white hover:bg-red-800 font-bold text-sm cursor-pointer flex items-center justify-center w-5 h-5 rounded-md"
+          className="absolute bottom-0 right-0 bg-[var(--color-delete-bg)] text-white hover:bg-[var(--color-delete-hover)] font-bold text-sm cursor-pointer flex items-center justify-center w-5 h-5 rounded-md"
         >
           ✕
         </span>

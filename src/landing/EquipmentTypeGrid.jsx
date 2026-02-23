@@ -10,7 +10,7 @@ function EquipmentTypeGrid({ isVisible }) {
       animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
       transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : 0.4 }}
     >
-      <Link to="/gallery?type=guitar" className="bg-[#202b3d] rounded-lg p-6">
+      <Link to="/gallery?type=guitar" className="bg-[var(--color-card-dark)] rounded-lg p-6">
         <div className="text-center">
           <div className="mb-4 flex justify-center">
             <motion.img
@@ -25,7 +25,7 @@ function EquipmentTypeGrid({ isVisible }) {
           <p className="text-gray-400 text-sm">Electric guitars from all brands.</p>
         </div>
       </Link>
-      <Link to="/gallery?type=amp" className="bg-[#202b3d] rounded-lg p-6">
+      <Link to="/gallery?type=amp" className="bg-[var(--color-card-dark)] rounded-lg p-6">
         <div className="text-center">
           <div className="mb-4 flex justify-center">
             <motion.img
@@ -40,7 +40,7 @@ function EquipmentTypeGrid({ isVisible }) {
           <p className="text-gray-400 text-sm">Amplifiers, whether vintage or modern, analogue or digital.</p>
         </div>
       </Link>
-      <Link to="/gallery?type=accessory" className="bg-[#202b3d] rounded-lg p-6">
+      <Link to="/gallery?type=accessory" className="bg-[var(--color-card-dark)] rounded-lg p-6">
         <div className="text-center">
           <div className="mb-4 flex justify-center">
             <motion.img

@@ -5,7 +5,7 @@ import Thumbnail from "../components/Thumbnail";
 import { getCloudinaryThumbnail } from "../utils/cloudinaryUtils";
 import SkeletonImage from "../components/SkeletonImage";
 
-const EquipmentCarousel = ({ items, onClick, theme = "light", centered = false, cardSize = "medium" }) => {
+const EquipmentCarousel = ({ items, onClick, centered = false, cardSize = "medium" }) => {
   const ref = useRef();
   const { events } = useDraggable(ref);
   
@@ -19,7 +19,7 @@ const EquipmentCarousel = ({ items, onClick, theme = "light", centered = false, 
   } : {};
   
   return (
-    <div className="bg-gray-800 p-5 rounded-lg overflow-hidden">
+    <div className="bg-[var(--color-grid-bg)] dark:bg-[var(--color-card-bg)] p-5 rounded-lg overflow-hidden">
       <style>
         {`
           .equipment-scroll-container::-webkit-scrollbar {
@@ -45,19 +45,14 @@ const EquipmentCarousel = ({ items, onClick, theme = "light", centered = false, 
         style={scrollContainerStyle}
       >
         {items.map(item => (
-          <EquipmentCard key={item._id} item={item} onClick={onClick} theme={theme} cardSize={cardSize} />
+          <EquipmentCard key={item._id} item={item} onClick={onClick} cardSize={cardSize} />
         ))}
       </div>
     </div>
   );
 };
 
-const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) => {
-  const isDark = theme === "dark";
-  const cardBgClass = isDark ? "bg-gray-700 border-gray-600" : "bg-white border";
-  const textPrimaryClass = isDark ? "text-white" : "text-black";
-  const textSecondaryClass = isDark ? "text-gray-300" : "text-black";
-  const textMutedClass = isDark ? "text-gray-400" : "text-gray-500";
+const EquipmentCard = ({ item, onClick, cardSize = "medium" }) => {
   
   // Card size classes
   const sizeClasses = {
@@ -78,10 +73,11 @@ const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) 
   const textSizes = textSizeClasses[cardSize] || textSizeClasses.medium;
 
   const CardWrapper = ({ children }) => {
+    const wrapperClasses = `${widthClass} rounded-lg overflow-hidden hover:shadow-lg transition-all flex-shrink-0 bg-[var(--color-card-bg)] dark:bg-[var(--color-card-dark)] border border-transparent dark:border-[var(--color-card-dark-hover)] cursor-pointer`;
     if (onClick) {
       return (
         <div 
-          className={`${widthClass} rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all flex-shrink-0 ${cardBgClass}`}
+          className={wrapperClasses}
           onClick={() => onClick(item._id)}
           onDragStart={(e) => e.preventDefault()}
         >
@@ -93,7 +89,7 @@ const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) 
     return (
       <NavLink 
         to={`/view/${item._id}`}
-        className={`w-full sm:w-[140px] ${widthClass} rounded-lg overflow-hidden hover:shadow-lg transition-all flex-shrink-0 ${cardBgClass}`}
+        className={`w-full sm:w-[140px] ${wrapperClasses}`}
         onDragStart={(e) => e.preventDefault()}
       >
         {children}
@@ -109,9 +105,9 @@ const EquipmentCard = ({ item, onClick, theme = "light", cardSize = "medium" }) 
         </div>
       )}
       <div className={paddingClass}>
-        <p className={`font-medium truncate ${textPrimaryClass} ${textSizes.primary}`}>{item.brand}</p>
-        <p className={`truncate ${textSecondaryClass} ${textSizes.secondary}`}>{item.name}</p>
-        {item.__t && <p className={`truncate ${textMutedClass} ${textSizes.muted}`}>{item.__t}</p>}
+        <p className={`font-medium truncate text-black dark:text-white ${textSizes.primary}`}>{item.brand}</p>
+        <p className={`truncate text-gray-700 dark:text-gray-300 ${textSizes.secondary}`}>{item.name}</p>
+        {item.__t && <p className={`truncate text-gray-500 dark:text-gray-400 ${textSizes.muted}`}>{item.__t}</p>}
       </div>
     </CardWrapper>
   );
