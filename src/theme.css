@@ -3,8 +3,7 @@
 :root {
   --color-body-bg: #e8dcc0;
   --color-main-bg: #f8f4e3;
-  --color-text: #000000;
-  --color-text-dark: #ffffff;
+  --color-text: #ffffff;
   --color-text-muted: #4b5563;
   --color-text-muted-dark: #9ca3af;
   --color-logo-text: #eaa000;
@@ -48,8 +47,7 @@
   --color-error-bg: #fee2e2;
   --color-error-border: #f87171;
   --color-success-bg: #d1fae5;
-  --color-text: #000000;
-  --color-text-dark: #ffffff;
+  --color-text: #ffffff;
   --color-text-muted: #4b5563;
   --color-text-muted-dark: #9ca3af;
   --color-logo-text: #EAAA00;
