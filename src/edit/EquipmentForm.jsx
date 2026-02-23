@@ -63,7 +63,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         />
 
         <div className="mb-4">
-          <label className="block text-white mb-2">Visibility:</label>
+          <label className="block text-[var(--color-text-header)] mb-2">Visibility:</label>
           <div className="flex gap-6">
             <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
               <input
@@ -93,7 +93,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         </div>
         
         <div className="mb-4">
-          <label className="block text-white">Brand:</label>
+          <label className="block text-[var(--color-text-header)]">Brand:</label>
           <input
             type="text"
             name="brand"
@@ -103,12 +103,12 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               setCurrentEquipment({ ...currentEquipment, brand: e.target.value })
             }
             disabled={isUploading}
-            className="border border-gray-600 p-2 rounded w-full bg-gray-700 text-white placeholder-gray-400"
+            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-white">Name: <span className="text-red-500">*</span></label>
+          <label className="block text-[var(--color-text-header)]">Name: <span className="text-red-500">*</span></label>
           <input
             type="text"
             name="name"
@@ -118,13 +118,13 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               setCurrentEquipment({ ...currentEquipment, name: e.target.value })
             }
             disabled={isUploading}
-            className="border border-gray-600 p-2 rounded w-full bg-gray-700 text-white placeholder-gray-400"
+            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-white">Description: <span className="text-red-500">*</span></label>
+          <label className="block text-[var(--color-text-header)]">Description: <span className="text-red-500">*</span></label>
           <textarea
             name="description"
             placeholder="What is it? Condition, any mods or the story behind it"
@@ -134,13 +134,13 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               setCurrentEquipment({ ...currentEquipment, description: e.target.value })
             }
             disabled={isUploading}
-            className="border border-gray-600 p-2 rounded w-full bg-gray-700 text-white placeholder-gray-400"
+            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-white">YouTube URL:</label>
+          <label className="block text-[var(--color-text-header)]">YouTube URL:</label>
           <input
             type="url"
             name="url"
@@ -148,7 +148,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             value={currentEquipment?.url || ""}
             onChange={handleYoutubeUrlChange}
             disabled={isUploading}
-            className={`border border-gray-600 p-2 rounded w-full bg-gray-700 text-white placeholder-gray-400 ${!validateYoutubeUrl(currentEquipment?.url) ? "border-red-500" : ""}`}
+            className={`border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 ${!validateYoutubeUrl(currentEquipment?.url) ? "border-red-500" : ""}`}
           />
           {!validateYoutubeUrl(currentEquipment?.url) && (
             <p className="text-red-400 text-sm mt-1">Please enter a valid YouTube URL</p>
@@ -156,7 +156,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         </div>
 
         <div className="mb-4">
-          <label className="block text-white">Tags:</label>
+          <label className="block text-[var(--color-text-header)]">Tags:</label>
           <Select
             isMulti
             name="tags"
@@ -170,7 +170,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
         </div>
 
         {/* <div className="mb-4">
-          <label className="block text-white">Why:</label>
+          <label className="block text-[var(--color-text-header)]">Why:</label>
           <textarea
             name="why"
             placeholder="What makes this special and how does it make you feel? (optional)"
@@ -179,12 +179,12 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             onChange={(e) =>
               setCurrentEquipment({ ...currentEquipment, why: e.target.value })
             }
-            className="border border-gray-600 p-2 rounded w-full bg-gray-700 text-white placeholder-gray-400"
+            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
           />
         </div> */}
 
         <div className="mb-4">
-          <label className="block text-white">Year:</label>
+          <label className="block text-[var(--color-text-header)]">Year:</label>
           <input
             type="number"
             name="year"
@@ -197,11 +197,11 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               })
             }
             disabled={isUploading}
-            className="border border-gray-600 p-2 rounded w-full bg-gray-700 text-white placeholder-gray-400"
+            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
           />
         </div>
         <div className="mb-4">
-          <label className="block text-white">Rating:</label>
+          <label className="block text-[var(--color-text-header)]">Rating:</label>
           <StarRating
             rating={currentEquipment?.rating || 0}
             onChange={(newRating) =>
@@ -220,7 +220,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               type="button"
               onClick={() => setShowModal(true)}
               disabled={isUploading}
-              className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-red-600 hover:bg-red-500 text-[var(--color-text)] px-4 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Delete
             </button>
@@ -231,7 +231,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
                 type="button"
                 onClick={() => navigate(`/view/${currentEquipment._id}`)}
                 disabled={isUploading}
-                className="bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-gray-600 hover:bg-gray-500 text-[var(--color-text)] px-4 py-2 rounded cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
@@ -239,7 +239,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             <button
               type="submit"
               disabled={isUploading || !validateYoutubeUrl(currentEquipment?.url)}
-              className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-blue-600 hover:bg-blue-500 text-[var(--color-text)] px-4 py-2 rounded cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isUploading ? (uploadProgress || "Saving...") : mode === "edit" ? "Save Changes" : `Add ${type}`}
             </button>

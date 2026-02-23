@@ -162,10 +162,10 @@ const ViewGuitar = () => {
       <div className="max-w-screen-xl mx-auto w-full bg-[var(--color-main-bg)] min-h-screen p-6">
         <div className="flex flex-col items-center justify-center mt-20 text-center">
           <div className="text-6xl mb-4">{isPrivate ? "🔒" : "⚠️"}</div>
-          <h2 className="text-2xl font-bold text-white mb-2">
+          <h2 className="text-2xl font-bold text-[var(--color-text-header)] mb-2">
             {isPrivate ? "This item is private" : "Something went wrong"}
           </h2>
-          <p className="text-gray-400 mb-6">
+          <p className="text-[var(--color-text-muted)] mb-6">
             {isPrivate
               ? "The owner has set this item to private."
               : error}
@@ -206,7 +206,7 @@ const ViewGuitar = () => {
           <Breadcrumbs items={breadcrumbItems} />
         </div>
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-[var(--color-text-header)]">
             {equipment.name || "My Stuff!"}
           </h1>
           {canEdit && (
@@ -238,10 +238,10 @@ const ViewGuitar = () => {
           <div className="sm:col-span-2 md:col-span-2 lg:col-span-3 border border-gray-600 rounded-lg p-4 overflow-hidden">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <h2 className="text-xl font-semibold mb-2 text-white">
+                <h2 className="text-xl font-semibold mb-2 text-[var(--color-text-header)]">
                   Details
                 </h2>
-                <div className="space-y-2 text-white">
+                <div className="space-y-2 text-[var(--color-text-muted)]">
                   <p>
                     <span className="font-medium">Brand:</span>{" "}
                     {equipment.brand || "Not specified"}
@@ -289,16 +289,16 @@ const ViewGuitar = () => {
               </div>
 
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2 text-white">
+                <h2 className="text-xl font-semibold mb-2 text-[var(--color-text-header)]">
                   Description
                 </h2>
-                <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg p-4 max-h-96 overflow-y-auto whitespace-pre-wrap break-words text-black dark:text-white font-['Roboto_Mono'] text-xl">
+                <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg p-4 max-h-96 overflow-y-auto whitespace-pre-wrap break-words text-[var(--color-text-header)] font-['Roboto_Mono'] text-xl">
                   {equipment.description || "No description provided."}
                 </div>
               </div>
 
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2 text-white">
+                <h2 className="text-xl font-semibold mb-2 text-[var(--color-text-header)]">
                   Owner
                 </h2>
                 <div className="flex items-center gap-3">
@@ -312,7 +312,7 @@ const ViewGuitar = () => {
                       size="small"
                     />
                     <div className="flex items-center gap-1">
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-[var(--color-text-header)]">
                         {equipment.user?.username || "Unknown"}
                       </span>
                       {equipment.user?.admin && (
@@ -329,10 +329,10 @@ const ViewGuitar = () => {
 
               {equipment.recommendation && (
                 <div className="mt-4">
-                  <h2 className="text-xl font-semibold mb-2 text-white">
+                  <h2 className="text-xl font-semibold mb-2 text-[var(--color-text-header)]">
                     Recommendation
                   </h2>
-                  <div className="bg-gray-700 rounded-lg p-4 max-h-40 overflow-y-auto whitespace-pre-wrap break-words text-white">
+                  <div className="bg-gray-700 rounded-lg p-4 max-h-40 overflow-y-auto whitespace-pre-wrap break-words text-[var(--color-text)]">
                     {equipment.recommendation}
                   </div>
                 </div>
@@ -341,7 +341,7 @@ const ViewGuitar = () => {
 
             {equipment.tags && equipment.tags.length > 0 && (
               <div className="mt-4">
-                <h2 className="text-xl font-semibold mb-2 text-white">
+                <h2 className="text-xl font-semibold mb-2 text-[var(--color-text-header)]">
                   Tags
                 </h2>
                 <div className="flex flex-wrap gap-2">
@@ -365,7 +365,7 @@ const ViewGuitar = () => {
 
         {userOtherEquipment.length > 0 && (
           <div className="mt-8 border-t border-gray-200 pt-8">
-            <h3 className="text-white text-xl font-semibold text-gray-900 mb-6">
+            <h3 className="text-[var(--color-text-header)] text-xl font-semibold mb-6">
               More from {equipment?.user?.firstName || "this user"}
             </h3>
             <EquipmentCarousel items={userOtherEquipment} cardSize="medium" />

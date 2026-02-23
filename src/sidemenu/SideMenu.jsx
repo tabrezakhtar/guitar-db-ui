@@ -122,7 +122,7 @@ function SideMenu() {
           </Link>
         </div>
         <div>
-          <div className="text-sm font-semibold mb-2 tracking-wide uppercase">Select Equipment</div>
+          <div className="text-sm font-semibold mb-2 tracking-wide uppercase text-[var(--color-text-header)]">Select Equipment</div>
           <div className="flex flex-wrap gap-3 mb-4">
             {equipmentTypes.map(typeObj => {
               const isSelected = equipmentType === typeObj.key;
@@ -144,7 +144,7 @@ function SideMenu() {
         </div>
         <div>
           <div className="flex items-center justify-between mb-2">
-            <div className="text-sm font-semibold flex items-center tracking-wide uppercase">
+            <div className="text-sm font-semibold flex items-center tracking-wide uppercase text-[var(--color-text-header)]">
               Select Tags
             </div>
             <div>

@@ -26,7 +26,7 @@ const Comments = ({ equipmentId }) => {
       <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg shadow p-4">
         <h3 className="text-xl font-semibold mb-4 text-[var(--color-text)]">Comments</h3>
         <CommentForm equipmentId={equipmentId} />
-        <p className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] text-center my-6">No comments yet. Be the first to comment!</p>
+        <p className="text-[var(--color-text-muted)] text-center my-6">No comments yet. Be the first to comment!</p>
       </div>
     );
   }
@@ -35,7 +35,7 @@ const Comments = ({ equipmentId }) => {
   
   return (
     <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-lg shadow p-4">
-        <h3 className="text-xl font-semibold mb-4 text-[var(--color-text-dak)]">Comments</h3>
+        <h3 className="text-xl font-semibold mb-4 text-[var(--color-text-header)]">Comments</h3>
       
       <CommentForm equipmentId={equipmentId} />
       
@@ -51,7 +51,7 @@ const Comments = ({ equipmentId }) => {
                   <div className="flex items-center gap-1">
                     <NavLink 
                       to={`/profile/${comment.user?._id}`}
-                      className="font-medium text-[var(--color-text)] dark:text-[var(--color-text)] hover:text-blue-400 transition-colors"
+                      className="font-medium text-[var(--color-text-header)] hover:text-blue-400 transition-colors"
                     >
                       {comment.user?.username?.substring(0, 32)}
                     </NavLink>
@@ -64,7 +64,7 @@ const Comments = ({ equipmentId }) => {
                     )}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)]" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
+                    <span className="text-xs text-[var(--color-text-muted)]" title={formatDate(comment.date)}>{getTimeFromNow(comment.date)}</span>
                     {user && user._id === comment.user?._id && (
                       <button
                         onClick={() => handleDeleteComment(comment._id)}
@@ -75,7 +75,7 @@ const Comments = ({ equipmentId }) => {
                     )}
                   </div>
                 </div>
-                <p className="text-[var(--color-text)] dark:text-[var(--color-text)] leading-relaxed">{comment.text}</p>
+                <p className="text-[var(--color-text-header)] leading-relaxed">{comment.text}</p>
               </div>
             </div>
           </div>

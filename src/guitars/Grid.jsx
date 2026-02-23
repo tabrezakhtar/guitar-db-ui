@@ -195,7 +195,7 @@ function Grid() {
     <div ref={containerRef} className="min-h-screen max-w-7xl mx-auto px-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-4">
         <div className="flex items-center gap-3">
-          <h2 className="text-xl font-bold text-white">
+          <h2 className="text-xl font-bold text-[var(--color-text-header)]">
             {searchTerm.trim() ? equipment.length : totalEquipment || 0} Results
           </h2>
           {hasFiltersApplied && (

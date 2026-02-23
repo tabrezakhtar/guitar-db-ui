@@ -349,7 +349,7 @@ const Profile = () => {
           </button>
         </div> */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
-          <h3 className="text-xl font-bold text-white">My Equipment</h3>
+          <h3 className="text-xl font-bold text-[var(--color-text-header)]">My Equipment</h3>
           {isOwnProfile && (
             <button
               onClick={() => navigate("/add")}

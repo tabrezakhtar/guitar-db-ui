@@ -341,7 +341,7 @@ const EditProfile = () => {
             deleteLoading ? (
               <div className="text-center max-w-md mx-auto">
                 <div className="text-red-400 text-6xl mb-6">🗑️</div>
-                <h3 className="text-xl font-bold text-white mb-4">
+                <h3 className="text-xl font-bold text-[var(--color-text-header)] mb-4">
                   Deleting Your Profile...
                 </h3>
                 <p className="text-gray-300 mb-6 text-lg">

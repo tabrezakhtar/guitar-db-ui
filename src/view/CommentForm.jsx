@@ -28,7 +28,7 @@ const CommentForm = ({ equipmentId }) => {
     <form onSubmit={handleSubmit} className="mt-4">
       <div className="flex flex-col">
         <textarea
-          className="w-full p-2 border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] rounded-lg mb-2 focus:border-blue-400 focus:outline-none bg-[var(--color-card-bg)] dark:bg-[var(--color-card-dark)] text-[var(--color-text)] dark:text-[var(--color-text)] placeholder-gray-400"
+          className="w-full p-2 border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] rounded-lg mb-2 focus:border-blue-400 focus:outline-none bg-[var(--color-card-bg)] dark:bg-[var(--color-card-dark)] text-[var(--color-text-header)] placeholder-gray-400"
           rows={3}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
