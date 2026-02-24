@@ -4,16 +4,16 @@ function Logo({ size = "normal" }) {
     // Size variants
     const sizes = {
         normal: {
-            container: "space-x-2 text-2xl",
-            image: "h-8 w-8"
+            container: "space-x-2 text-xl md:text-2xl",
+            image: "h-6 w-6 md:h-8 md:w-8"
         },
         large: {
-            container: "space-x-3 text-4xl",
-            image: "h-12 w-12"
+            container: "space-x-2 md:space-x-3 text-2xl md:text-4xl",
+            image: "h-8 w-8 md:h-12 md:w-12"
         },
         xlarge: {
-            container: "space-x-4 text-6xl",
-            image: "h-16 w-16"
+            container: "space-x-3 md:space-x-4 text-4xl md:text-6xl",
+            image: "h-12 w-12 md:h-16 md:w-16"
         }
     };
     
