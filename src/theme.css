@@ -1,90 +1,87 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Main backgrounds — classy off-white / warm light neutral */
-  --color-body-bg:     #f8f6f2;     /* very soft off-white with subtle warmth */
-  --color-main-bg:     #fdfcfb;     /* almost-white but elegant */
-  --color-panel-bg:    #f5f3ef;     /* slightly deeper off-white for panels */
-  --color-grid-bg:     #ece9e4;     /* subtle grid differentiation */
 
-  /* Text — dark pewter / deep gray for classy contrast */
-  --color-text:              #efefef;        /* near-black for body text */
-  --color-text-header:       #1a1a1a;        /* darker for headings */
-  --color-text-muted:        #6b7280;        /* pewter-ish muted (gray-500) */
-  --color-text-muted-dark:   #4b5563;        /* darker muted */
-
-  /* Logo / brand — using pewter + subtle gold tone if desired, or pure pewter */
-  --color-logo-text:         #EAAA00;        /* pewter logo */
+  --color-body-bg:           #f8f6f2;
+  --color-main-bg:           #fdfcfb;
+  --color-panel-bg:          #f5f3ef;
+  --color-grid-bg:           #ece9e4;
+  /* Text colors */
+  --color-text:              #efefef;
+  --color-text-header:       #1a1a1a;
+  --color-text-muted:        #6b7280;
+  --color-text-muted-dark:   #4b5563;
+  /* Logo/brand */
+  --color-logo-text:         #EAAA00;
   --color-logo-shadow:       rgba(0, 0, 0, 0);
   --color-logo-shadow-dark:  #1a1a1a;
-  --color-logo-bg:           rgba(0, 0, 0, 0.05);          /* 90% transparent */
-
-  /* Interactive / UI elements — pewter theme */
-  --color-toggle-bg:         #e5e7eb;        /* light gray */
-  --color-burger-bg:         #8e9294;        /* pewter for icons */
-
-  /* Overlays */
-  --color-overlay:           rgba(30, 30, 35, 0.55);     /* darker subtle overlay */
+  --color-logo-bg:           rgba(0, 0, 0, 0.05);
+  /* Interactive / UI elements */
+  --color-toggle-bg:         #e5e7eb;
+  --color-burger-bg:         #8e9294;
+  /* Overlay colors */
+  --color-overlay:           rgba(30, 30, 35, 0.55);
   --color-overlay-dark:      rgba(0, 0, 0, 0.25);
-
-  /* Status / special backgrounds — desaturated classy versions */
+  /* Status / special backgrounds */
   --color-guest-bg:          #f5f5f4;
   --color-guest-border:      #8e9294;
   --color-guest-text:        #4b5563;
-
-  --color-index-bg:          #8e9294;        /* pewter */
-  --color-delete-bg:         #a3a3a3;        /* neutral pewter-red-ish */
+  --color-index-bg:          #8e9294;
+  --color-delete-bg:         #a3a3a3;
   --color-delete-hover:      #787878;
 
+  /* Error / success */
   --color-error-bg:          #fef2f2;
-  --color-error-border:      #991b1b;        /* kept some red for visibility */
-
+  --color-error-border:      #991b1b;
   --color-success-bg:        #f0fdf4;
-  --color-success-border:    #166534;        /* darker green if needed */
+  --color-success-border:    #166534;
 
   /* Cards & skeletons */
-  --color-card-bg:           rgba(142, 146, 148, 0.08);   /* very subtle pewter tint */
+  --color-card-bg:           rgba(142, 146, 148, 0.08);
   --color-card-dark:         #ffffff;
   --color-card-dark-hover:   #f8f8f8;
-
   --color-skeleton-bg:       #e5e7eb;
   --color-skeleton-bg-dark:  #4b5563;
   --color-skeleton-line:     #d1d5db;
   --color-skeleton-line-dark:#6b7280;
 }
 
-
 .dark {
-  --color-body-bg: #0a202c;
-  --color-main-bg: #122634;
-  --color-toggle-bg: #1f2937;
-  --color-burger-bg: #1f2937;
-  --color-overlay: rgba(0,0,0,0.5);
-  --color-guest-bg: #7c2d12;
-  --color-guest-border: #b45309;
-  --color-guest-text: #fefce8;
-  --color-index-bg: #3b82f6;
-  --color-delete-bg: #ef4444;
-  --color-delete-hover: #991b1b;
-  --color-error-bg: #fee2e2;
-  --color-error-border: #f87171;
-  --color-success-bg: #d1fae5;
-  --color-text: #ffffff;
-  --color-text-header: #ffffff;
-  --color-text-muted: #9CA3AF;
-  --color-text-muted-dark: #9ca3af;
-  --color-logo-text: #EAAA00;
-  --color-logo-shadow: rgba(0, 0, 0, 0.2);
-  --color-logo-shadow-dark: #000000;
-  --color-logo-bg: rgba(255, 255, 255, 0.05);
-  --color-card-bg: rgba(33,172,232,0.12);
-  --color-overlay-dark: rgba(31,41,55,0.3);
-  --color-card-dark: #202b3d;
-  --color-card-dark-hover: #2a3a4d;
-  --color-panel-bg: #374151;
-  --color-grid-bg: rgba(33,172,232,0.12); /* same as card-bg in dark */
+  /* Main backgrounds */
+  --color-body-bg:           #0a202c;
+  --color-main-bg:           #122634;
+  /* Interactive / UI elements */
+  --color-toggle-bg:         #1f2937;
+  --color-burger-bg:         #1f2937;
+  /* Overlay colors */
+  --color-overlay:           rgba(0,0,0,0.5);
+  --color-guest-bg:          #7c2d12;
+  --color-guest-border:      #b45309;
+  --color-guest-text:        #fefce8;
+  --color-index-bg:          #3b82f6;
+  --color-delete-bg:         #ef4444;
+  --color-delete-hover:      #991b1b;
+  --color-error-bg:          #fee2e2;
+  --color-error-border:      #f87171;
+  --color-success-bg:        #d1fae5;
+  /* Text colors */
+  --color-text:              #ffffff;
+  --color-text-header:       #ffffff;
+  --color-text-muted:        #9CA3AF;
+  --color-text-muted-dark:   #9ca3af;
+  /* Logo/brand */
+  --color-logo-text:         #EAAA00;
+  --color-logo-shadow:       rgba(0, 0, 0, 0.2);
+  --color-logo-shadow-dark:  #000000;
+  --color-logo-bg:           rgba(255, 255, 255, 0.05);
+  /* Cards & skeletons */
+  --color-card-bg:           rgba(33,172,232,0.12);
+  --color-overlay-dark:      rgba(31,41,55,0.3);
+  --color-card-dark:         #202b3d;
+  --color-card-dark-hover:   #2a3a4d;
+  --color-panel-bg:          #374151;
+  --color-grid-bg:           rgba(33,172,232,0.12);
 }
-
 
 body {
   background-color: var(--color-body-bg);
