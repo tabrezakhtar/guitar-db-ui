@@ -130,7 +130,7 @@ function Landing() {
             
             <HandwrittenText
               text="Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do."
-              className="text-3xl text-[var(--color-text-muted)] mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
+              className="hidden sm:block text-3xl text-[var(--color-text-muted)] mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
               delay={500}
               speed={20}
               isVisible={isVisible}
