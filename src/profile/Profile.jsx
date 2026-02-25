@@ -263,7 +263,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="bg-[var(--color-panel-bg)] rounded-lg shadow-lg p-6">
+      <div className="rounded-lg shadow-lg p-6">
         <div className="flex flex-col sm:flex-row items-center justify-center mb-6">
           <div className="flex flex-col items-center">
             <div className="relative w-24 h-24 mb-4">
@@ -313,12 +313,12 @@ const Profile = () => {
           </div>
         </div>
         
-        <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
+        <div className="mb-6 bg-[var(--color-card-bg)] p-4 rounded-md">
           <h3 className="text-lg font-semibold mb-2 text-[var(--color-text-header)]">About</h3>
           <p className="text-[var(--color-text-muted)]">{bio || "No bio available"}</p>
         </div>
         
-        <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
+        <div className="mb-6 bg-[var(--color-card-bg)] p-4 rounded-md">
           <h3 className="text-lg font-semibold mb-2 text-[var(--color-text-header)]">Website</h3>
           {website ? (
             <a 
