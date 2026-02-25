@@ -313,7 +313,7 @@ const Profile = () => {
         
         <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
           <h3 className="text-lg font-semibold mb-2 text-[var(--color-text-header)]">About</h3>
-          <p className="text-[var(--color-text-muted)]">{bio || "No bio available"}</p>
+          <p className="text-[var(--color-text)]">{bio || "No bio available"}</p>
         </div>
         
         <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
@@ -381,7 +381,7 @@ const Profile = () => {
         {likedEquipment && likedEquipment.length > 0 && (
           <>
             <h3 className="text-xl font-bold mb-4 mt-6 text-[var(--color-text-header)]">My Liked Equipment</h3>
-            <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
+            <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] rounded-sm">
               <EquipmentCarousel 
                 items={likedEquipment}
               />
