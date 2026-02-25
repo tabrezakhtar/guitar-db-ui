@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
+import { hasAdminAccess } from "../utils/roleUtils";
 import Comments from "./Comments";
 import StarRating from "../components/StarRating";
 import Tag from "../tags/Tag";
@@ -315,7 +316,7 @@ const ViewGuitar = () => {
                       <span className="font-medium text-[var(--color-text-header)]">
                         {equipment.user?.username || "Unknown"}
                       </span>
-                      {equipment.user?.admin && (
+                      {hasAdminAccess(equipment.user) && (
                         <img 
                           src="/verified.svg" 
                           alt="Verified" 

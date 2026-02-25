@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
 import { useTagContext } from "../context/TagContext";
+import { hasAdminAccess } from "../utils/roleUtils";
 import Tag from "../tags/Tag";
 import TagSearch from "../tags/TagSearch";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
@@ -90,7 +91,7 @@ function SideMenu() {
             >
               <AvatarDisplayOnly imageUrl={user.avatarUrl} username={user.username} size="small"/>
               <span className="pl-3 font-medium">{user.username}</span>
-              {user.admin && (
+              {hasAdminAccess(user) && (
                 <img 
                   src="/verified.svg" 
                   alt="Verified" 

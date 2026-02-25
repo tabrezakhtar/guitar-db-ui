@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import { GuitarContext } from "./context/GuitarContext";
 import { useHeader } from "./context/HeaderContext";
+import { hasAdminAccess } from "./utils/roleUtils";
 import AvatarDisplayOnly from "./profile/AvatarDisplayOnly";
 import Logo from "./Logo";
 
@@ -16,7 +17,7 @@ function MenuContent({ user }) {
         >
           <AvatarDisplayOnly imageUrl={user.avatarUrl} username={user.username} size="small"/>
           <span className="pl-2">{user.username}</span>
-          {user.admin && (
+          {hasAdminAccess(user) && (
             <img 
               src="/verified.svg" 
               alt="Verified" 

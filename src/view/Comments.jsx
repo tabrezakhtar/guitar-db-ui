@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { formatDate, getTimeFromNow } from "../utils/dateUtils";
+import { hasAdminAccess } from "../utils/roleUtils";
 import CommentForm from "./CommentForm";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import { GuitarContext } from "../context/GuitarContext";
@@ -55,7 +56,7 @@ const Comments = ({ equipmentId }) => {
                     >
                       {comment.user?.username?.substring(0, 32)}
                     </NavLink>
-                    {comment.user?.admin && (
+                    {hasAdminAccess(comment.user) && (
                       <img 
                         src="/verified.svg" 
                         alt="Verified" 

@@ -12,6 +12,8 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import Modal from "../components/Modal";
 import ProfileSkeleton from "./ProfileSkeleton";
 import YouTubeGrid from "./YouTubeGrid";import Share from "./Share";
+import { hasAdminAccess } from "../utils/roleUtils";
+
 const Profile = () => {
   const { userId } = useParams();
   const [ profileUser, setProfileUser ] = useState(null);
@@ -275,7 +277,7 @@ const Profile = () => {
           <div className="text-center sm:text-left sm:ml-6">
             <div className="flex items-center justify-center sm:justify-start gap-1">
               <h2 className="text-2xl font-bold text-[var(--color-text-header)]">{username}</h2>
-              {profileUser.admin && (
+              {hasAdminAccess(profileUser) && (
                 <img 
                   src="/verified.svg" 
                   alt="Verified" 
@@ -409,7 +411,7 @@ const Profile = () => {
                             >
                               {comment.user?.username?.substring(0, 32)}
                             </NavLink>
-                            {comment.user?.admin && (
+                            {hasAdminAccess(comment.user) && (
                               <img 
                                 src="/verified.svg" 
                                 alt="Verified" 

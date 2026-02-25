@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
 import { useTagContext } from "../context/TagContext";
+import { hasAdminAccess } from "../utils/roleUtils";
 import SkeletonImage from "../components/SkeletonImage";
 import Tag from "../tags/Tag";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
@@ -329,7 +330,7 @@ function Grid() {
                       <span className="">
                         {item.user ? item.user?.username.slice(0, 12) : ""}
                       </span>
-                      {item.user?.admin && (
+                      {hasAdminAccess(item.user) && (
                         <img
                           src="/verified.svg"
                           alt="Verified"
