@@ -313,7 +313,7 @@ const Profile = () => {
         
         <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
           <h3 className="text-lg font-semibold mb-2 text-[var(--color-text-header)]">About</h3>
-          <p className="text-[var(--color-text-muted-dark)]">{bio || "No bio available"}</p>
+          <p className="text-[var(--color-text-muted)]">{bio || "No bio available"}</p>
         </div>
         
         <div className="mb-6 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">

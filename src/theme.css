@@ -75,7 +75,7 @@
   --color-logo-shadow-dark:  #000000;
   --color-logo-bg:           rgba(255, 255, 255, 0.05);
   /* Cards & skeletons */
-  --color-card-bg:           rgba(33,172,232,0.12);
+  --color-card-bg:           rgba(33,172,232,0.03);
   --color-overlay-dark:      rgba(31,41,55,0.3);
   --color-card-dark:         #202b3d;
   --color-card-dark-hover:   #2a3a4d;

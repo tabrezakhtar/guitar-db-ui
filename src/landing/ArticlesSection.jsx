@@ -42,7 +42,7 @@ function ArticlesSection({ isVisible }) {
                   {post.description}
                 </p>
                 <div className="mt-4 text-blue-400 text-sm font-medium">
-                  Read article →
+                  Read article ›
                 </div>
               </div>
             </Link>
