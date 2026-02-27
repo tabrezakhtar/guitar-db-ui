@@ -51,6 +51,24 @@ const Profile = () => {
     }
   };
 
+  const testyoutubelivestream = async () => {
+    try {
+      const userIdToTest = profileUser?._id || user?._id;
+      if (!userIdToTest) {
+        console.error("No user ID available");
+        return;
+      }
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/youtube/livestreams?userId=${userIdToTest}&maxResults=10`, {
+        method: "GET",
+        credentials: "include"
+      });
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleLogoutConfirm = async () => {
     await logout();
     navigate("/gallery");
@@ -344,7 +362,7 @@ const Profile = () => {
         )}
         {/* <div className="mb-6">
           <button
-            onClick={testyoutube}
+            onClick={testyoutubelivestream}
             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded flex items-center justify-center transition-colors"
           >
             ▶️ Test YouTube

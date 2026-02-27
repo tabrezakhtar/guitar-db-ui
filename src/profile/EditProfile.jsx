@@ -6,6 +6,7 @@ import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 import Avatar from "./Avatar";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Modal from "../components/Modal";
+import ConnectYoutubeChannel from "../components/ConnectYoutubeChannel";
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -22,8 +23,6 @@ const EditProfile = () => {
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarDeleted, setAvatarDeleted] = useState(false);
   const [originalAvatarUrl, setOriginalAvatarUrl] = useState("");
-  const [youtubeInput, setYoutubeInput] = useState("");
-  const [youtubeError, setYoutubeError] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -41,7 +40,6 @@ const EditProfile = () => {
         youtubeChannelUrl: user.youtubeChannelUrl || ""
       });
       setOriginalAvatarUrl(user.avatarUrl || "");
-      setYoutubeInput(user.youtubeChannelUrl || "");
     }
   }, [user]);
 
@@ -88,50 +86,20 @@ const EditProfile = () => {
     }));
   };
 
-  function extractChannelIdOrHandleLocal(input) {
-    if (!input) return null;
-    const value = String(input).trim();
-
-    const isChannelId = (str) => /^UC[A-Za-z0-9_-]{22}$/.test(str);
-    const isHandle = (str) => /^[A-Za-z0-9][A-Za-z0-9._-]{1,28}[A-Za-z0-9]$/.test(str) && !/\.{2,}/.test(str);
-
-    if (/^https?:\/\/(www\.)?youtube\.com/.test(value)) {
-      const handleMatch = value.match(/youtube\.com\/@([A-Za-z0-9][A-Za-z0-9._-]{1,28}[A-Za-z0-9])(?:[/?#]|$)/);
-      if (handleMatch) return { type: "handle", value: handleMatch[1] };
-
-      const channelMatch = value.match(/youtube\.com\/channel\/(UC[A-Za-z0-9_-]{22})(?:[/?#]|$)/);
-      if (channelMatch) return { type: "id", value: channelMatch[1] };
-
-      const customMatch = value.match(/youtube\.com\/c\/([A-Za-z0-9][A-Za-z0-9._-]{1,28}[A-Za-z0-9])(?:[/?#]|$)/);
-      if (customMatch) return { type: "handle", value: customMatch[1] };
-
-      const userMatch = value.match(/youtube\.com\/user\/([A-Za-z0-9][A-Za-z0-9._-]{1,28}[A-Za-z0-9])(?:[/?#]|$)/);
-      if (userMatch) return { type: "handle", value: userMatch[1] };
-
-      return null;
-    }
-
-    const cleaned = value.replace(/^@/, "");
-    if (isChannelId(cleaned)) return { type: "id", value: cleaned };
-    if (isHandle(cleaned)) return { type: "handle", value: cleaned };
-
-    return null;
-  }
-
-  const handleYoutubeKeyUp = (e) => {
-    const value = e.target.value || "";
-    if (value.trim() === "") {
-      setYoutubeError("");
-      handleChange({ target: { name: "youtubeChannelUrl", value: "" } });
-      return;
-    }
-    const parsed = extractChannelIdOrHandleLocal(value);
-    if (parsed) {
-      setYoutubeError("");
-      handleChange({ target: { name: "youtubeChannelUrl", value } });
-    } else {
-      setYoutubeError("Invalid YouTube URL or handle");
-    }
+  const handleYoutubeSuccess = (data) => {
+    setProfile((prev) => ({
+      ...prev,
+      youtubeChannelUrl: data.youtubeChannelUrl || ""
+    }));
+    updateUserLocal({
+      ...user,
+      youtubeChannelUrl: data.youtubeChannelUrl || "",
+      youtubeChannelId: data.youtubeChannelId || "",
+      youtubeChannelHandle: data.handle || "",
+      youtubeChannelTitle: data.title || "",
+      youtubeChannelAvatar: data.avatar || "",
+      uploadsPlaylistId: data.uploadsPlaylistId || ""
+    });
   }; 
 
   const handleSubmit = async (e) => {
@@ -187,7 +155,7 @@ const EditProfile = () => {
     setError(null);
     
     try {
-      const result = await deleteProfile(user);      
+      const result = await deleteProfile(user);
       if (result) {
         // Clear user state and redirect
         updateUserLocal(null);
@@ -274,25 +242,11 @@ const EditProfile = () => {
 
         <div className="mb-4">
           <label htmlFor="youtube" className="block text-[var(--color-text-muted-dark)] mb-2">YouTube:</label>
-          <div className={`flex items-center gap-3 px-3 py-2 rounded-md bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] ${youtubeError ? "border border-red-600" : "border border-gray-600"}`}>
-            <img src="/icons/youtube_icon.png" alt="YouTube" className="w-6 h-6 flex-shrink-0" />
-            <input
-              type="text"
-              id="youtube"
-              name="youtubeChannelUrl"
-              placeholder="Paste in your YouTube URL or @handle"
-              value={youtubeInput}
-              onChange={(ev) => setYoutubeInput(ev.target.value)}
-              onKeyUp={handleYoutubeKeyUp}
-              aria-invalid={youtubeError ? "true" : "false"}
-              className="w-full bg-transparent text-[var(--color-text-header)] focus:outline-none"
-            />
-          </div>
-          {youtubeError && (
-            <p className="mt-1 text-sm text-red-400">
-              {youtubeError}
-            </p>
-          )}
+          <ConnectYoutubeChannel
+            initialValue={profile.youtubeChannelUrl}
+            onSuccess={handleYoutubeSuccess}
+            onError={(error) => setError(error)}
+          />
         </div>
         
         <div className="mb-4">
