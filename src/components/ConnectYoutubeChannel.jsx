@@ -6,6 +6,7 @@ const ConnectYoutubeChannel = ({ initialValue = "", onSuccess, onError }) => {
   const [youtubeInput, setYoutubeInput] = useState(initialValue);
   const [youtubeError, setYoutubeError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const hasExistingChannel = initialValue && initialValue.trim() !== "";
 
   useEffect(() => {
@@ -72,7 +73,12 @@ const ConnectYoutubeChannel = ({ initialValue = "", onSuccess, onError }) => {
     }
 
     setLoading(true);
+    setIsDisabled(true);
     setYoutubeError("");
+
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 5000);
 
     try {
       const response = await fetch(`${VITE_API_BASE_URL}/api/youtube/channel`, {
@@ -120,7 +126,7 @@ const ConnectYoutubeChannel = ({ initialValue = "", onSuccess, onError }) => {
         <button
           type="button"
           onClick={handleConnect}
-          disabled={loading || !!youtubeError || !youtubeInput.trim()}
+          disabled={loading || isDisabled || !!youtubeError || !youtubeInput.trim()}
           className={`px-4 py-1 ${hasExistingChannel ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"} text-white rounded focus:outline-none focus:ring-2 ${hasExistingChannel ? "focus:ring-green-400" : "focus:ring-blue-400"} disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap`}
         >
           {loading ? (
