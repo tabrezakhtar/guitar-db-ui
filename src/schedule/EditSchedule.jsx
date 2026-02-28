@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { useScheduleData } from "./useScheduleData";
 import Breadcrumbs from "../components/Breadcrumbs";
-import Modal from "../components/Modal";
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -11,15 +10,12 @@ const EditSchedule = () => {
   const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [timezone, setTimezone] = useState(detectedTimezone || "UTC");
   const [schedules, setSchedules] = useState([]);
-  const [initialTimezone, setInitialTimezone] = useState(detectedTimezone || "UTC");
-  const [initialSchedules, setInitialSchedules] = useState([]);
   const [saving, setSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errors, setErrors] = useState({});
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   
   const { user } = useContext(UserContext);
-  const { getSchedule, updateSchedule, deleteSchedule, loading } = useScheduleData();
+  const { getSchedule, updateSchedule, loading } = useScheduleData();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,8 +27,6 @@ const EditSchedule = () => {
           const scheds = data.liveSchedules && data.liveSchedules.length > 0 ? data.liveSchedules : [];
           setTimezone(tz);
           setSchedules(scheds);
-          setInitialTimezone(tz);
-          setInitialSchedules(scheds);
         }
       }
     };
@@ -107,9 +101,9 @@ const EditSchedule = () => {
       });
       
       setSuccessMessage("Schedule saved successfully!");
-      setTimeout(() => {
-        navigate("/profile");
-      }, 1500);
+    //   setTimeout(() => {
+    //     navigate("/profile");
+    //   }, 1500);
     } catch (err) {
       setErrors({ submit: "Failed to save schedule. Please try again." });
     } finally {
@@ -117,38 +111,8 @@ const EditSchedule = () => {
     }
   };
 
-  const handleDelete = () => {
-    setShowDeleteModal(true);
-  };
-
-  const confirmDelete = async () => {
-    setShowDeleteModal(false);
-    setSaving(true);
-    try {
-      await deleteSchedule();
-      setSuccessMessage("Schedule deleted successfully!");
-      setTimeout(() => {
-        navigate("/profile");
-      }, 1500);
-    } catch (err) {
-      setErrors({ submit: err.message || "Failed to delete schedule. Please try again." });
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const handleCancel = () => {
     navigate("/profile");
-  };
-
-  const hasChanges = () => {
-    if (timezone !== initialTimezone) return true;
-    if (schedules.length !== initialSchedules.length) return true;
-    
-    return schedules.some((schedule, index) => {
-      const initial = initialSchedules[index];
-      return !initial || schedule.day !== initial.day || schedule.time !== initial.time;
-    });
   };
 
 const getTimezones = () => {
@@ -292,7 +256,7 @@ const getTimezones = () => {
             {schedules.length === 0 ? (
               <div className="p-6 bg-[var(--color-main-bg)] rounded border-2 border-dashed border-[var(--color-text-muted)] text-center">
                 <p className="text-[var(--color-text-header)] mb-2">No schedules yet</p>
-                <p className="text-sm text-[var(--color-text-muted)]">Click the "+ Add Schedule" button above to create your first schedule</p>
+                <p className="text-sm text-[var(--color-text-muted)]">Click the "Add Schedule" button above to create your first schedule</p>
               </div>
             ) : (
               schedules.map((schedule, index) => (
@@ -348,7 +312,7 @@ const getTimezones = () => {
         <div className="flex flex-col sm:flex-row gap-3 mt-6">
           <button
             onClick={handleSave}
-            disabled={saving || loading || !hasChanges()}
+            disabled={saving || loading || schedules.length === 0}
             className="bg-[var(--color-index-bg)] hover:opacity-90 text-white px-6 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed order-1"
           >
             {saving ? "Saving..." : "Save Schedule"}
@@ -359,13 +323,6 @@ const getTimezones = () => {
             className="px-6 py-2 text-[var(--color-text)] bg-gray-600 rounded hover:bg-gray-500 transition-colors disabled:opacity-50 cursor-pointer order-2"
           >
             Close
-          </button>
-          <button
-            onClick={handleDelete}
-            disabled={saving || loading || schedules.length === 0}
-            className="bg-[var(--color-delete-bg)] hover:bg-[var(--color-delete-hover)] text-white px-6 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed sm:ml-auto order-3"
-          >
-            {saving ? "Deleting..." : "Delete Schedule"}
           </button>
         </div>
       </div>
@@ -379,18 +336,6 @@ const getTimezones = () => {
           <li>You can reorder schedules by removing and re-adding them</li>
         </ul>
       </div>
-
-      {showDeleteModal && (
-        <Modal
-          onConfirm={confirmDelete}
-          onCancel={() => setShowDeleteModal(false)}
-        >
-          <div className="text-center">
-            <p className="mb-2">Are you sure you want to delete your entire schedule?</p>
-            <p>This action cannot be undone.</p>
-          </div>
-        </Modal>
-      )}
     </div>
   );
 };
