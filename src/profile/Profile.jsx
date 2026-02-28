@@ -11,7 +11,9 @@ import Spinner from "../components/Spinner";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Modal from "../components/Modal";
 import ProfileSkeleton from "./ProfileSkeleton";
-import YouTubeGrid from "./YouTubeGrid";import Share from "./Share";
+import YouTubeGrid from "./YouTubeGrid";
+import ViewSchedule from "../schedule/ViewSchedule";
+import Share from "./Share";
 import { hasAdminAccess } from "../utils/roleUtils";
 
 const Profile = () => {
@@ -351,6 +353,9 @@ const Profile = () => {
             <p className="text-[var(--color-text-muted)]">No website added</p>
           )}
         </div>
+
+        <ViewSchedule userId={profileUser._id} />
+
         { (profileUser.youtubeChannelHandle || profileUser.youtubeChannelId) && (
           <YouTubeGrid
             userId={profileUser._id}

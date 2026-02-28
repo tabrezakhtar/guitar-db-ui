@@ -15,6 +15,7 @@ import ViewGuitar from "./view/ViewGuitar";
 import AddGuitar from "./AddGuitar";
 import Profile from "./profile/Profile";
 import EditProfile from "./profile/EditProfile";
+import EditSchedule from "./schedule/EditSchedule";
 import PostPage from "./PostPage";
 import Followers from "./follow/Followers";
 import Following from "./follow/Following";
@@ -66,6 +67,16 @@ function App() {
                           <Layout hideSideMenu>
                             <ProtectedRoute>
                               <EditProfile />
+                            </ProtectedRoute>
+                          </Layout>
+                        }
+                      />
+                      <Route
+                        path="/edit-schedule"
+                        element={
+                          <Layout hideSideMenu>
+                            <ProtectedRoute>
+                              <EditSchedule />
                             </ProtectedRoute>
                           </Layout>
                         }
