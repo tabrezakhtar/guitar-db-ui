@@ -61,13 +61,8 @@ const ConnectYoutubeChannel = ({ initialValue = "", onSuccess, onError }) => {
   };
 
   const handleConnect = async () => {
-    if (!youtubeInput.trim()) {
-      setYoutubeError("Please enter a YouTube URL or handle");
-      return;
-    }
-
     const parsed = extractChannelIdOrHandleLocal(youtubeInput);
-    if (!parsed) {
+    if (youtubeInput.trim() && !parsed) {
       setYoutubeError("Invalid YouTube URL or handle");
       return;
     }
@@ -126,7 +121,7 @@ const ConnectYoutubeChannel = ({ initialValue = "", onSuccess, onError }) => {
         <button
           type="button"
           onClick={handleConnect}
-          disabled={loading || isDisabled || !!youtubeError || !youtubeInput.trim()}
+          disabled={loading || isDisabled || !!youtubeError}
           className={`px-4 py-1 ${hasExistingChannel ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"} text-white rounded focus:outline-none focus:ring-2 ${hasExistingChannel ? "focus:ring-green-400" : "focus:ring-blue-400"} disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap`}
         >
           {loading ? (

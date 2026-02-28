@@ -8,6 +8,7 @@ import ArticlesSection from "./ArticlesSection";
 import EquipmentTypeGrid from "./EquipmentTypeGrid";
 import HandwrittenText from "./HandwrittenText";
 import RecentUsers from "../components/RecentUsers";
+import LiveAndUpcoming from "../schedule/LiveAndUpcoming";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -184,9 +185,10 @@ function Landing() {
               </Link>
             </motion.div>
             
-            <EquipmentTypeGrid isVisible={isVisible} />
+            {/* <EquipmentTypeGrid isVisible={isVisible} /> */}
 
-            <div className="max-w-3xl mt-8">
+            <div className="max-w-3xl mt-8 space-y-6">
+              <LiveAndUpcoming />
               <RecentUsers />
             </div>
           </div>

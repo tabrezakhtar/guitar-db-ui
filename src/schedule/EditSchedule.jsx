@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { useScheduleData } from "./useScheduleData";
 import Breadcrumbs from "../components/Breadcrumbs";
+import ConnectYoutubeChannel from "../components/ConnectYoutubeChannel";
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -13,8 +14,9 @@ const EditSchedule = () => {
   const [saving, setSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errors, setErrors] = useState({});
+  const [error, setError] = useState(null);
   
-  const { user } = useContext(UserContext);
+  const { user, updateUserLocal } = useContext(UserContext);
   const { getSchedule, updateSchedule, loading } = useScheduleData();
   const navigate = useNavigate();
 
@@ -115,6 +117,18 @@ const EditSchedule = () => {
     navigate("/profile");
   };
 
+  const handleYoutubeSuccess = (data) => {
+    updateUserLocal({
+      ...user,
+      youtubeChannelUrl: data.youtubeChannelUrl || "",
+      youtubeChannelId: data.youtubeChannelId || "",
+      youtubeChannelHandle: data.handle || "",
+      youtubeChannelTitle: data.title || "",
+      youtubeChannelAvatar: data.avatar || "",
+      uploadsPlaylistId: data.uploadsPlaylistId || ""
+    });
+  };
+
 const getTimezones = () => {
   return [
     // UTC / special
@@ -205,6 +219,19 @@ const getTimezones = () => {
 
       <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-text-header)] mb-6">📅 Edit Live Stream Schedule</h1>
 
+      {!user?.youtubeChannelUrl && (
+        <div className="mb-4 p-4 bg-yellow-900/30 border border-yellow-600 text-yellow-400 rounded">
+          <p className="font-semibold mb-2">⚠️ No YouTube Channel Connected</p>
+          <p className="text-sm">Connect your YouTube channel below to enable live stream scheduling.</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="mb-4 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] text-[var(--color-error-border)] rounded">
+          {error}
+        </div>
+      )}
+
       {successMessage && (
         <div className="mb-4 p-4 bg-[var(--color-success-bg)] border border-[var(--color-success-border)] text-[var(--color-success-border)] rounded">
           {successMessage}
@@ -222,6 +249,19 @@ const getTimezones = () => {
           {errors.duplicate}
         </div>
       )}
+
+      <div className="bg-[var(--color-card-bg)] p-4 sm:p-6 rounded-lg mb-6">
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-[var(--color-text-header)] mb-2">
+            YouTube Channel
+          </label>
+          <ConnectYoutubeChannel
+            initialValue={user?.youtubeChannelUrl || ""}
+            onSuccess={handleYoutubeSuccess}
+            onError={(error) => setError(error)}
+          />
+        </div>
+      </div>
 
       <div className="bg-[var(--color-card-bg)] p-4 sm:p-6 rounded-lg mb-6">
         <div className="mb-6">
@@ -312,7 +352,7 @@ const getTimezones = () => {
         <div className="flex flex-col sm:flex-row gap-3 mt-6">
           <button
             onClick={handleSave}
-            disabled={saving || loading || schedules.length === 0}
+            disabled={saving || loading || schedules.length === 0 || !user?.youtubeChannelUrl}
             className="bg-[var(--color-index-bg)] hover:opacity-90 text-white px-6 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed order-1"
           >
             {saving ? "Saving..." : "Save Schedule"}
