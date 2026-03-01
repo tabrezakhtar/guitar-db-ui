@@ -188,7 +188,13 @@ function Landing() {
             {/* <EquipmentTypeGrid isVisible={isVisible} /> */}
 
             <div className="max-w-3xl mt-8 space-y-6">
-              <LiveAndUpcoming />
+              <motion.div
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+                animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: "easeOut", delay: shouldReduceMotion ? 0 : 0.5 }}
+              >
+                <LiveAndUpcoming />
+              </motion.div>
               <RecentUsers />
             </div>
           </div>

@@ -76,10 +76,16 @@ const LiveAndUpcoming = () => {
               <Link
                 key={stream.userId}
                 to={`/profile?userId=${stream.userId}`}
-                className="flex items-center gap-3 p-3 bg-[var(--color-main-bg)] rounded hover:opacity-80 transition-opacity"
+                className="flex justify-center gap-3 p-3 bg-[var(--color-main-bg)] rounded hover:opacity-80 transition-opacity"
               >
-                <span className="text-green-500 text-xl">🟢</span>
-                <div className="flex-1">
+                {stream.youtubeChannelAvatar && (
+                  <img 
+                    src={`${BASE_URL}/api/youtube/image-proxy?url=${encodeURIComponent(stream.youtubeChannelAvatar)}`} 
+                    alt={stream.username}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                )}
+                <div>
                   <div className="font-medium text-[var(--color-text-header)]">
                     {stream.username}
                   </div>
@@ -101,10 +107,16 @@ const LiveAndUpcoming = () => {
               <Link
                 key={stream.userId}
                 to={`/profile?userId=${stream.userId}`}
-                className="flex items-center gap-3 p-3 bg-[var(--color-main-bg)] rounded hover:opacity-80 transition-opacity"
+                className="flex justify-center gap-3 p-3 bg-[var(--color-main-bg)] rounded hover:opacity-80 transition-opacity"
               >
-                <span className="text-[var(--color-text-muted)] text-xl">⏱️</span>
-                <div className="flex-1">
+                {stream.youtubeChannelAvatar && (
+                  <img 
+                    src={`${BASE_URL}/api/youtube/image-proxy?url=${encodeURIComponent(stream.youtubeChannelAvatar)}`}
+                    alt={stream.username}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                )}
+                <div>
                   <div className="font-medium text-[var(--color-text-header)]">
                     {stream.username}
                   </div>

@@ -5,7 +5,7 @@ import { useScheduleData } from "./useScheduleData";
 import Breadcrumbs from "../components/Breadcrumbs";
 import ConnectYoutubeChannel from "../components/ConnectYoutubeChannel";
 
-const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 const EditSchedule = () => {
   const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
