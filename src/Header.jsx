@@ -27,13 +27,13 @@ function MenuContent({ user }) {
         </Link>
       ) : (
         <a 
-          href={`${import.meta.env.VITE_API_BASE_URL}/register`} 
+          href={`${import.meta.env.VITE_API_BASE_URL}/login`} 
           className="ml-6 flex items-center text-[var(--color-text-header)] dark:text-[var(--color-text-dark)]"
         >
           <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-medium mr-2">
-            +
+            <img src="/icons/user.svg" alt="user" className="w-4 h-4" />
           </div>
-          <span>Create Profile</span>
+          <span>Login</span>
         </a>
       )}
     </nav>
