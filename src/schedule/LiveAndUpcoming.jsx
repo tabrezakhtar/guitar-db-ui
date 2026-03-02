@@ -49,7 +49,10 @@ const LiveAndUpcoming = () => {
   if (loading) {
     return (
       <div className="p-6 rounded-lg bg-[var(--color-card-dark)]">
-        <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">🎥 Live Streams</h3>
+        <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">
+          <img src="/icons/youtube_icon.png" alt="YouTube" className="inline w-5 h-5 mr-1" />
+          Live Streams
+        </h3>
         <div className="text-[var(--color-text-muted)]">Loading...</div>
       </div>
     );
@@ -58,7 +61,10 @@ const LiveAndUpcoming = () => {
   if (liveNow.length === 0 && upcoming.length === 0) {
     return (
       <div className="p-6 rounded-lg bg-[var(--color-card-dark)]">
-        <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">🎥 Live Streams</h3>
+        <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">
+          <img src="/icons/youtube_icon.png" alt="YouTube" className="inline w-5 h-5 mr-1" />
+          Live Streams
+        </h3>
         <p className="text-[var(--color-text-muted)]">No streams scheduled at this time</p>
       </div>
     );
@@ -66,7 +72,10 @@ const LiveAndUpcoming = () => {
 
   return (
     <div className="p-6 rounded-lg bg-[var(--color-card-dark)]">
-      <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">🎥 Live Streams</h3>
+      <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">
+        <img src="/icons/youtube_icon.png" alt="YouTube" className="inline w-5 h-5 mr-1" />
+        Live Streams
+      </h3>
       
       {liveNow.length > 0 && (
         <div className="mb-6">
