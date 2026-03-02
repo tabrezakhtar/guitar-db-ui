@@ -49,7 +49,7 @@ const LiveAndUpcoming = () => {
   if (loading) {
     return (
       <div className="p-6 rounded-lg bg-[var(--color-card-dark)]">
-        <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">
+        <h3 className="flex items-center justify-center text-lg font-semibold text-[var(--color-text-header)] mb-4">
           <img src="/icons/youtube_icon.png" alt="YouTube" className="inline w-5 h-5 mr-1" />
           Live Streams
         </h3>
@@ -61,7 +61,7 @@ const LiveAndUpcoming = () => {
   if (liveNow.length === 0 && upcoming.length === 0) {
     return (
       <div className="p-6 rounded-lg bg-[var(--color-card-dark)]">
-        <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">
+        <h3 className="flex items-center justify-center text-lg font-semibold text-[var(--color-text-header)] mb-4">
           <img src="/icons/youtube_icon.png" alt="YouTube" className="inline w-5 h-5 mr-1" />
           Live Streams
         </h3>
@@ -72,7 +72,7 @@ const LiveAndUpcoming = () => {
 
   return (
     <div className="p-6 rounded-lg bg-[var(--color-card-dark)]">
-      <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">
+      <h3 className="flex items-center justify-center text-lg font-semibold text-[var(--color-text-header)] mb-4">
         <img src="/icons/youtube_icon.png" alt="YouTube" className="inline w-5 h-5 mr-1" />
         Live Streams
       </h3>
