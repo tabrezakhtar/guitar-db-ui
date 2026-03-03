@@ -20,6 +20,7 @@ import PostPage from "./PostPage";
 import Followers from "./follow/Followers";
 import Following from "./follow/Following";
 import SaveCredentials from "./SaveCredentials";
+import FullGuide from "./schedule/FullSchedule";
 // import CookieAlert from "./components/CookieAlert";
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
                       <Route path="/followers/:userId" element={<Layout hideSideMenu><Followers /></Layout>} />
                       <Route path="/following" element={<Layout hideSideMenu><Following /></Layout>} />
                       <Route path="/following/:userId" element={<Layout hideSideMenu><Following /></Layout>} />
+                      <Route path="/guide" element={<Layout hideSideMenu><FullGuide /></Layout>} />
                     </Routes>
                   </div>
               </HeaderProvider>

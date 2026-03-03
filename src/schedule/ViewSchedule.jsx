@@ -30,7 +30,7 @@ const ViewSchedule = ({ userId }) => {
     return `${hour12}:${minutes} ${ampm}`;
   };
 
-  const dayOrder = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
   const sortedSchedules = schedule?.liveSchedules?.sort((a, b) => {
     return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);

@@ -11,7 +11,8 @@ const LiveAndUpcoming = () => {
   useEffect(() => {
     const fetchLiveAndUpcoming = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/api/schedule/live`);
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const response = await fetch(`${BASE_URL}/api/schedule/live?timezone=${encodeURIComponent(timezone)}`);
         if (response.ok) {
           const data = await response.json();
           setLiveNow(data.liveNow || []);
@@ -84,7 +85,7 @@ const LiveAndUpcoming = () => {
             {liveNow.map((stream) => (
               <Link
                 key={stream.userId}
-                to={`/profile?userId=${stream.userId}`}
+                to={`/profile/${stream.userId}`}
                 className="flex justify-center gap-3 p-3 bg-[var(--color-main-bg)] rounded hover:opacity-80 transition-opacity"
               >
                 {stream.youtubeChannelAvatar && (
@@ -115,7 +116,7 @@ const LiveAndUpcoming = () => {
             {upcoming.map((stream) => (
               <Link
                 key={stream.userId}
-                to={`/profile?userId=${stream.userId}`}
+                to={`/profile/${stream.userId}`}
                 className="flex justify-center gap-3 p-3 bg-[var(--color-main-bg)] rounded hover:opacity-80 transition-opacity"
               >
                 {stream.youtubeChannelAvatar && (
