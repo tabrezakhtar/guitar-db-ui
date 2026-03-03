@@ -88,11 +88,32 @@ export const useScheduleData = () => {
     }
   };
 
+  const getWeeklySchedule = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${BASE_URL}/api/schedule/weekly`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch weekly schedule");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      setError(err.message);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     loading,
     error,
     getSchedule,
     updateSchedule,
-    deleteSchedule
+    deleteSchedule,
+    getWeeklySchedule
   };
 };
