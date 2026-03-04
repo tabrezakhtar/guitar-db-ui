@@ -67,7 +67,7 @@ const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromStrin
               </AnimatePresence>
               <div className="absolute inset-0"></div>
               <div className="absolute inset-0 p-3 flex flex-col justify-between">
-                <div className="flex items-start gap-2">
+                <div className="flex items-start gap-2 align-center">
                   {schedule.youtubeChannelAvatar && (
                     <img
                       src={`${BASE_URL}/api/youtube/image-proxy?url=${encodeURIComponent(schedule.youtubeChannelAvatar)}`}
@@ -76,15 +76,19 @@ const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromStrin
                     />
                   )}
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold truncate text-white drop-shadow-md">{schedule.username}</div>
+                    <div className="bg-[var(--color-overlay-dark)] rounded px-2 py-1">
+                      <div className="text-sm font-semibold truncate text-[var(--color-text)] drop-shadow-lg">{schedule.username}</div>
+                    </div>
                   </div>
                 </div>
                 <div className="space-y-1">
-                  {schedule.title && (
-                    <div className="text-sm font-medium truncate text-white drop-shadow-md" title={schedule.title}>{schedule.title}</div>
-                  )}
-                  <div className="text-xs text-gray-100 drop-shadow-md">
-                    {formatTimeFromString(schedule.time)} - {formatTimeFromString(schedule.endTime)}
+                  <div className="bg-[var(--color-overlay-dark)] rounded px-2 py-1">
+                    {schedule.title && (
+                      <div className="text-sm font-medium truncate text-[var(--color-text)] drop-shadow-lg mb-1" title={schedule.title}>{schedule.title}</div>
+                    )}
+                    <div className="text-xs text-[var(--color-text)] drop-shadow-lg">
+                      {formatTimeFromString(schedule.time)} - {formatTimeFromString(schedule.endTime)}
+                    </div>
                   </div>
                 </div>
               </div>
