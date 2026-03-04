@@ -395,7 +395,8 @@ const getTimezones = () => {
                   >
                     ✕
                   </button>
-                </div>                <div className="flex w-full gap-3">
+                </div>
+                <div className="flex w-full gap-3">
                   <div className="flex-1 w-full sm:w-auto">
                     <label className="block text-xs text-[var(--color-text-muted)] mb-1">Day</label>
                     <select
@@ -512,7 +513,6 @@ const getTimezones = () => {
           <li>Add multiple schedules if you stream on different days</li>
           <li>Times are in 24-hour format for accuracy</li>
           <li>Make sure to select the correct timezone</li>
-          <li>You can reorder schedules by removing and re-adding them</li>
         </ul>
       </div>
       {showDeleteModal && (

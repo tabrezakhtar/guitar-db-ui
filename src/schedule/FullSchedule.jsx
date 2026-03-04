@@ -52,6 +52,12 @@ const FullSchedule = () => {
     return `${hour12}${ampm}`;
   };
 
+  const formatTimeFromString = (timeStr) => {
+    if (!timeStr) return "";
+    const [hour, minute] = timeStr.split(":").map(Number);
+    return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+  };
+
   const filteredSchedules = selectedTimezone
     ? schedules.filter(s => s.timezone === selectedTimezone)
     : schedules;
@@ -179,6 +185,9 @@ const FullSchedule = () => {
                                   {schedule.title && (
                                     <div className="text-xs truncate mt-1">{schedule.title}</div>
                                   )}
+                                  <div className="text-xs text-gray-200 mt-1">
+                                    {formatTimeFromString(schedule.time)} - {formatTimeFromString(schedule.endTime)}
+                                  </div>
                                 </div>
                               </div>
                             </Link>
