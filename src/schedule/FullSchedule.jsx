@@ -243,7 +243,7 @@ const FullSchedule = () => {
 
       {filteredSchedules.length === 0 ? (
         <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md">
-          <p className="text-[var(--color-text-muted)]">No schedules available for this timezone</p>
+          <p className="text-[var(--color-text-muted)]">No live stream schedules found</p>
         </div>
       ) : (
         <div className="space-y-4">
