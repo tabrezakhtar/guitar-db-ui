@@ -13,6 +13,7 @@ const FullSchedule = () => {
   const [selectedTimezone, setSelectedTimezone] = useState("");
   const [availableTimezones, setAvailableTimezones] = useState([]);
   const [weekStart, setWeekStart] = useState("");
+  const [selectedSchedule, setSelectedSchedule] = useState(null);
   const { getWeeklySchedule, loading } = useScheduleData();
   const gridRef = useRef(null);
 
@@ -47,6 +48,17 @@ const FullSchedule = () => {
     fetchSchedules();
   }, []);
 
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === "Escape" && selectedSchedule) {
+        setSelectedSchedule(null);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscKey);
+    return () => document.removeEventListener("keydown", handleEscKey);
+  }, [selectedSchedule]);
+
   const formatTime = (hour) => {
     const ampm = hour >= 12 ? "pm" : "am";
     const hour12 = hour % 12 || 12;
@@ -78,21 +90,43 @@ const FullSchedule = () => {
 
   if (loading) {
     return (
-      <div className="max-w-full mx-auto w-full p-6 bg-[var(--color-main-bg)]">
-        <h2 className="text-2xl font-bold mb-6 text-[var(--color-text-header)]">Live Streamer Guide</h2>
-        <div className="text-[var(--color-text-muted)]">Loading schedules...</div>
+      <div 
+        className="min-h-screen w-full p-6 relative"
+        style={{
+          backgroundColor: '#10072E',
+          backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1772643605/tvguidebg_inmpjq.jpg)',
+          backgroundSize: 'contain',
+          backgroundPosition: 'top center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent from-60% to-[var(--color-main-bg)]"></div>
+        <div className="relative max-w-full mx-auto">
+          <h2 className="text-2xl font-bold mb-6 text-[var(--color-text)]">Live Streamer Guide</h2>
+          <div className="text-[var(--color-text-muted)]">Loading schedules...</div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-full mx-auto w-full p-6 bg-[var(--color-main-bg)]">
-      <h2 className="text-2xl font-bold mb-4 text-[var(--color-text-header)]">Live Streamer Guide</h2>
+    <div 
+      className="min-h-screen w-full p-6 relative"
+      style={{
+        backgroundColor: '#10072E',
+        backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1772643605/tvguidebg_inmpjq.jpg)',
+        backgroundSize: 'contain',
+        backgroundPosition: 'top center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      <div className="relative max-w-full mx-auto">
+        <h2 className="text-2xl font-bold mb-4 text-[var(--color-text)]">Live Streamer Guide</h2>
       
       <div className="mb-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
         {availableTimezones.length > 0 && (
           <div>
-            <label className="block text-sm font-medium mb-2 text-[var(--color-text-header)]">Timezone</label>
+            <label className="block text-sm font-medium mb-2 text-[var(--color-text)]">Timezone</label>
             <select
               value={selectedTimezone}
               onChange={(e) => setSelectedTimezone(e.target.value)}
@@ -108,8 +142,8 @@ const FullSchedule = () => {
           </div>
         )}
         <div className="sm:ml-auto">
-          <p className="text-sm text-[var(--color-text-muted)] mb-1">Week of</p>
-          <p className="text-lg font-semibold text-[var(--color-text-header)]">{weekStart}</p>
+          <p className="text-sm text-[var(--color-text)] mb-1">Week of</p>
+          <p className="text-lg font-semibold text-[var(--color-text)]">{weekStart}</p>
         </div>
       </div>
 
@@ -119,14 +153,20 @@ const FullSchedule = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          {DAYS.map(day => (
-            <div key={day} className="bg-[var(--color-card-bg)] dark:bg-[var(--color-card-dark)] rounded-lg border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] overflow-hidden">
-              <div className="xbg-[var(--color-panel-bg)] px-4 py-3">
-                <h3 className="text-[var(--color-text-header)] font-semibold">{day}</h3>
+          {DAYS.map((day, dayIndex) => (
+            <motion.div
+              key={day}
+              className="bg-[var(--color-card-bg)]/80 dark:bg-[var(--color-card-dark)]/80 rounded-lg border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] overflow-hidden backdrop-blur-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: dayIndex * 0.05 }}
+            >
+              <div className="px-4 py-3">
+                <h3 className="text-[var(--color-text)] font-semibold">{day}</h3>
               </div>
               <div className="p-4">
                 {schedulesByDay[day].length === 0 ? (
-                  <p className="text-[var(--color-text-muted)] text-sm">No streams scheduled</p>
+                  <p className="text-[var(--color-text)] dark:text-[var(--color-text-muted)] text-sm">No streams scheduled</p>
                 ) : (
                   <div className="flex gap-3 overflow-x-auto pb-2">
                     {schedulesByDay[day].map((schedule, idx) => (
@@ -134,11 +174,10 @@ const FullSchedule = () => {
                         key={idx}
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.2 }}
+                        onClick={() => setSelectedSchedule(schedule)}
+                        className="cursor-pointer"
                       >
-                        <Link
-                          to={`/profile/${schedule.userId}`}
-                          className="flex-shrink-0 w-64 h-32 rounded overflow-hidden relative block shadow-md hover:shadow-lg transition-shadow duration-200"
-                        >
+                        <div className="flex-shrink-0 w-64 h-32 rounded overflow-hidden relative block shadow-md hover:shadow-lg transition-shadow duration-200">
                           <AnimatePresence>
                             {schedule.youtubeChannelBanner ? (
                               <motion.img
@@ -178,23 +217,118 @@ const FullSchedule = () => {
                             </div>
                             <div className="space-y-1">
                               {schedule.title && (
-                                <div className="text-sm font-medium truncate text-white drop-shadow-md">{schedule.title}</div>
+                                <div className="text-sm font-medium truncate text-white drop-shadow-md" title={schedule.title}>{schedule.title}</div>
                               )}
                               <div className="text-xs text-gray-100 drop-shadow-md">
                                 {formatTimeFromString(schedule.time)} - {formatTimeFromString(schedule.endTime)}
                               </div>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       </motion.div>
                     ))}
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}
+      </div>
+
+      <AnimatePresence>
+        {selectedSchedule && (
+          <motion.div
+            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedSchedule(null)}
+          >
+            <motion.div
+              className="bg-[var(--color-card-dark)] rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative">
+                {selectedSchedule.youtubeChannelBanner ? (
+                  <img
+                    src={`${BASE_URL}/api/youtube/image-proxy?url=${encodeURIComponent(selectedSchedule.youtubeChannelBanner)}`}
+                    alt={`${selectedSchedule.username} banner`}
+                    className="w-full h-48 object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-48 bg-[var(--color-index-bg)]"></div>
+                )}
+                <button
+                  onClick={() => setSelectedSchedule(null)}
+                  className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div className="flex items-center gap-4">
+                  {selectedSchedule.youtubeChannelAvatar && (
+                    <img
+                      src={`${BASE_URL}/api/youtube/image-proxy?url=${encodeURIComponent(selectedSchedule.youtubeChannelAvatar)}`}
+                      alt={selectedSchedule.username}
+                      className="w-20 h-20 rounded-full object-cover border-4 border-white/50"
+                    />
+                  )}
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-[var(--color-text-header)]">{selectedSchedule.username}</h3>
+                    <p className="text-[var(--color-text-muted)]">{selectedSchedule.day} at {formatTimeFromString(selectedSchedule.time)} - {formatTimeFromString(selectedSchedule.endTime)}</p>
+                  </div>
+                </div>
+
+                {selectedSchedule.title && (
+                  <div>
+                    <h4 className="text-sm font-semibold text-[var(--color-text-muted)] mb-1">Stream Title</h4>
+                    <p className="text-lg text-[var(--color-text-header)]">{selectedSchedule.title}</p>
+                  </div>
+                )}
+
+                {selectedSchedule.description && (
+                  <div>
+                    <h4 className="text-sm font-semibold text-[var(--color-text-muted)] mb-1">Description</h4>
+                    <p className="text-[var(--color-text-header)] whitespace-pre-wrap">{selectedSchedule.description}</p>
+                  </div>
+                )}
+
+                <div>
+                  <h4 className="text-sm font-semibold text-[var(--color-text-muted)] mb-1">Timezone</h4>
+                  <p className="text-[var(--color-text-header)]">{selectedSchedule.timezone}</p>
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <Link
+                    to={`/profile/${selectedSchedule.userId}`}
+                    className="flex-1 bg-[var(--color-index-bg)] hover:opacity-90 text-white px-4 py-3 rounded-lg font-semibold text-center transition-opacity"
+                  >
+                    View Profile
+                  </Link>
+                  {selectedSchedule.youtubeChannelUrl && (
+                    <a
+                      href={`${selectedSchedule.youtubeChannelUrl}/streams`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-lg font-semibold text-center transition-colors"
+                    >
+                      YouTube Channel
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
