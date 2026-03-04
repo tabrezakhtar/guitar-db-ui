@@ -138,7 +138,7 @@ function Landing() {
             />
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-12"
+              className="flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-8"
               initial={shouldReduceMotion ? false : { opacity: 0, y: 30, scale: 0.95 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
               transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : 0.3 }}
@@ -191,7 +191,30 @@ function Landing() {
               <motion.div
                 initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
-                transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: "easeOut", delay: shouldReduceMotion ? 0 : 0.5 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: "easeOut", delay: shouldReduceMotion ? 0 : 0.6 }}
+              >
+                <Link 
+                  to="/guide" 
+                  className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2 mx-auto"
+                  style={{
+                    backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1772648199/tvguidebg_thumb_gmlgqs.jpg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    borderColor: '#EAAA00'
+                  }}
+                >
+                  {/* <div className="relative z-10 text-center">
+                    <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
+                      <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Live Streamer Guide</h3>
+                      <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Check out when your favorite guitarists are streaming</p>
+                    </div>
+                  </div> */}
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+                animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: "easeOut", delay: shouldReduceMotion ? 0 : 0.7 }}
               >
                 <LiveAndUpcoming />
               </motion.div>
