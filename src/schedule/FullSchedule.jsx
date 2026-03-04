@@ -191,7 +191,8 @@ const FullSchedule = () => {
           backgroundImage,
           backgroundSize: 'contain',
           backgroundPosition: 'top center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed'
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent from-60% to-[var(--color-main-bg)]"></div>
@@ -211,7 +212,8 @@ const FullSchedule = () => {
         backgroundImage,
         backgroundSize: 'contain',
         backgroundPosition: 'top center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
       }}
     >
       <div className="relative max-w-full mx-auto">
