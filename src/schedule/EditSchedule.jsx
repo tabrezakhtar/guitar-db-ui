@@ -30,7 +30,12 @@ const EditSchedule = () => {
         const data = await getSchedule(user._id);
         if (data) {
           const tz = data.timezone || detectedTimezone || "UTC";
-          const scheds = data.liveSchedules && data.liveSchedules.length > 0 ? data.liveSchedules : [];
+          const scheds = data.liveSchedules && data.liveSchedules.length > 0 
+            ? data.liveSchedules.map(schedule => ({
+                ...schedule,
+                endTime: schedule.endTime || calculateEndTime(schedule.time, 1)
+              }))
+            : [];
           setTimezone(tz);
           setSchedules(scheds);
         }
@@ -41,8 +46,19 @@ const EditSchedule = () => {
   }, [user]);
 
   const addSchedule = () => {
-    setSchedules([...schedules, { day: "Monday", time: "20:00", title: "", description: "" }]);
+    const defaultStartTime = "20:00";
+    const defaultEndTime = calculateEndTime(defaultStartTime, 1);
+    setSchedules([...schedules, { day: "Monday", time: defaultStartTime, endTime: defaultEndTime, title: "", description: "" }]);
     setErrors({});
+  };
+
+  const calculateEndTime = (startTime, hoursToAdd) => {
+    if (!startTime || !/^([01]\d|2[0-3]):([0-5]\d)$/.test(startTime)) {
+      return "";
+    }
+    const [hours, minutes] = startTime.split(":").map(Number);
+    const newHours = (hours + hoursToAdd) % 24;
+    return `${String(newHours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
   };
 
   const removeSchedule = (index) => {
@@ -80,10 +96,27 @@ const EditSchedule = () => {
   const updateScheduleItem = (index, field, value) => {
     const newSchedules = [...schedules];
     newSchedules[index][field] = value;
+    
+    if (field === "time" && value) {
+      newSchedules[index].endTime = calculateEndTime(value, 1);
+    }
+    
     setSchedules(newSchedules);
     
     const newErrors = { ...errors };
     delete newErrors[`${field}-${index}`];
+    
+    if (field === "endTime" && value) {
+      const startTime = newSchedules[index].time;
+      if (startTime && /^([01]\d|2[0-3]):([0-5]\d)$/.test(value)) {
+        const [sh, sm] = startTime.split(":").map(Number);
+        const [eh, em] = value.split(":").map(Number);
+        if (eh < sh || (eh === sh && em <= sm)) {
+          newErrors[`endTime-${index}`] = "End time must be after start time";
+        }
+      }
+    }
+    
     setErrors(newErrors);
   };
 
@@ -103,6 +136,21 @@ const EditSchedule = () => {
       } else if (!/^([01]\d|2[0-3]):([0-5]\d)$/.test(schedule.time)) {
         newErrors[`time-${index}`] = "Invalid time format";
         isValid = false;
+      }
+
+      if (schedule.endTime && !/^([01]\d|2[0-3]):([0-5]\d)$/.test(schedule.endTime)) {
+        newErrors[`endTime-${index}`] = "Invalid time format";
+        isValid = false;
+      }
+
+      if (schedule.endTime && schedule.time) {
+        // ensure endTime is not before start time
+        const [sh, sm] = schedule.time.split(":").map(Number);
+        const [eh, em] = schedule.endTime.split(":").map(Number);
+        if (eh < sh || (eh === sh && em <= sm)) {
+          newErrors[`endTime-${index}`] = "End time must be after start time";
+          isValid = false;
+        }
       }
 
       if (schedule.title && schedule.title.length > 200) {
@@ -369,7 +417,7 @@ const getTimezones = () => {
                   </div>
 
                   <div className="flex-1 w-full sm:w-auto">
-                    <label className="block text-xs text-[var(--color-text-muted)] mb-1">Time</label>
+                    <label className="block text-xs text-[var(--color-text-muted)] mb-1">Start time</label>
                     <input
                       type="time"
                       value={schedule.time}
@@ -380,6 +428,21 @@ const getTimezones = () => {
                     />
                     {errors[`time-${index}`] && (
                       <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`time-${index}`]}</p>
+                    )}
+                  </div>
+
+                  <div className="flex-1 w-full sm:w-auto">
+                    <label className="block text-xs text-[var(--color-text-muted)] mb-1">End time</label>
+                    <input
+                      type="time"
+                      value={schedule.endTime || ""}
+                      onChange={(e) => updateScheduleItem(index, "endTime", e.target.value)}
+                      className={`w-full p-2 border rounded bg-[var(--color-panel-bg)] text-[var(--color-text-header)] [color-scheme:light] dark:[color-scheme:dark] ${
+                        errors[`endTime-${index}`] ? "border-[var(--color-error-border)]" : "border-[var(--color-text-muted)]"
+                      }`}
+                    />
+                    {errors[`endTime-${index}`] && (
+                      <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`endTime-${index}`]}</p>
                     )}
                   </div>
                 </div>
@@ -428,7 +491,7 @@ const getTimezones = () => {
         <div className="flex flex-col sm:flex-row gap-3 mt-6">
           <button
             onClick={handleSave}
-            disabled={saving || loading || schedules.length === 0 || !user?.youtubeChannelUrl}
+            disabled={saving || loading || schedules.length === 0 || !user?.youtubeChannelUrl || Object.keys(errors).length > 0}
             className="bg-[var(--color-index-bg)] hover:opacity-90 text-white px-6 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed order-1"
           >
             {saving ? "Saving..." : "Save Schedule"}
