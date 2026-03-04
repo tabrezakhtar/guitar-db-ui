@@ -4,6 +4,7 @@ import { UserContext } from "../context/UserContext";
 import { useScheduleData } from "./useScheduleData";
 import Breadcrumbs from "../components/Breadcrumbs";
 import ConnectYoutubeChannel from "../components/ConnectYoutubeChannel";
+import Modal from "../components/Modal";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -15,9 +16,12 @@ const EditSchedule = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [scheduleToDelete, setScheduleToDelete] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   
   const { user, updateUserLocal } = useContext(UserContext);
-  const { getSchedule, updateSchedule, loading } = useScheduleData();
+  const { getSchedule, updateSchedule, deleteScheduleItem, loading } = useScheduleData();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,16 +41,40 @@ const EditSchedule = () => {
   }, [user]);
 
   const addSchedule = () => {
-    setSchedules([...schedules, { day: "Monday", time: "20:00" }]);
+    setSchedules([...schedules, { day: "Monday", time: "20:00", title: "", description: "" }]);
     setErrors({});
   };
 
   const removeSchedule = (index) => {
-    setSchedules(schedules.filter((_, i) => i !== index));
-    const newErrors = { ...errors };
-    delete newErrors[`day-${index}`];
-    delete newErrors[`time-${index}`];
-    setErrors(newErrors);
+    setScheduleToDelete({ index, id: schedules[index]._id });
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteSchedule = async () => {
+    if (!scheduleToDelete) return;
+
+    setDeleteLoading(true);
+    try {
+      if (scheduleToDelete.id) {
+        await deleteScheduleItem(scheduleToDelete.id);
+      }
+      
+      setSchedules(schedules.filter((_, i) => i !== scheduleToDelete.index));
+      const newErrors = { ...errors };
+      delete newErrors[`day-${scheduleToDelete.index}`];
+      delete newErrors[`time-${scheduleToDelete.index}`];
+      delete newErrors[`title-${scheduleToDelete.index}`];
+      delete newErrors[`description-${scheduleToDelete.index}`];
+      setErrors(newErrors);
+      
+      setShowDeleteModal(false);
+      setScheduleToDelete(null);
+    } catch (err) {
+      setError("Failed to delete schedule item. Please try again.");
+      setShowDeleteModal(false);
+    } finally {
+      setDeleteLoading(false);
+    }
   };
 
   const updateScheduleItem = (index, field, value) => {
@@ -74,6 +102,16 @@ const EditSchedule = () => {
         isValid = false;
       } else if (!/^([01]\d|2[0-3]):([0-5]\d)$/.test(schedule.time)) {
         newErrors[`time-${index}`] = "Invalid time format";
+        isValid = false;
+      }
+
+      if (schedule.title && schedule.title.length > 200) {
+        newErrors[`title-${index}`] = "Title must be 200 characters or less";
+        isValid = false;
+      }
+
+      if (schedule.description && schedule.description.length > 500) {
+        newErrors[`description-${index}`] = "Description must be 500 characters or less";
         isValid = false;
       }
     });
@@ -288,7 +326,7 @@ const getTimezones = () => {
               onClick={addSchedule}
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition-colors w-full sm:w-auto text-sm sm:text-base"
             >
-              Add Schedule
+              Add Live Stream Time
             </button>
           </div>
 
@@ -296,53 +334,91 @@ const getTimezones = () => {
             {schedules.length === 0 ? (
               <div className="p-6 bg-[var(--color-main-bg)] rounded border-2 border-dashed border-[var(--color-text-muted)] text-center">
                 <p className="text-[var(--color-text-header)] mb-2">No schedules yet</p>
-                <p className="text-sm text-[var(--color-text-muted)]">Click the "Add Schedule" button above to create your first schedule</p>
+                <p className="text-sm text-[var(--color-text-muted)]">Click the "Add Live Stream Time" button above to create your first schedule</p>
               </div>
             ) : (
               schedules.map((schedule, index) => (
-              <div key={index} className="flex flex-col sm:flex-row gap-3 items-start p-3 sm:p-4 bg-[var(--color-main-bg)] rounded">
-                <div className="flex-1 w-full sm:w-auto">
-                  <label className="block text-xs text-[var(--color-text-muted)] mb-1">Day</label>
-                  <select
-                    value={schedule.day}
-                    onChange={(e) => updateScheduleItem(index, "day", e.target.value)}
-                    className={`w-full p-2 border rounded bg-[var(--color-panel-bg)] text-[var(--color-text-header)] ${
-                      errors[`day-${index}`] ? "border-[var(--color-error-border)]" : "border-[var(--color-text-muted)]"
-                    }`}
+              <div key={index} className="flex flex-col gap-3 items-start p-3 sm:p-4 bg-[var(--color-main-bg)] rounded">
+                <div className="flex w-full justify-end">
+                  <button
+                    onClick={() => removeSchedule(index)}
+                    className="text-gray-400 hover:text-red-500 transition-colors rounded cursor-pointer"
+                    title="Remove this schedule"
                   >
-                    {DAYS.map((day) => (
-                      <option key={day} value={day}>
-                        {day}
-                      </option>
-                    ))}
-                  </select>
-                  {errors[`day-${index}`] && (
-                    <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`day-${index}`]}</p>
-                  )}
+                    ✕
+                  </button>
+                </div>                <div className="flex w-full gap-3">
+                  <div className="flex-1 w-full sm:w-auto">
+                    <label className="block text-xs text-[var(--color-text-muted)] mb-1">Day</label>
+                    <select
+                      value={schedule.day}
+                      onChange={(e) => updateScheduleItem(index, "day", e.target.value)}
+                      className={`w-full p-2 border rounded bg-[var(--color-panel-bg)] text-[var(--color-text-header)] ${
+                        errors[`day-${index}`] ? "border-[var(--color-error-border)]" : "border-[var(--color-text-muted)]"
+                      }`}
+                    >
+                      {DAYS.map((day) => (
+                        <option key={day} value={day}>
+                          {day}
+                        </option>
+                      ))}
+                    </select>
+                    {errors[`day-${index}`] && (
+                      <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`day-${index}`]}</p>
+                    )}
+                  </div>
+
+                  <div className="flex-1 w-full sm:w-auto">
+                    <label className="block text-xs text-[var(--color-text-muted)] mb-1">Time</label>
+                    <input
+                      type="time"
+                      value={schedule.time}
+                      onChange={(e) => updateScheduleItem(index, "time", e.target.value)}
+                      className={`w-full p-2 border rounded bg-[var(--color-panel-bg)] text-[var(--color-text-header)] [color-scheme:light] dark:[color-scheme:dark] ${
+                        errors[`time-${index}`] ? "border-[var(--color-error-border)]" : "border-[var(--color-text-muted)]"
+                      }`}
+                    />
+                    {errors[`time-${index}`] && (
+                      <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`time-${index}`]}</p>
+                    )}
+                  </div>
                 </div>
 
-                <div className="flex-1 w-full sm:w-auto">
-                  <label className="block text-xs text-[var(--color-text-muted)] mb-1">Time</label>
+                <div className="flex-1 w-full">
+                  <label className="block text-xs text-[var(--color-text-muted)] mb-1">Title (optional)</label>
                   <input
-                    type="time"
-                    value={schedule.time}
-                    onChange={(e) => updateScheduleItem(index, "time", e.target.value)}
-                    className={`w-full p-2 border rounded bg-[var(--color-panel-bg)] text-[var(--color-text-header)] [color-scheme:light] dark:[color-scheme:dark] ${
-                      errors[`time-${index}`] ? "border-[var(--color-error-border)]" : "border-[var(--color-text-muted)]"
+                    type="text"
+                    value={schedule.title || ""}
+                    onChange={(e) => updateScheduleItem(index, "title", e.target.value)}
+                    maxLength={200}
+                    placeholder="Stream title"
+                    className={`w-full p-2 border rounded bg-[var(--color-panel-bg)] text-[var(--color-text-header)] ${
+                      errors[`title-${index}`] ? "border-[var(--color-error-border)]" : "border-[var(--color-text-muted)]"
                     }`}
                   />
-                  {errors[`time-${index}`] && (
-                    <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`time-${index}`]}</p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">{(schedule.title || "").length}/200 characters</p>
+                  {errors[`title-${index}`] && (
+                    <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`title-${index}`]}</p>
                   )}
                 </div>
 
-                <button
-                  onClick={() => removeSchedule(index)}
-                  className="sm:mt-5 px-3 py-2 rounded transition-colors w-full sm:w-auto bg-[var(--color-delete-bg)] hover:bg-[var(--color-delete-hover)] text-white"
-                  title="Remove this schedule"
-                >
-                  Remove
-                </button>
+                <div className="flex-1 w-full">
+                  <label className="block text-xs text-[var(--color-text-muted)] mb-1">Description (optional)</label>
+                  <textarea
+                    value={schedule.description || ""}
+                    onChange={(e) => updateScheduleItem(index, "description", e.target.value)}
+                    maxLength={500}
+                    placeholder="Stream description"
+                    rows={3}
+                    className={`w-full p-2 border rounded bg-[var(--color-panel-bg)] text-[var(--color-text-header)] resize-y ${
+                      errors[`description-${index}`] ? "border-[var(--color-error-border)]" : "border-[var(--color-text-muted)]"
+                    }`}
+                  />
+                  <p className="text-xs text-[var(--color-text-muted)] mt-1">{(schedule.description || "").length}/500 characters</p>
+                  {errors[`description-${index}`] && (
+                    <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`description-${index}`]}</p>
+                  )}
+                </div>
               </div>
               ))
             )}
@@ -376,7 +452,43 @@ const getTimezones = () => {
           <li>You can reorder schedules by removing and re-adding them</li>
         </ul>
       </div>
-    </div>
+      {showDeleteModal && (
+        <Modal
+          message={
+            deleteLoading ? (
+              <div className="text-center max-w-md mx-auto">
+                <div className="text-red-400 text-6xl mb-6">🗑️</div>
+                <h3 className="text-xl font-bold text-[var(--color-text-header)] mb-4">
+                  Deleting Schedule...
+                </h3>
+                <p className="text-[var(--color-text-muted-dark)] mb-6 text-lg">
+                  Please wait while we remove this schedule item.
+                </p>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative">
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-300 border-t-red-400"></div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center max-w-md mx-auto">
+                <div className="text-red-400 text-6xl mb-4">⚠️</div>
+                <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-4">
+                  Are you sure you want to delete this schedule item?
+                </h3>
+                <p className="text-[var(--color-text-muted-dark)] mb-2">
+                  This action will permanently remove this scheduled stream time.
+                </p>
+                <p className="text-red-400 font-semibold">
+                  This cannot be undone.
+                </p>
+              </div>
+            )
+          }
+          onConfirm={deleteLoading ? undefined : confirmDeleteSchedule}
+          onCancel={deleteLoading ? undefined : () => setShowDeleteModal(false)}
+        />
+      )}    </div>
   );
 };
 

@@ -88,6 +88,40 @@ export const useScheduleData = () => {
     }
   };
 
+  const deleteScheduleItem = async (scheduleItemId) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${BASE_URL}/api/schedule/item`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ id: scheduleItemId })
+      });
+
+      if (!response.ok) {
+        let message = "Failed to delete schedule item";
+        try {
+          const data = await response.json();
+          if (data && data.error) {
+            message = data.error;
+          }
+        } catch {}
+        throw new Error(message);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getWeeklySchedule = async () => {
     setLoading(true);
     setError(null);
@@ -114,6 +148,7 @@ export const useScheduleData = () => {
     getSchedule,
     updateSchedule,
     deleteSchedule,
+    deleteScheduleItem,
     getWeeklySchedule
   };
 };
