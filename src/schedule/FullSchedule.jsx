@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDraggable } from "react-use-draggable-scroll";
 import { useScheduleData } from "./useScheduleData";
 import { UserContext } from "../context/UserContext";
+import FavUsers from "./FavUsers";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -107,8 +108,9 @@ const FullSchedule = () => {
   const [availableTimezones, setAvailableTimezones] = useState([]);
   const [weekStart, setWeekStart] = useState("");
   const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [showFavUsersModal, setShowFavUsersModal] = useState(false);
   const { getWeeklySchedule, loading } = useScheduleData();
-  const { user } = useContext(UserContext);
+  const { user, loading: userLoading } = useContext(UserContext);
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -164,9 +166,15 @@ const FullSchedule = () => {
     return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
   };
 
-  const filteredSchedules = selectedTimezone
+  let filteredSchedules = selectedTimezone
     ? schedules.filter(s => s.timezone === selectedTimezone)
     : schedules;
+
+  if (user && user.favUsers && user.favUsers.length > 0) {
+    filteredSchedules = filteredSchedules.filter(s => 
+      user.favUsers.includes(s.userId)
+    );
+  }
 
   const schedulesByDay = {};
   DAYS.forEach(day => {
@@ -197,14 +205,24 @@ const FullSchedule = () => {
       <div className="relative max-w-full mx-auto">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
           <h2 className="text-2xl font-bold mb-6 text-[var(--color-text-header)]">Live Streamer Guide</h2>
-          <div className="w-full sm:w-auto">
-            {user ? (
-              <Link 
-                to="/edit-schedule" 
-                className="bg-[var(--color-index-bg)] hover:opacity-90 text-white px-4 py-2 rounded font-medium transition-opacity inline-block"
-              >
-                ✏️ Edit Schedule
-              </Link>
+          <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
+            {userLoading ? (
+              <div className="h-10"></div>
+            ) : user ? (
+              <>
+                <button
+                  onClick={() => setShowFavUsersModal(true)}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded font-medium transition-colors inline-block"
+                >
+                  ⭐ Favorites
+                </button>
+                <Link 
+                  to="/edit-schedule" 
+                  className="bg-[var(--color-index-bg)] hover:opacity-90 text-white px-4 py-2 rounded font-medium transition-opacity inline-block"
+                >
+                  ✏️ Edit Schedule
+                </Link>
+              </>
             ) : (
               <div className="bg-[var(--color-guest-bg)] text-[var(--color-guest-text)] border border-[var(--color-guest-border)] rounded-md">
                 <div className="px-4 py-2 flex items-center gap-3">
@@ -366,6 +384,12 @@ const FullSchedule = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <FavUsers 
+        isOpen={showFavUsersModal} 
+        onClose={() => setShowFavUsersModal(false)}
+        currentFavUsers={user?.favUsers || []}
+      />
     </div>
   );
 };

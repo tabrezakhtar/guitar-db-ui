@@ -19,8 +19,8 @@ const Modal = ({
       className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 cursor-auto"
       onClick={handleBackgroundClick}
     >
-      <div className="bg-gray-800 p-4 rounded shadow-md">
-        <div className="mb-4 text-white">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded shadow-md">
+        <div className="mb-4 text-gray-900 dark:text-white">
           {children || message}
         </div>
         {(showConfirm || showCancel) && (

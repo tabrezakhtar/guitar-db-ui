@@ -19,11 +19,12 @@ function Select({ className = "", ...props }) {
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isSelected 
-        ? "#3b82f6" 
+        ? "var(--color-index-bg)" 
         : state.isFocused 
-        ? "#4b5563" 
-        : "transparent",
-      color: "#f3f4f6"
+        ? "var(--color-card-dark-hover)" 
+        : "var(--color-card-dark)",
+      color: "var(--color-text-header)",
+      padding: "8px 12px"
     }),
     singleValue: (provided) => ({
       ...provided,
@@ -31,11 +32,14 @@ function Select({ className = "", ...props }) {
     }),
     multiValue: (provided) => ({
       ...provided,
-      backgroundColor: "#4b5563"
+      backgroundColor: "var(--color-card-dark)",
+      borderRadius: "4px",
+      border: "1px solid var(--color-skeleton-line)"
     }),
     multiValueLabel: (provided) => ({
       ...provided,
-      color: "#f3f4f6"
+      color: "var(--color-text-header)",
+      padding: "2px 6px"
     }),
     multiValueRemove: (provided) => ({
       ...provided,
