@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDraggable } from "react-use-draggable-scroll";
 import { useScheduleData } from "./useScheduleData";
 import { UserContext } from "../context/UserContext";
+import useThemeRefresh from "../hooks/useThemeRefresh";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -110,6 +111,7 @@ const FullSchedule = () => {
   const { getWeeklySchedule, loading } = useScheduleData();
   const { user } = useContext(UserContext);
   const gridRef = useRef(null);
+  useThemeRefresh();
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -196,7 +198,7 @@ const FullSchedule = () => {
           backgroundColor,
           backgroundImage,
           backgroundSize: 'contain',
-          backgroundPosition: 'top center',
+          backgroundPosition: '75% top',
           backgroundRepeat: 'no-repeat',
           backgroundAttachment: 'fixed'
         }}
@@ -217,7 +219,7 @@ const FullSchedule = () => {
         backgroundColor,
         backgroundImage,
         backgroundSize: 'contain',
-        backgroundPosition: 'top center',
+        backgroundPosition: '75% top',
         backgroundRepeat: 'no-repeat',
         backgroundAttachment: 'fixed'
       }}
@@ -234,8 +236,8 @@ const FullSchedule = () => {
                 ✏️ Edit Schedule
               </Link>
             ) : (
-              <p className="text-sm text-[var(--color-text-muted)] max-w-xs">
-                Want to add your own live schedule? <Link to="/login" className="text-[var(--color-index-bg)] hover:underline">Sign in</Link>
+              <p className="text-sm font-semibold text-[var(--color-text-header)] max-w-xs">
+                Want to add your own live schedule? <Link to="/login" className="text-[var(--color-text-muted-dark)] hover:underline">Sign in</Link>
               </p>
             )}
           </div>
