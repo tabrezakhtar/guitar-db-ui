@@ -236,9 +236,11 @@ const FullSchedule = () => {
                 ✏️ Edit Schedule
               </Link>
             ) : (
-              <p className="text-sm font-semibold text-[var(--color-text-header)] max-w-xs">
-                Want to add your own live schedule? <Link to="/login" className="text-[var(--color-text-muted-dark)] hover:underline">Sign in</Link>
-              </p>
+              <div className="bg-[var(--color-guest-bg)] text-[var(--color-guest-text)] border border-[var(--color-guest-border)] rounded-md">
+                <div className="px-4 py-2 flex items-center gap-3">
+                  <span className="text-sm">👋 Log in to add your own live schedule, and filter your favourite streamers.</span>
+                </div>
+              </div>
             )}
           </div>
         </div>
