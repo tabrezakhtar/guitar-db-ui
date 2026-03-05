@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDraggable } from "react-use-draggable-scroll";
 import { useScheduleData } from "./useScheduleData";
 import { UserContext } from "../context/UserContext";
-import useThemeRefresh from "../hooks/useThemeRefresh";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -110,8 +109,6 @@ const FullSchedule = () => {
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const { getWeeklySchedule, loading } = useScheduleData();
   const { user } = useContext(UserContext);
-  const gridRef = useRef(null);
-  useThemeRefresh();
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -184,26 +181,9 @@ const FullSchedule = () => {
     schedulesByDay[day].sort((a, b) => a.time.localeCompare(b.time));
   });
 
-  const isDarkMode = document.documentElement.classList.contains('dark');
-  const backgroundImage = isDarkMode 
-    ? 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1772643605/tvguidebg_inmpjq.jpg)'
-    : 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1772646428/tvguidebg_light_vnjoim.jpg)';
-  const backgroundColor = isDarkMode ? '#10072E' : '#F5F5F5';
-
   if (loading) {
     return (
-      <div 
-        className="min-h-screen w-full p-6 relative"
-        style={{
-          backgroundColor,
-          backgroundImage,
-          backgroundSize: 'contain',
-          backgroundPosition: '75% top',
-          backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed'
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent from-60% to-[var(--color-main-bg)]"></div>
+      <div className="min-h-screen w-full p-6 relative">
         <div className="relative max-w-full mx-auto">
           <h2 className="text-2xl font-bold mb-6 text-[var(--color-text-header)]">Live Streamer Guide</h2>
           <div className="text-[var(--color-text-muted)]">Loading schedules...</div>
@@ -213,20 +193,10 @@ const FullSchedule = () => {
   }
 
   return (
-    <div 
-      className="min-h-screen w-full p-6 relative"
-      style={{
-        backgroundColor,
-        backgroundImage,
-        backgroundSize: 'contain',
-        backgroundPosition: '75% top',
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed'
-      }}
-    >
+    <div className="min-h-screen w-full p-6 relative">
       <div className="relative max-w-full mx-auto">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-          <h2 className="p-1 text-4xl font-bold font-['Caveat'] bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">Live Streamer Guide</h2>
+          <h2 className="text-2xl font-bold mb-6 text-[var(--color-text-header)]">Live Streamer Guide</h2>
           <div className="w-full sm:w-auto">
             {user ? (
               <Link 
