@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import Select from "../components/Select";
 import Modal from "../components/Modal";
 import { UserContext } from "../context/UserContext";
+import FavUsersSkeleton from "./FavUsersSkeleton";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -100,22 +101,24 @@ const FavUsers = ({ isOpen, onClose, currentFavUsers = [] }) => {
     youtubeChannelAvatar: user.youtubeChannelAvatar
   }));
 
-  const formatOptionLabel = ({ label, youtubeChannelAvatar }) => (
-    <div className="flex items-center gap-2">
-      {youtubeChannelAvatar ? (
-        <img 
-          src={`${BASE_URL}/api/youtube/image-proxy?url=${encodeURIComponent(youtubeChannelAvatar)}`}
-          alt={label || ""}
-          className="w-8 h-8 rounded object-cover"
-        />
-      ) : (
-        <div className="w-8 h-8 rounded bg-[var(--color-index-bg)] flex items-center justify-center text-white text-xs font-bold">
-          {label ? label.charAt(0).toUpperCase() : "?"}
-        </div>
-      )}
-      <span>{label || ""}</span>
-    </div>
-  );
+  const formatOptionLabel = ({ label, youtubeChannelAvatar }) => {
+    return (
+      <div className="flex items-center gap-2 px-1.5 py-1 rounded bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] text-sm">
+        {youtubeChannelAvatar ? (
+          <img 
+            src={`${BASE_URL}/api/youtube/image-proxy?url=${encodeURIComponent(youtubeChannelAvatar)}`}
+            alt={label || ""}
+            className="w-6 h-6 rounded-full object-cover flex-shrink-0"
+          />
+        ) : (
+          <div className="w-6 h-6 rounded-full bg-[var(--color-index-bg)] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            {label ? label.charAt(0).toUpperCase() : "?"}
+          </div>
+        )}
+        <span className="text-[var(--color-text-header)] font-medium truncate">{label || ""}</span>
+      </div>
+    );
+  };
 
   if (!isOpen) return null;
 
@@ -142,7 +145,7 @@ const FavUsers = ({ isOpen, onClose, currentFavUsers = [] }) => {
         )}
 
         {loading ? (
-          <div className="text-[var(--color-text-muted)] py-8 text-center">Loading users...</div>
+          <FavUsersSkeleton />
         ) : (
           <>
             <div className="mb-4">
@@ -157,6 +160,7 @@ const FavUsers = ({ isOpen, onClose, currentFavUsers = [] }) => {
                 formatOptionLabel={formatOptionLabel}
                 placeholder="Select streamers..."
                 isDisabled={saving}
+                isClearable={false}
               />
             </div>
 
