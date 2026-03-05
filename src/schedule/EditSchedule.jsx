@@ -308,7 +308,7 @@ const getTimezones = () => {
       {!user?.youtubeChannelUrl && (
         <div className="mb-4 p-4 bg-yellow-900/30 border border-yellow-600 text-yellow-400 rounded">
           <p className="font-semibold mb-2">⚠️ No YouTube Channel Connected</p>
-          <p className="text-sm">Connect your YouTube channel below to enable live stream scheduling.</p>
+          <p className="text-sm">Connect your YouTube channel below to enable live stream scheduling.  No YouTube login required.</p>
         </div>
       )}
 
