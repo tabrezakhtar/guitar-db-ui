@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDraggable } from "react-use-draggable-scroll";
 import { useScheduleData } from "./useScheduleData";
+import { UserContext } from "../context/UserContext";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -107,6 +108,7 @@ const FullSchedule = () => {
   const [weekStart, setWeekStart] = useState("");
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const { getWeeklySchedule, loading } = useScheduleData();
+  const { user } = useContext(UserContext);
   const gridRef = useRef(null);
 
   useEffect(() => {
@@ -221,7 +223,23 @@ const FullSchedule = () => {
       }}
     >
       <div className="relative max-w-full mx-auto">
-        <h2 className="text-2xl font-bold mb-4 text-[var(--color-text-header)]">Live Streamer Guide</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold text-[var(--color-text-header)]">Live Streamer Guide</h2>
+          <div className="text-right">
+            {user ? (
+              <Link 
+                to="/edit-schedule" 
+                className="bg-[var(--color-index-bg)] hover:opacity-90 text-white px-4 py-2 rounded font-medium transition-opacity"
+              >
+                ✏️ Edit Schedule
+              </Link>
+            ) : (
+              <p className="text-sm text-[var(--color-text-muted)] max-w-xs">
+                Want to add your own live schedule? <Link to="/login" className="text-[var(--color-index-bg)] hover:underline">Sign in</Link>
+              </p>
+            )}
+          </div>
+        </div>
       
       <div className="mb-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
         {availableTimezones.length > 0 && (
