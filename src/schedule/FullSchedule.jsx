@@ -225,13 +225,13 @@ const FullSchedule = () => {
       }}
     >
       <div className="relative max-w-full mx-auto">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-[var(--color-text-header)]">Live Streamer Guide</h2>
-          <div className="text-right">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+          <h2 className="p-1 text-4xl font-bold font-['Caveat'] bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">Live Streamer Guide</h2>
+          <div className="w-full sm:w-auto">
             {user ? (
               <Link 
                 to="/edit-schedule" 
-                className="bg-[var(--color-index-bg)] hover:opacity-90 text-white px-4 py-2 rounded font-medium transition-opacity"
+                className="bg-[var(--color-index-bg)] hover:opacity-90 text-white px-4 py-2 rounded font-medium transition-opacity inline-block"
               >
                 ✏️ Edit Schedule
               </Link>
