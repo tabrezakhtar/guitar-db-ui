@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDraggable } from "react-use-draggable-scroll";
+import { DateTime } from "luxon";
 import { useScheduleData } from "./useScheduleData";
 import { UserContext } from "../context/UserContext";
 import FavUsers from "./FavUsers";
@@ -89,7 +90,7 @@ const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromStrin
                       <div className="text-sm font-medium truncate text-[var(--color-text)] drop-shadow-lg mb-1" title={schedule.title}>{schedule.title}</div>
                     )}
                     <div className="flex justify-between text-xs text-[var(--color-text)] drop-shadow-lg">
-                      <span>{formatTimeFromString(schedule.time)}</span>
+                      <span>{formatTimeFromString(schedule.time, schedule.timezone)}</span>
                       <span>{formatDuration(schedule.duration)}</span>
                     </div>
                   </div>
@@ -155,12 +156,18 @@ const FullSchedule = () => {
     return () => document.removeEventListener("keydown", handleEscKey);
   }, [selectedSchedule]);
 
-  const formatTimeFromString = (timeStr) => {
-    if (!timeStr) return "";
+  const formatTimeFromString = (timeStr, fromTimeZone) => {
+    if (!timeStr || !fromTimeZone) return "";
     const [hour, minute] = timeStr.split(":").map(Number);
-    const date = new Date();
-    date.setHours(hour, minute, 0, 0);
-    return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+    
+    const dt = DateTime.fromObject(
+      { hour, minute },
+      { zone: fromTimeZone }
+    );
+    
+    const localDt = dt.setZone("local");
+    
+    return localDt.toLocaleString(DateTime.TIME_SIMPLE);
   };
 
   const formatDuration = (minutes) => {
@@ -348,7 +355,7 @@ const FullSchedule = () => {
                     <h3 className="text-2xl font-bold text-[var(--color-text-header)]">{selectedSchedule.username}</h3>
                     <p className="text-[var(--color-text-muted)]">
                       {selectedSchedule.day} at 
-                      <span className="font-medium"> {formatTimeFromString(selectedSchedule.time)}</span>
+                      <span className="font-medium"> {formatTimeFromString(selectedSchedule.time, selectedSchedule.timezone)}</span>
                       <span className="ml-2">{formatDuration(selectedSchedule.duration)}</span>
                     </p>
                   </div>
