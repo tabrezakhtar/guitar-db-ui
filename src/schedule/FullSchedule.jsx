@@ -158,7 +158,9 @@ const FullSchedule = () => {
   const formatTimeFromString = (timeStr) => {
     if (!timeStr) return "";
     const [hour, minute] = timeStr.split(":").map(Number);
-    return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+    const date = new Date();
+    date.setHours(hour, minute, 0, 0);
+    return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
   };
 
   const formatDuration = (minutes) => {
