@@ -11,7 +11,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
-const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromString }) => {
+const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromString, formatDuration }) => {
   const ref = useRef();
   const { events } = useDraggable(ref);
 
@@ -88,8 +88,9 @@ const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromStrin
                     {schedule.title && (
                       <div className="text-sm font-medium truncate text-[var(--color-text)] drop-shadow-lg mb-1" title={schedule.title}>{schedule.title}</div>
                     )}
-                    <div className="text-xs text-[var(--color-text)] drop-shadow-lg">
-                      {formatTimeFromString(schedule.time)} - {formatTimeFromString(schedule.endTime)}
+                    <div className="flex justify-between text-xs text-[var(--color-text)] drop-shadow-lg">
+                      <span>{formatTimeFromString(schedule.time)}</span>
+                      <span>{formatDuration(schedule.duration)}</span>
                     </div>
                   </div>
                 </div>
@@ -164,6 +165,16 @@ const FullSchedule = () => {
     if (!timeStr) return "";
     const [hour, minute] = timeStr.split(":").map(Number);
     return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+  };
+
+  const formatDuration = (minutes) => {
+    if (!minutes) return "";
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    let parts = [];
+    if (hours > 0) parts.push(`${hours} ${hours === 1 ? "hour" : "hours"}`);
+    if (mins > 0) parts.push(`${mins} ${mins === 1 ? "minute" : "minutes"}`);
+    return parts.join(" ");
   };
 
   let filteredSchedules = selectedTimezone
@@ -282,6 +293,7 @@ const FullSchedule = () => {
                     schedules={schedulesByDay[day]} 
                     onScheduleClick={setSelectedSchedule}
                     formatTimeFromString={formatTimeFromString}
+                    formatDuration={formatDuration}
                   />
                 )}
               </div>
@@ -338,7 +350,11 @@ const FullSchedule = () => {
                   )}
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-[var(--color-text-header)]">{selectedSchedule.username}</h3>
-                    <p className="text-[var(--color-text-muted)]">{selectedSchedule.day} at {formatTimeFromString(selectedSchedule.time)} - {formatTimeFromString(selectedSchedule.endTime)}</p>
+                    <p className="text-[var(--color-text-muted)]">
+                      {selectedSchedule.day} at 
+                      <span className="font-medium">{formatTimeFromString(selectedSchedule.time)}</span>
+                      <span className="ml-2">{formatDuration(selectedSchedule.duration)}</span>
+                    </p>
                   </div>
                 </div>
 

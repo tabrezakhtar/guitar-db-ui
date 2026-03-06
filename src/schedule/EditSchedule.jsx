@@ -33,7 +33,7 @@ const EditSchedule = () => {
           const scheds = data.liveSchedules && data.liveSchedules.length > 0 
             ? data.liveSchedules.map(schedule => ({
                 ...schedule,
-                endTime: schedule.endTime || calculateEndTime(schedule.time, 1)
+                duration: schedule.duration || 60
               }))
             : [];
           setTimezone(tz);
@@ -47,18 +47,9 @@ const EditSchedule = () => {
 
   const addSchedule = () => {
     const defaultStartTime = "20:00";
-    const defaultEndTime = calculateEndTime(defaultStartTime, 1);
-    setSchedules([...schedules, { day: "Monday", time: defaultStartTime, endTime: defaultEndTime, title: "", description: "" }]);
+    const defaultDuration = 60;
+    setSchedules([...schedules, { day: "Monday", time: defaultStartTime, duration: defaultDuration, title: "", description: "" }]);
     setErrors({});
-  };
-
-  const calculateEndTime = (startTime, hoursToAdd) => {
-    if (!startTime || !/^([01]\d|2[0-3]):([0-5]\d)$/.test(startTime)) {
-      return "";
-    }
-    const [hours, minutes] = startTime.split(":").map(Number);
-    const newHours = (hours + hoursToAdd) % 24;
-    return `${String(newHours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
   };
 
   const removeSchedule = (index) => {
@@ -95,10 +86,12 @@ const EditSchedule = () => {
 
   const updateScheduleItem = (index, field, value) => {
     const newSchedules = [...schedules];
-    newSchedules[index][field] = value;
     
-    if (field === "time" && value) {
-      newSchedules[index].endTime = calculateEndTime(value, 1);
+    if (field === "duration") {
+      const numValue = parseInt(value, 10);
+      newSchedules[index][field] = isNaN(numValue) ? "" : numValue;
+    } else {
+      newSchedules[index][field] = value;
     }
     
     setSchedules(newSchedules);
@@ -106,14 +99,10 @@ const EditSchedule = () => {
     const newErrors = { ...errors };
     delete newErrors[`${field}-${index}`];
     
-    if (field === "endTime" && value) {
-      const startTime = newSchedules[index].time;
-      if (startTime && /^([01]\d|2[0-3]):([0-5]\d)$/.test(value)) {
-        const [sh, sm] = startTime.split(":").map(Number);
-        const [eh, em] = value.split(":").map(Number);
-        if (eh < sh || (eh === sh && em <= sm)) {
-          newErrors[`endTime-${index}`] = "End time must be after start time";
-        }
+    if (field === "duration" && value) {
+      const numValue = parseInt(value, 10);
+      if (isNaN(numValue) || numValue < 1) {
+        newErrors[`duration-${index}`] = "Duration must be at least 1 minute";
       }
     }
     
@@ -138,17 +127,13 @@ const EditSchedule = () => {
         isValid = false;
       }
 
-      if (schedule.endTime && !/^([01]\d|2[0-3]):([0-5]\d)$/.test(schedule.endTime)) {
-        newErrors[`endTime-${index}`] = "Invalid time format";
+      if (!schedule.duration) {
+        newErrors[`duration-${index}`] = "Duration is required";
         isValid = false;
-      }
-
-      if (schedule.endTime && schedule.time) {
-        // ensure endTime is not before start time
-        const [sh, sm] = schedule.time.split(":").map(Number);
-        const [eh, em] = schedule.endTime.split(":").map(Number);
-        if (eh < sh || (eh === sh && em <= sm)) {
-          newErrors[`endTime-${index}`] = "End time must be after start time";
+      } else {
+        const numValue = parseInt(schedule.duration, 10);
+        if (isNaN(numValue) || numValue < 1) {
+          newErrors[`duration-${index}`] = "Duration must be at least 1 minute";
           isValid = false;
         }
       }
@@ -433,17 +418,19 @@ const getTimezones = () => {
                   </div>
 
                   <div className="flex-1 w-full sm:w-auto">
-                    <label className="block text-xs text-[var(--color-text-muted)] mb-1">End time</label>
+                    <label className="block text-xs text-[var(--color-text-muted)] mb-1">Duration (minutes)</label>
                     <input
-                      type="time"
-                      value={schedule.endTime || ""}
-                      onChange={(e) => updateScheduleItem(index, "endTime", e.target.value)}
-                      className={`w-full p-2 border rounded bg-[var(--color-panel-bg)] text-[var(--color-text-header)] [color-scheme:light] dark:[color-scheme:dark] ${
-                        errors[`endTime-${index}`] ? "border-[var(--color-error-border)]" : "border-[var(--color-text-muted)]"
+                      type="number"
+                      min="1"
+                      value={schedule.duration || ""}
+                      onChange={(e) => updateScheduleItem(index, "duration", e.target.value)}
+                      placeholder="60"
+                      className={`w-full p-2 border rounded bg-[var(--color-panel-bg)] text-[var(--color-text-header)] ${
+                        errors[`duration-${index}`] ? "border-[var(--color-error-border)]" : "border-[var(--color-text-muted)]"
                       }`}
                     />
-                    {errors[`endTime-${index}`] && (
-                      <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`endTime-${index}`]}</p>
+                    {errors[`duration-${index}`] && (
+                      <p className="text-[var(--color-error-border)] text-xs mt-1">{errors[`duration-${index}`]}</p>
                     )}
                   </div>
                 </div>
