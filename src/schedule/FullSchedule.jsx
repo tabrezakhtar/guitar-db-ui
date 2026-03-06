@@ -155,12 +155,6 @@ const FullSchedule = () => {
     return () => document.removeEventListener("keydown", handleEscKey);
   }, [selectedSchedule]);
 
-  const formatTime = (hour) => {
-    const ampm = hour >= 12 ? "pm" : "am";
-    const hour12 = hour % 12 || 12;
-    return `${hour12}${ampm}`;
-  };
-
   const formatTimeFromString = (timeStr) => {
     if (!timeStr) return "";
     const [hour, minute] = timeStr.split(":").map(Number);
@@ -352,7 +346,7 @@ const FullSchedule = () => {
                     <h3 className="text-2xl font-bold text-[var(--color-text-header)]">{selectedSchedule.username}</h3>
                     <p className="text-[var(--color-text-muted)]">
                       {selectedSchedule.day} at 
-                      <span className="font-medium">{formatTimeFromString(selectedSchedule.time)}</span>
+                      <span className="font-medium"> {formatTimeFromString(selectedSchedule.time)}</span>
                       <span className="ml-2">{formatDuration(selectedSchedule.duration)}</span>
                     </p>
                   </div>
