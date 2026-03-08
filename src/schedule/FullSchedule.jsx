@@ -266,7 +266,7 @@ const FullSchedule = () => {
                       {selectedSchedule.day} at 
                       <span className="font-medium"> {formatTimeFromString(selectedSchedule.time, selectedSchedule.timezone)}</span>
                       <span className="mx-1">for</span>
-                      <span className="ml-2">{formatDuration(selectedSchedule.duration)}</span>
+                      <span>{formatDuration(selectedSchedule.duration)}</span>
                     </p>
                   </div>
                 </div>
