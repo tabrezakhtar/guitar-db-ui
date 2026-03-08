@@ -81,8 +81,9 @@ const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromStrin
                     {schedule.title && (
                       <div className="text-sm font-medium truncate text-[var(--color-text)] drop-shadow-lg mb-1" title={schedule.title}>{schedule.title}</div>
                     )}
-                    <div className="flex text-xs text-[var(--color-text)] drop-shadow-lg">
-                      <span>{formatTimeFromString(schedule.time, schedule.timezone)}</span> for 
+                    <div className="flex items-center text-xs text-[var(--color-text)] drop-shadow-lg">
+                      <span>{formatTimeFromString(schedule.time, schedule.timezone)}</span>
+                      <span className="mx-1">for</span>
                       <span>{formatDuration(schedule.duration)}</span>
                     </div>
                   </div>
