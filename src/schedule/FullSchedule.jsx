@@ -265,6 +265,7 @@ const FullSchedule = () => {
                     <p className="text-[var(--color-text-muted)]">
                       {selectedSchedule.day} at 
                       <span className="font-medium"> {formatTimeFromString(selectedSchedule.time, selectedSchedule.timezone)}</span>
+                      <span className="mx-1">for</span>
                       <span className="ml-2">{formatDuration(selectedSchedule.duration)}</span>
                     </p>
                   </div>
