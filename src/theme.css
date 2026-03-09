@@ -13,7 +13,7 @@
   --color-text-muted-dark:   #4b5563;
   /* Logo/brand */
   --color-logo-text:         #EAAA00;
-  --color-logo-shadow:       rgba(0, 0, 0, 0);
+  --color-logo-shadow:       rgba(0, 0, 0, 0.3);
   --color-logo-shadow-dark:  #1a1a1a;
   --color-logo-bg:           rgba(0, 0, 0, 0.4);
   /* Interactive / UI elements */
