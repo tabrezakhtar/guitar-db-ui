@@ -72,6 +72,8 @@ const EditSchedule = () => {
       delete newErrors[`time-${scheduleToDelete.index}`];
       delete newErrors[`title-${scheduleToDelete.index}`];
       delete newErrors[`description-${scheduleToDelete.index}`];
+      delete newErrors.duplicate;
+      delete newErrors.submit;
       setErrors(newErrors);
       
       setShowDeleteModal(false);
@@ -98,6 +100,8 @@ const EditSchedule = () => {
     
     const newErrors = { ...errors };
     delete newErrors[`${field}-${index}`];
+    delete newErrors.duplicate;
+    delete newErrors.submit;
     
     if (field === "duration" && value) {
       const numValue = parseInt(value, 10);
@@ -303,24 +307,6 @@ const getTimezones = () => {
         </div>
       )}
 
-      {successMessage && (
-        <div className="mb-4 p-4 bg-[var(--color-success-bg)] border border-[var(--color-success-border)] text-[var(--color-success-border)] rounded">
-          {successMessage}
-        </div>
-      )}
-
-      {errors.submit && (
-        <div className="mb-4 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] text-[var(--color-error-border)] rounded">
-          {errors.submit}
-        </div>
-      )}
-
-      {errors.duplicate && (
-        <div className="mb-4 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] text-[var(--color-error-border)] rounded">
-          {errors.duplicate}
-        </div>
-      )}
-
       <div className="bg-[var(--color-card-bg)] p-4 sm:p-6 rounded-lg mb-6">
         <div className="mb-6">
           <label className="block text-sm font-medium text-[var(--color-text-header)] mb-2">
@@ -353,21 +339,13 @@ const getTimezones = () => {
         </div>
 
         <div className="mb-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
-            <h3 className="text-lg font-semibold text-[var(--color-text-header)]">Live Stream Times</h3>
-            <button
-              onClick={addSchedule}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition-colors w-full sm:w-auto text-sm sm:text-base"
-            >
-              Add Live Stream Time
-            </button>
-          </div>
+          <h3 className="text-lg font-semibold text-[var(--color-text-header)] mb-3">Live Stream Times</h3>
 
           <div className="space-y-3">
             {schedules.length === 0 ? (
               <div className="p-6 bg-[var(--color-main-bg)] rounded border-2 border-dashed border-[var(--color-text-muted)] text-center">
                 <p className="text-[var(--color-text-header)] mb-2">No schedules yet</p>
-                <p className="text-sm text-[var(--color-text-muted)]">Click the "Add Live Stream Time" button above to create your first schedule</p>
+                <p className="text-sm text-[var(--color-text-muted)]">Click the "Add Stream Time" button below to create your first schedule</p>
               </div>
             ) : (
               schedules.map((schedule, index) => (
@@ -474,6 +452,15 @@ const getTimezones = () => {
               ))
             )}
           </div>
+
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={addSchedule}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition-colors w-full sm:w-auto text-sm sm:text-base"
+            >
+              Add Stream Time
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 mt-6">
@@ -492,6 +479,24 @@ const getTimezones = () => {
             Close
           </button>
         </div>
+
+        {successMessage && (
+          <div className="mt-4 p-4 bg-[var(--color-success-bg)] border border-[var(--color-success-border)] text-[var(--color-success-border)] rounded">
+            {successMessage}
+          </div>
+        )}
+
+        {errors.submit && (
+          <div className="mt-4 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] text-[var(--color-error-border)] rounded">
+            {errors.submit}
+          </div>
+        )}
+
+        {errors.duplicate && (
+          <div className="mt-4 p-4 bg-[var(--color-error-bg)] border border-[var(--color-error-border)] text-[var(--color-error-border)] rounded">
+            {errors.duplicate}
+          </div>
+        )}
       </div>
 
       <div className="text-sm text-[var(--color-text-header)] p-4 bg-[var(--color-panel-bg)] rounded">
