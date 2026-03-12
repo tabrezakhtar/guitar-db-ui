@@ -166,7 +166,13 @@ const FullSchedule = () => {
               className="px-3 py-2 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-dark)] text-[var(--color-text-header)] border border-[var(--color-skeleton-line)] dark:border-[var(--color-skeleton-line-dark)] rounded w-full sm:w-64"
             >
               {availableTimezones.map(tz => {
-                const count = schedules.filter(s => s.timezone === tz).length;
+                const count = schedules.filter(s => {
+                  if (s.timezone !== tz) return false;
+                  if (user && user.favUsers && user.favUsers.length > 0) {
+                    return user.favUsers.includes(s.userId) || s.userId === user._id;
+                  }
+                  return true;
+                }).length;
                 return (
                   <option key={tz} value={tz}>{tz} ({count})</option>
                 );
