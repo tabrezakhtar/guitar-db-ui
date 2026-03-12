@@ -95,7 +95,7 @@ const FullSchedule = () => {
 
   if (user && user.favUsers && user.favUsers.length > 0) {
     filteredSchedules = filteredSchedules.filter(s => 
-      user.favUsers.includes(s.userId)
+      user.favUsers.includes(s.userId) || s.userId === user._id
     );
   }
 

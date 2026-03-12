@@ -10,7 +10,7 @@ const FavUsers = ({ isOpen, onClose, currentFavUsers = [] }) => {
   const { updateUserLocal } = useContext(UserContext);
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
