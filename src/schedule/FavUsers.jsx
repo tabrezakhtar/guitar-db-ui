@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, Suspense } from "react";
 import Select from "../components/Select";
 import Modal from "../components/Modal";
 import { UserContext } from "../context/UserContext";
@@ -144,44 +144,40 @@ const FavUsers = ({ isOpen, onClose, currentFavUsers = [] }) => {
           </div>
         )}
 
-        {loading ? (
-          <FavUsersSkeleton />
-        ) : (
-          <>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-2 text-[var(--color-text-header)]">
-                Select your favorite streamers to filter the schedule
-              </label>
-              <Select
-                isMulti
-                value={selectedUsers}
-                onChange={setSelectedUsers}
-                options={userOptions}
-                formatOptionLabel={formatOptionLabel}
-                placeholder="Select streamers..."
-                isDisabled={saving}
-                isClearable={false}
-              />
-            </div>
+        <Suspense fallback={<FavUsersSkeleton /> }>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2 text-[var(--color-text-header)]">
+              Select your favorite streamers to filter the schedule
+            </label>
+            <Select
+              isMulti
+              value={selectedUsers}
+              onChange={setSelectedUsers}
+              options={userOptions}
+              formatOptionLabel={formatOptionLabel}
+              placeholder="Select streamers..."
+              isDisabled={saving}
+              isClearable={false}
+            />
+          </div>
 
-            <div className="flex gap-3 justify-end mt-6">
-              <button
-                onClick={onClose}
-                disabled={saving}
-                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-900 dark:text-white rounded transition-colors disabled:opacity-50 cursor-pointer"
-              >
-                Close
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={saving || loading}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-[var(--color-index-bg)] dark:hover:opacity-90 text-white rounded transition-colors disabled:opacity-50 cursor-pointer"
-              >
-                {saving ? "Saving..." : "Save Favorites"}
-              </button>
-            </div>
-          </>
-        )}
+          <div className="flex gap-3 justify-end mt-6">
+            <button
+              onClick={onClose}
+              disabled={saving}
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-900 dark:text-white rounded transition-colors disabled:opacity-50 cursor-pointer"
+            >
+              Close
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={saving || loading}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-[var(--color-index-bg)] dark:hover:opacity-90 text-white rounded transition-colors disabled:opacity-50 cursor-pointer"
+            >
+              {saving ? "Saving..." : "Save Favorites"}
+            </button>
+          </div>
+        </Suspense>
       </div>
     </Modal>
   );
