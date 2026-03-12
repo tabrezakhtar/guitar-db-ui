@@ -173,6 +173,7 @@ const FullSchedule = () => {
                   }
                   return true;
                 }).length;
+                if (count === 0) return null;
                 return (
                   <option key={tz} value={tz}>{tz} ({count})</option>
                 );
