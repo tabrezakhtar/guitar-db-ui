@@ -137,7 +137,7 @@ const FullSchedule = () => {
                   onClick={() => setShowFavUsersModal(true)}
                   className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded font-medium transition-colors inline-block"
                 >
-                  ⭐ Favorites
+                  ⭐ Favorites{user.favUsers && user.favUsers.length > 0 ? ` (${user.favUsers.length})` : ""}
                 </button>
                 <Link 
                   to="/edit-schedule" 
