@@ -1,6 +1,14 @@
+import { motion } from "framer-motion";
+
 function TileSkeleton({ tileClass }) {
   return (
-    <div className={`break-inside-avoid rounded-lg overflow-hidden relative animate-pulse bg-gray-200 ${tileClass}`}>
+    <motion.div 
+      className={`break-inside-avoid rounded-lg overflow-hidden relative animate-pulse bg-gray-200 ${tileClass}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       {/* Main skeleton background */}
       <div className="absolute inset-0 w-full h-full bg-gray-300"></div>
       
@@ -33,7 +41,7 @@ function TileSkeleton({ tileClass }) {
           <div className="w-4 h-3 bg-gray-500 rounded"></div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
