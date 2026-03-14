@@ -29,6 +29,8 @@ function ArticlesSection({ isVisible }) {
                   src={post.thumbnail} 
                   alt={post.title} 
                   className="w-full h-40 object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
               )}
               <div className="p-6 flex flex-col flex-1">

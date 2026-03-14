@@ -42,6 +42,8 @@ const Thumbnail = ({ index, url, alt, showDelete, deleteImage }) => {
         alt={alt}
         className={`w-full h-full object-cover ${isLoading ? "opacity-0" : "opacity-100"}`}
         onLoad={() => setIsLoading(false)}
+        loading="lazy"
+        decoding="async"
       />
       {showModal && (
         <Modal
