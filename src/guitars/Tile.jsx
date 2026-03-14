@@ -41,8 +41,6 @@ function Tile({ item, likedEquipment, onLikeClick, onAvatarClick }) {
           src={imageUrl}
           alt={`Thumbnail: ${item.brand} ${item.name}`}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-          loading="lazy"
-          decoding="async"
         />
       ) : (
         <div className="absolute inset-0 w-full h-full">
@@ -73,8 +71,6 @@ function Tile({ item, likedEquipment, onLikeClick, onAvatarClick }) {
               src="/verified.svg"
               alt="Verified"
               className="w-4 h-4"
-              loading="lazy"
-              decoding="async"
             />
           )}
         </Link>
@@ -84,8 +80,6 @@ function Tile({ item, likedEquipment, onLikeClick, onAvatarClick }) {
           src={getEquipmentIcon(item.type)}
           alt={item.type}
           className="w-8 h-8"
-          loading="lazy"
-          decoding="async"
         />
       </div>
       <div className="absolute inset-0 flex flex-col justify-center items-center p-3 pointer-events-none">
