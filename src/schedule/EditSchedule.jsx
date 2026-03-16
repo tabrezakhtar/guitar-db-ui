@@ -350,7 +350,8 @@ const getTimezones = () => {
             ) : (
               schedules.map((schedule, index) => (
               <div key={index} className="flex flex-col gap-3 items-start p-3 sm:p-4 bg-[var(--color-main-bg)] rounded">
-                <div className="flex w-full justify-end">
+                <div className="flex w-full justify-between items-center">
+                  <h4 className="text-sm font-semibold text-[var(--color-text-header)]">Schedule {index + 1}</h4>
                   <button
                     onClick={() => removeSchedule(index)}
                     className="text-gray-400 hover:text-red-500 transition-colors rounded cursor-pointer"
