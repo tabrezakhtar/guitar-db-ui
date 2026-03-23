@@ -151,7 +151,7 @@ function Landing() {
                 }}
               >
                 <img
-                  src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/guitar_store_bpmexv.jpg"
+                  src="https://res.cloudinary.com/dx8d5hlk1/image/upload/f_auto/v1759240663/guitar_store_bpmexv.jpg"
                   alt="Explore Gallery"
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="eager"
@@ -172,7 +172,7 @@ function Landing() {
                 }}
               >
                 <img
-                  src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/drums_keys_qosi6l.jpg"
+                  src="https://res.cloudinary.com/dx8d5hlk1/image/upload/f_auto/v1759240663/drums_keys_qosi6l.jpg"
                   alt="Add Your Gear"
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="eager"
@@ -203,7 +203,7 @@ function Landing() {
                   }}
                 >
                   <img
-                    src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1772648199/tvguidebg_thumb_gmlgqs.jpg"
+                    src="https://res.cloudinary.com/dx8d5hlk1/image/upload/f_auto/v1772648199/tvguidebg_thumb_gmlgqs.jpg"
                     alt="Live Streamer Guide"
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="eager"
