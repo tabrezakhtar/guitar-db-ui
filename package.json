@@ -6,26 +6,8 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "postbuild": "react-snap",
     "lint": "eslint .",
     "preview": "vite preview"
-  },
-  "reactSnap": {
-    "source": "dist",
-    "destination": "dist",
-    "routes": ["/"],
-    "crawl": false,
-    "waitFor": 5000,
-    "puppeteerArgs": [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-accelerated-2d-canvas",
-      "--disable-gpu"
-    ],
-    "skipThirdPartyRequests": true,
-    "asyncScriptTags": true,
-    "viewport": {"width": 1280, "height": 720}
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.15",
@@ -51,7 +33,6 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
-    "react-snap": "^1.23.0",
     "vite": "^6.2.0"
   }
 }

@@ -1,7 +1,6 @@
 import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 import tailwindcss from "@tailwindcss/vite"
-import { resolve } from 'path'
 import fs from 'fs/promises'
 
 // https://vite.dev/config/
@@ -26,17 +25,5 @@ export default defineConfig({
         }
       }
     }
-  ],
-  build: {
-    target: "es2015"
-  },
-  preview: {
-    port: 4173,
-    cors: true
-  },
-  server: {
-    headers: {
-      "Cache-Control": "no-store"
-    }
-  }
+  ]
 })
