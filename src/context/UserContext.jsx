@@ -19,6 +19,13 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      if (window.location.pathname === "/") {
+        setState(produce(draft => {
+          draft.loading = false;
+        }));
+        return;
+      }
+
       try {
         const res = await fetch(`${BASE_URL}/api/users/me`, {
           credentials: "include",
