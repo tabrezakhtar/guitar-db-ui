@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
 import "./theme.css";
@@ -15,9 +16,9 @@ applyTheme(mediaQuery);
 mediaQuery.addEventListener("change", applyTheme);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
+  <BrowserRouter>
     <GuitarProvider>
       <App />
     </GuitarProvider>
-  // </React.StrictMode>
+  </BrowserRouter>
 );

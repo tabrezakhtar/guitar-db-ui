@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 import { GuitarProvider } from "./context/GuitarContext";
 import { TagProvider } from "./context/TagContext";
@@ -26,75 +26,73 @@ import FullGuide from "./schedule/FullSchedule";
 function App() {
   return (
     <div className="flex flex-col h-screen">
-      <Router>
-        <ScrollToTop />
-        <UserProvider>
-          <GuitarProvider>
-            <TagProvider>
-              <HeaderProvider>
-                <Header />
+      <ScrollToTop />
+      <UserProvider>
+        <GuitarProvider>
+          <TagProvider>
+            <HeaderProvider>
+              <Header />
 
-                <div>
-                  <Routes>
-                    <Route path="/" element={<Layout hideSideMenu hideGuestWarning><Landing /></Layout>} />
-                      <Route path="/gallery" element={<Layout hideFooter><Grid /></Layout>} />
-                      <Route
-                        path="/edit/:id"
-                        element={
-                          <Layout hideSideMenu>
-                            <ProtectedRoute>
-                              <EditGuitar />
-                            </ProtectedRoute>
-                          </Layout>
-                        }
-                      />
-                      <Route path="/view/:id" element={<Layout hideSideMenu><ViewGuitar /></Layout>} />
-                      <Route path="/posts/:slug" element={<Layout hideSideMenu hideGuestWarning><PostPage /></Layout>} />
-                      <Route
-                        path="/add"
-                        element={
-                          <Layout hideSideMenu>
-                            <ProtectedRoute>
-                              <AddGuitar />
-                            </ProtectedRoute>
-                          </Layout>
-                        }
-                      />
-                      <Route path="/profile" element={<Layout hideSideMenu><Profile /></Layout>} />
-                      <Route path="/profile/:userId" element={<Layout hideSideMenu><Profile /></Layout>} />
-                      <Route
-                        path="/edit-profile"
-                        element={
-                          <Layout hideSideMenu>
-                            <ProtectedRoute>
-                              <EditProfile />
-                            </ProtectedRoute>
-                          </Layout>
-                        }
-                      />
-                      <Route
-                        path="/edit-schedule"
-                        element={
-                          <Layout hideSideMenu>
-                            <ProtectedRoute>
-                              <EditSchedule />
-                            </ProtectedRoute>
-                          </Layout>
-                        }
-                      />
-                      <Route path="/auth" element={<SaveCredentials />} />
-                      <Route path="/followers" element={<Layout hideSideMenu><Followers /></Layout>} />
-                      <Route path="/followers/:userId" element={<Layout hideSideMenu><Followers /></Layout>} />
-                      <Route path="/following" element={<Layout hideSideMenu><Following /></Layout>} />
-                      <Route path="/following/:userId" element={<Layout hideSideMenu><Following /></Layout>} />
-                      <Route path="/guide" element={<Layout hideSideMenu><FullGuide /></Layout>} />
-                    </Routes>
-                  </div>
-              </HeaderProvider>
-            </TagProvider>
-          </GuitarProvider>
-        </UserProvider>
-      </Router>
+              <div>
+                <Routes>
+                  <Route path="/" element={<Layout hideSideMenu hideGuestWarning><Landing /></Layout>} />
+                    <Route path="/gallery" element={<Layout hideFooter><Grid /></Layout>} />
+                    <Route
+                      path="/edit/:id"
+                      element={
+                        <Layout hideSideMenu>
+                          <ProtectedRoute>
+                            <EditGuitar />
+                          </ProtectedRoute>
+                        </Layout>
+                      }
+                    />
+                    <Route path="/view/:id" element={<Layout hideSideMenu><ViewGuitar /></Layout>} />
+                    <Route path="/posts/:slug" element={<Layout hideSideMenu hideGuestWarning><PostPage /></Layout>} />
+                    <Route
+                      path="/add"
+                      element={
+                        <Layout hideSideMenu>
+                          <ProtectedRoute>
+                            <AddGuitar />
+                          </ProtectedRoute>
+                        </Layout>
+                      }
+                    />
+                    <Route path="/profile" element={<Layout hideSideMenu><Profile /></Layout>} />
+                    <Route path="/profile/:userId" element={<Layout hideSideMenu><Profile /></Layout>} />
+                    <Route
+                      path="/edit-profile"
+                      element={
+                        <Layout hideSideMenu>
+                          <ProtectedRoute>
+                            <EditProfile />
+                          </ProtectedRoute>
+                        </Layout>
+                      }
+                    />
+                    <Route
+                      path="/edit-schedule"
+                      element={
+                        <Layout hideSideMenu>
+                          <ProtectedRoute>
+                            <EditSchedule />
+                          </ProtectedRoute>
+                        </Layout>
+                      }
+                    />
+                    <Route path="/auth" element={<SaveCredentials />} />
+                    <Route path="/followers" element={<Layout hideSideMenu><Followers /></Layout>} />
+                    <Route path="/followers/:userId" element={<Layout hideSideMenu><Followers /></Layout>} />
+                    <Route path="/following" element={<Layout hideSideMenu><Following /></Layout>} />
+                    <Route path="/following/:userId" element={<Layout hideSideMenu><Following /></Layout>} />
+                    <Route path="/guide" element={<Layout hideSideMenu><FullGuide /></Layout>} />
+                  </Routes>
+                </div>
+            </HeaderProvider>
+          </TagProvider>
+        </GuitarProvider>
+      </UserProvider>
     </div>
   );
 }

@@ -27,6 +27,13 @@ export default defineConfig({
       }
     }
   ],
+  build: {
+    target: "es2015"
+  },
+  preview: {
+    port: 4173,
+    cors: true
+  },
   server: {
     headers: {
       "Cache-Control": "no-store"
