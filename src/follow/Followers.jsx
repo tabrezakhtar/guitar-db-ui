@@ -130,9 +130,9 @@ const Followers = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-600">
-                  <th className="text-left py-3 px-4 text-gray-300 font-semibold">Avatar</th>
-                  <th className="text-left py-3 px-4 text-gray-300 font-semibold">Username</th>
-                  <th className="text-left py-3 px-4 text-gray-300 font-semibold">Action</th>
+                  <th className="text-left py-3 px-4 text-[var(--color-text-header)] font-semibold">Avatar</th>
+                  <th className="text-left py-3 px-4 text-[var(--color-text-header)] font-semibold">Username</th>
+                  <th className="text-center py-3 px-4 text-[var(--color-text-header)] font-semibold">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -145,8 +145,9 @@ const Followers = () => {
                         size="small"
                       />
                     </td>
-                    <td className="py-3 px-4 text-white">{follower.username}</td>
-                    <td className="py-3 px-4 flex gap-6">
+                    <td className="py-3 px-4 text-[var(--color-text-header)]">{follower.username}</td>
+                    <td className="py-3 px-4 text-center">
+                      <div className="inline-flex justify-center gap-6">
                       <Link
                         to={`/profile/${follower._id}`}
                         className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors cursor-pointer inline-flex items-center"
@@ -168,6 +169,7 @@ const Followers = () => {
                           {followingIds.includes(follower._id) ? "Unfollow" : "Follow"}
                         </button>
                       )}
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -178,7 +178,7 @@ function RecentUsers() {
               <div className="mb-4">
                 <AvatarDisplayOnly imageUrl={hoveredUser.avatarUrl} username={hoveredUser.username} size="large" />
               </div>
-              <h4 className="text-[var(--color-text)] font-bold text-lg mb-2">@{hoveredUser.username}</h4>
+              <h4 className="text-[var(--color-text-header)] font-bold text-lg mb-2">@{hoveredUser.username}</h4>
               <p className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] text-sm text-center leading-relaxed line-clamp-4">
                 {(hoveredUser.bio && hoveredUser.bio.length > 100) ? `${hoveredUser.bio.slice(0, 100)}...` : (hoveredUser.bio || "No bio available")}
               </p>

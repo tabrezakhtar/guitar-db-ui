@@ -126,9 +126,9 @@ const Following = () => {  const { user } = useContext(UserContext);
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-600">
-                  <th className="text-left py-3 px-4 text-gray-300 font-semibold">Avatar</th>
-                  <th className="text-left py-3 px-4 text-gray-300 font-semibold">Username</th>
-                  <th className="text-left py-3 px-4 text-gray-300 font-semibold">Action</th>
+                  <th className="text-left py-3 px-4 text-[var(--color-text-header)] font-semibold">Avatar</th>
+                  <th className="text-left py-3 px-4 text-[var(--color-text-header)] font-semibold">Username</th>
+                  <th className="text-center py-3 px-4 text-[var(--color-text-header)] font-semibold">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -141,7 +141,7 @@ const Following = () => {  const { user } = useContext(UserContext);
                         size="small"
                       />
                     </td>
-                    <td className="py-3 px-4 text-white">{followingUser.username}</td>
+                    <td className="py-3 px-4 text-[var(--color-text-header)]">{followingUser.username}</td>
                     <td className="py-3 px-4 text-center">
                       <div className="inline-flex justify-center gap-6">
                         <Link
