@@ -147,12 +147,16 @@ function Landing() {
                 to="/gallery" 
                 className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
                 style={{
-                  backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/guitar_store_bpmexv.jpg)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
                   borderColor: '#EAAA00'
                 }}
               >
+                <img
+                  src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/guitar_store_bpmexv.jpg"
+                  alt="Explore Gallery"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="eager"
+                  fetchPriority="high"
+                />
                 <div className="relative z-10 text-center">
                   <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
                     <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
@@ -164,12 +168,16 @@ function Landing() {
                 to="/add" 
                 className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
                 style={{
-                  backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/drums_keys_qosi6l.jpg)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
                   borderColor: '#EAAA00'
                 }}
               >
+                <img
+                  src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1759240663/drums_keys_qosi6l.jpg"
+                  alt="Add Your Gear"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="eager"
+                  fetchPriority="high"
+                />
                 <div className="relative z-10 text-center">
                   <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
                     <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Add Your Gear</h3>
@@ -191,12 +199,16 @@ function Landing() {
                   to="/guide" 
                   className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2 mx-auto"
                   style={{
-                    backgroundImage: 'url(https://res.cloudinary.com/dx8d5hlk1/image/upload/v1772648199/tvguidebg_thumb_gmlgqs.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
                     borderColor: '#EAAA00'
                   }}
                 >
+                  <img
+                    src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1772648199/tvguidebg_thumb_gmlgqs.jpg"
+                    alt="Live Streamer Guide"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="eager"
+                    fetchPriority="high"
+                  />
                   {/* <div className="relative z-10 text-center">
                     <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
                       <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Live Streamer Guide</h3>
