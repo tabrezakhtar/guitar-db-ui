@@ -69,7 +69,7 @@ function PostPage() {
       )}
       <h1 className="text-4xl font-bold mb-2 text-[var(--color-text-header)]">{post.title}</h1>
       <p className="text-[var(--color-text-muted)] mb-8">{formatDate(post.date)}</p>
-      <div className="text-[var(--color-text-muted)]">
+      <div className="text-[var(--color-text-header)]">
         <ReactMarkdown
           rehypePlugins={[rehypeRaw]}
           components={{
