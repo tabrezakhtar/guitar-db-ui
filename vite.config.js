@@ -6,7 +6,13 @@ import fs from 'fs/promises'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: [
+          ["babel-plugin-react-compiler"],
+        ],
+      },
+    }),
     tailwindcss(),
     {
       name: 'copy-static-files',
