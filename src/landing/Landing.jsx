@@ -203,18 +203,18 @@ function Landing() {
                   }}
                 >
                   <img
-                    src="https://res.cloudinary.com/dx8d5hlk1/image/upload/f_auto/v1772648199/tvguidebg_thumb_gmlgqs.jpg"
+                    src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1774667590/live-streamer_uiafvv.webp"
                     alt="Live Streamer Guide"
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="eager"
                     fetchPriority="high"
                   />
-                  {/* <div className="relative z-10 text-center">
+                  <div className="relative z-10 text-center">
                     <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
                       <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Live Streamer Guide</h3>
-                      <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Check out when your favorite guitarists are streaming</p>
+                      <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Stay up to date with your favourite streamers</p>
                     </div>
-                  </div> */}
+                  </div>
                 </Link>
               </motion.div>
               <motion.div
