@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDraggable } from "react-use-draggable-scroll";
 
@@ -6,7 +6,36 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromString, formatDuration }) => {
   const ref = useRef();
+  const progressRef = useRef();
   const { events } = useDraggable(ref);
+
+  useEffect(() => {
+    const container = ref.current;
+    const progressBar = progressRef.current;
+    if (!container || !progressBar) return;
+
+    let rafId = null;
+
+    const handleScroll = () => {
+      if (rafId) return;
+
+      rafId = requestAnimationFrame(() => {
+        const scrollLeft = container.scrollLeft;
+        const scrollWidth = container.scrollWidth - container.clientWidth;
+        const progress = scrollWidth > 0 ? (scrollLeft / scrollWidth) * 100 : 0;
+        progressBar.style.width = `${progress}%`;
+        rafId = null;
+      });
+    };
+
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, [schedules]);
 
   return (
     <>
@@ -15,8 +44,38 @@ const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromStrin
           .schedule-scroll-container::-webkit-scrollbar {
             display: none;
           }
+          
+          .scroll-progress-bar {
+            position: relative;
+            width: 100%;
+            height: 4px;
+            background: var(--color-bg-secondary);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 8px;
+          }
+          
+          .scroll-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #B88300 0%, #D4A017 100%);
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(184, 131, 0, 0.4);
+            will-change: width;
+          }
+          
+          .dark .scroll-progress-fill {
+            background: linear-gradient(90deg, #EAAA00 0%, #FFD700 100%);
+            box-shadow: 0 0 8px rgba(234, 170, 0, 0.4);
+          }
         `}
       </style>
+      <div className="scroll-progress-bar">
+        <div 
+          ref={progressRef}
+          className="scroll-progress-fill"
+          style={{ width: "0%" }}
+        />
+      </div>
       <div 
         ref={ref}
         {...events}
@@ -31,10 +90,11 @@ const DraggableScheduleList = ({ schedules, onScheduleClick, formatTimeFromStrin
           <motion.div
             key={idx}
             whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15 }}
             onClick={() => onScheduleClick(schedule)}
             className="cursor-pointer"
             onDragStart={(e) => e.preventDefault()}
+            style={{ willChange: "transform" }}
           >
             <div className="flex-shrink-0 w-64 h-32 rounded overflow-hidden relative block shadow-md hover:shadow-lg transition-shadow duration-200">
               <AnimatePresence>
