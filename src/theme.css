@@ -2,48 +2,48 @@
 
 :root {
 
-  --color-body-bg:           #f8f6f2;
-  --color-main-bg:           #fdfcfb;
-  --color-panel-bg:          #f5f3ef;
-  --color-grid-bg:           #ece9e4;
+  --color-body-bg:           #fafaf9;
+  --color-main-bg:           #ffffff;
+  --color-panel-bg:          #f5f5f4;
+  --color-grid-bg:           #e7e5e4;
   /* Text colors */
   --color-text:              #efefef;
-  --color-text-header:       #1a1a1a;
-  --color-text-muted:        #6b7280;
-  --color-text-muted-dark:   #4b5563;
+  --color-text-header:       #292524;
+  --color-text-muted:        #78716c;
+  --color-text-muted-dark:   #57534e;
   /* Logo/brand */
   --color-logo-text:         #EAAA00;
   --color-logo-shadow:       rgba(0, 0, 0, 0.3);
-  --color-logo-shadow-dark:  #1a1a1a;
+  --color-logo-shadow-dark:  #1c1917;
   --color-logo-bg:           rgba(0, 0, 0, 0.4);
   /* Interactive / UI elements */
-  --color-toggle-bg:         #e5e7eb;
-  --color-burger-bg:         #8e9294;
+  --color-toggle-bg:         #f5f5f4;
+  --color-burger-bg:         #a8a29e;
   /* Overlay colors */
   --color-overlay:           rgba(30, 30, 35, 0.55);
   --color-overlay-dark:      rgba(0, 0, 0, 0.25);
   /* Status / special backgrounds */
-  --color-guest-bg:          #f5f5f4;
-  --color-guest-border:      #8e9294;
-  --color-guest-text:        #4b5563;
-  --color-index-bg:          #8e9294;
-  --color-delete-bg:         #a3a3a3;
-  --color-delete-hover:      #787878;
+  --color-guest-bg:          #fafaf9;
+  --color-guest-border:      #a8a29e;
+  --color-guest-text:        #57534e;
+  --color-index-bg:          #a8a29e;
+  --color-delete-bg:         #d6d3d1;
+  --color-delete-hover:      #a8a29e;
 
   /* Error / success */
   --color-error-bg:          #fef2f2;
-  --color-error-border:      #991b1b;
+  --color-error-border:      #dc2626;
   --color-success-bg:        #f0fdf4;
-  --color-success-border:    #166534;
+  --color-success-border:    #16a34a;
 
   /* Cards & skeletons */
-  --color-card-bg:           rgba(142, 146, 148, 0.08);
+  --color-card-bg:           rgba(168, 162, 158, 0.08);
   --color-card-dark:         #ffffff;
-  --color-card-dark-hover:   #f8f8f8;
-  --color-skeleton-bg:       #e5e7eb;
-  --color-skeleton-bg-dark:  #4b5563;
-  --color-skeleton-line:     #d1d5db;
-  --color-skeleton-line-dark:#6b7280;
+  --color-card-dark-hover:   #fafaf9;
+  --color-skeleton-bg:       #e7e5e4;
+  --color-skeleton-bg-dark:  #57534e;
+  --color-skeleton-line:     #d6d3d1;
+  --color-skeleton-line-dark:#78716c;
 }
 
 .dark {
