@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { useHeader } from "../context/HeaderContext";
+import { UserContext } from "../context/UserContext";
 import Logo from "../Logo";
 import EquipmentSections from "./EquipmentSections";
 import ArticlesSection from "./ArticlesSection";
-import EquipmentTypeGrid from "./EquipmentTypeGrid";
 import HandwrittenText from "./HandwrittenText";
 import RecentUsers from "../components/RecentUsers";
 import LiveAndUpcoming from "../schedule/LiveAndUpcoming";
@@ -15,6 +15,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Landing() {
   const shouldReduceMotion = useReducedMotion();
   const { hideHeader, displayHeader } = useHeader();
+  const { hasVisitedLandingPage, setHasVisitedLandingPage } = useContext(UserContext);
   const [recentEquipment, setRecentEquipment] = useState([]);
   const [popularEquipment, setPopularEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -68,14 +69,20 @@ function Landing() {
     setTimeout(() => {
       setIsVisible(true);
     }, 100);
+
+    const visitTimer = setTimeout(() => {
+      setHasVisitedLandingPage(true);
+    }, 500);
+
     return () => {
+      clearTimeout(visitTimer);
       displayHeader();
       const container = document.querySelector(".parallax-bg-container");
       const styles = document.getElementById("parallax-bg-styles");
       if (container) container.remove();
       if (styles) styles.remove();
     };
-  }, [hideHeader, displayHeader]);
+  }, [hideHeader, displayHeader, setHasVisitedLandingPage]);
 
   useEffect(() => {
     const fetchLandingData = async () => {
@@ -124,16 +131,16 @@ function Landing() {
             <HandwrittenText
               text="Discover gear.  Celebrate stories.  Share your journey."
               className="text-4xl text-[var(--color-text-muted)] mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
-              delay={500}
-              speed={30}
+              delay={hasVisitedLandingPage ? 0 : 500}
+              speed={hasVisitedLandingPage ? 0 : 30}
               isVisible={isVisible}
             />
             
             <HandwrittenText
               text="Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do."
               className="hidden sm:block text-3xl text-[var(--color-text-muted)] mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
-              delay={500}
-              speed={20}
+              delay={hasVisitedLandingPage ? 0 : 500}
+              speed={hasVisitedLandingPage ? 0 : 20}
               isVisible={isVisible}
             />
 

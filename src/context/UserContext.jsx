@@ -9,7 +9,8 @@ const initialState = {
   loading: true,
   error: null,
   showHeader: true,
-  profileDeleted: false
+  profileDeleted: false,
+  hasVisitedLandingPage: false
 };
 
 const UserContext = createContext(null);
@@ -72,6 +73,12 @@ const UserProvider = ({ children }) => {
     }));
   };
 
+  const setHasVisitedLandingPage = (value) => {
+    setState(produce(draft => {
+      draft.hasVisitedLandingPage = value;
+    }));
+  };
+
   const logout = async () => {
     try {
       await fetch(`${BASE_URL}/api/users/logout`, {
@@ -92,6 +99,7 @@ const UserProvider = ({ children }) => {
     updateUserLocal,
     setUser,
     clearProfileDeleted,
+    setHasVisitedLandingPage,
     logout,
   };
 
