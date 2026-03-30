@@ -11,6 +11,8 @@
   --color-text-header:       #292524;
   --color-text-muted:        #78716c;
   --color-text-muted-dark:   #57534e;
+  --color-text-handwritten:  #e6e8eb;
+
   /* Logo/brand */
   --color-logo-text:         #EAAA00;
   --color-logo-shadow:       rgba(0, 0, 0, 0.3);
@@ -69,6 +71,7 @@
   --color-text-header:       #ffffff;
   --color-text-muted:        #c3c8d1;
   --color-text-muted-dark:   #9ca3af;
+  --color-text-handwritten:  #e6e8eb;
   /* Logo/brand */
   --color-logo-text:         #EAAA00;
   --color-logo-shadow:       rgba(0, 0, 0, 0.2);

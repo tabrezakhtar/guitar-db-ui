@@ -11,6 +11,7 @@ import RecentUsers from "../components/RecentUsers";
 import LiveAndUpcoming from "../schedule/LiveAndUpcoming";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const LANDING_VIDEO_URL = "https://ik.imagekit.io/wxq5d3bho/final_loop2.mp4";
 
 function Landing() {
   const shouldReduceMotion = useReducedMotion();
@@ -115,37 +116,57 @@ function Landing() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-stone-100 to-neutral-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-[var(--color-text)] dark:text-[var(--color-text)] p-8">
-      
-      <div className="max-w-6xl mx-auto px-6 mb-8">
-        <div className="flex items-center justify-center">
-          <div className="text-center">
-            <motion.div
-              className="mb-8"
-              initial={shouldReduceMotion ? false : { opacity: 0 }}
-              animate={{ opacity: isVisible ? 1 : 0 }}
-              transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: "easeInOut" }}
-            >
-              <Logo size="xlarge" />
-            </motion.div>
+    <>
+      <section className="relative w-full overflow-hidden flex items-center justify-center">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover"
+          aria-hidden="true"
+        >
+          <source src={LANDING_VIDEO_URL} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 sm:h-64 bg-gradient-to-b from-transparent to-[var(--color-main-bg)]" style={{ background: "linear-gradient(to bottom, transparent 0%, var(--color-main-bg) 100%)" }} />
+
+        <div className="relative z-10 text-center px-6 py-16 w-full">
+          <motion.div
+            className="mb-8"
+            initial={shouldReduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: isVisible ? 1 : 0 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: "easeInOut" }}
+          >
+            <Logo size="xlarge" />
+          </motion.div>
+          <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3 mb-8 max-w-2xl mx-auto">
             <HandwrittenText
-              text="Discover gear.  Celebrate stories.  Share your journey."
-              className="text-4xl text-[var(--color-text-muted)] mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
+              text="Discover gear.  Celebrate stories."
+              className="text-4xl text-[var(--color-text-handwritten)] leading-relaxed font-['Caveat']"
               delay={hasVisitedLandingPage ? 0 : 500}
               speed={hasVisitedLandingPage ? 0 : 30}
               isVisible={isVisible}
             />
-            
             <HandwrittenText
-              text="Explore guitars, amps, pedals, and musical treasures.  Upload your own gear, tell the story behind how it found you, and connect with a community that loves music as much as you do."
-              className="hidden sm:block text-3xl text-[var(--color-text-muted)] mb-8 max-w-2xl mx-auto leading-relaxed font-['Caveat']"
+              text="Share your journey."
+              className="text-4xl text-[var(--color-text-handwritten)] leading-relaxed font-['Caveat']"
               delay={hasVisitedLandingPage ? 0 : 500}
-              speed={hasVisitedLandingPage ? 0 : 20}
+              speed={hasVisitedLandingPage ? 0 : 30}
               isVisible={isVisible}
             />
+          </div>
+        </div>
+      </section>
 
-            <motion.div
-              className="flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-8"
+      <div className="min-h-screen text-[var(--color-text)] dark:text-[var(--color-text)] p-8">
+        <div className="max-w-6xl mx-auto px-6 mb-8">
+          <div className="flex items-center justify-center">
+            <div className="text-center">
+
+              <motion.div
+                className="flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-8"
               initial={shouldReduceMotion ? false : { opacity: 0, y: 30, scale: 0.95 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
               transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : 0.3 }}
@@ -247,8 +268,10 @@ function Landing() {
         isMobile={isMobile}
       />
 
+
       {/* <Footer /> */}
     </div>
+    </>
   );
 }
 
