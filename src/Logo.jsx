@@ -25,7 +25,7 @@ function Logo({ size = "normal" }) {
             <img 
                 src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1773139629/brush_cropped_ephma6.svg"
                 alt=""
-                className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${sizeClass.brush} object-contain opacity-80 text-yellow-400`}
+                className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${sizeClass.brush} object-contain text-yellow-400`}
                 style={{ fill: "currentColor", zIndex: -1, transform: "translate(-0%, 5%) scale(1.5)" }}
                 aria-hidden="true"
             />
