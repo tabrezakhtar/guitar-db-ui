@@ -60,12 +60,14 @@
         }
         
         function sendHit() {
+          const mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
           fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               project: projectName,
               page: window.location.pathname,
+              mode: mode,
             }),
             keepalive: true
           }).catch(function(error) {
