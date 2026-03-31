@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useMemo, use, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { useHeader } from "../context/HeaderContext";
@@ -9,19 +9,49 @@ import ArticlesSection from "./ArticlesSection";
 import HandwrittenText from "./HandwrittenText";
 import RecentUsers from "../components/RecentUsers";
 import LiveAndUpcoming from "../schedule/LiveAndUpcoming";
+import Spinner from "../components/Spinner";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const LANDING_VIDEO_URL = "https://ik.imagekit.io/wxq5d3bho/final_loop2.mp4";
+
+const fetchLandingData = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/pages/landing`);
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        recent: data.recent || [],
+        popular: data.popular || []
+      };
+    }
+    throw new Error("Failed to fetch landing data");
+  } catch (error) {
+    console.error("Error fetching landing data:", error);
+    return { recent: [], popular: [] };
+  }
+};
+
+function LandingDataDisplay({ landingPromise, isVisible, isMobile }) {
+  const landingData = use(landingPromise);
+  
+  return (
+    <EquipmentSections 
+      recentEquipment={landingData.recent}
+      popularEquipment={landingData.popular}
+      loading={false}
+      isVisible={isVisible}
+      isMobile={isMobile}
+    />
+  );
+}
 
 function Landing() {
   const shouldReduceMotion = useReducedMotion();
   const { hideHeader, displayHeader } = useHeader();
   const { hasVisitedLandingPage, setHasVisitedLandingPage } = useContext(UserContext);
-  const [recentEquipment, setRecentEquipment] = useState([]);
-  const [popularEquipment, setPopularEquipment] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const landingPromise = useMemo(() => fetchLandingData(), []);
 
   useEffect(() => {
     let timeoutId;
@@ -85,24 +115,7 @@ function Landing() {
     };
   }, [hideHeader, displayHeader, setHasVisitedLandingPage]);
 
-  useEffect(() => {
-    const fetchLandingData = async () => {
-      try {
-        const landingResponse = await fetch(`${BASE_URL}/api/pages/landing`);
-        if (landingResponse.ok) {
-          const landingData = await landingResponse.json();
-          setRecentEquipment(landingData.recent || []);
-          setPopularEquipment(landingData.popular || []);
-        }
-      } catch (error) {
-        console.error("Error fetching landing data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchLandingData();
-  }, []);
 
   useEffect(() => {
     const handlePageShow = (event) => {
@@ -260,14 +273,13 @@ function Landing() {
 
       <ArticlesSection isVisible={isVisible} />
 
-      <EquipmentSections 
-        recentEquipment={recentEquipment}
-        popularEquipment={popularEquipment}
-        loading={loading}
-        isVisible={isVisible}
-        isMobile={isMobile}
-      />
-
+      <Suspense fallback={<div className="flex justify-center py-8"><Spinner /></div>}>
+        <LandingDataDisplay 
+          landingPromise={landingPromise}
+          isVisible={isVisible}
+          isMobile={isMobile}
+        />
+      </Suspense>
 
       {/* <Footer /> */}
     </div>
