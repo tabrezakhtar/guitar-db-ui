@@ -70,7 +70,7 @@ const ViewSchedule = ({ userId }) => {
         {isOwnProfile && (
           <button
             onClick={() => navigate("/edit-schedule")}
-            className="bg-[var(--color-index-bg)] hover:opacity-90 text-white px-3 py-1 rounded text-sm transition-colors"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition-colors cursor-pointer"
           >
             ✏️ Edit
           </button>

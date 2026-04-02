@@ -145,7 +145,7 @@ function RecentUsers() {
           >
             <Link 
               to={`/profile/${u.id}`} 
-              className="group flex flex-col items-center gap-2 p-2 rounded-md hover:bg-gray-800 transition-colors cursor-pointer"
+              className="group flex flex-col items-center gap-2 p-2 rounded-md hover:bg-[var(--color-card-dark)] transition-colors cursor-pointer"
               onClick={(e) => {
                 if (isMobile && hoveredUser) {
                   e.preventDefault();
@@ -153,7 +153,7 @@ function RecentUsers() {
               }}
             >
               <AvatarDisplayOnly imageUrl={u.avatarUrl} username={u.username} size="small" />
-              <div className="text-[var(--color-text-header)] group-hover:text-white dark:group-hover:text-white text-xs sm:text-sm font-medium truncate w-full text-center">{u.username}</div>
+              <div className="text-[var(--color-text-header)] group-hover:text-[var(--color-text-header)] dark:group-hover:text-white text-xs sm:text-sm font-medium truncate w-full text-center">{u.username}</div>
             </Link>
           </motion.div>
         ))}

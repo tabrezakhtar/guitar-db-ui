@@ -40,7 +40,7 @@
 
   /* Cards & skeletons */
   --color-card-bg:           rgba(168, 162, 158, 0.08);
-  --color-card-dark:         #ffffff;
+  --color-card-dark:         #e7e5e4;
   --color-card-dark-hover:   #fafaf9;
   --color-skeleton-bg:       #e7e5e4;
   --color-skeleton-bg-dark:  #57534e;
