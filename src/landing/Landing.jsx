@@ -154,17 +154,17 @@ function Landing() {
           >
             <Logo size="xlarge" />
           </motion.div>
-          <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3 mb-8 max-w-2xl mx-auto">
+          <div className="mb-8 max-w-2xl mx-auto space-y-2">
             <HandwrittenText
               text="Discover gear.  Celebrate stories."
-              className="text-4xl text-[var(--color-text-handwritten)] leading-relaxed font-['Caveat']"
+              className="text-4xl text-[var(--color-text-handwritten)] leading-relaxed font-['Caveat'] bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3 inline-block"
               delay={hasVisitedLandingPage ? 0 : 500}
               speed={hasVisitedLandingPage ? 0 : 30}
               isVisible={isVisible}
             />
             <HandwrittenText
               text="Share your journey."
-              className="text-4xl text-[var(--color-text-handwritten)] leading-relaxed font-['Caveat']"
+              className="text-4xl text-[var(--color-text-handwritten)] leading-relaxed font-['Caveat'] bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3 inline-block"
               delay={hasVisitedLandingPage ? 0 : 500}
               speed={hasVisitedLandingPage ? 0 : 30}
               isVisible={isVisible}
