@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { produce } from "immer";
 
@@ -17,15 +18,27 @@ const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
+  const location = useLocation();
+  const hasFetchedRef = useRef(false);
 
   useEffect(() => {
+    if (location.pathname === "/") {
+      setState(produce(draft => {
+        draft.loading = false;
+      }));
+      return;
+    }
+
+    if (hasFetchedRef.current) {
+      return;
+    }
+
+    hasFetchedRef.current = true;
+
     const fetchUser = async () => {
-      if (window.location.pathname === "/") {
-        setState(produce(draft => {
-          draft.loading = false;
-        }));
-        return;
-      }
+      setState(produce(draft => {
+        draft.loading = true;
+      }));
 
       try {
         const res = await fetch(`${BASE_URL}/api/users/me`, {
@@ -40,20 +53,18 @@ const UserProvider = ({ children }) => {
 
         setState(produce(draft => {
           draft.user = user;
+          draft.loading = false;
         }));
       } catch {
         setState(produce(draft => {
           draft.user = null;
-        }));
-      } finally {
-        setState(produce(draft => {
           draft.loading = false;
         }));
       }
     };
 
     fetchUser();
-  }, []);
+  }, [location.pathname]);
 
   const updateUserLocal = (newData) => {
     setState(produce(draft => {
