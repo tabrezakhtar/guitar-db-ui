@@ -259,19 +259,25 @@ function Landing() {
                 </Link>
               </motion.div>
               <motion.div
+                className="mt-12"
                 initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
                 transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: "easeOut", delay: shouldReduceMotion ? 0 : 0.7 }}
               >
                 <LiveAndUpcoming />
               </motion.div>
-              <RecentUsers />
+
+              <div className="mt-12">
+                <RecentUsers />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <ArticlesSection isVisible={isVisible} />
+      <div className="mt-12">
+        <ArticlesSection isVisible={isVisible} />
+      </div>
 
       <Suspense fallback={<div className="flex justify-center py-8"><Spinner /></div>}>
         <LandingDataDisplay 

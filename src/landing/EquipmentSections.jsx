@@ -10,7 +10,7 @@ function EquipmentSections({ recentEquipment, popularEquipment, loading, isVisib
     
     return (
       <motion.div
-        className="mb-8"
+        className="mt-12"
         initial={shouldReduceMotion ? false : { opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
         transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : delay / 1000 }}
