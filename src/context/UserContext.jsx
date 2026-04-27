@@ -46,6 +46,10 @@ const UserProvider = ({ children }) => {
         });
 
         if (!res.ok) {
+          const data = await res.json();
+          if (data.banned) {
+            await logout();
+          }
           throw new Error("Not authenticated");
         }
 
