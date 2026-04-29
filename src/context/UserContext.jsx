@@ -49,6 +49,8 @@ const UserProvider = ({ children }) => {
           const data = await res.json();
           if (data.banned) {
             await logout();
+            window.location.href = `${BASE_URL}/login`;
+            return;
           }
           throw new Error("Not authenticated");
         }
