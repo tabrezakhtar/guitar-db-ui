@@ -75,8 +75,15 @@
           });
         }
         
-        // Always use DOMContentLoaded to ensure single execution
         document.addEventListener('DOMContentLoaded', sendHit);
+        
+        let lastPath = window.location.pathname;
+        setInterval(function() {
+          if (window.location.pathname !== lastPath) {
+            lastPath = window.location.pathname;
+            sendHit();
+          }
+        }, 300);
       })('rifftales');
     </script>
   </body>
