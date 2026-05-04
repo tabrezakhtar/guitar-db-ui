@@ -24,6 +24,10 @@ const CommentForm = ({ equipmentId }) => {
     }
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <form onSubmit={handleSubmit} className="mt-4">
       <div className="flex flex-col">
@@ -35,6 +39,7 @@ const CommentForm = ({ equipmentId }) => {
           placeholder={isGuest ? "Sign up to leave comments..." : "Add your comment..."}
           disabled={isSubmitting || isGuest}
         />
+
         <button
           type="submit"
           className="w-full sm:w-auto sm:self-end bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 transition-colors cursor-pointer disabled:cursor-not-allowed"
