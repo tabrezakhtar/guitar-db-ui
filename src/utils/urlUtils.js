@@ -4,7 +4,6 @@ export function getQueryStringParam(name) {
   return params.has(name) ? params.get(name) : null;
 }
 
-export function ssrRedirect(ssrUrl, fallbackRoute = "/") {
-  window.history.replaceState({}, "", fallbackRoute);
-  window.location.href = ssrUrl;
+export function ssrRedirect(ssrUrl) {
+  window.location.replace(ssrUrl);
 }
