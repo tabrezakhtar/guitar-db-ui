@@ -5,5 +5,6 @@ export function getQueryStringParam(name) {
 }
 
 export function ssrRedirect(ssrUrl, fallbackRoute = "/") {
+  window.history.replaceState({}, "", fallbackRoute);
   window.location.href = ssrUrl;
 }
