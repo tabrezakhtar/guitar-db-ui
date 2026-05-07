@@ -60,7 +60,7 @@ function RecentUsers() {
       <div>
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-2xl font-bold text-[var(--color-text-header)]">Featured members</h3>
-          <Link to="/profile" className="text-sm text-blue-400 hover:underline">See all</Link>
+          {/* <Link to="/profile" className="text-sm text-blue-400 hover:underline">See all</Link> */}
         </div>
         <div className="bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] p-4 rounded-md text-[var(--color-text-muted)] dark:text-[var(--color-text-muted-dark)] text-center">No featured members</div>
       </div>
