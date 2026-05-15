@@ -125,6 +125,7 @@ const FullSchedule = () => {
 
   return (
     <div className="min-h-screen w-full p-6 relative">
+      <h1 className="sr-only">Live Streamer Guide</h1>
       <div className="relative max-w-full mx-auto">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
           <h2 className="text-2xl font-bold mb-6 text-[var(--color-text-header)]">Live Streamer Guide</h2>

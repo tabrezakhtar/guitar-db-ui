@@ -130,6 +130,7 @@ function Landing() {
 
   return (
     <>
+      <h1 className="sr-only">rifftales - Discover gear, celebrate stories, and share your journey</h1>
       <section className="relative w-full overflow-hidden flex items-center justify-center">
         <video
           autoPlay

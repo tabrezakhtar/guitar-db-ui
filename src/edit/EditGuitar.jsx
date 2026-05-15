@@ -195,6 +195,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
 
   return (
     <div className="max-w-screen-xl mx-auto w-full bg-[var(--color-main-bg)]">
+      <h1 className="sr-only">{mode === "edit" ? "Edit Equipment" : "Add Equipment"}</h1>
       <div className="p-6">
         {saved && <SuccessMessage />}
 
