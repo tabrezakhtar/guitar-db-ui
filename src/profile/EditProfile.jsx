@@ -18,7 +18,8 @@ const EditProfile = () => {
     avatarUrl: "",
     location: "",
     website: "",
-    youtubeChannelUrl: ""
+    youtubeChannelUrl: "",
+    featured: false
   });
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarDeleted, setAvatarDeleted] = useState(false);
@@ -37,7 +38,8 @@ const EditProfile = () => {
         avatarUrl: user.avatarUrl || "",
         location: user.location || "",
         website: user.website || "",
-        youtubeChannelUrl: user.youtubeChannelUrl || ""
+        youtubeChannelUrl: user.youtubeChannelUrl || "",
+        featured: user.featured || false
       });
       setOriginalAvatarUrl(user.avatarUrl || "");
     }
@@ -204,6 +206,20 @@ const EditProfile = () => {
         </div>
         
         <div className="mb-4">
+          <label className="flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              name="featured"
+              checked={profile.featured}
+              onChange={(e) => setProfile((prev) => ({ ...prev, featured: e.target.checked }))}
+              className="w-4 h-4 text-blue-600 bg-[var(--color-panel-bg)] border-gray-600 rounded focus:ring-blue-400 focus:ring-2 cursor-pointer"
+            />
+            <span className="ml-2 text-[var(--color-text-muted-dark)]">Featured</span>
+            <span className="ml-2 text-sm text-blue-400">ℹ️ Display profile across the app and home page</span>
+          </label>
+        </div>
+
+        <div className="mb-4">
           <label htmlFor="username" className="block text-[var(--color-text-muted-dark)] mb-2">Username: <span className="text-red-400">*</span></label>
           <input
             type="text"
@@ -260,7 +276,8 @@ const EditProfile = () => {
             className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] text-[var(--color-text-header)]"
           />
         </div>
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
+
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
           <div className="order-2 sm:order-1">
             <button 
               type="button" 
