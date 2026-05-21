@@ -206,17 +206,19 @@ const EditProfile = () => {
         </div>
         
         <div className="mb-4">
-          <label className="flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              name="featured"
-              checked={profile.featured}
-              onChange={(e) => setProfile((prev) => ({ ...prev, featured: e.target.checked }))}
-              className="w-4 h-4 text-blue-600 bg-[var(--color-panel-bg)] border-gray-600 rounded focus:ring-blue-400 focus:ring-2 cursor-pointer"
-            />
-            <span className="ml-2 text-[var(--color-text-muted-dark)]">Featured</span>
-            <span className="ml-2 text-sm text-blue-400">ℹ️ Display profile across the app and home page</span>
-          </label>
+          <div className="flex flex-col md:flex-row md:items-center gap-2">
+            <span className="text-sm text-blue-400 md:order-2 md:ml-2">ℹ️ Display profile across the app and home page</span>
+            <label className="flex items-center cursor-pointer md:order-1">
+              <input
+                type="checkbox"
+                name="featured"
+                checked={profile.featured}
+                onChange={(e) => setProfile((prev) => ({ ...prev, featured: e.target.checked }))}
+                className="w-4 h-4 text-blue-600 bg-[var(--color-panel-bg)] border-gray-600 rounded focus:ring-blue-400 focus:ring-2 cursor-pointer"
+              />
+              <span className="ml-2 text-[var(--color-text-muted-dark)]">Featured</span>
+            </label>
+          </div>
         </div>
 
         <div className="mb-4">

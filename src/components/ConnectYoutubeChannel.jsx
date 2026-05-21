@@ -107,22 +107,24 @@ const ConnectYoutubeChannel = ({ initialValue = "", onSuccess, onError }) => {
 
   return (
     <div>
-      <div className={`flex items-center gap-3 px-3 py-2 rounded-md bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] ${youtubeError ? "border border-red-600" : "border border-gray-600"}`}>
-        <img src="/icons/youtube_icon.png" alt="YouTube" className="w-6 h-6 flex-shrink-0" />
-        <input
-          type="text"
-          placeholder="Paste in your YouTube URL or @handle"
-          value={youtubeInput}
-          onChange={handleInputChange}
-          disabled={loading}
-          aria-invalid={youtubeError ? "true" : "false"}
-          className="flex-1 bg-transparent text-[var(--color-text-header)] focus:outline-none disabled:opacity-50"
-        />
+      <div className={`flex flex-col md:flex-row items-stretch md:items-center gap-3 px-3 py-2 rounded-md bg-[var(--color-panel-bg)] dark:bg-[var(--color-card-bg)] ${youtubeError ? "border border-red-600" : "border border-gray-600"}`}>
+        <div className="flex items-center gap-3 flex-1">
+          <img src="/icons/youtube_icon.png" alt="YouTube" className="w-6 h-6 flex-shrink-0" />
+          <input
+            type="text"
+            placeholder="Paste in your YouTube URL or @handle"
+            value={youtubeInput}
+            onChange={handleInputChange}
+            disabled={loading}
+            aria-invalid={youtubeError ? "true" : "false"}
+            className="flex-1 bg-transparent text-[var(--color-text-header)] focus:outline-none disabled:opacity-50"
+          />
+        </div>
         <button
           type="button"
           onClick={handleConnect}
           disabled={loading || isDisabled || !!youtubeError}
-          className={`px-4 py-1 ${hasExistingChannel ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"} text-white rounded focus:outline-none focus:ring-2 ${hasExistingChannel ? "focus:ring-green-400" : "focus:ring-blue-400"} disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap`}
+          className={`w-full md:w-auto px-4 py-1 ${hasExistingChannel ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"} text-white rounded focus:outline-none focus:ring-2 ${hasExistingChannel ? "focus:ring-green-400" : "focus:ring-blue-400"} disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap`}
         >
           {loading ? (
             <span className="flex items-center gap-2">
