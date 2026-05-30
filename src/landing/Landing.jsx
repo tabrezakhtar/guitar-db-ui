@@ -185,27 +185,32 @@ function Landing() {
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
               transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : 0.3 }}
             >
-              <Link 
-                to="/gallery" 
-                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
-                style={{
-                  borderColor: '#EAAA00'
-                }}
+              <motion.div
+                animate={isVisible && !shouldReduceMotion ? { scale: [1, 1.08, 1, 1.08, 1] } : {}}
+                transition={{ duration: 0.8, ease: "easeInOut", delay: 1 }}
               >
-                <img
-                  src="https://res.cloudinary.com/dx8d5hlk1/image/upload/f_auto/v1759240663/guitar_store_bpmexv.jpg"
-                  alt="Explore Gallery"
-                  className="absolute inset-0 w-full h-full object-cover"
-                  loading="eager"
-                  fetchPriority="high"
-                />
-                <div className="relative z-10 text-center">
-                  <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
-                    <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
-                    <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Browse amazing gear from our community</p>
+                <Link 
+                  to="/gallery" 
+                  className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
+                  style={{
+                    borderColor: '#EAAA00'
+                  }}
+                >
+                  <img
+                    src="https://res.cloudinary.com/dx8d5hlk1/image/upload/f_auto/v1759240663/guitar_store_bpmexv.jpg"
+                    alt="Explore Gallery"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="eager"
+                    fetchPriority="high"
+                  />
+                  <div className="relative z-10 text-center">
+                    <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
+                      <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
+                      <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Browse amazing gear from our community</p>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
               <Link 
                 to="/add" 
                 className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
