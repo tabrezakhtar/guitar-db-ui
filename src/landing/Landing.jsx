@@ -186,7 +186,7 @@ function Landing() {
               transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : 0.3 }}
             >
               <motion.div
-                animate={isVisible && !shouldReduceMotion ? { scale: [1, 1.08, 1, 1.08, 1] } : {}}
+                animate={isVisible && !shouldReduceMotion ? { scale: [1, 1.08, 1] } : {}}
                 transition={{ duration: 0.8, ease: "easeInOut", delay: 1 }}
               >
                 <Link 
