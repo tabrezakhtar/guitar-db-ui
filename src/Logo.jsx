@@ -22,13 +22,16 @@ function Logo({ size = "normal" }) {
     
     return (
         <div className={`inline-flex items-center ${sizeClass.container} font-bold relative isolate`}>
-            <img 
-                src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1773139629/brush_cropped_ephma6.svg"
-                alt=""
-                className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${sizeClass.brush} object-contain text-yellow-400`}
-                style={{ fill: "currentColor", zIndex: -1, transform: "translate(-0%, 5%) scale(1.5)" }}
-                aria-hidden="true"
-            />
+            {size === "xlarge" && (
+                <img 
+                    // src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1773139629/brush_cropped_ephma6.svg"
+                    src="soundwave.svg"
+                    alt="logo background brush"
+                    className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${sizeClass.brush} object-contain text-yellow-400`}
+                    style={{ fill: "currentColor", zIndex: -1, transform: "translate(47%, 20%) scale(3.2)" }}
+                    aria-hidden="true"
+                />
+            )}
             <img 
                 src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1757542336/favicon-192x192_kkkkll.png" 
                 alt="rifftales Logo" 
