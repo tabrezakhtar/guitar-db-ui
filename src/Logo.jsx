@@ -22,7 +22,7 @@ function Logo({ size = "normal" }) {
     
     return (
         <div className={`inline-flex items-center ${sizeClass.container} font-bold relative isolate`}>
-            {size === "xlarge" && (
+            {/* {size === "xlarge" && (
                 <img 
                     // src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1773139629/brush_cropped_ephma6.svg"
                     src="soundwave.svg"
@@ -31,7 +31,7 @@ function Logo({ size = "normal" }) {
                     style={{ fill: "currentColor", zIndex: -1, transform: "translate(47%, 20%) scale(3.2)" }}
                     aria-hidden="true"
                 />
-            )}
+            )} */}
             <img 
                 src="https://res.cloudinary.com/dx8d5hlk1/image/upload/v1757542336/favicon-192x192_kkkkll.png" 
                 alt="rifftales Logo" 
