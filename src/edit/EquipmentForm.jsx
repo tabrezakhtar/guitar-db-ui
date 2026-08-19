@@ -127,7 +127,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
           <label className="block text-[var(--color-text-header)]">Description: <span className="text-red-500">*</span></label>
           <textarea
             name="description"
-            placeholder="What is it? Condition, any mods or the story behind it"
+            placeholder="Tell us how you came to own it, the story behind it, and what makes it uniquely yours."
             value={currentEquipment?.description || ""}
             rows="15"
             onChange={(e) =>
