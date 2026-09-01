@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { produce } from "immer";
 
@@ -19,6 +19,7 @@ const UserContext = createContext(null);
 const UserProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
   const location = useLocation();
+  const navigate = useNavigate();
   const hasFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const UserProvider = ({ children }) => {
           const data = await res.json();
           if (data.banned) {
             await logout();
-            window.location.href = `${BASE_URL}/login`;
+            navigate("/login");
             return;
           }
           throw new Error("Not authenticated");

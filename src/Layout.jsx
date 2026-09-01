@@ -1,15 +1,15 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import SideMenu from "./sidemenu/SideMenu";
 import Footer from "./Footer";
 import { useHeader } from "./context/HeaderContext";
 import { UserContext } from "./context/UserContext";
-import { ssrRedirect } from "./utils/urlUtils";
 
 function Layout({ hideSideMenu, hideGuestWarning, hideFooter, children }) {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { showHeader } = useHeader();
   const { isGuest } = useContext(UserContext) || {};
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const navigate = useNavigate();
 
   const toggleSideMenu = () => {
     setIsSideMenuOpen(!isSideMenuOpen);
@@ -73,7 +73,7 @@ function Layout({ hideSideMenu, hideGuestWarning, hideFooter, children }) {
           <div className="w-full bg-[var(--color-guest-bg)] text-[var(--color-guest-text)] border-b border-[var(--color-guest-border)] rounded-md mb-4">
             <div className="max-w-screen-xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
               <span>👋 You are browsing as a guest - some features are limited. Sign up for the full experience.</span>
-              <button onClick={() => ssrRedirect(`${BASE_URL}/register`)} className="bg-orange-400 hover:bg-orange-600 text-white px-3 py-1 rounded cursor-pointer">
+              <button onClick={() => navigate("/register")} className="bg-orange-400 hover:bg-orange-600 text-white px-3 py-1 rounded cursor-pointer">
                 <span className="[text-shadow:1px_1px_0_gray]">Register</span>
               </button>
             </div>

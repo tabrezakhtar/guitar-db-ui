@@ -19,7 +19,8 @@ import EditSchedule from "./schedule/EditSchedule";
 import PostPage from "./PostPage";
 import Followers from "./follow/Followers";
 import Following from "./follow/Following";
-import SaveCredentials from "./SaveCredentials";
+import Login from "./auth/Login";
+import Register from "./auth/Register";
 import FullGuide from "./schedule/FullSchedule";
 // import CookieAlert from "./components/CookieAlert";
 
@@ -81,7 +82,8 @@ function App() {
                         </Layout>
                       }
                     />
-                    <Route path="/auth" element={<SaveCredentials />} />
+                    <Route path="/login" element={<Layout hideSideMenu hideGuestWarning><Login /></Layout>} />
+                    <Route path="/register" element={<Layout hideSideMenu hideGuestWarning><Register /></Layout>} />
                     <Route path="/followers" element={<Layout hideSideMenu><Followers /></Layout>} />
                     <Route path="/followers/:userId" element={<Layout hideSideMenu><Followers /></Layout>} />
                     <Route path="/following" element={<Layout hideSideMenu><Following /></Layout>} />

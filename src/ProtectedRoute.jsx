@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { ssrRedirect } from "./utils/urlUtils";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkUserStatus = async () => {
@@ -16,7 +17,7 @@ const ProtectedRoute = ({ children }) => {
         });
 
         if (!response.ok) {
-          ssrRedirect(`${BASE_URL}/login`);
+          navigate("/login");
           return;
         }
 
@@ -24,12 +25,12 @@ const ProtectedRoute = ({ children }) => {
         if (data.exists === true) {
           setIsAuthenticated(true);
         } else {
-          ssrRedirect(`${BASE_URL}/login`);
+          navigate("/login");
         }
 
       } catch (error) {
         console.error("Error checking user status:", error);
-        ssrRedirect(`${BASE_URL}/login`);
+        navigate("/login");
       } finally {
         setIsLoading(false);
       }
