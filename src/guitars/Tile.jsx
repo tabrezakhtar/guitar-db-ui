@@ -1,13 +1,21 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { hasAdminAccess } from "../utils/roleUtils";
 import SkeletonImage from "../components/SkeletonImage";
+import TileSkeleton from "./TileSkeleton";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 
 function Tile({ item, likedEquipment, onLikeClick, onAvatarClick }) {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [noImageReady, setNoImageReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setNoImageReady(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const getEquipmentIcon = (type) => {
     switch (type?.toLowerCase()) {
@@ -36,16 +44,42 @@ function Tile({ item, likedEquipment, onLikeClick, onAvatarClick }) {
       className="aspect-[4/5] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-200 relative group bg-gray-300"
       onClick={() => navigate("/view/" + item._id)}
     >
-      {imageUrl ? (
+      {imageUrl && (
         <img
           src={imageUrl}
           alt={`Thumbnail: ${item.brand} ${item.name}`}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+          onLoad={() => setImageLoaded(true)}
+          onError={() => setImageLoaded(true)}
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${
+            imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-[1.02]"
+          } group-hover:scale-110`}
         />
-      ) : (
-        <div className="absolute inset-0 w-full h-full">
-          <SkeletonImage />
+      )}
+      {imageUrl ? (
+        <div
+          className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
+            imageLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+        >
+          <TileSkeleton tileClass="w-full h-full" />
         </div>
+      ) : (
+        <>
+          <div
+            className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
+              noImageReady ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <SkeletonImage />
+          </div>
+          <div
+            className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
+              noImageReady ? "opacity-0 pointer-events-none" : "opacity-100"
+            }`}
+          >
+            <TileSkeleton tileClass="w-full h-full" />
+          </div>
+        </>
       )}
       <div
         className="absolute top-2 left-2 px-2 py-1 rounded-md bg-[var(--color-overlay-dark)] shadow-sm flex items-center"

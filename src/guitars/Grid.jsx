@@ -7,7 +7,6 @@ import Tag from "../tags/Tag";
 import Spinner from "../components/Spinner";
 import useInfiniteScroll from "../utils/useInfiniteScroll";
 import { useEquipmentGridData } from "./useEquipmentGridData";
-import { useImageLoading } from "./useImageLoading";
 import TileSkeleton from "./TileSkeleton";
 import { useUrlParams } from "../utils/useUrlParams";
 import Tile from "./Tile";
@@ -44,7 +43,6 @@ function Grid() {
     equipmentError,
     fetchEquipmentList,
   } = useEquipmentGridData();
-  const { loadingImages } = useImageLoading(equipment);
   const [likedEquipment, setLikedEquipment] = useState({});
 
   useEffect(() => {
@@ -251,21 +249,15 @@ function Grid() {
                 tileClass="aspect-[4/5]"
               />
             ))
-          : equipment.map((item) => {
-              if (loadingImages.has(item._id)) {
-                return <TileSkeleton key={item._id} tileClass="aspect-[4/5]" />;
-              }
-
-              return (
-                <Tile
-                  key={item._id}
-                  item={item}
-                  likedEquipment={likedEquipment}
-                  onLikeClick={handleLikeClick}
-                  onAvatarClick={handleAvatarClick}
-                />
-              );
-            })}
+          : equipment.map((item) => (
+              <Tile
+                key={item._id}
+                item={item}
+                likedEquipment={likedEquipment}
+                onLikeClick={handleLikeClick}
+                onAvatarClick={handleAvatarClick}
+              />
+            ))}
       </div>
       {equipmentError && (
         <div className="flex flex-col items-center p-8">
