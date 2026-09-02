@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useDraggable } from "react-use-draggable-scroll";
 
 const CustomImageGallery = ({ items, additionalClass = "" }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -7,6 +8,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
   const [touchEnd, setTouchEnd] = useState(null);
   const [touchStartY, setTouchStartY] = useState(null);
   const thumbnailsRef = useRef(null);
+  const { events: thumbnailDragEvents } = useDraggable(thumbnailsRef);
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
@@ -22,13 +24,14 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
 
   const scrollToThumbnail = (index) => {
     if (thumbnailsRef.current) {
-      const thumbnail = thumbnailsRef.current.children[index];
+      const container = thumbnailsRef.current;
+      const thumbnail = container.children[index];
       if (thumbnail) {
-        thumbnail.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "center"
-        });
+        const targetLeft =
+          thumbnail.offsetLeft -
+          container.clientWidth / 2 +
+          thumbnail.clientWidth / 2;
+        container.scrollTo({ left: targetLeft, behavior: "smooth" });
       }
     }
   };
@@ -111,6 +114,17 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
       role="region"
       aria-label="Image gallery - Use arrow keys to navigate"
     >
+      <style>
+        {`
+          .thumbnail-scroll-container {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+          .thumbnail-scroll-container::-webkit-scrollbar {
+            display: none;
+          }
+        `}
+      </style>
       {/* Main Image Display */}
       <div className={`relative bg-gray-100 rounded-lg overflow-hidden ${additionalClass.includes('h-full') ? 'h-4/5' : 'h-64 sm:h-80 md:h-96'}`}>
         <div 
@@ -185,12 +199,19 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
       </div>
 
       {/* Thumbnails */}
-      {items.length > 1 && (
-        <div ref={thumbnailsRef} className="flex flex-wrap gap-2 mt-3 sm:mt-4 pb-2">
-          {items.map((item, index) => (
+      <div
+        ref={thumbnailsRef}
+        {...thumbnailDragEvents}
+        className={`thumbnail-scroll-container flex flex-nowrap gap-2 overflow-x-auto cursor-grab select-none ${
+          items.length > 1 ? "mt-3 sm:mt-4 pb-2" : "h-0 overflow-hidden"
+        }`}
+      >
+        {items.length > 1 &&
+          items.map((item, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
+              onDragStart={(e) => e.preventDefault()}
               className={`flex-shrink-0 border-2 rounded transition-all ${
                 index === currentIndex
                   ? "border-blue-500 opacity-100"
@@ -200,12 +221,12 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
               <img
                 src={item.thumbnail || item.original}
                 alt={`Thumbnail ${index + 1}`}
+                draggable={false}
                 className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 object-cover rounded"
               />
             </button>
           ))}
-        </div>
-      )}
+      </div>
 
       {/* Fullscreen Modal */}
       {isFullscreen && (
