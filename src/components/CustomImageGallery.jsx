@@ -108,7 +108,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
 
   return (
     <div 
-      className={`custom-image-gallery ${additionalClass} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-lg content-center`}
+      className={`custom-image-gallery ${additionalClass} flex flex-col focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-lg content-center`}
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="region"
@@ -126,7 +126,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
         `}
       </style>
       {/* Main Image Display */}
-      <div className={`relative bg-gray-100 rounded-lg overflow-hidden ${additionalClass.includes('h-full') ? 'h-4/5' : 'h-64 sm:h-80 md:h-96'}`}>
+      <div className={`relative bg-gray-100 rounded-lg overflow-hidden ${additionalClass.includes('h-full') ? 'flex-1 min-h-0' : 'h-64 sm:h-80 md:h-96'}`}>
         <div 
           className="flex transition-transform duration-300 ease-in-out h-full touch-pan-y"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -203,7 +203,7 @@ const CustomImageGallery = ({ items, additionalClass = "" }) => {
         ref={thumbnailsRef}
         {...thumbnailDragEvents}
         className={`thumbnail-scroll-container flex flex-nowrap gap-2 overflow-x-auto cursor-grab select-none ${
-          items.length > 1 ? "mt-3 sm:mt-4 pb-2" : "h-0 overflow-hidden"
+          items.length > 1 ? "mt-3 sm:mt-4" : "h-0 overflow-hidden"
         }`}
       >
         {items.length > 1 &&
