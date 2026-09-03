@@ -105,9 +105,9 @@ const EquipmentCard = ({ item, onClick, cardSize = "medium" }) => {
         </div>
       )}
       <div className={paddingClass}>
-        <p className={`font-medium truncate text-black dark:text-white ${textSizes.primary}`}>{item.brand}</p>
-        <p className={`truncate text-gray-700 dark:text-gray-300 ${textSizes.secondary}`}>{item.name}</p>
-        {item.__t && <p className={`truncate text-gray-500 dark:text-gray-400 ${textSizes.muted}`}>{item.__t}</p>}
+        <p className={`font-medium truncate text-[var(--color-text-header)] ${textSizes.primary}`}>{item.brand}</p>
+        <p className={`truncate text-[var(--color-text-muted)] ${textSizes.secondary}`}>{item.name}</p>
+        {item.__t && <p className={`truncate text-[var(--color-text-muted-dark)] ${textSizes.muted}`}>{item.__t}</p>}
       </div>
     </CardWrapper>
   );

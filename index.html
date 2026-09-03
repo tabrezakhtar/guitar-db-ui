@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="A place for musicians to share photos of their instruments, tell their stories, and connect with others who appreciate the instruments they love." />
@@ -11,7 +11,13 @@
     <link rel="preconnect" href="https://res.cloudinary.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="color-scheme" content="dark" />
     <title>rifftales</title>
+
+    <!-- prevents a flash of white before the CSS bundle loads -->
+    <style>
+      html, body { background-color: #0a202c; }
+    </style>
 
     <!--
     <script type="text/javascript">
