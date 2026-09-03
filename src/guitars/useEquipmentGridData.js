@@ -1,10 +1,19 @@
 // useDataApi.js
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GuitarContext } from "../context/GuitarContext";
 import { useTagContext } from "../context/TagContext";
 import { getQueryStringParam } from "../utils/urlUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const GRID_STATE_KEY = "equipment-grid-state";
+
+const getSavedGridState = () => {
+  try {
+    return JSON.parse(sessionStorage.getItem(GRID_STATE_KEY));
+  } catch {
+    return null;
+  }
+};
 
 export const useEquipmentGridData = () => {
   const { 
@@ -17,14 +26,16 @@ export const useEquipmentGridData = () => {
   } = useContext(GuitarContext);
 
   const { selectedTags } = useTagContext();
+  const savedGridState = useRef(getSavedGridState()).current;
+  const shouldRestoreGrid = useRef(Boolean(savedGridState?.equipment?.length));
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searchTotal, setSearchTotal] = useState(0);
   const [searchError, setSearchError] = useState(null);
-  const [equipment, setEquipment] = useState([]);
-  const [totalEquipment, setTotalEquipment] = useState(0);
-  const [page, setPage] = useState(1);
+  const [equipment, setEquipment] = useState(savedGridState?.equipment || []);
+  const [totalEquipment, setTotalEquipment] = useState(savedGridState?.totalEquipment || 0);
+  const [page, setPage] = useState(savedGridState?.page || 1);
   const [loading, setIsLoading] = useState(false);
   const [equipmentError, setEquipmentError] = useState(null);
 
@@ -124,8 +135,24 @@ export const useEquipmentGridData = () => {
     return fetchEquipmentList(nextPage);
   };
 
+  const saveGridState = () => {
+    sessionStorage.setItem(
+      GRID_STATE_KEY,
+      JSON.stringify({
+        equipment,
+        totalEquipment,
+        page,
+        scrollPosition: window.scrollY,
+      }),
+    );
+  };
+
   useEffect(() => {
     if (searchTerm.trim()) return;
+    if (shouldRestoreGrid.current) {
+      shouldRestoreGrid.current = false;
+      return;
+    }
     setEquipment([]);
     fetchEquipmentList(1);
   }, [sortBy, sortOrder, selectedTags, equipmentType, searchTerm]);
@@ -154,6 +181,8 @@ export const useEquipmentGridData = () => {
     error: currentError,
     loading,
     page,
-    equipmentError
+    equipmentError,
+    saveGridState,
+    restoredScrollPosition: savedGridState?.scrollPosition || 0
   };
 };

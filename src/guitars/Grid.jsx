@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GuitarContext } from "../context/GuitarContext";
 import { UserContext } from "../context/UserContext";
@@ -42,8 +42,21 @@ function Grid() {
     loadMore,
     equipmentError,
     fetchEquipmentList,
+    saveGridState,
+    restoredScrollPosition,
   } = useEquipmentGridData();
   const [likedEquipment, setLikedEquipment] = useState({});
+  const hasRestoredScroll = useRef(false);
+
+  useEffect(() => {
+    if (!restoredScrollPosition || !equipment.length || hasRestoredScroll.current) return;
+
+    requestAnimationFrame(() => {
+      window.scrollTo(0, restoredScrollPosition);
+      sessionStorage.removeItem("equipment-grid-state");
+      hasRestoredScroll.current = true;
+    });
+  }, [equipment.length, restoredScrollPosition]);
 
   useEffect(() => {
     const urlSearch = getParam("search");
@@ -256,6 +269,7 @@ function Grid() {
                 likedEquipment={likedEquipment}
                 onLikeClick={handleLikeClick}
                 onAvatarClick={handleAvatarClick}
+                onItemClick={saveGridState}
               />
             ))}
       </div>

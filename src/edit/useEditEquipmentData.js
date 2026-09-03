@@ -4,6 +4,7 @@ import { UserContext } from "../context/UserContext";
 import { cloudinaryUpload } from "../utils/cloudinaryUtils";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const GRID_STATE_KEY = "equipment-grid-state";
 
 export const useEditEquipmentData = (id, mode = "edit") => {
   const navigate = useNavigate();
@@ -111,6 +112,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
             setFilesToUploadState(updatedFilesToUpload);
             setIsLoading(false);
             setError(null);
+            sessionStorage.removeItem(GRID_STATE_KEY);
 
             resolve(result);
           })
@@ -172,6 +174,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
             setEquipmentState(result);
             setIsLoading(false);
             setError(null);
+            sessionStorage.removeItem(GRID_STATE_KEY);
 
             resolve(result);
           })
@@ -222,6 +225,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
 
       setEquipmentState(null);
       setIsLoading(false);
+  sessionStorage.removeItem(GRID_STATE_KEY);
       return result;
     } catch (error) {
       console.error("Failed to delete equipment:", error);
@@ -327,6 +331,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
       
       setEquipmentState({ ...equipment, images: updatedImages });
       setFilesToUploadState(updatedFilesToUpload);
+      sessionStorage.removeItem(GRID_STATE_KEY);
 
       return result;
     } catch (error) {
