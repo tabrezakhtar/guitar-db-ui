@@ -20,6 +20,9 @@ const Register = () => {
   const { hideHeader, displayHeader } = useHeader();
   const navigate = useNavigate();
 
+  const getErrors = (apiErrors) =>
+    Array.isArray(apiErrors) ? apiErrors : [apiErrors || "Something went wrong"];
+
   useEffect(() => {
     hideHeader();
     return () => displayHeader();
@@ -41,7 +44,7 @@ const Register = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        setErrors(data.errors || ["Something went wrong"]);
+        setErrors(getErrors(data.errors));
         return;
       }
 

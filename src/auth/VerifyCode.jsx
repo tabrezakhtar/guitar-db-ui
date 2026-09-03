@@ -16,6 +16,9 @@ const VerifyCode = ({ userId, email, onVerified }) => {
   const [resending, setResending] = useState(false);
   const codeInputRef = useRef(null);
 
+  const getErrors = (apiErrors) =>
+    Array.isArray(apiErrors) ? apiErrors : [apiErrors || "Something went wrong"];
+
   const handleVerify = async (e) => {
     e.preventDefault();
     setErrors([]);
@@ -32,7 +35,7 @@ const VerifyCode = ({ userId, email, onVerified }) => {
       const data = await res.json();
 
       if (!res.ok) {
-        setErrors(data.errors || ["Something went wrong"]);
+        setErrors(getErrors(data.errors));
         setShowResendOnly(Boolean(data.showResendOnly));
         if (data.email) setCurrentEmail(data.email);
         if (data.attemptCount) setAttemptCount(data.attemptCount);
@@ -65,7 +68,7 @@ const VerifyCode = ({ userId, email, onVerified }) => {
       const data = await res.json();
 
       if (!res.ok) {
-        setErrors(data.errors || ["Something went wrong"]);
+        setErrors(getErrors(data.errors));
         return;
       }
 
