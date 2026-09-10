@@ -191,7 +191,7 @@ function Landing() {
               >
                 <Link 
                   to="/gallery" 
-                  className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
+                  className="group flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
                   style={{
                     borderColor: '#EAAA00'
                   }}
@@ -207,13 +207,14 @@ function Landing() {
                     <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
                       <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Explore Gear</h3>
                       <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Browse amazing gear from our community</p>
+                      <span className="inline-flex items-center mt-3 rounded-full bg-[#EAAA00] px-4 py-2 text-sm font-bold text-gray-900 shadow-md transition-colors duration-200 group-hover:bg-[#F5C242]">View Gear &rarr;</span>
                     </div>
                   </div>
                 </Link>
               </motion.div>
               <Link 
                 to="/add" 
-                className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
+                className="group flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2"
                 style={{
                   borderColor: '#EAAA00'
                 }}
@@ -229,6 +230,7 @@ function Landing() {
                   <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
                     <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Add Your Gear</h3>
                     <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Share your instruments and tell their stories</p>
+                      <span className="inline-flex items-center mt-3 rounded-full bg-[#EAAA00] px-4 py-2 text-sm font-bold text-gray-900 shadow-md transition-colors duration-200 group-hover:bg-[#F5C242]">Add Your Gear &rarr;</span>
                   </div>
                 </div>
               </Link>
@@ -244,7 +246,7 @@ function Landing() {
               >
                 <Link 
                   to="/guide" 
-                  className="flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2 mx-auto"
+                  className="group flex flex-col items-center justify-center rounded-xl font-semibold transition-all duration-200 w-72 h-52 relative overflow-hidden text-lg hover:scale-105 border-2 mx-auto"
                   style={{
                     borderColor: '#EAAA00'
                   }}
@@ -260,6 +262,7 @@ function Landing() {
                     <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
                       <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Live Streamer Guide</h3>
                       <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Stay up to date with your favourite streamers</p>
+                      <span className="inline-flex items-center mt-3 rounded-full bg-[#EAAA00] px-4 py-2 text-sm font-bold text-gray-900 shadow-md transition-colors duration-200 group-hover:bg-[#F5C242]">View Guide &rarr;</span>
                     </div>
                   </div>
                 </Link>
