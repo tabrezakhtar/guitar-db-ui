@@ -21,7 +21,7 @@
   --color-burger-bg:         #1f2937;
   /* Overlay colors */
   --color-overlay:           rgba(0,0,0,0.5);
-  --color-overlay-dark:      rgba(31,41,55,0.3);
+  --color-overlay-dark:      rgba(31,41,55,0.4);
   /* Status / special backgrounds */
   --color-guest-bg:          #7c2d12;
   --color-guest-border:      #b45309;
