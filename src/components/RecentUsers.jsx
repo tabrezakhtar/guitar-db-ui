@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import AvatarDisplayOnly from "../profile/AvatarDisplayOnly";
 import Spinner from "./Spinner";
@@ -14,6 +14,7 @@ function RecentUsers() {
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0, placement: "top" });
   const [isMobile, setIsMobile] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const hoveredElRef = useRef(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -47,6 +48,20 @@ function RecentUsers() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    if (!hoveredUser || isMobile) return;
+    const updatePosition = () => {
+      if (!hoveredElRef.current) return;
+      setPopupPosition(calculatePosition(hoveredElRef.current.getBoundingClientRect(), 300));
+    };
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [hoveredUser, isMobile]);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center p-4">
@@ -67,22 +82,26 @@ function RecentUsers() {
     );
   }
 
-  const handleMouseEnter = (user, e) => {
-    if (isMobile) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const popupHeight = 300;
+  const calculatePosition = (rect, popupHeight) => {
     const spaceBelow = window.innerHeight - rect.bottom;
     const spaceAbove = rect.top;
-    
+
     const placement = spaceAbove < popupHeight && spaceBelow > spaceAbove ? "bottom" : "top";
     const y = placement === "top" ? rect.top - 10 : rect.bottom + 10;
-    
-    setPopupPosition({ x: rect.left + rect.width / 2, y, placement });
+
+    return { x: rect.left + rect.width / 2, y, placement };
+  };
+
+  const handleMouseEnter = (user, e) => {
+    if (isMobile) return;
+    hoveredElRef.current = e.currentTarget;
+    setPopupPosition(calculatePosition(e.currentTarget.getBoundingClientRect(), 300));
     setHoveredUser(user);
   };
 
   const handleMouseLeave = () => {
     if (isMobile) return;
+    hoveredElRef.current = null;
     setHoveredUser(null);
   };
 
@@ -106,6 +125,7 @@ function RecentUsers() {
   };
 
   const closePopup = () => {
+    hoveredElRef.current = null;
     setHoveredUser(null);
   };
 
