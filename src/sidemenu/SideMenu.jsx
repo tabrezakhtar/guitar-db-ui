@@ -80,7 +80,7 @@ function SideMenu() {
   return (
   <aside 
       ref={sideMenuRef}
-      className="bg-[var(--color-toggle-bg)] text-white w-full md:w-80 p-6 shadow-lg flex flex-col gap-6 bg-contain bg-top bg-no-repeat bg-[url('/guitar-bg-light.svg')] dark:bg-[url('/guitar-bg-dark.svg')]"
+      className="bg-[var(--color-toggle-bg)] text-white w-full md:w-80 p-6 shadow-lg flex flex-col gap-6 bg-contain bg-top bg-no-repeat bg-[url('/guitar-bg-dark.svg')]"
     >
       <div ref={headerSectionRef}>
         <div className="md:hidden mb-4 pb-4 border-b border-gray-600">
