@@ -133,7 +133,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               setCurrentEquipment({ ...currentEquipment, brand: e.target.value })
             }
             disabled={isUploading}
-            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
+            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
 
@@ -148,7 +148,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               setCurrentEquipment({ ...currentEquipment, name: e.target.value })
             }
             disabled={isUploading}
-            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
+            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
         </div>
@@ -165,7 +165,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
                 setCurrentEquipment({ ...currentEquipment, description: e.target.value })
               }
               disabled={isUploading || isGeneratingDescription}
-              className={`border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 ${isGeneratingDescription ? "animate-pulse" : ""}`}
+              className={`border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 ${isGeneratingDescription ? "animate-pulse" : ""}`}
               required
             />
             {isGeneratingDescription && (
@@ -204,7 +204,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
             value={currentEquipment?.url || ""}
             onChange={handleYoutubeUrlChange}
             disabled={isUploading}
-            className={`border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 ${!validateYoutubeUrl(currentEquipment?.url) ? "border-red-500" : ""}`}
+            className={`border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 ${!validateYoutubeUrl(currentEquipment?.url) ? "border-red-500" : ""}`}
           />
           {!validateYoutubeUrl(currentEquipment?.url) && (
             <p className="text-red-400 text-sm mt-1">Please enter a valid YouTube URL</p>
@@ -253,7 +253,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
               })
             }
             disabled={isUploading}
-            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
+            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
         <div className="mb-4">

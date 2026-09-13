@@ -60,7 +60,7 @@ function FormFields({ type, isUploading, currentEquipment, setCurrentEquipment }
                 })
               }
               disabled={isUploading}
-              className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
+              className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           ) : field.type === "radio" ? (
             <div className="flex gap-4">
@@ -94,7 +94,7 @@ function FormFields({ type, isUploading, currentEquipment, setCurrentEquipment }
                 })
               }
               disabled={isUploading}
-              className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)]"
+              className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               <option value="">Select {field.label} (optional)</option>
               {field.options.map((option) => (
