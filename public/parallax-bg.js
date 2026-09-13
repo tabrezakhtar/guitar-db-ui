@@ -38,12 +38,14 @@ class ParallaxBackground {
     };
 
     this.handleResize = this.handleResize.bind(this);
+    this.renderToken = 0;
+    this.containerElement = null;
   }
 
   async init() {
     this.injectCSS();
     this.imageRatios = await this.loadImageRatios();
-    this.createCollage();
+    await this.createCollage();
     window.addEventListener("resize", this.handleResize);
   }
 
@@ -60,6 +62,12 @@ class ParallaxBackground {
         pointer-events: none;
         overflow: hidden;
         background: transparent;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+      }
+
+      .parallax-bg-container.ready {
+        opacity: 1;
       }
 
       .parallax-bg-track {
@@ -72,13 +80,7 @@ class ParallaxBackground {
         height: auto;
         display: block;
         border-radius: 14px;
-        opacity: 0;
-        transition: opacity 0.8s ease-in-out;
         object-fit: contain;
-      }
-      
-      .parallax-bg-container img.loaded {
-        opacity: 1;
       }
     `;
     
@@ -110,17 +112,15 @@ class ParallaxBackground {
     return Promise.all(ratioPromises);
   }
 
-  createCollage() {
-    const existing = document.querySelector(".parallax-bg-container");
-    if (existing) {
-      existing.remove();
-    }
-
+  async createCollage() {
+    const renderToken = ++this.renderToken;
+    const existing = this.containerElement || document.querySelector(".parallax-bg-container");
     const container = document.createElement("div");
     container.className = "parallax-bg-container";
     const track = document.createElement("div");
     track.className = "parallax-bg-track";
     container.appendChild(track);
+    const readyPromises = [];
 
     const gap = parseFloat(this.options.gap) || 0;
     const rowHeight = this.options.rowHeight;
@@ -144,19 +144,29 @@ class ParallaxBackground {
 
         img.src = this.options.imageUrls[currentIndex];
         img.alt = `Collage Image ${imageIndex + 1}`;
-        img.loading = "lazy";
+        img.loading = "eager";
+        img.decoding = "async";
         img.style.top = `${top}px`;
         img.style.left = `${left}px`;
         img.style.width = `${width}px`;
         img.style.height = `${rowHeight}px`;
 
-        img.addEventListener("load", () => {
-          img.classList.add("loaded");
-        });
+        const waitForImage = img.complete
+          ? Promise.resolve()
+          : new Promise(resolve => {
+              img.addEventListener("load", resolve, { once: true });
+              img.addEventListener("error", resolve, { once: true });
+            });
 
-        if (img.complete) {
-          img.classList.add("loaded");
-        }
+        readyPromises.push(
+          waitForImage.then(() => {
+            if (typeof img.decode !== "function") {
+              return;
+            }
+
+            return img.decode().catch(() => {});
+          })
+        );
 
         track.appendChild(img);
         left += width + gap;
@@ -172,6 +182,28 @@ class ParallaxBackground {
     } else {
       targetContainer.appendChild(container);
     }
+
+    await Promise.all(readyPromises);
+
+    if (renderToken !== this.renderToken) {
+      container.remove();
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      if (renderToken !== this.renderToken) {
+        container.remove();
+        return;
+      }
+
+      container.classList.add("ready");
+
+      if (existing && existing !== container) {
+        existing.remove();
+      }
+
+      this.containerElement = container;
+    });
   }
 
   handleResize() {
@@ -179,10 +211,12 @@ class ParallaxBackground {
   }
 
   destroy() {
-    const container = document.querySelector(".parallax-bg-container");
+    const container = this.containerElement || document.querySelector(".parallax-bg-container");
     const styles = document.getElementById("parallax-bg-styles");
     
     window.removeEventListener("resize", this.handleResize);
+    this.renderToken++;
+    this.containerElement = null;
 
     if (container) container.remove();
     if (styles) styles.remove();

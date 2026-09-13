@@ -54,6 +54,7 @@ function Landing() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const landingPromise = useMemo(() => fetchLandingData(), []);
+  const initialContentDelay = hasVisitedLandingPage ? 100 : 250;
 
   useEffect(() => {
     let timeoutId;
@@ -116,7 +117,7 @@ function Landing() {
 
     contentTimer = setTimeout(() => {
       setIsContentVisible(true);
-    }, hasVisitedLandingPage ? 240 : 700);
+    }, initialContentDelay);
 
     let idleCallbackId;
     let parallaxTimer;
@@ -151,7 +152,7 @@ function Landing() {
         window.__parallaxBackgroundInstance = null;
       }
     };
-  }, [hideHeader, displayHeader, hasVisitedLandingPage, setHasVisitedLandingPage]);
+  }, []);
 
 
 
