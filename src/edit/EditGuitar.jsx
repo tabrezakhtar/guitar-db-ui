@@ -25,6 +25,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
     filesToUpload,
     setFilesToUpload,
     deleteImage,
+    generateDescription,
   } = useEditEquipmentData(id, mode);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -255,6 +256,7 @@ function EditGuitar({ mode = "edit", type = "" }) {
               setShowModal={setShowModal}
               currentEquipment={currentEquipment}
               setCurrentEquipment={setCurrentEquipment}
+              generateDescription={generateDescription}
             />
           </div>
         </div>

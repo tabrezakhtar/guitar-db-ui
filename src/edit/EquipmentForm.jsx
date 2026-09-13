@@ -1,13 +1,32 @@
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTagContext } from "../context/TagContext";
+import { UserContext } from "../context/UserContext";
 import FormFields from "./FormFields";
 import StarRating from "../components/StarRating";
 import Tag from "../tags/Tag";
 import Select from "../components/Select";
+import Spinner from "../components/Spinner";
 
-function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal, currentEquipment, setCurrentEquipment }) {
+function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment, setShowModal, currentEquipment, setCurrentEquipment, generateDescription }) {
   const navigate = useNavigate();
   const { tags } = useTagContext();
+  const { user } = useContext(UserContext) || {};
+  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
+  const [generateError, setGenerateError] = useState(null);
+
+  const handleGenerateDescription = async () => {
+    setGenerateError(null);
+    setIsGeneratingDescription(true);
+    try {
+      const description = await generateDescription(currentEquipment);
+      setCurrentEquipment({ ...currentEquipment, description });
+    } catch (error) {
+      setGenerateError("Sorry, we couldn't generate your description right now. Please try again.");
+    } finally {
+      setIsGeneratingDescription(false);
+    }
+  };
 
   const formatOptionLabel = ({ value, label, colour, icon }) => (
     <div className="flex items-center">
@@ -125,18 +144,44 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
 
         <div className="mb-4">
           <label className="block text-[var(--color-text-header)]">Description: <span className="text-red-500">*</span></label>
-          <textarea
-            name="description"
-            placeholder="Tell us how you came to own it, the story behind it, and what makes it uniquely yours."
-            value={currentEquipment?.description || ""}
-            rows="15"
-            onChange={(e) =>
-              setCurrentEquipment({ ...currentEquipment, description: e.target.value })
-            }
-            disabled={isUploading}
-            className="border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400"
-            required
-          />
+          <div className="relative">
+            <textarea
+              name="description"
+              placeholder="Add a few basic details (e.g. blue telecaster with maple neck) and let AI generate the rest, or tell us the full story yourself."
+              value={currentEquipment?.description || ""}
+              rows="15"
+              onChange={(e) =>
+                setCurrentEquipment({ ...currentEquipment, description: e.target.value })
+              }
+              disabled={isUploading || isGeneratingDescription}
+              className={`border border-gray-600 p-2 rounded w-full bg-[var(--color-panel-bg)] text-[var(--color-text-header)] placeholder-gray-400 ${isGeneratingDescription ? "animate-pulse" : ""}`}
+              required
+            />
+            {isGeneratingDescription && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[var(--color-panel-bg)]/80 rounded">
+                <Spinner width={8} height={8} />
+                <p className="text-sm text-[var(--color-text-muted)]">Coming up with something...</p>
+              </div>
+            )}
+          </div>
+          {user && (
+            <>
+              <button
+                type="button"
+                onClick={handleGenerateDescription}
+                disabled={isUploading || isGeneratingDescription || !currentEquipment?.brand || !currentEquipment?.name || !currentEquipment?.description}
+                className="mt-2 text-sm text-blue-400 hover:text-blue-300 disabled:opacity-50 cursor-pointer"
+              >
+                {isGeneratingDescription ? "✨ Coming up with something..." : "✨ Need some inspiration? Generate a description with AI"}
+              </button>
+              {(!currentEquipment?.brand || !currentEquipment?.name || !currentEquipment?.description) && (
+                <p className="text-xs text-[var(--color-text-muted)] mt-1">Fill in the brand, name and a bit of a description first, then we can help polish it.</p>
+              )}
+            </>
+          )}
+          {generateError && (
+            <p className="text-red-400 text-sm mt-1">{generateError}</p>
+          )}
         </div>
 
         <div className="mb-4">

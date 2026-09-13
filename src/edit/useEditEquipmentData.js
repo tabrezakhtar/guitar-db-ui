@@ -341,6 +341,33 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     }
   };
 
+  const generateDescription = async (equipmentData = null) => {
+    const dataToSend = equipmentData || equipment;
+
+    setError(null);
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/equipment/generateDescription`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(dataToSend),
+        credentials: "include",
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || result.errors) {
+        throw new Error("Failed to generate description. Please try again later.");
+      }
+
+      return result.description;
+    } catch (error) {
+      console.error("Failed to generate description:", error);
+      setError(error.message);
+      throw error;
+    }
+  };
+
   const setFilesToUpload = (files) => {
     setFilesToUploadState(typeof files === "function" ? files(filesToUpload) : files);
   };
@@ -372,6 +399,7 @@ export const useEditEquipmentData = (id, mode = "edit") => {
     filesToUpload,
     setFilesToUpload,
     clearFilesToUpload,
-    clearCurrentEquipment
+    clearCurrentEquipment,
+    generateDescription
   };
 };
