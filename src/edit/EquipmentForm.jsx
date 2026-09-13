@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import confetti from "canvas-confetti";
 import { useTagContext } from "../context/TagContext";
 import { UserContext } from "../context/UserContext";
 import FormFields from "./FormFields";
@@ -14,6 +15,15 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
   const { user } = useContext(UserContext) || {};
   const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
   const [generateError, setGenerateError] = useState(null);
+  const descriptionRef = useRef(null);
+
+  const fireConfetti = () => {
+    const rect = descriptionRef.current?.getBoundingClientRect();
+    const origin = rect
+      ? { x: (rect.left + rect.width / 2) / window.innerWidth, y: (rect.top + 200) / window.innerHeight }
+      : { x: 0.5, y: 0.5 };
+    confetti({ particleCount: 80, spread: 70, startVelocity: 35, origin });
+  };
 
   const handleGenerateDescription = async () => {
     setGenerateError(null);
@@ -21,6 +31,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
     try {
       const description = await generateDescription(currentEquipment);
       setCurrentEquipment({ ...currentEquipment, description });
+      fireConfetti();
     } catch (error) {
       setGenerateError("Sorry, we couldn't generate your description right now. Please try again.");
     } finally {
@@ -144,7 +155,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
 
         <div className="mb-4">
           <label className="block text-[var(--color-text-header)]">Description: <span className="text-red-500">*</span></label>
-          <div className="relative">
+          <div className="relative" ref={descriptionRef}>
             <textarea
               name="description"
               placeholder="Add a few basic details (e.g. blue telecaster with maple neck) and let AI generate the rest, or tell us the full story yourself."
@@ -170,7 +181,7 @@ function EquipmentForm({ type, isUploading, uploadProgress, mode, saveEquipment,
                 type="button"
                 onClick={handleGenerateDescription}
                 disabled={isUploading || isGeneratingDescription || !currentEquipment?.brand || !currentEquipment?.name || !currentEquipment?.description}
-                className="mt-2 text-sm text-blue-400 hover:text-blue-300 disabled:opacity-50 cursor-pointer"
+                className="mt-2 w-full text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 px-4 py-2.5 rounded-lg shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isGeneratingDescription ? "✨ Coming up with something..." : "✨ Need some inspiration? Generate a description with AI"}
               </button>
