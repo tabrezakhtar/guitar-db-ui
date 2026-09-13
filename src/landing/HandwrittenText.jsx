@@ -1,35 +1,8 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { useState, useEffect } from "react";
 
 function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) {
   const shouldReduceMotion = useReducedMotion();
-  const [displayedText, setDisplayedText] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (!isVisible) {
-      setDisplayedText("");
-      setCurrentIndex(0);
-      return;
-    }
-
-    if (speed === 0) {
-      setDisplayedText(text);
-      return;
-    }
-
-    const startDelay = setTimeout(() => {
-      if (currentIndex < text.length) {
-        const charDelay = setTimeout(() => {
-          setDisplayedText(prev => prev + text[currentIndex]);
-          setCurrentIndex(prev => prev + 1);
-        }, speed);
-        return () => clearTimeout(charDelay);
-      }
-    }, delay);
-
-    return () => clearTimeout(startDelay);
-  }, [currentIndex, text, delay, isVisible, speed]);
+  const words = text.split(" ");
 
   const container = {
     hidden: { opacity: 0 },
@@ -66,7 +39,7 @@ function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) 
       initial="hidden"
       animate={isVisible ? "visible" : "hidden"}
     >
-      {text.split(" ").map((word, wordIndex) => (
+      {words.map((word, wordIndex) => (
         <span key={`word-${wordIndex}`} style={{ display: "inline-block", whiteSpace: "nowrap" }}>
           {word.split("").map((char, charIndex) => (
             <motion.span
@@ -77,7 +50,7 @@ function HandwrittenText({ text, className, delay = 0, isVisible, speed = 50 }) 
               {char}
             </motion.span>
           ))}
-          {wordIndex < text.split(" ").length - 1 && <span style={{ display: "inline-block", width: "0.25em" }}> </span>}
+          {wordIndex < words.length - 1 && <span style={{ display: "inline-block", width: "0.25em" }}> </span>}
         </span>
       ))}
     </motion.p>
