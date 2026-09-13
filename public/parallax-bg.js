@@ -3,10 +3,8 @@ class ParallaxBackground {
     this.options = {
       containerSelector: options.containerSelector || "body",
       zIndex: options.zIndex || -1,
-      speeds: options.speeds || [300, 350, 280, 240],
-      gap: options.gap || "15px",
-      imagesPerRow: options.imagesPerRow || 6,
-      animate: options.animate !== false, // Default to true, set to false to disable animation
+      gap: options.gap || "12px",
+      rowHeight: options.rowHeight || 230,
       imageUrls: options.imageUrls || [
         "https://res.cloudinary.com/dx8d5hlk1/image/upload/w_500,c_limit,q_auto:low,f_auto,fl_progressive/v1754915725/27_vorpi1.jpg",
         "https://res.cloudinary.com/dx8d5hlk1/image/upload/w_500,c_limit,q_auto:low,f_auto,fl_progressive/v1754915725/25_ldhbut.jpg",
@@ -38,12 +36,15 @@ class ParallaxBackground {
       ],
       ...options
     };
+
+    this.handleResize = this.handleResize.bind(this);
   }
 
-  init() {
+  async init() {
     this.injectCSS();
-    this.createParallaxHTML();
-    this.startAnimations();
+    this.imageRatios = await this.loadImageRatios();
+    this.createCollage();
+    window.addEventListener("resize", this.handleResize);
   }
 
   injectCSS() {
@@ -54,89 +55,62 @@ class ParallaxBackground {
     style.textContent = `
       .parallax-bg-container {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
+        inset: 0;
         z-index: ${this.options.zIndex};
         pointer-events: none;
-        display: flex;
-        flex-direction: column;
-        gap: ${this.options.gap};
         overflow: hidden;
+        background: transparent;
+      }
+
+      .parallax-bg-track {
+        position: absolute;
+        inset: 0;
       }
       
-      .parallax-bg-row {
-        flex: 1;
-        display: flex;
-        width: 100vw;
-        height: 25vh;
-        gap: ${this.options.gap};
-        overflow: hidden;
-        position: relative;
-      }
-      
-      .parallax-bg-row img {
-        flex: 1;
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
+      .parallax-bg-container img {
+        position: absolute;
+        height: auto;
         display: block;
-        border-radius: 15px;
+        border-radius: 14px;
         opacity: 0;
         transition: opacity 0.8s ease-in-out;
+        object-fit: contain;
       }
       
-      .parallax-bg-row img.loaded {
+      .parallax-bg-container img.loaded {
         opacity: 1;
-      }
-      
-      .parallax-bg-scrolling-inner {
-        display: flex;
-        gap: ${this.options.gap};
-        width: max-content;
-        height: 100%;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-play-state: ${this.options.animate ? 'paused' : 'paused'};
-        will-change: transform;
-      }
-      
-      .parallax-bg-scrolling-inner.loaded {
-        animation-play-state: ${this.options.animate ? 'running' : 'paused'};
-      }
-      
-      .parallax-bg-scroll-right .parallax-bg-scrolling-inner {
-        animation-name: parallax-scroll-right;
-      }
-      
-      .parallax-bg-scroll-left .parallax-bg-scrolling-inner {
-        animation-name: parallax-scroll-left;
-      }
-      
-      @keyframes parallax-scroll-right {
-        0% {
-          transform: translateX(-50%);
-        }
-        100% {
-          transform: translateX(0);
-        }
-      }
-      
-      @keyframes parallax-scroll-left {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-50%);
-        }
       }
     `;
     
     document.head.appendChild(style);
   }
 
-  createParallaxHTML() {
+  loadImageRatios() {
+    const ratioPromises = this.options.imageUrls.map(imageUrl => {
+      return new Promise(resolve => {
+        const image = new Image();
+
+        image.onload = () => {
+          if (image.naturalWidth && image.naturalHeight) {
+            resolve(image.naturalWidth / image.naturalHeight);
+            return;
+          }
+
+          resolve(1);
+        };
+
+        image.onerror = () => {
+          resolve(1);
+        };
+
+        image.src = imageUrl;
+      });
+    });
+
+    return Promise.all(ratioPromises);
+  }
+
+  createCollage() {
     const existing = document.querySelector(".parallax-bg-container");
     if (existing) {
       existing.remove();
@@ -144,52 +118,52 @@ class ParallaxBackground {
 
     const container = document.createElement("div");
     container.className = "parallax-bg-container";
+    const track = document.createElement("div");
+    track.className = "parallax-bg-track";
+    container.appendChild(track);
 
-    for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
-      const row = document.createElement("div");
-      const direction = rowIndex % 2 === 0 ? "scroll-right" : "scroll-left";
-      const speed = this.options.speeds[rowIndex] || 30;
-      
-      row.className = `parallax-bg-row parallax-bg-${direction}`;
-      
-      const scrollingInner = document.createElement("div");
-      scrollingInner.className = "parallax-bg-scrolling-inner";
-      scrollingInner.style.animationDuration = `${speed}s`;
-      
-      // If animation is disabled, center the images
-      if (!this.options.animate) {
-        scrollingInner.style.transform = "translateX(-25%)";
-      }
+    const gap = parseFloat(this.options.gap) || 0;
+    const rowHeight = this.options.rowHeight;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const overscanX = rowHeight;
+    const overscanY = rowHeight;
+    const maxY = viewportHeight + overscanY;
+    const maxX = viewportWidth + overscanX;
+    let imageIndex = 0;
+    let rowIndex = 0;
 
-      const startIndex = rowIndex * this.options.imagesPerRow;
-      const rowImages = [];
-      
-      for (let i = 0; i < this.options.imagesPerRow; i++) {
-        const imageIndex = startIndex + i;
-        if (imageIndex < this.options.imageUrls.length) {
-          rowImages.push(this.options.imageUrls[imageIndex]);
-        }
-      }
+    for (let top = -overscanY; top < maxY; top += rowHeight + gap) {
+      let left = rowIndex % 2 === 0 ? -overscanX : -(overscanX / 2);
 
-      [...rowImages, ...rowImages].forEach((imageUrl, index) => {
+      while (left < maxX) {
+        const currentIndex = imageIndex % this.options.imageUrls.length;
+        const ratio = this.imageRatios[currentIndex] || 1;
+        const width = Math.max(80, Math.round(rowHeight * ratio));
         const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = `Parallax Image ${index + 1}`;
+
+        img.src = this.options.imageUrls[currentIndex];
+        img.alt = `Collage Image ${imageIndex + 1}`;
         img.loading = "lazy";
-        
+        img.style.top = `${top}px`;
+        img.style.left = `${left}px`;
+        img.style.width = `${width}px`;
+        img.style.height = `${rowHeight}px`;
+
         img.addEventListener("load", () => {
           img.classList.add("loaded");
         });
-        
+
         if (img.complete) {
           img.classList.add("loaded");
         }
-        
-        scrollingInner.appendChild(img);
-      });
 
-      row.appendChild(scrollingInner);
-      container.appendChild(row);
+        track.appendChild(img);
+        left += width + gap;
+        imageIndex++;
+      }
+
+      rowIndex++;
     }
 
     const targetContainer = document.querySelector(this.options.containerSelector);
@@ -200,55 +174,28 @@ class ParallaxBackground {
     }
   }
 
-  startAnimations() {
-    const images = document.querySelectorAll(".parallax-bg-container img");
-    let loadedCount = 0;
-    const totalImages = images.length;
-
-    if (totalImages === 0) {
-      this.activateAnimations();
-      return;
-    }
-
-    const checkAllLoaded = () => {
-      loadedCount++;
-      if (loadedCount >= totalImages) {
-        this.activateAnimations();
-      }
-    };
-
-    images.forEach(img => {
-      if (img.complete) {
-        checkAllLoaded();
-      } else {
-        img.addEventListener("load", checkAllLoaded);
-        img.addEventListener("error", checkAllLoaded);
-      }
-    });
-
-    setTimeout(() => {
-      this.activateAnimations();
-    }, 3000);
-  }
-
-  activateAnimations() {
-    const scrollingElements = document.querySelectorAll(".parallax-bg-scrolling-inner");
-    scrollingElements.forEach(element => {
-      element.classList.add("loaded");
-    });
+  handleResize() {
+    this.createCollage();
   }
 
   destroy() {
     const container = document.querySelector(".parallax-bg-container");
     const styles = document.getElementById("parallax-bg-styles");
     
+    window.removeEventListener("resize", this.handleResize);
+
     if (container) container.remove();
     if (styles) styles.remove();
   }
 
   static init(options) {
+    if (window.__parallaxBackgroundInstance) {
+      window.__parallaxBackgroundInstance.destroy();
+    }
+
     const instance = new ParallaxBackground(options);
     instance.init();
+    window.__parallaxBackgroundInstance = instance;
     return instance;
   }
 }
@@ -258,10 +205,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (script && script.hasAttribute("data-auto-init")) {
     const options = {};
     
-    if (script.dataset.imagePath) options.imagePath = script.dataset.imagePath;
-    if (script.dataset.imageCount) options.imageCount = parseInt(script.dataset.imageCount);
     if (script.dataset.zIndex) options.zIndex = parseInt(script.dataset.zIndex);
     if (script.dataset.gap) options.gap = script.dataset.gap;
+    if (script.dataset.rowHeight) options.rowHeight = parseInt(script.dataset.rowHeight);
     
     ParallaxBackground.init(options);
   }

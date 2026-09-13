@@ -49,8 +49,10 @@ function Landing() {
   const shouldReduceMotion = useReducedMotion();
   const { hideHeader, displayHeader } = useHeader();
   const { hasVisitedLandingPage, setHasVisitedLandingPage } = useContext(UserContext);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const landingPromise = useMemo(() => fetchLandingData(), []);
 
   useEffect(() => {
@@ -71,49 +73,85 @@ function Landing() {
   }, []);
 
   useEffect(() => {
+    let heroTimer;
+    let contentTimer;
+    let videoTimer;
+    let isActive = true;
     hideHeader();
-    if (window.innerWidth >= 768) {
+    const initializeParallax = () => {
+      if (!isActive || window.innerWidth < 768) {
+        return undefined;
+      }
+
       if (!window.ParallaxBackground) {
         const existingScript = document.querySelector('script[src="/parallax-bg.js"]');
         if (!existingScript) {
           const script = document.createElement("script");
           script.src = "/parallax-bg.js";
           script.onload = () => {
-            if (window.ParallaxBackground) {
+            if (isActive && window.ParallaxBackground) {
               window.ParallaxBackground.init({
-                zIndex: -1,
-                speeds: [200, 250, 180, 120],
-                animate: true
+                zIndex: -1
               });
             }
           };
           document.head.appendChild(script);
         }
-      } else {
-        window.ParallaxBackground.init({
-          zIndex: -1,
-          speeds: [200, 250, 180, 120],
-          animate: true
-        });
+
+        return undefined;
       }
+
+      return window.ParallaxBackground.init({
+        zIndex: -1
+      });
+    };
+
+    heroTimer = setTimeout(() => {
+      setIsHeroVisible(true);
+    }, 80);
+
+    videoTimer = setTimeout(() => {
+      setShouldLoadVideo(true);
+    }, 220);
+
+    contentTimer = setTimeout(() => {
+      setIsContentVisible(true);
+    }, hasVisitedLandingPage ? 240 : 700);
+
+    let idleCallbackId;
+    let parallaxTimer;
+
+    if (window.requestIdleCallback) {
+      idleCallbackId = window.requestIdleCallback(() => {
+        initializeParallax();
+      }, { timeout: 1500 });
+    } else {
+      parallaxTimer = setTimeout(() => {
+        initializeParallax();
+      }, 1200);
     }
-    setTimeout(() => {
-      setIsVisible(true);
-    }, 100);
 
     const visitTimer = setTimeout(() => {
       setHasVisitedLandingPage(true);
     }, 500);
 
     return () => {
+      isActive = false;
+      clearTimeout(heroTimer);
+      clearTimeout(contentTimer);
+      clearTimeout(videoTimer);
+      clearTimeout(parallaxTimer);
       clearTimeout(visitTimer);
+      if (idleCallbackId && window.cancelIdleCallback) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
       displayHeader();
-      const container = document.querySelector(".parallax-bg-container");
-      const styles = document.getElementById("parallax-bg-styles");
-      if (container) container.remove();
-      if (styles) styles.remove();
+      if (window.__parallaxBackgroundInstance) {
+        window.__parallaxBackgroundInstance.destroy();
+        window.__parallaxBackgroundInstance = null;
+      }
     };
-  }, [hideHeader, displayHeader, setHasVisitedLandingPage]);
+  }, [hideHeader, displayHeader, hasVisitedLandingPage, setHasVisitedLandingPage]);
 
 
 
@@ -130,19 +168,35 @@ function Landing() {
 
   return (
     <>
-      <h1 className="sr-only">rifftales - Discover gear, celebrate stories, and share your journey</h1>
+      <h1
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+          border: 0
+        }}
+      >
+        rifftales - Discover gear, celebrate stories, and share your journey
+      </h1>
       <section className="relative w-full overflow-hidden flex items-center justify-center">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover"
-          aria-hidden="true"
-        >
-          <source src={LANDING_VIDEO_URL} type="video/mp4" />
-        </video>
+        {shouldLoadVideo && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover"
+            aria-hidden="true"
+          >
+            <source src={LANDING_VIDEO_URL} type="video/mp4" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-black/30" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 sm:h-64 bg-gradient-to-b from-transparent to-[var(--color-main-bg)]" style={{ background: "linear-gradient(to bottom, transparent 0%, var(--color-main-bg) 100%)" }} />
 
@@ -150,7 +204,7 @@ function Landing() {
           <motion.div
             className="mb-8"
             initial={shouldReduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: isVisible ? 1 : 0 }}
+            animate={{ opacity: isHeroVisible ? 1 : 0 }}
             transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: "easeInOut" }}
           >
             <Logo size="xlarge" />
@@ -161,14 +215,14 @@ function Landing() {
               className="text-4xl text-[var(--color-text-handwritten)] leading-relaxed font-['Caveat'] bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3 inline-block"
               delay={hasVisitedLandingPage ? 0 : 500}
               speed={hasVisitedLandingPage ? 0 : 30}
-              isVisible={isVisible}
+              isVisible={isHeroVisible}
             />
             <HandwrittenText
               text="Share your journey."
               className="text-4xl text-[var(--color-text-handwritten)] leading-relaxed font-['Caveat'] bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3 inline-block"
               delay={hasVisitedLandingPage ? 0 : 500}
               speed={hasVisitedLandingPage ? 0 : 30}
-              isVisible={isVisible}
+              isVisible={isHeroVisible}
             />
           </div>
         </div>
@@ -182,11 +236,11 @@ function Landing() {
               <motion.div
                 className="flex flex-col sm:flex-row gap-8 justify-center items-center sm:items-stretch mb-8"
               initial={shouldReduceMotion ? false : { opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.95 }}
+              animate={{ opacity: isContentVisible ? 1 : 0, y: isContentVisible ? 0 : 30, scale: isContentVisible ? 1 : 0.95 }}
               transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.34, 1.56, 0.64, 1], delay: shouldReduceMotion ? 0 : 0.3 }}
             >
               <motion.div
-                animate={isVisible && !shouldReduceMotion ? { scale: [1, 1.08, 1] } : {}}
+                animate={isContentVisible && !shouldReduceMotion ? { scale: [1, 1.08, 1] } : {}}
                 transition={{ duration: 0.8, ease: "easeInOut", delay: 1 }}
               >
                 <Link 
@@ -201,7 +255,7 @@ function Landing() {
                     alt="Explore Gear"
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="eager"
-                    fetchPriority="high"
+                    fetchPriority="low"
                   />
                   <div className="relative z-10 text-center">
                     <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
@@ -224,7 +278,7 @@ function Landing() {
                   alt="Add Your Gear"
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="eager"
-                  fetchPriority="high"
+                  fetchPriority="low"
                 />
                 <div className="relative z-10 text-center">
                   <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
@@ -241,7 +295,7 @@ function Landing() {
             <div className="max-w-3xl mt-8 space-y-6">
               <motion.div
                 initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-                animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+                animate={{ opacity: isContentVisible ? 1 : 0, y: isContentVisible ? 0 : 20 }}
                 transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: "easeOut", delay: shouldReduceMotion ? 0 : 0.6 }}
               >
                 <Link 
@@ -256,7 +310,7 @@ function Landing() {
                     alt="Live Streamer Guide"
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="eager"
-                    fetchPriority="high"
+                    fetchPriority="low"
                   />
                   <div className="relative z-10 text-center">
                     <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
@@ -270,7 +324,7 @@ function Landing() {
               <motion.div
                 className="mt-12"
                 initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-                animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+                animate={{ opacity: isContentVisible ? 1 : 0, y: isContentVisible ? 0 : 20 }}
                 transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: "easeOut", delay: shouldReduceMotion ? 0 : 0.7 }}
               >
                 <LiveAndUpcoming />
@@ -285,13 +339,13 @@ function Landing() {
       </div>
 
       <div className="mt-12">
-        <ArticlesSection isVisible={isVisible} />
+        <ArticlesSection isVisible={isContentVisible} />
       </div>
 
       <Suspense fallback={<div className="flex justify-center py-8"><Spinner /></div>}>
         <LandingDataDisplay 
           landingPromise={landingPromise}
-          isVisible={isVisible}
+          isVisible={isContentVisible}
           isMobile={isMobile}
         />
       </Suspense>
