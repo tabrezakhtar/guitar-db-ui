@@ -8,14 +8,28 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.join(__dirname, "..", "dist");
 
+const MIME_TYPES = {
+  ".html": "text/html",
+  ".js": "text/javascript",
+  ".mjs": "text/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".ico": "image/x-icon",
+};
+
 function startServer(port) {
   return new Promise((resolve) => {
     const server = createServer((req, res) => {
       const filePath = path.join(distDir, req.url === "/" ? "index.html" : req.url);
+      const contentType = MIME_TYPES[path.extname(filePath)] || "application/octet-stream";
       const stream = createReadStream(filePath).on("error", () => {
         res.writeHead(404);
         res.end("Not Found");
       });
+      res.setHeader("Content-Type", contentType);
       stream.pipe(res);
     }).listen(port, () => resolve(server));
   });
@@ -47,7 +61,16 @@ async function run() {
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "networkidle0" });
+    page.on("console", (msg) => console.log("[page]", msg.text()));
+    page.on("pageerror", (err) => console.error("[pageerror]", err));
+    await page.goto(url, { waitUntil: "domcontentloaded" });
+    try {
+      await page.waitForFunction(() => document.body.getAttribute("data-app-ready") === "true", { timeout: 10000 });
+    } catch (err) {
+      const rootHtml = await page.evaluate(() => document.getElementById("root")?.innerHTML ?? "(no root element)");
+      console.error("[debug] root innerHTML at timeout:", rootHtml.slice(0, 2000));
+      throw err;
+    }
     const html = await page.content();
     await browser.close();
 

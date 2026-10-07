@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 import { GuitarProvider } from "./context/GuitarContext";
@@ -25,6 +26,10 @@ import FullGuide from "./schedule/FullSchedule";
 // import CookieAlert from "./components/CookieAlert";
 
 function App() {
+  useEffect(() => {
+    document.body.setAttribute("data-app-ready", "true");
+  }, []);
+
   return (
     <div className="flex flex-col h-screen">
       <ScrollToTop />
