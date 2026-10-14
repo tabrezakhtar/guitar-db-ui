@@ -253,14 +253,14 @@ function Landing() {
                 >
                   <img
                     src="https://res.cloudinary.com/dx8d5hlk1/image/upload/f_auto/v1759240663/guitar_store_bpmexv.jpg"
-                    alt="Explore Gear"
+                    alt="Explore Gallery"
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="eager"
                     fetchPriority="low"
                   />
                   <div className="relative z-10 text-center">
                     <div className="bg-[var(--color-overlay-dark)] rounded-lg px-4 py-3">
-                      <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Explore Gear</h3>
+                      <h3 className="text-[var(--color-text)] text-xl font-bold drop-shadow-lg mb-1">Explore Gallery</h3>
                       <p className="text-[var(--color-text)] text-sm drop-shadow-lg">Browse amazing gear from our community</p>
                       <span className="inline-flex items-center mt-3 rounded-full bg-[#EAAA00] px-4 py-2 text-sm font-bold text-gray-900 shadow-md transition-colors duration-200 group-hover:bg-[#F5C242]">View Gear &rarr;</span>
                     </div>
