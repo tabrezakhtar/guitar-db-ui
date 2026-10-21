@@ -1,10 +1,10 @@
-# RiffTales
+# Rifftales
 
-RiffTales is a React frontend for sharing and exploring musical equipment. Users can browse the equipment gallery, view and manage equipment, maintain profiles, follow other users, and manage livestream schedules. The app uses React Context for shared state, Tailwind CSS for styling, and Vite for development and builds.
+Rifftales is a React frontend for sharing and exploring musical equipment. Users can browse the equipment gallery, view and manage equipment, maintain profiles, follow other users, and manage livestream schedules. The app uses React Context for shared state, Tailwind CSS for styling, and Vite for development and builds.
 
 ## Requirements
 
-- The RiffTales API for data-backed features
+- The Rifftales API for data-backed features
 
 ## Local Development
 
