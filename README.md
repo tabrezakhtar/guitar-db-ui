@@ -1,50 +1,40 @@
-# Guitar-DB UI  
+# RiffTales
 
-Guitar-DB UI is a frontend application for interacting with the Guitar-DB API. It is built using React, Redux, and styled with Tailwind CSS. This project provides a user-friendly interface to explore and manage guitar-related data from the guitar-db api.
+RiffTales is a React frontend for sharing and exploring musical equipment. Users can browse the equipment gallery, view and manage equipment, maintain profiles, follow other users, and manage livestream schedules. The app uses React Context for shared state, Tailwind CSS for styling, and Vite for development and builds.
 
-## Features  
-- Modern UI built with React and Tailwind CSS  
-- State management using Redux  
-- Seamless integration with the Guitar-DB API  
+## Requirements
 
-## Getting Started  
+- The RiffTales API for data-backed features
 
-### Prerequisites  
-- Node.js (v16 or later)  
-- npm or yarn  
+## Local Development
 
-### Installation  
-1. Clone the repository:  
-  ```bash  
-  git clone https://github.com/your-repo/guitar-db-ui.git  
-  cd guitar-db-ui  
-  ```  
+1. Install dependencies:
 
-2. Install dependencies:  
-  ```bash  
-  npm install  
-  # or  
-  yarn install  
-  ```  
+   ```sh
+   npm install
+   ```
 
-### Running the Project  
-To start the development server:  
-```bash  
-npm run dev  
-# or  
-yarn dev  
-```  
+2. Start the API separately. The development environment is configured in `.env.development` to use `http://localhost:5000`, the API's default local address. See the API project's README for its setup requirements.
 
-To build the project for production:  
-```bash  
-npm run build  
-# or  
-yarn build  
-```  
+3. Start the frontend:
 
-To preview the production build:  
-```bash  
-npm run preview  
-# or  
-yarn preview  
-```
+   ```sh
+   npm run dev
+   ```
+
+Vite prints the local frontend URL when the server starts.
+
+## Configuration
+
+The frontend reads `VITE_API_BASE_URL` to locate the API. `.env.development` points to the local API at `http://localhost:5000`. `.env.production` leaves the value empty so API requests use the same origin; the Netlify configuration forwards `/api/*` requests to the production API. For other hosting providers, set `VITE_API_BASE_URL` to the API origin at build time.
+
+## Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite development server, listening on network interfaces. |
+| `npm run lint` | Run ESLint. |
+| `npm run build` | Build the production site and prerender the landing page. The post-build step installs Chrome through Puppeteer. |
+| `npm run preview` | Serve the production build locally. |
+
+The production build is written to `dist/`. Static pages for contact, privacy, and terms are copied into the build output by Vite.
