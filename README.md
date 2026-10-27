@@ -34,7 +34,7 @@ The frontend reads `VITE_API_BASE_URL` to locate the API. `.env.development` poi
 | --- | --- |
 | `npm run dev` | Start the Vite development server, listening on network interfaces. |
 | `npm run lint` | Run ESLint. |
-| `npm run build` | Build the production site and prerender the landing page. The post-build step installs Chrome through Puppeteer. |
+| `npm run build` | Build the production site. |
 | `npm run preview` | Serve the production build locally. |
 
 The production build is written to `dist/`. Static pages for contact, privacy, and terms are copied into the build output by Vite.
