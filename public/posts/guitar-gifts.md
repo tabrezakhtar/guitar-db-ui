@@ -1,8 +1,8 @@
 ## Thoughtful Gift Ideas for Guitarists
 
-Buying a gift for a guitarist can be deceptively difficult.  Many players are particular about their instruments, yet there are plenty of useful, thoughtful items that support the day-to-day experience of playing without interfering with personal taste.
+Buying a gift for a musician isn't always easy. They often have their own preferences when it comes to instruments and equipment, so choosing something can be difficult if you're not a musician yourself.  Fortunately, there are plenty of other things worth considering.
 
-The following ideas cover learning, playing, recording and the small frustrations every guitarist recognises.
+The ideas below include gadgets and accessories for learning, playing and recording, as well as a few things that can make life a little easier for any musician.
 
 ### 1. Guitar Chords Chart Wall Art
 
