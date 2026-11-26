@@ -17,12 +17,12 @@ function ArticlesSection({ isVisible }) {
         </h3>
       </div>
       <div className="flex justify-center">
-        <div className="flex flex-wrap gap-6 justify-center max-w-2xl">
+        <div className="flex flex-wrap justify-center gap-6 w-full max-w-2xl">
           {postsManifest.map(post => (
             <Link
               key={post.slug}
               to={`/posts/${post.slug}`}
-              className="bg-[var(--color-card-dark)] rounded-lg overflow-hidden hover:bg-[var(--color-card-dark-hover)] transition-colors group flex-1 min-w-xs max-w-sm flex flex-col"
+              className="bg-[var(--color-card-dark)] rounded-lg overflow-hidden hover:bg-[var(--color-card-dark-hover)] transition-colors group w-full sm:w-80 flex flex-col"
             >
               {post.thumbnail && (
                 <img 
